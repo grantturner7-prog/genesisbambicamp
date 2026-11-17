@@ -51,7 +51,7 @@ export const ACTIVITIES: Activity[] = [
 export const SEASON_INTRO: Record<Season, { title: L; body: L }> = {
   winter: {
     title: l('Winter: crisp air, calm water, warm vans', '冬季：清冽空氣、平靜湖面、溫暖露營車'),
-    body: l('Lakeside kayaking leads the winter programme, with the eco-tram, outdoor guilds and campfire nights. Every van has its own Hitachi heating.', '冬季以湖畔獨木舟為主打，搭配遊園車生態導覽、戶外工坊與營火之夜。每輛露營車皆有獨立日立暖氣。'),
+    body: l('Lakeside kayaking leads the winter programme, with the eco-tram, outdoor games and challenges, and campfire nights. Every van has its own Hitachi heating.', '冬季以湖畔獨木舟為主打，搭配遊園車生態導覽、戶外遊戲與挑戰，以及營火之夜。每輛露營車皆有獨立日立暖氣。'),
   },
   summer: {
     title: l('Summer: everything in winter, plus the pool', '夏季：冬季的一切，再加上戲水池'),
