@@ -100,6 +100,8 @@ const newPage = async (lang = 'en') => {
   await page.goto(BASE + '/facilities/#cinema'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
   const cin = await page.textContent('[data-panel="cinema"]')
   ok('map: #cinema deep link + licence statement', cin.includes('Star Cinema') && cin.includes('公播版'))
+  await page.waitForTimeout(6000)
+  ok('map: a deep link opens zoomed in on its place', Number(await page.evaluate(() => document.documentElement.dataset.mapZoom)) < 0.6, await page.evaluate(() => document.documentElement.dataset.mapZoom))
   await page.evaluate(() => document.querySelector('[data-hotspot="zone-A"]').click())
   ok('map: Zone A shows 14 camper vans', (await page.textContent('[data-panel="zone-A"]')).includes('14 camper vans'))
   await page.context().close()

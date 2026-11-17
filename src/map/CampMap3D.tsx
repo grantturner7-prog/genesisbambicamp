@@ -183,6 +183,7 @@ function CameraRig({ focus, flyKey, resetKey, onZoomedChange, onInteract }: { fo
     camera.position.copy(gPos)
     controls.target.copy(gTarget)
     controls.update()
+    pinnedFull.current = !focus // a deep link starts at its place, not on the full map
     snapped.current = true
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controls])
