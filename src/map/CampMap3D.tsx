@@ -1,6 +1,6 @@
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
 import { Star } from 'lucide-react'
 import { useCamp } from '../i18n/CampState'
@@ -10,7 +10,9 @@ import { layout, toWorld } from './layout/layout'
 import { Atmosphere } from './scene/Atmosphere'
 import { Cabins } from './scene/Cabins'
 import { Facilities } from './scene/Facilities'
-import { Island, Lakes, PoolBasin, Roads } from './scene/Ground'
+import { detectQuality, qualityForced, type Quality, type SceneEnv } from './scene/env'
+import { Terrain } from './scene/Ground'
+import { Life } from './scene/Life'
 import { Trees } from './scene/Trees'
 
 const FOV = 32
@@ -298,6 +300,28 @@ function CameraRig({ focus, flyKey, resetKey, onZoomedChange, onInteract }: { fo
   return null
 }
 
+/** Publishes draw-call and triangle counts for the performance checks (document.documentElement.dataset.mapInfo). */
+function RenderStats({ quality }: { quality: Quality }) {
+  const gl = useThree((st) => st.gl)
+  const t = useRef(0)
+  useEffect(() => {
+    gl.info.autoReset = false
+    return () => {
+      gl.info.autoReset = true
+    }
+  }, [gl])
+  // Runs before the frame is drawn: read what the previous frame cost, then start counting afresh.
+  useFrame((_, dt) => {
+    t.current += dt
+    if (t.current > 0.5) {
+      t.current = 0
+      document.documentElement.dataset.mapInfo = `quality=${quality} calls=${gl.info.render.calls} tris=${gl.info.render.triangles} geos=${gl.info.memory.geometries} tex=${gl.info.memory.textures}`
+    }
+    gl.info.reset()
+  }, -100)
+  return null
+}
+
 /** DOM marker registry: the render loop positions these every frame. */
 const markerEls = new Map<string, HTMLElement>()
 /** Markers closer than this (px) would sit on top of each other, so only the more important one shows. */
@@ -454,25 +478,31 @@ export function CampMap3D({
   onInteract: () => void
 }) {
   const { season, time, s } = useCamp()
-  const sky =
-    time === 'dusk'
-      ? 'linear-gradient(180deg,#1d2452 0%,#4a3f7a 45%,#d9825c 100%)'
-      : season === 'winter'
-        ? 'linear-gradient(180deg,#a9c6e2 0%,#e9eef0 100%)'
-        : 'linear-gradient(180deg,#8fcbf5 0%,#e3f4fd 100%)'
+  // Capable devices get ambient occlusion, bloom and large soft shadows; phones and weak
+  // GPUs get a lighter version. If a 'high' device cannot keep up, it steps down by itself.
+  const [quality, setQuality] = useState<Quality>(detectQuality)
+  const env = useMemo<SceneEnv>(() => ({ season, time, quality }), [season, time, quality])
+  const high = quality === 'high'
   return (
-    <div className="absolute inset-0 isolate" style={{ background: sky }} role="application" aria-label={s.map.mapOf}>
-      <Canvas shadows dpr={[1, 1.75]} camera={{ position: [0, 78, 92], fov: FOV, near: 1, far: 900 }} gl={{ antialias: true, alpha: true, toneMapping: THREE.NeutralToneMapping }}>
+    <div className="absolute inset-0 isolate bg-pine-900" role="application" aria-label={s.map.mapOf}>
+      <Canvas
+        key={quality}
+        shadows="soft"
+        flat={high}
+        dpr={high ? [1, 2] : [1, 1.5]}
+        camera={{ position: [0, 78, 92], fov: FOV, near: 1, far: 1600 }}
+        gl={{ antialias: !high, powerPreference: 'high-performance', toneMapping: high ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping }}
+      >
+        {high && !qualityForced() && <PerformanceMonitor ms={300} iterations={8} bounds={() => [28, 61]} flipflops={2} onDecline={() => setQuality('low')} />}
         <Suspense fallback={null}>
-          <Atmosphere season={season} time={time} />
-          <Island />
-          <Lakes />
-          <PoolBasin />
-          <Roads />
-          <Trees />
-          <Cabins />
-          <Facilities />
+          <Atmosphere env={env} />
+          <Terrain env={env} />
+          <Trees env={env} />
+          <Cabins env={env} />
+          <Facilities env={env} />
+          <Life env={env} />
           <MarkerDriver selectedId={selected?.id ?? null} />
+          <RenderStats quality={quality} />
         </Suspense>
         <CameraRig focus={selected} flyKey={flyKey} resetKey={resetKey} onZoomedChange={onZoomedChange} onInteract={onInteract} />
         <OrbitControls makeDefault enableDamping dampingFactor={0.08} screenSpacePanning={false} minDistance={MIN_DISTANCE} maxDistance={400} minPolarAngle={0.2} maxPolarAngle={1.25} />

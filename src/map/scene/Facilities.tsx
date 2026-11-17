@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { mulberry32, toWorld, poi, type Pt } from '../layout/layout'
+import type { SceneEnv } from './env'
 import { M } from './materials'
 import { Cabin } from './Cabins'
 
@@ -333,7 +334,7 @@ function Parking() {
   )
 }
 
-export function Facilities() {
+export function Facilities(_props: { env: SceneEnv }) {
   return (
     <group>
       <Gate />

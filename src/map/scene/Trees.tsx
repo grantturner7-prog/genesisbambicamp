@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { layout, mulberry32, S, toWorld, type Pt } from '../layout/layout'
+import type { SceneEnv } from './env'
 import { M } from './materials'
 
 const nearestWater = (px: number, py: number) => {
@@ -12,7 +13,7 @@ const nearestWater = (px: number, py: number) => {
 interface T { x: number; z: number; r: number; cy: boolean; k: number }
 
 /** One tree per crown drawn on the official map, at the same position and size. */
-export function Trees() {
+export function Trees(_props: { env: SceneEnv }) {
   const trees = useMemo<T[]>(() => {
     const rnd = mulberry32(11)
     return layout.trees.map((t) => {

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { centroid, layout, shapeFrom, wx, wz, type Pt } from '../layout/layout'
+import type { SceneEnv } from './env'
 import { M } from './materials'
 
 const TOP = 0.9 // thickness of the grass layer; lake beds sit at -TOP
@@ -82,6 +83,18 @@ export function Roads() {
           <primitive object={M.road} attach="material" />
         </mesh>
       ))}
+    </>
+  )
+}
+
+/** Everything underfoot: island, lakes, pool, roads (and, later, the land around the camp). */
+export function Terrain(_props: { env: SceneEnv }) {
+  return (
+    <>
+      <Island />
+      <Lakes />
+      <PoolBasin />
+      <Roads />
     </>
   )
 }

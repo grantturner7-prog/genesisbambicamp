@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { layout, toWorld, type VanSpot } from '../layout/layout'
+import type { SceneEnv } from './env'
 import { M } from './materials'
 
 /**
@@ -107,7 +108,7 @@ export function Cabin({ zone }: { zone: VanSpot['zone'] }) {
 }
 
 /** All 50 units at their exact map positions, decks facing the water/lawn as traced. */
-export function Cabins() {
+export function Cabins(_props: { env: SceneEnv }) {
   return (
     <group>
       {layout.vans.map((v) => {

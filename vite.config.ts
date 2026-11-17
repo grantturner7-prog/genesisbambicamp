@@ -7,6 +7,8 @@ import tailwindcss from '@tailwindcss/vite'
 // `base: './'` keeps the build portable to any host or sub-path.
 export default defineConfig({
   base: './',
+  // Separate dev-server caches let several checkouts run side by side.
+  cacheDir: process.env.VITE_CACHE_DIR || 'node_modules/.vite',
   plugins: [react(), tailwindcss()],
   build: {
     chunkSizeWarningLimit: 1400,
