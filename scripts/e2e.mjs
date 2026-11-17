@@ -1,7 +1,10 @@
-// End-to-end checks against a running server: node scripts/e2e.mjs [baseUrl]
+// End-to-end checks against a running server: node scripts/e2e.mjs [baseUrl] [only]
+// `only` runs just the sections whose title contains it, e.g. "map life" or "problems found".
 import { createRequire } from 'node:module'
 const { chromium } = createRequire(import.meta.url)('playwright')
 const BASE = process.argv[2] || 'http://127.0.0.1:5199'
+const ONLY = (process.argv[3] || '').toLowerCase()
+const section = (title) => !ONLY || title.toLowerCase().includes(ONLY)
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] })
 // Night mode follows the visitor's clock, so every test runs at midday unless it says otherwise.
 const newContext = browser.newContext.bind(browser)
@@ -19,7 +22,7 @@ const newPage = async (lang = 'en') => {
 }
 
 // ── Home: language + registration + refund calculator
-{
+if (section("Home: language + registration + refund calculator")) {
   const page = await newPage('en')
   const posts = []
   page.on('request', (r) => { if (r.method() === 'POST') posts.push(r.url()) })
@@ -138,7 +141,7 @@ const newPage = async (lang = 'en') => {
 }
 
 // ── Facilities: every hotspot opens its panel
-{
+if (section("Facilities: every hotspot opens its panel")) {
   const page = await newPage('en')
   await page.goto(BASE + '/facilities/')
   await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
@@ -172,7 +175,7 @@ const newPage = async (lang = 'en') => {
   await page.context().close()
 }
 // ── Facilities: the map stays on the board, icon markers, Full map button
-for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone', width: 390, height: 844 }]) {
+for (const vp of section('Facilities: the map stays on the board, icon markers, Full map button') ? [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone', width: 390, height: 844 }] : []) {
   const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: vp.width < 600 })
   await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
   const page = await ctx.newPage()
@@ -259,7 +262,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await ctx.close()
 }
 // ── Facilities: problems found by independent testing stay fixed
-{
+if (section("Facilities: problems found by independent testing stay fixed")) {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
   const page = await ctx.newPage()
@@ -311,6 +314,8 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   const rot = await page.evaluate(() => { const c = document.querySelector('main canvas').getBoundingClientRect(); return [...document.querySelectorAll('[data-hotspot]')].filter((e) => { const r = e.getBoundingClientRect(); const x = r.left + r.width / 2; return x >= c.left && x <= c.right && r.bottom >= c.top && r.bottom <= c.bottom }).length })
   ok('fix: turning the full map keeps the whole camp framed', Math.abs((await zoom()) - 1) <= 0.01 && rot === 17, `zoom ${await zoom()} markers on canvas ${rot}/17`)
   await page.click('[data-full-map]'); await settle()
+  // the turn back keeps the zoom at 1, so wait for the view itself: the button leaves once the standard view is reached
+  for (let i = 0; i < 150 && (await page.locator('[data-full-map]').count()) > 0; i++) await page.waitForTimeout(400)
   ok('fix: Full map restores the standard view', (await page.locator('[data-full-map]').count()) === 0 && Math.abs((await zoom()) - 1) <= 0.01)
 
   // place list: mouse wheel scrolls it sideways, arrows work, chosen place is brought into view
@@ -345,7 +350,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await ph.close()
 }
 // ── Games in 繁體中文 on a phone
-{
+if (section("Games in 繁體中文 on a phone")) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true })
   await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'zh-TW'); localStorage.setItem('gya.season', 'summer') })
   const page = await ctx.newPage()
@@ -364,7 +369,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await ctx.close()
 }
 // ── Night: visitors who arrive after dark get the evening site
-{
+if (section("Night: visitors who arrive after dark get the evening site")) {
   const ctx = await newContext({ viewport: { width: 1440, height: 900 } })
   ctx.setDefaultNavigationTimeout(120000)
   await ctx.addInitScript(() => { window.__clock = 21; Date.prototype.getHours = () => 21; localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
@@ -389,7 +394,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await day.context().close()
 }
 // ── Map life: the tram never stops and lights up at night; the egrets come home to roost
-{
+if (section("Map life: the tram never stops and lights up at night; the egrets come home to roost")) {
   const read = async (page) => {
     const s = await page.evaluate(() => document.documentElement.dataset.mapLife || '')
     const g = (k) => (s.match(new RegExp('(?:^| )' + k + '=([^ ]+)')) || [])[1]
@@ -434,7 +439,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await ctx.close()
 }
 // ── Photos: every image loads, and each place shows a photo of that place
-{
+if (section("Photos: every image loads, and each place shows a photo of that place")) {
   const page = await newPage('en')
   const bad = []
   page.on('response', (r) => { if (r.status() >= 400 && /\.(webp|jpg|png)/.test(r.url())) bad.push(r.status() + ' ' + r.url().split('/').pop()) })
