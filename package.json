@@ -10,7 +10,8 @@
     "launch-check": "node scripts/launch-check.mjs",
     "typecheck": "tsc --noEmit",
     "build": "npm run audit && tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.0",

@@ -234,16 +234,16 @@ export const AREAS: Area[] = [
         icon: 'Utensils',
         title: { en: 'Four daily meals (一泊四食)', zh: '一泊四食' },
         body: {
-          en: 'Buffet breakfast, chef-led lunch, handmade Neapolitan pizza afternoon tea and a dinner feast — plus campfire snacks.',
-          zh: '自助早餐、主廚帶領午餐、手工拿坡里披薩下午茶與晚餐盛宴，晚上還有營火點心。',
+          en: 'Buffet breakfast, a chef-led lunch that campers cook themselves, afternoon tea with handmade Neapolitan pizza and a dinner feast — plus campfire snacks.',
+          zh: '自助早餐、營員親手完成的主廚帶領午餐、手工拿坡里披薩下午茶與晚餐盛宴，晚上還有營火點心。',
         },
       },
       {
-        icon: 'Pizza',
-        title: { en: 'Neapolitan Pizza Guild', zh: '拿坡里披薩工坊' },
+        icon: 'ChefHat',
+        title: { en: 'Chef-Led Culinary Guild', zh: '主廚美食工坊' },
         body: {
-          en: 'Campers shape their own pizza with the chef, then enjoy it fresh-baked at afternoon tea.',
-          zh: '營員跟著主廚親手整形披薩，下午茶時享用現烤美味。',
+          en: 'Each day the chef shows campers how to make that day’s lunch: handmade Neapolitan pizza one day, a different dish the next. Campers eat what they cook.',
+          zh: '每天由主廚帶著營員親手完成當日午餐：一天是手工拿坡里披薩，隔天換另一道菜。自己做的，就是當天的午餐。',
         },
       },
       {
@@ -288,7 +288,7 @@ export const AREAS: Area[] = [
           icon: 'Soup',
           time: '12:00',
           items: [
-            { name: { en: 'Chef-led lunch', zh: '主廚帶領午餐' }, note: { en: 'Prepared with the Culinary Guild.', zh: '與美食工坊一同完成。' } },
+            { name: { en: 'Chef-led lunch', zh: '主廚帶領午餐' }, note: { en: 'Made by the campers with the chef in the Culinary Guild. A different dish each day, with handmade pizza on one of them.', zh: '由營員在主廚美食工坊與主廚一起完成，每天不同菜色，其中一天是手工披薩。' } },
           ],
         },
         {
@@ -296,7 +296,7 @@ export const AREAS: Area[] = [
           icon: 'Pizza',
           time: '15:30',
           items: [
-            { name: { en: 'Italian herb chicken pizza', zh: '義式香料嫩雞披薩' }, note: { en: 'Handmade Neapolitan-style, baked fresh in the pizza oven.', zh: '手工拿坡里式披薩，披薩烤爐現烤。' }, allergens: ['gluten', 'milk'] },
+            { name: { en: 'Italian herb chicken pizza', zh: '義式香料嫩雞披薩' }, note: { en: 'Handmade Neapolitan-style, baked fresh by the kitchen.', zh: '手工拿坡里式披薩，由廚房現烤。' }, allergens: ['gluten', 'milk'] },
             { name: { en: 'Hawaiian pizza', zh: '夏威夷披薩' }, note: { en: 'Contains pork (ham).', zh: '含豬肉（火腿）。' }, allergens: ['gluten', 'milk'] },
             { name: { en: 'Garden vegetable pizza', zh: '蔬食蛋奶披薩' }, note: { en: 'Ovo-lacto vegetarian.', zh: '蛋奶素。' }, allergens: ['gluten', 'milk', 'egg'], vegetarian: true },
             { name: { en: 'Cinnamon apple pizza', zh: '肉桂蘋果披薩' }, note: { en: 'A sweet one to finish.', zh: '甜口味收尾。' }, allergens: ['gluten', 'milk'], vegetarian: true },

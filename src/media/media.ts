@@ -55,7 +55,7 @@ export const AREA_PHOTOS: Record<AreaId, Photo[]> = {
     P('hall-windows', 'Floor-to-ceiling windows', '大面落地窗'),
     P('hall-interior', 'Evening in the hall', '夜晚的用餐空間'),
     P('hall-buffet', 'The buffet line', '自助餐檯'),
-    P('pizza-hands', 'Topping a handmade pizza', '手工披薩鋪料'),
+    P('pizza-hands', 'Culinary Guild: topping a handmade pizza', '主廚美食工坊：手工披薩鋪料'),
     P('pizza-oven', 'Pizzas heading for the oven', '準備進爐的披薩'),
     P('pizza-fresh', 'Fresh from the pizza oven', '剛出爐的披薩'),
     P('breakfast', 'Buffet breakfast', '自助早餐'),

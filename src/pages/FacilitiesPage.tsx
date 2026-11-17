@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RotateCcw, Route } from 'lucide-react'
 import { Header } from '../components/Header'
 import { LegalFooter } from '../components/LegalFooter'
@@ -25,6 +25,18 @@ export function FacilitiesPage() {
     setSelId(id)
     setTab((id && HOTSPOT_BY_ID[id].tab) || 'highlights')
     window.history.replaceState(null, '', id ? `#${id}` : window.location.pathname + window.location.search)
+  }, [])
+  // Deep links such as /facilities/#cinema also work while the page is already open.
+  useEffect(() => {
+    const onHash = () => {
+      const h = window.location.hash.slice(1)
+      if (HOTSPOT_BY_ID[h]) {
+        setSelId(h)
+        setTab(HOTSPOT_BY_ID[h].tab ?? 'highlights')
+      }
+    }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
   }, [])
   const index = selected ? HOTSPOTS.indexOf(selected) : -1
   const step = useCallback((d: 1 | -1) => select(HOTSPOTS[(index + d + HOTSPOTS.length) % HOTSPOTS.length].id), [index, select])
