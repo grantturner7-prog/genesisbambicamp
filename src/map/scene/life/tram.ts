@@ -241,9 +241,10 @@ const V_MAX = 0.82
 const V_MIN = 0.3
 
 /**
- * The tram and its drive. It is always on its round: from the tram stop west along the south
- * road, round the west ring past the waterbird lake, back past the stop and round the kayak
- * lake, slowing for the bends and never stopping (about five and a half minutes a lap).
+ * The tram and its drive. It is always on its round, one loop of the whole camp: from the
+ * tram stop west along the south road, round the west ring, along the waterbird lake, up
+ * past the Star Cinema, over the north road and back down past the kayak lake, slowing for
+ * the bends and never stopping (about five minutes a lap).
  * Carriages keep both axles on the route, so the train bends through every curve.
  * Its headlights and lanterns are lit at night only.
  */

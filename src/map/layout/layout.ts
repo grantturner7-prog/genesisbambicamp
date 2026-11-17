@@ -40,14 +40,18 @@ export interface Layout {
 export const layout = raw as unknown as Layout
 
 /**
- * Road that the official map draws but covers: two tree crowns stand over the lane round the
- * kayak lake, and the boarding label overlaps its edge. The trace stops at each of them, so
- * these short pieces (map px) put the hidden road back and the lane is one circuit again.
+ * Road that the official map draws but covers. The trace stops wherever something is printed
+ * over the road, so these short pieces (map px) put the hidden road back:
+ *  - two tree crowns stand over the lane round the kayak lake, and the boarding label
+ *    overlaps its edge: with them the lane is one circuit again;
+ *  - the Star Cinema label (星空電影院) covers the place where the north road comes down to
+ *    the road east of the wild lake: with it the roads form one loop round the whole camp.
  */
 export const ROAD_LINKS: Pt[][] = [
   [[804, 381], [812, 386], [829, 361], [821, 355]],
   [[1025, 352], [1043, 350], [1053, 387], [1035, 389]],
   [[934, 283], [992, 281], [997, 291], [936, 295]],
+  [[607, 283], [618, 297], [576, 331], [558, 350], [553, 364], [538, 360], [530, 338], [560, 317]],
 ]
 /** Every piece of road: the traced polygons and the links under the crowns. */
 export const roads: Layout['roads'] = [...layout.roads, ...ROAD_LINKS.map((outer) => ({ outer, holes: [] }))]

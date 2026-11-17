@@ -64,11 +64,13 @@ including under a sub-path.
 - **Evening return.** When night mode starts, and for a visitor who arrives after dark,
   the egrets fly in from across the camp and settle on the trees round the west lake.
   In the morning they leave again. Kayaks are on the water by day only.
-- **Tram.** It circles the whole camp without stopping (south road, west ring, kayak
-  lake; about five and a half minutes a lap). Headlights and lanterns are lit at night only.
-- **Road links.** `ROAD_LINKS` in `src/map/layout/layout.ts` puts back three short pieces
-  of road that tree crowns and a label hide on the official map, so the lane round the
-  kayak lake is one circuit. The traced polygons themselves are unchanged.
+- **Tram.** It makes one loop of the whole camp without stopping (south road, west ring,
+  waterbird lake, past the Star Cinema, north road, kayak lake; about five minutes a lap).
+  Headlights and lanterns are lit at night only.
+- **Road links.** `ROAD_LINKS` in `src/map/layout/layout.ts` puts back four short pieces
+  of road that labels and tree crowns hide on the official map: three round the kayak lake,
+  and the one under the Star Cinema label that joins the north road to the road east of
+  the waterbird lake. The traced polygons themselves are unchanged.
 - **Quality tiers.** Phones and weak GPUs get the `low` tier (no post effects, lighter
   models); a slow device steps down by itself. Reduced-motion settings give a still
   picture: tram at its stop, birds in place.
