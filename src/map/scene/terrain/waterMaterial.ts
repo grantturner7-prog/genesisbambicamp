@@ -60,7 +60,7 @@ export function makeLakeMaterial(tex: { mask: THREE.Texture; ripple: THREE.Textu
     cSkyHaze: color('#000000'),
     cSkyGlow: color('#000000'),
   }
-  const material = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.16, metalness: 0 })
+  const material = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.28, metalness: 0 })
   material.customProgramCacheKey = () => `terrain-lake-${high ? 'high' : 'low'}`
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms)
@@ -102,7 +102,7 @@ export function makeLakeMaterial(tex: { mask: THREE.Texture; ripple: THREE.Textu
           vec3 sun = terrainSunDir();
           // a rippled surface gathers light from lower in the sky than a mirror would
           vec3 refl = terrainSky(normalize(vec3(wR.x, wR.y * uFlatten, wR.z)), sun);
-          refl += cSkyGlow * pow(max(dot(wR, sun), 0.0), 10.0) * 0.4;
+          refl += cSkyGlow * pow(max(dot(wR, sun), 0.0), 10.0) * 0.25;
           // the ruffled lanes catch the bright horizon: silver by day, the sunset at dusk
           refl += cSkyHorizon * smoothstep(0.5, 0.9, ruffle) * uSunset;
           // the far bank and its trees, mirrored toward the viewer
@@ -150,7 +150,8 @@ export function makePoolMaterial(tex: { mask: THREE.Texture; ripple: THREE.Textu
     /** x, z of the shallow entry, radius of the entry platform, depth of the stepped band */
     uSteps: { value: new THREE.Vector4(...steps) },
     uLights: { value: lights.map((l) => new THREE.Vector2(l[0], l[1])) },
-    uGlow: { value: 0 },
+    uSelfLight: { value: 0 },
+    uLamps: { value: 0 },
     uCaustic: { value: 1 },
     cShallow: color('#b4f0f0'),
     cMid: color(PALETTE.pool),
@@ -174,7 +175,7 @@ export function makePoolMaterial(tex: { mask: THREE.Texture; ripple: THREE.Textu
         #define POOL_LIGHTS ${lights.length}
         varying vec3 vWpos;
         uniform sampler2D tMask; uniform sampler2D tRipple; uniform vec4 uMaskRect; uniform float uTime;
-        uniform vec4 uSteps; uniform vec2 uLights[POOL_LIGHTS]; uniform float uGlow; uniform float uCaustic;
+        uniform vec4 uSteps; uniform vec2 uLights[POOL_LIGHTS]; uniform float uSelfLight; uniform float uLamps; uniform float uCaustic;
         uniform vec3 cShallow; uniform vec3 cMid; uniform vec3 cDeep; uniform vec3 cGlowA; uniform vec3 cGlowB;
         vec3 gWaterN; vec3 gWaterGlow;
         float poolHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }`,
@@ -223,7 +224,7 @@ export function makePoolMaterial(tex: { mask: THREE.Texture; ripple: THREE.Textu
           float lamps = 0.0;
           for (int i = 0; i < POOL_LIGHTS; i++) lamps += exp(-distance(wp, uLights[i]) * 1.5);
           vec3 glow = mix(cGlowA, cGlowB, clamp(lamps * 0.75 + caustic * 0.18, 0.0, 1.0)) * (0.6 + lamps * 0.5 + caustic * 0.16);
-          gWaterGlow = terrainSky(wR, terrainSunDir()) * fres + mix(col, glow, step(0.5, uGlow)) * uGlow;
+          gWaterGlow = terrainSky(wR, terrainSunDir()) * fres + col * uSelfLight + glow * uLamps;
           diffuseColor.rgb = col * (1.0 - fres);
         }`,
       )
@@ -238,7 +239,8 @@ export function makePoolMaterial(tex: { mask: THREE.Texture; ripple: THREE.Textu
     uniforms.cMid.value.set(dusk ? '#2f7fd0' : PALETTE.pool)
     uniforms.cDeep.value.set(dusk ? '#1c56b4' : PALETTE.poolDeep)
     // by day a trace of self-light keeps the water luminous in shade; at dusk the lamps take over
-    uniforms.uGlow.value = dusk ? 1.05 : 0.1
+    uniforms.uSelfLight.value = dusk ? 0 : 0.1
+    uniforms.uLamps.value = dusk ? 1.05 : 0
     uniforms.uCaustic.value = dusk ? 0.5 : 1
   }
   return { material, uniforms, setEnv }

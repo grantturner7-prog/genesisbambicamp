@@ -138,23 +138,26 @@ export function makeGroundMaterial(tex: { mask: THREE.Texture; noise: THREE.Text
           gCanopy = smoothstep(2.2, 5.6, wood + (nB.r - 0.5) * 1.6);
           vec2 cuv = gp / ${CANOPY_TILE.toFixed(1)};
           // crowns per pixel: far away and at grazing angles the canopy settles into a calm, even surface
-          float crownDetail = 1.0 - smoothstep(0.2, 0.75, max(length(dFdx(cuv)), length(dFdy(cuv))) * ${CANOPY_CROWNS.toFixed(1)});
+          float crownsPerPixel = max(length(dFdx(cuv)), length(dFdy(cuv))) * ${CANOPY_CROWNS.toFixed(1)};
+          float crownDetail = 1.0 - smoothstep(0.2, 0.75, crownsPerPixel);
+          float standDetail = 1.0 - smoothstep(0.5, 2.2, crownsPerPixel);
           #ifdef TERRAIN_HIGH
             // the crowns have height: shift them with the viewing angle so the canopy has depth
             vec3 toEye = normalize(cameraPosition - vWpos);
             cuv += toEye.xz / max(toEye.y, 0.4) * (texture2D(tCanopy, cuv).a - 0.6) * (crownDetail * ${(1.1 / CANOPY_TILE).toFixed(4)});
           #endif
           vec4 cn = texture2D(tCanopy, cuv);
-          vec3 canopy = mix(cCanopyDeep, cCanopy, smoothstep(0.1, 0.9, cn.a));
+          float crownH = mix(0.62, cn.a, crownDetail);
+          vec3 canopy = mix(cCanopyDeep, cCanopy, smoothstep(0.1, 0.9, crownH));
           #ifdef TERRAIN_HIGH
             // and each crown shades its neighbour on the side away from the sun
             float taller = texture2D(tCanopy, cuv + terrainSunXZ() * ${(1.0 / CANOPY_TILE).toFixed(4)}).a - cn.a;
             canopy *= 1.0 - 0.4 * mix(0.22, smoothstep(0.03, 0.32, taller), crownDetail);
           #endif
           // here and there a stand of lighter trees
-          float lightStand = smoothstep(0.7, 1.0, cn.b) * 0.3 + smoothstep(0.52, 0.85, nA.a) * 0.4;
-          canopy = mix(canopy, cCanopyLight, lightStand * cn.a);
-          canopy *= mix(0.5, 1.0, smoothstep(0.0, 0.5, cn.a)) * (0.88 + nA.g * 0.24) * (0.95 + cn.b * 0.1);
+          float lightStand = smoothstep(0.7, 1.0, cn.b) * 0.3 * crownDetail + mix(0.12, smoothstep(0.52, 0.85, nA.a) * 0.4, standDetail);
+          canopy = mix(canopy, cCanopyLight, lightStand * crownH);
+          canopy *= mix(0.5, 1.0, smoothstep(0.0, 0.5, crownH)) * (1.0 + (nA.g - 0.5) * 0.24 * standDetail) * (0.95 + cn.b * 0.1);
           col = mix(col, canopy, gCanopy);
           gBump = mix(gBump, (cn.rg * 2.0 - 1.0) * (1.3 * crownDetail), gCanopy);
           gRough = mix(gRough, 0.88, gCanopy);
