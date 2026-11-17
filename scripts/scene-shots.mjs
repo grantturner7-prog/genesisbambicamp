@@ -40,7 +40,7 @@ for (const name of names) {
   page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)) })
   const q = `?quality=${quality || (v.phone ? 'low' : 'high')}`
   await page.goto(`${base}/facilities/${q}${v.spot ? '#' + v.spot : ''}`)
-  await page.waitForSelector('html[data-map-ready="1"]', { timeout: 180000 })
+  await page.waitForSelector('html[data-map-ready="1"]', { timeout: 420000 })
   if (v.dusk) await page.locator('main button', { hasText: /Dusk/ }).first().click({ force: true }).catch(() => {})
   // hide everything except the canvas; the camera keeps its pose
   await page.addStyleTag({ content: 'main > div > *:not(:first-child), main > aside, [data-hotspot] { display: none !important }' })
@@ -48,7 +48,7 @@ for (const name of names) {
   let last = '', same = 0
   for (let i = 0; i < 90 && same < 5; i++) { await page.waitForTimeout(500); const z = await page.evaluate(() => document.documentElement.dataset.mapZoom + '|' + (document.documentElement.dataset.mapFrame || '')); same = z.split('|')[0] === last ? same + 1 : 0; last = z.split('|')[0] }
   await page.waitForTimeout(1500)
-  await page.locator('main canvas').screenshot({ path: `${out}/${name}.png` })
+  await page.locator('main canvas').screenshot({ path: `${out}/${name}.png`, timeout: 180000 }) // software rendering can take a while per frame
   const info = await page.evaluate(() => document.documentElement.dataset.mapInfo || '')
   console.log('shot', name, info, errs.length ? 'ERRORS: ' + [...new Set(errs)].slice(0, 3).join(' | ') : '')
   await ctx.close()
