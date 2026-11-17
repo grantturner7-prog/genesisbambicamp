@@ -14,6 +14,8 @@ const PACKS = l(packs.slice(0, -1).join(', ') + ' or ' + packs[packs.length - 1]
 
 export const HERO = {
   photo: { winter: 'winter-cypress', summer: 'pool-sunset' } as Record<Season, Photo['id']>,
+  /** Shown to visitors who arrive after dark (see `defaultTime` in CampState). */
+  photoNight: { winter: 'van-dusk', summer: 'cinema-night' } as Record<Season, Photo['id']>,
   points: [
     l('All-English camp life, led by international camp counselors', '全美語生活環境，由國際營隊隊輔帶領'),
     l('Luxury camper vans with private bathrooms, three campers each', '頂級豪華露營車，獨立衛浴，三人一車'),

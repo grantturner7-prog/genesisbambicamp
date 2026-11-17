@@ -33,12 +33,13 @@ export function Heading({ kicker, title, intro, dark }: { kicker: string; title:
 
 /* ───────────────────────────────────────────────────────── Hero */
 export function Hero({ onRegister }: { onRegister: () => void }) {
-  const { s, t, season } = useCamp()
+  const { s, t, season, time } = useCamp()
   const offerA = campConfig.sessions[season].optionA
   const m = s.hero.metrics
+  const photo = (time === 'dusk' ? HERO.photoNight : HERO.photo)[season]
   return (
     <section className="relative isolate overflow-hidden bg-pine-900 text-white">
-      <img key={season} src={photoSrc(HERO.photo[season])} alt="" className="rise-in absolute inset-0 -z-10 h-full w-full object-cover" fetchPriority="high" />
+      <img key={photo} src={photoSrc(photo)} alt="" data-hero-photo className="rise-in absolute inset-0 -z-10 h-full w-full object-cover" fetchPriority="high" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-pine-900/85 via-pine-900/40 to-transparent" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-pine-900/85 via-transparent to-pine-900/30" />
       <div className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-[1240px] flex-col justify-end px-5 pb-8 pt-20 lg:px-8">
@@ -136,11 +137,11 @@ export function SeasonExplorer() {
 
 /* ───────────────────────────────────────────────────────── Facilities teaser */
 export function FacilitiesTeaser() {
-  const { s } = useCamp()
+  const { s, time } = useCamp()
   return (
     <section className="bg-pine-900">
       <a href={FACILITIES_URL} className="group relative block overflow-hidden">
-        <img src={`${ROOT}media/map-preview.webp`} alt="" loading="lazy" className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-[1.03] sm:h-[520px]" />
+        <img src={`${ROOT}media/${time === 'dusk' ? 'map-preview-night' : 'map-preview'}.webp`} alt="" data-map-preview loading="lazy" className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-[1.03] sm:h-[520px]" />
         <div className="absolute inset-0 bg-gradient-to-r from-pine-900/90 via-pine-900/45 to-transparent" />
         <div className="absolute inset-0 flex items-center">
           <div className="mx-auto w-full max-w-[1240px] px-5 text-white lg:px-8">

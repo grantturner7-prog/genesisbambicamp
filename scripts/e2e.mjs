@@ -3,6 +3,9 @@ import { createRequire } from 'node:module'
 const { chromium } = createRequire(import.meta.url)('playwright')
 const BASE = process.argv[2] || 'http://127.0.0.1:5199'
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] })
+// Night mode follows the visitor's clock, so every test runs at midday unless it says otherwise.
+const newContext = browser.newContext.bind(browser)
+browser.newContext = async (opts) => { const ctx = await newContext(opts); await ctx.addInitScript(() => { if (!window.__clock) Date.prototype.getHours = () => 12 }); return ctx }
 const results = []
 const errs = []
 const ok = (name, cond, extra = '') => { results.push(`${cond ? 'PASS' : 'FAIL'}  ${name}${extra ? '  — ' + extra : ''}`); if (!cond) process.exitCode = 1 }
@@ -359,6 +362,30 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   ok('games/zh: Color War keeps its English name', (await page.$eval('[data-game="32"] h3', (e) => e.textContent)) === 'Color War 開幕式')
   ok('games/phone: no sideways scrolling', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
   await ctx.close()
+}
+// ── Night: visitors who arrive after dark get the evening site
+{
+  const ctx = await newContext({ viewport: { width: 1440, height: 900 } })
+  await ctx.addInitScript(() => { window.__clock = 21; Date.prototype.getHours = () => 21; localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
+  const page = await ctx.newPage()
+  page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+  await page.goto(BASE + '/')
+  ok('night: the landing page opens with its evening photo', (await page.locator('[data-hero-photo]').getAttribute('src')).includes('cinema-night') && (await page.evaluate(() => document.documentElement.dataset.time)) === 'night')
+  await page.locator('[data-map-preview]').scrollIntoViewIfNeeded()
+  const prev = page.locator('[data-map-preview]')
+  ok('night: the map teaser shows the night picture, and it loads', (await prev.getAttribute('src')).includes('map-preview-night') && await prev.evaluate((el) => el.complete && el.naturalWidth > 0 || new Promise((r) => { el.onload = () => r(true); el.onerror = () => r(false) })))
+  await page.goto(BASE + '/facilities/'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
+  ok('night: the map opens in night mode', (await page.getByRole('button', { name: 'Night' }).first().getAttribute('aria-pressed')) === 'true')
+  await page.getByRole('button', { name: 'Day' }).first().click()
+  await page.goto(BASE + '/')
+  ok('night: choosing Day holds for the rest of the visit', (await page.evaluate(() => document.documentElement.dataset.time)) === 'day' && (await page.locator('[data-hero-photo]').getAttribute('src')).includes('pool-sunset'))
+  await page.goto(BASE + '/facilities/?time=night'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
+  ok('night: ?time=night overrides', (await page.evaluate(() => document.documentElement.dataset.time)) === 'night')
+  await ctx.close()
+  const day = await newPage('en')
+  await day.goto(BASE + '/')
+  ok('day: daytime visitors get the daytime site', (await day.evaluate(() => document.documentElement.dataset.time)) === 'day' && (await day.locator('[data-hero-photo]').getAttribute('src')).includes('pool-sunset') && (await day.locator('[data-map-preview]').getAttribute('src')).endsWith('map-preview.webp'))
+  await day.context().close()
 }
 // ── Photos: every image loads, and each place shows a photo of that place
 {

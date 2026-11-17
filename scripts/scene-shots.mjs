@@ -38,10 +38,9 @@ for (const name of names) {
   const errs = []
   page.on('pageerror', (e) => errs.push(e.message))
   page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)) })
-  const q = `?quality=${quality || (v.phone ? 'low' : 'high')}`
+  const q = `?quality=${quality || (v.phone ? 'low' : 'high')}&time=${v.dusk ? 'night' : 'day'}`
   await page.goto(`${base}/facilities/${q}${v.spot ? '#' + v.spot : ''}`)
   await page.waitForSelector('html[data-map-ready="1"]', { timeout: 420000 })
-  if (v.dusk) await page.locator('main button', { hasText: /Dusk/ }).first().click({ force: true }).catch(() => {})
   // hide everything except the canvas; the camera keeps its pose
   await page.addStyleTag({ content: 'main > div > *:not(:first-child), main > aside, [data-hotspot] { display: none !important }' })
   // wait for the camera (and any resize) to come to rest

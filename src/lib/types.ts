@@ -1,5 +1,6 @@
 export type Lang = 'zh-TW' | 'en'
 export type Season = 'winter' | 'summer'
+/** 'dusk' is the site's night mode: the evening camp with its lights on. */
 export type TimeOfDay = 'day' | 'dusk'
 
 /** A bilingual string. `zh` is Taiwan Traditional Chinese (繁體中文). */
