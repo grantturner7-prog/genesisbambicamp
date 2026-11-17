@@ -633,7 +633,9 @@ export function createBirds(hi: boolean) {
         birds.forEach((b, i) => {
           const lift = b.mode === Mode.Perched ? 0.4 + ((i * 0.77) % 1) * 5.5 : 0
           if (inFlock(i)) {
-            if (b.mode !== Mode.Circuit && b.mode !== Mode.Join) tell(i, Mode.Circuit, lift)
+            // already with the flock: forget any order to roost that had not begun
+            if (b.mode === Mode.Circuit || b.mode === Mode.Join) b.next = null
+            else tell(i, Mode.Circuit, lift)
           } else if (b.mode === Mode.Away) b.next = null
           else tell(i, Mode.Away, lift)
         })
@@ -641,8 +643,10 @@ export function createBirds(hi: boolean) {
         // the wintering egrets arrive with the cold and leave with it
         birds.forEach((b, i) => {
           if (!model.roost[i].flock?.winterOnly) return
-          if (winter) tell(i, Mode.Circuit, 0.5 + i * 0.4)
-          else if (b.mode !== Mode.Away) tell(i, Mode.Away, 0)
+          if (winter) {
+            if (b.mode !== Mode.Circuit && b.mode !== Mode.Join) tell(i, Mode.Circuit, 0.5 + i * 0.4)
+          } else if (b.mode !== Mode.Away) tell(i, Mode.Away, 0)
+          else b.next = null
         })
       }
     },

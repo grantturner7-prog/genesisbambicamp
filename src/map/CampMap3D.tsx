@@ -296,6 +296,9 @@ function CameraRig({ focus, flyKey, resetKey, onZoomedChange, onInteract }: { fo
     }
     const onLand = insideLand(controls.target.x - CENTER.x, controls.target.z - CENTER.z, 1.02) ? '1' : '0'
     if (document.documentElement.dataset.mapOnLand !== onLand) document.documentElement.dataset.mapOnLand = onLand
+    // frames drawn so far: lets the browser tests tell "the camera has come to rest" from "no frame was drawn"
+    const w = window as unknown as { __mapFrame?: number }
+    w.__mapFrame = (w.__mapFrame ?? 0) + 1
   })
   return null
 }

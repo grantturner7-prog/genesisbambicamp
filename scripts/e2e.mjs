@@ -181,7 +181,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
   await page.waitForTimeout(1500)
   const zoom = () => page.evaluate(() => Number(document.documentElement.dataset.mapZoom))
-  const settle = async () => { let last = -1, same = 0; for (let i = 0; i < 80 && same < 4; i++) { await page.waitForTimeout(400); const z = await zoom(); same = z === last ? same + 1 : 0; last = z } }
+  const settle = async () => { let last = -1, frame = -1, same = 0; for (let i = 0; i < 240 && same < 4; i++) { await page.waitForTimeout(400); const f = await page.evaluate(() => window.__mapFrame || 0); if (f === frame) continue; frame = f; const z = await zoom(); same = z === last ? same + 1 : 0; last = z } } // at rest = unchanged over four drawn frames
   // spread of the markers relative to the canvas = how much of the board the map covers
   const spread = () => page.evaluate(() => {
     const c = document.querySelector('main canvas').getBoundingClientRect()
@@ -266,7 +266,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
   await page.goto(BASE + '/facilities/'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 }); await page.waitForTimeout(1500)
   const zoom = () => page.evaluate(() => Number(document.documentElement.dataset.mapZoom))
-  const settle = async () => { let last = -1, same = 0; for (let i = 0; i < 80 && same < 4; i++) { await page.waitForTimeout(400); const z = await zoom(); same = z === last ? same + 1 : 0; last = z } }
+  const settle = async () => { let last = -1, frame = -1, same = 0; for (let i = 0; i < 240 && same < 4; i++) { await page.waitForTimeout(400); const f = await page.evaluate(() => window.__mapFrame || 0); if (f === frame) continue; frame = f; const z = await zoom(); same = z === last ? same + 1 : 0; last = z } } // at rest = unchanged over four drawn frames
   const box = await page.locator('main canvas').boundingBox(); const mid = [box.x + box.width / 2, box.y + box.height / 2]
 
   // scroll wheel over an icon zooms the map and does not scroll the page
@@ -338,7 +338,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   let clear = true
   for (const id of ['dining', 'cinema', 'snack']) {
     await pp.evaluate((i) => document.querySelector(`[data-hotspot="${i}"]`).click(), id); await pp.waitForSelector(`[data-panel="${id}"]`)
-    let last = '', same = 0; for (let i = 0; i < 60 && same < 4; i++) { await pp.waitForTimeout(400); const z = await pp.evaluate(() => document.documentElement.dataset.mapZoom); same = z === last ? same + 1 : 0; last = z }
+    let last = '', frame = -1, same = 0; for (let i = 0; i < 200 && same < 4; i++) { await pp.waitForTimeout(400); const [z, f] = await pp.evaluate(() => [document.documentElement.dataset.mapZoom, window.__mapFrame || 0]); if (f === frame) continue; frame = f; same = z === last ? same + 1 : 0; last = z }
     clear = clear && await pp.evaluate((i) => { const a = document.querySelector(`[data-hotspot="${i}"] [data-marker-name]`).getBoundingClientRect(); const b = document.querySelector('[data-full-map]').getBoundingClientRect(); return a.top >= b.bottom || a.left >= b.right || a.right <= b.left }, id)
   }
   ok('fix: on a phone the chosen name does not sit on the Full map button', clear)
@@ -386,6 +386,51 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await day.goto(BASE + '/')
   ok('day: daytime visitors get the daytime site', (await day.evaluate(() => document.documentElement.dataset.time)) === 'day' && (await day.locator('[data-hero-photo]').getAttribute('src')).includes('pool-sunset') && (await day.locator('[data-map-preview]').getAttribute('src')).endsWith('map-preview.webp'))
   await day.context().close()
+}
+// ── Map life: the tram never stops and lights up at night; the egrets come home to roost
+{
+  const read = async (page) => {
+    const s = await page.evaluate(() => document.documentElement.dataset.mapLife || '')
+    const g = (k) => (s.match(new RegExp('(?:^| )' + k + '=([^ ]+)')) || [])[1]
+    return { raw: s, s: Number(g('s')), v: Number(g('v')), waiting: g('waiting'), roost: g('roost'), flying: Number(g('flying')), lights: g('lights'), still: g('still') }
+  }
+  const until = async (page, test, ms = 150000) => { const t0 = Date.now(); for (;;) { const l = await read(page); if (l.raw && test(l)) return l; if (Date.now() - t0 > ms) return l; await page.waitForTimeout(700) } }
+  const open = async (page, query) => { await page.goto(BASE + '/facilities/' + query); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 180000 }); return until(page, () => true) }
+
+  const page = await newPage('en')
+  const a = await open(page, '?quality=high&life=20')
+  const b = await until(page, (l) => Math.abs(l.s - a.s) > 0.12)
+  ok('tram: on its round by day, never waiting', a.v > 0 && b.v > 0 && a.waiting === '0' && Math.abs(b.s - a.s) > 0.12, `${a.raw} -> s=${b.s}`)
+  ok('tram: no lights by day', a.lights === '0', a.raw)
+  ok('birds: by day none of the roost is on the trees', /^0\/\d+$/.test(a.roost) && a.flying === 0, a.raw)
+  await page.getByRole('button', { name: 'Night' }).first().click()
+  const c = await until(page, (l) => l.flying > 0)
+  ok('birds: when night mode starts the egrets set out for the roost', c.flying > 0, c.raw)
+  ok('tram: headlights on at night, still moving', c.lights === '1' && c.v > 0 && c.waiting === '0', c.raw)
+  await page.getByRole('button', { name: 'Day' }).first().click()
+  const d = await until(page, (l) => l.lights === '0')
+  ok('tram: lights go out again by day', d.lights === '0', d.raw)
+  await page.context().close()
+
+  // a visitor who arrives after dark, a little later: every egret is on its tree
+  const night = await newPage('en')
+  const n = await open(night, '?quality=high&time=night&life=75')
+  ok('night: the whole roost has settled on the trees', n.roost === '22/22' && n.flying === 0, n.raw)
+  ok('night: the tram is lit and on its round', n.lights === '1' && n.v > 0 && n.waiting === '0', n.raw)
+  await night.context().close()
+  const phone = await newPage('en')
+  const p = await open(phone, '?quality=low&time=night&life=75')
+  ok('night/low tier: a smaller roost settles too', p.roost === '12/12' && p.flying === 0 && p.lights === '1', p.raw)
+  await phone.context().close()
+
+  // reduced motion: a still picture
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' })
+  await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
+  const calm = await ctx.newPage()
+  calm.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+  const r = await open(calm, '?quality=high&time=night')
+  ok('reduced motion: tram parked at its stop, egrets already on the trees', r.still === '1' && r.waiting === '1' && r.v === 0 && r.roost === '22/22' && r.flying === 0, r.raw)
+  await ctx.close()
 }
 // ── Photos: every image loads, and each place shows a photo of that place
 {

@@ -39,6 +39,7 @@ function startOffset(): number {
  *    round the wild lake, campfire smoke and sparks, and (summer) fireflies;
  *  - low: tram, kayaks with their wake, a few waders; at night the tram's lights and a
  *    smaller roost.
+ * Kayaks are on the water by day only: after dark the lake is left to the birds.
  * Winter is quieter on the water and busier in the air: one kayak fewer, two more egrets in
  * the flock (they winter here), and no fireflies.
  * Three skinned meshes and a few instanced sprite pools.
@@ -122,7 +123,7 @@ function createLife(quality: Quality) {
         let boats = ''
         for (let i = 0; i < k.length; i += 2) boats += `${i ? '|' : ''}${f(k[i])},${f(k[i + 1])}`
         const roost = birds.census()
-        document.documentElement.dataset.mapLife = `tram=${f(p[0])},${f(p[1])} s=${f(st.s)} v=${f(st.speed)} waiting=${st.waiting ? 1 : 0} kayaks=${boats} roost=${roost.perched}/${roost.total} flying=${roost.flying} road=${level.road.toFixed(3)} water=${level.wild.toFixed(3)},${level.kayak.toFixed(3)} still=${still ? 1 : 0}`
+        document.documentElement.dataset.mapLife = `tram=${f(p[0])},${f(p[1])} s=${f(st.s)} v=${f(st.speed)} waiting=${st.waiting ? 1 : 0} kayaks=${boats} roost=${roost.perched}/${roost.total} flying=${roost.flying} lights=${tram.pool.visible && ambient.glow.visible ? 1 : 0} road=${level.road.toFixed(3)} water=${level.wild.toFixed(3)},${level.kayak.toFixed(3)} still=${still ? 1 : 0}`
       }
     },
     /** Follows the visitor's motion preference while mounted; returns the disconnect. */

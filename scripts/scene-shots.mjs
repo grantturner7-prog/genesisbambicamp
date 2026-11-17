@@ -50,8 +50,8 @@ for (const name of names) {
   // hide everything except the canvas; the camera keeps its pose
   await page.addStyleTag({ content: 'main > div > *:not(:first-child), main > aside, [data-hotspot] { display: none !important }' })
   // wait for the camera (and any resize) to come to rest
-  let last = '', same = 0
-  for (let i = 0; i < 90 && same < 5; i++) { await page.waitForTimeout(500); const z = await page.evaluate(() => document.documentElement.dataset.mapZoom + '|' + (document.documentElement.dataset.mapFrame || '')); same = z.split('|')[0] === last ? same + 1 : 0; last = z.split('|')[0] }
+  let last = '', frame = -1, same = 0
+  for (let i = 0; i < 240 && same < 5; i++) { await page.waitForTimeout(500); const [z, f] = await page.evaluate(() => [document.documentElement.dataset.mapZoom, window.__mapFrame || 0]); if (f === frame) continue; frame = f; same = z === last ? same + 1 : 0; last = z }
   await page.waitForTimeout(1500)
   await page.locator('main canvas').screenshot({ path: `${out}/${name}.png`, timeout: 180000 }) // software rendering can take a while per frame
   const info = await page.evaluate(() => document.documentElement.dataset.mapInfo || '')

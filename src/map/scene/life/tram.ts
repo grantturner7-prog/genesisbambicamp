@@ -272,9 +272,21 @@ export function createTram(hi: boolean) {
 
   // the headlights' beam on the road ahead (night only)
   const poolTex = spriteTexture(48)
-  const poolGeo = new THREE.PlaneGeometry(2.7, 1.25)
+  const poolGeo = new THREE.PlaneGeometry(3.0, 1.3, 10, 1)
   poolGeo.rotateX(-Math.PI / 2)
-  const poolMat = new THREE.MeshBasicMaterial({ map: poolTex, color: '#ffd89c', transparent: true, opacity: 0.72, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 })
+  {
+    // brightest just ahead of the lamps, widening and fading along the road
+    const pos = poolGeo.getAttribute('position')
+    const col = new Float32Array(pos.count * 3)
+    for (let i = 0; i < pos.count; i++) {
+      const u = pos.getX(i) / 3.0 + 0.5 // 0 at the cart, 1 at the far end
+      pos.setZ(i, pos.getZ(i) * (0.55 + 0.75 * u))
+      const k = 1.9 * Math.pow(1 - u, 1.3)
+      col[i * 3] = col[i * 3 + 1] = col[i * 3 + 2] = k
+    }
+    poolGeo.setAttribute('color', new THREE.BufferAttribute(col, 3))
+  }
+  const poolMat = new THREE.MeshBasicMaterial({ map: poolTex, color: '#ffd89c', vertexColors: true, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 })
   const pool = new THREE.Mesh(poolGeo, poolMat)
   pool.renderOrder = 3
   pool.raycast = () => {}
@@ -311,7 +323,7 @@ export function createTram(hi: boolean) {
         lamps[li++] = l[4]
       }
       if (i === 0) {
-        pool.position.set(cx + 1.75 * cos, roadY + 0.014, cz - 1.75 * sin)
+        pool.position.set(cx + 1.7 * cos, roadY + 0.014, cz - 1.7 * sin)
         pool.rotation.y = yaw
       }
     }

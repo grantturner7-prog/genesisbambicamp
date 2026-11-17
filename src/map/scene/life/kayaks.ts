@@ -200,8 +200,9 @@ export function createKayaks(hi: boolean) {
   const p: [number, number] = [0, 0]
   const q: [number, number] = [0, 0]
   let t = 0
-  let wakeGain = 1
   let winter = false
+  /** After dark nobody is on the water: the boats are ashore on their rack. */
+  let night = false
   /** Leaves a ripple at the stern of boat `i` (which is at arc length `at`), as ring `k` of its pool. */
   function drop(i: number, k: number, at: number, birth: number) {
     const half = model.rigs[i].spec.half
@@ -228,13 +229,13 @@ export function createKayaks(hi: boolean) {
     for (let k = 0; k < n * RINGS; k++) {
       const o = k * 4
       const age = t - rings[o + 2]
-      if (age > RING_LIFE || (winter && model.rigs[Math.floor(k / RINGS)].spec.summerOnly)) {
+      if (night || age > RING_LIFE || (winter && model.rigs[Math.floor(k / RINGS)].spec.summerOnly)) {
         wake.hide(k)
         continue
       }
       // each ripple widens and fades; drawn longer than wide, a string of them reads as a wake
       const u = age / RING_LIFE
-      const fade = 0.27 * Math.pow(1 - u, 1.4) * Math.min(1, age / 0.4) * wakeGain
+      const fade = 0.27 * Math.pow(1 - u, 1.4) * Math.min(1, age / 0.4)
       const width = 0.22 + 0.8 * Math.pow(u, 0.8)
       wake.putFlat(k, rings[o], waterY + 0.012, rings[o + 1], width * 1.55, width, rings[o + 3], 0.86, 0.96, 0.97, fade)
     }
@@ -246,8 +247,7 @@ export function createKayaks(hi: boolean) {
     wake: wake.mesh,
     where,
     setEnv(dusk: boolean, isWinter: boolean) {
-      // the ripples are added light: on the dark water of dusk they need far less of it
-      wakeGain = dusk ? 0.28 : 1
+      night = dusk
       winter = isWinter
     },
     update(dt: number, still: boolean, waterY: number) {
@@ -257,8 +257,8 @@ export function createKayaks(hi: boolean) {
         const spec = rig.spec
         const path = paths[i]
         const boat = bones[rig.bone]
-        // ashore for the season: a bone scaled to nothing draws nothing
-        boat.scale.setScalar(spec.summerOnly && winter ? 0 : 1)
+        // ashore for the night or the season: a bone scaled to nothing draws nothing
+        boat.scale.setScalar(night || (spec.summerOnly && winter) ? 0 : 1)
         // paddle for a while, then rest and drift
         const u = (t / spec.rhythm + spec.phase) % 1
         const effort = still ? 1 : smooth(0, 0.07, u) * (1 - smooth(0.74, 0.84, u))
