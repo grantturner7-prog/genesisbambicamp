@@ -255,7 +255,8 @@ export function buildBirds(hi: boolean): BirdModel {
     flyingBird(M, fly, wings, hi)
     const stand = bones.push({ parent: -1, pivot: [0, 0, 0] }) - 1
     const neck = bones.push({ parent: stand, pivot: NECK_PIVOT }) - 1
-    standingBird(M, stand, neck, i % 6 === 4 ? 'cattle' : 'egret', hi)
+    // cattle egrets and egrets roost together here
+    standingBird(M, stand, neck, i % 2 ? 'cattle' : 'egret', hi)
     const flock = hi && i < FLOCK.length ? FLOCK[i] : null
     roost.push({
       fly,

@@ -53,6 +53,30 @@ including under a sub-path.
 - No daily timetable is published yet. Add it (and the list of activities) to
   `src/home/content.ts` when the partners supply it.
 
+## The 3D map
+
+`src/map/scene/` holds one file per layer (`Atmosphere`, `Ground`, `Trees`, `Cabins`,
+`Facilities`, `Life`); each takes the same `env` (season, time of day, quality tier).
+
+- **Day and night.** Between 18:00 and 06:00 on the visitor's own clock the site opens in
+  night mode: evening photos on the landing page and the night map. The Day / Night
+  switch overrides it for the rest of the visit.
+- **Evening return.** When night mode starts, and for a visitor who arrives after dark,
+  the egrets fly in from across the camp and settle on the trees round the west lake.
+  In the morning they leave again. Kayaks are on the water by day only.
+- **Tram.** It circles the whole camp without stopping (south road, west ring, kayak
+  lake; about five and a half minutes a lap). Headlights and lanterns are lit at night only.
+- **Road links.** `ROAD_LINKS` in `src/map/layout/layout.ts` puts back three short pieces
+  of road that tree crowns and a label hide on the official map, so the lane round the
+  kayak lake is one circuit. The traced polygons themselves are unchanged.
+- **Quality tiers.** Phones and weak GPUs get the `low` tier (no post effects, lighter
+  models); a slow device steps down by itself. Reduced-motion settings give a still
+  picture: tram at its stop, birds in place.
+- **Address options for testing:** `?time=day|night`, `?quality=high|low`, and
+  `?life=<seconds>` to start the scene that far into its motion.
+- `node scripts/scene-shots.mjs <baseUrl> <outDir> [views] [quality] [extraQuery]` renders
+  clean pictures of the map for visual review.
+
 ## Before going public
 
 Run `npm run launch-check`. In particular:

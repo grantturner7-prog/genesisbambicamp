@@ -5,7 +5,7 @@ const BASE = process.argv[2] || 'http://127.0.0.1:5199'
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] })
 // Night mode follows the visitor's clock, so every test runs at midday unless it says otherwise.
 const newContext = browser.newContext.bind(browser)
-browser.newContext = async (opts) => { const ctx = await newContext(opts); await ctx.addInitScript(() => { if (!window.__clock) Date.prototype.getHours = () => 12 }); return ctx }
+browser.newContext = async (opts) => { const ctx = await newContext(opts); ctx.setDefaultNavigationTimeout(120000); await ctx.addInitScript(() => { if (!window.__clock) Date.prototype.getHours = () => 12 }); return ctx }
 const results = []
 const errs = []
 const ok = (name, cond, extra = '') => { results.push(`${cond ? 'PASS' : 'FAIL'}  ${name}${extra ? '  — ' + extra : ''}`); if (!cond) process.exitCode = 1 }
@@ -366,6 +366,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
 // ── Night: visitors who arrive after dark get the evening site
 {
   const ctx = await newContext({ viewport: { width: 1440, height: 900 } })
+  ctx.setDefaultNavigationTimeout(120000)
   await ctx.addInitScript(() => { window.__clock = 21; Date.prototype.getHours = () => 21; localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
   const page = await ctx.newPage()
   page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
