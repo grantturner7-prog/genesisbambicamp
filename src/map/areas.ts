@@ -24,8 +24,8 @@ export const AREAS: Area[] = [
       zh: '每位營員的冒險，從這裡開始。',
     },
     summary: {
-      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, where counselors greet every family. Option A campers ride the round-trip charter bus from the Designated Tour Bus Zone near National Taichung Theater. Option B families drop off on Tuesday between 14:00 and 14:30, and campers ride the charter bus back on Friday.',
-      zh: '營員抵達苗栗三灣斑比跳跳大門後，隊輔會親切迎接每個家庭。方案 A 營員搭乘由臺中國家歌劇院周邊指定遊覽車臨停區出發的專車往返；方案 B 家長於週二 14:00–14:30 送達園區，週五由遊覽車專車返回。',
+      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, and check in at the reception unit just inside, where counselors greet every family. Option A campers ride the round-trip charter bus from the Designated Tour Bus Zone near National Taichung Theater. Option B families drop off on Tuesday between 14:00 and 14:30, and campers ride the charter bus back on Friday.',
+      zh: '營員抵達苗栗三灣斑比跳跳大門後，在入口旁的報到處報到，隊輔會親切迎接每個家庭。方案 A 營員搭乘由臺中國家歌劇院周邊指定遊覽車臨停區出發的專車往返；方案 B 家長於週二 14:00–14:30 送達園區，週五由遊覽車專車返回。',
     },
     icon: 'DoorClosed',
     accent: '#8a6a43',
@@ -84,107 +84,6 @@ export const AREAS: Area[] = [
     },
   },
 
-  // ───────────────────────────────────────────────────────────── CARE
-  {
-    id: 'care',
-    name: { en: 'Care Station', zh: '護理照護站' },
-    tagline: {
-      en: 'A Registered Nurse on site, day and night.',
-      zh: '日夜駐點的專任護理師。',
-    },
-    summary: {
-      en: 'A licensed Registered Nurse is stationed at camp around the clock to look after everyday scrapes, medications and anything unexpected. Every counselor, nurse and support worker provides a police criminal-record certificate (良民證) before camp begins.',
-      zh: '營隊全天候駐點一位合格的專任護理師，照顧日常外傷、給藥與任何突發狀況。每位隊輔、護理師與支援人員，在營隊開始前都會提供警察刑事紀錄證明（良民證）。',
-    },
-    icon: 'HeartPulse',
-    accent: '#2f7d6b',
-    accent2: '#8fd3b6',
-    features: [
-      {
-        icon: 'Stethoscope',
-        title: { en: '24/7 Registered Nurse', zh: '24 小時專任護理師' },
-        body: {
-          en: 'A dedicated camp nurse (營隊專任護理師) lives on site for the whole session, including overnight.',
-          zh: '營隊專任護理師全程駐點，夜間同樣在營地待命。',
-        },
-      },
-      {
-        icon: 'Pill',
-        title: { en: 'Medication custody', zh: '藥物統一保管' },
-        body: {
-          en: 'Prescriptions are stored by the nurse and given at the times you write on the health form.',
-          zh: '處方藥由護理師統一保管，並依您在健康調查表填寫的時間給藥。',
-        },
-      },
-      {
-        icon: 'ShieldCheck',
-        title: { en: 'Background-checked team', zh: '背景查核的團隊' },
-        body: {
-          en: 'Counselors, nurse and support workers are screened, with a clean 良民證 on file for each.',
-          zh: '隊輔、護理師與支援人員皆經查核，並備有良民證。',
-        },
-      },
-      {
-        icon: 'HeartPulse',
-        title: { en: 'CPR + AED trained counselors', zh: 'CPR + AED 急救訓練隊輔' },
-        body: {
-          en: 'Counselors hold CPR + AED / first-aid certification and know exactly who to call.',
-          zh: '隊輔具備 CPR + AED／急救訓練，清楚知道第一時間該聯繫誰。',
-        },
-      },
-      {
-        icon: 'Lock',
-        title: { en: 'Private health records', zh: '健康資料保密' },
-        body: {
-          en: 'Medical and allergy details are seen only by the camp director, nurse, dining safety lead and insurer, and are securely destroyed within 30 days after camp.',
-          zh: '過敏與病史資料僅限營隊主任、護理師、餐飲安全主管與承保保險公司於必要範圍內查閱，營隊結束後 30 日內安全銷毀。',
-        },
-      },
-    ],
-    facts: [
-      { label: { en: 'Nurse on site', zh: '駐點護理師' }, value: { en: '24 hours, every day of camp', zh: '營期間每日 24 小時' } },
-      { label: { en: 'Nearest hospital', zh: '就近醫院' }, value: venue.hospital },
-      { label: { en: 'Counselor ratio', zh: '隊輔比例' }, value: { en: `About ${cohort.counselorRatio}`, zh: `約 ${cohort.counselorRatio}` } },
-    ],
-    safety: {
-      title: { en: 'If your camper feels unwell', zh: '營員不舒服時' },
-      rules: [
-        {
-          icon: 'Hand',
-          title: { en: '1 · Tell any counselor', zh: '1 · 告訴任何一位隊輔' },
-          body: {
-            en: 'Any counselor can bring your camper to the Care Station right away.',
-            zh: '任何一位隊輔都能立刻陪營員前往護理照護站。',
-          },
-        },
-        {
-          icon: 'Stethoscope',
-          title: { en: '2 · The nurse checks and treats', zh: '2 · 護理師評估與處置' },
-          body: {
-            en: 'First aid, rest and medication are handled on site according to your health form.',
-            zh: '依據您填寫的健康調查表，在營地內完成急救、休息與給藥。',
-          },
-        },
-        {
-          icon: 'Phone',
-          title: { en: '3 · You hear from us first', zh: '3 · 第一時間聯繫家長' },
-          body: {
-            en: 'We contact the legal guardian first, then the backup contact if needed.',
-            zh: '我們會先聯繫法定代理人，必要時再聯繫第二緊急聯絡人。',
-          },
-        },
-        {
-          icon: 'Siren',
-          title: { en: '4 · Urgent? Straight to hospital', zh: '4 · 情況危急，立即送醫' },
-          body: {
-            en: 'If it is urgent and no guardian can be reached, staff take your camper to the nearest accredited hospital, as authorized on the signed form.',
-            zh: '若情況危急且一時無法聯繫上家長，依您簽署的授權書，由營隊人員護送至鄰近合格醫療院所。',
-          },
-        },
-      ],
-    },
-  },
-
   // ───────────────────────────────────────────────────────────── VANS
   {
     id: 'vans',
@@ -194,8 +93,8 @@ export const AREAS: Area[] = [
       zh: '三人一車，飯店等級的舒適小窩。',
     },
     summary: {
-      en: 'Campers sleep in Bambi’s climate-controlled luxury camper vans: three same-gender campers per van, each van with a double bed, a bunk bed and its own wet/dry bathroom. Vans sit in lakeside, meadow and forest settings, and counselors check every van each morning and evening.',
-      zh: '營員入住斑比跳跳的冷暖空調頂級豪華露營車：每車三名同性別營員，配備一張雙人床、一組上下舖與獨立乾濕分離衛浴。露營車分佈於湖畔、草地與森林之間，隊輔每日早晚各檢查一次。',
+      en: 'Campers sleep in Bambi’s climate-controlled luxury camper vans: three same-gender campers per van, each van with a double bed, a bunk bed and its own wet/dry bathroom. The camp has 50 units in six zones (A to G) across lakeside, meadow and forest settings, and counselors check every van each morning and evening.',
+      zh: '營員入住斑比跳跳的冷暖空調頂級豪華露營車：每車三名同性別營員，配備一張雙人床、一組上下舖與獨立乾濕分離衛浴。全區共 50 輛，分為 A 到 G 六區，分佈於湖畔、草地與森林之間，隊輔每日早晚各檢查一次。',
     },
     icon: 'BedDouble',
     accent: '#3e6f8f',
@@ -324,8 +223,8 @@ export const AREAS: Area[] = [
       zh: '一泊四食的美味基地，也是雨天備案大本營。',
     },
     summary: {
-      en: 'Breakfast, lunch, pizza afternoon tea and dinner are served in the Grand Dining Hall (斑比大飯店), with campfire snacks in the evening. When rain or a cold front arrives, the hall and the covered activity area host team challenges and craft workshops, so the day carries on.',
-      zh: '早餐、午餐、披薩下午茶與晚餐都在斑比大飯店享用，晚間再加上營火點心。遇到下雨或寒流時，大廳與遮雨棚活動區會化身團隊挑戰與手作工坊，讓一天的行程照常進行。',
+      en: 'Breakfast, lunch, pizza afternoon tea and dinner are served in the Grand Dining Hall (斑比大飯店), a glass-walled hall with floor-to-ceiling windows onto the palms, with campfire snacks in the evening. When rain or a cold front arrives, the hall and the covered activity area host team challenges and craft workshops, so the day carries on.',
+      zh: '早餐、午餐、披薩下午茶與晚餐都在斑比大飯店享用，大面落地窗外就是棕櫚樹景，晚間再加上營火點心。遇到下雨或寒流時，大廳與遮雨棚活動區會化身團隊挑戰與手作工坊，讓一天的行程照常進行。',
     },
     icon: 'Utensils',
     accent: '#a8652f',
@@ -397,7 +296,10 @@ export const AREAS: Area[] = [
           icon: 'Pizza',
           time: '15:30',
           items: [
-            { name: { en: 'Handmade Neapolitan pizza', zh: '手工拿坡里披薩' }, note: { en: 'Shaped by campers, baked fresh.', zh: '營員親手整形，現烤上桌。' }, allergens: ['gluten', 'milk'] },
+            { name: { en: 'Italian herb chicken pizza', zh: '義式香料嫩雞披薩' }, note: { en: 'Handmade Neapolitan-style, baked fresh in the pizza oven.', zh: '手工拿坡里式披薩，披薩烤爐現烤。' }, allergens: ['gluten', 'milk'] },
+            { name: { en: 'Hawaiian pizza', zh: '夏威夷披薩' }, note: { en: 'Contains pork (ham).', zh: '含豬肉（火腿）。' }, allergens: ['gluten', 'milk'] },
+            { name: { en: 'Garden vegetable pizza', zh: '蔬食蛋奶披薩' }, note: { en: 'Ovo-lacto vegetarian.', zh: '蛋奶素。' }, allergens: ['gluten', 'milk', 'egg'], vegetarian: true },
+            { name: { en: 'Cinnamon apple pizza', zh: '肉桂蘋果披薩' }, note: { en: 'A sweet one to finish.', zh: '甜口味收尾。' }, allergens: ['gluten', 'milk'], vegetarian: true },
           ],
         },
         {
@@ -413,7 +315,8 @@ export const AREAS: Area[] = [
           icon: 'Flame',
           time: '19:30',
           items: [
-            { name: { en: 'S’mores by the fire', zh: '營火棉花糖夾心餅' }, allergens: ['gluten', 'milk', 'soy'], vegetarian: true },
+            { name: { en: 'S’mores by the fire', zh: '營火棉花糖夾心餅' }, allergens: ['gluten', 'milk', 'soy'] },
+            { name: { en: 'Popcorn', zh: '爆米花' }, vegetarian: true },
           ],
         },
       ],
@@ -429,14 +332,14 @@ export const AREAS: Area[] = [
   // ───────────────────────────────────────────────────────────── POOL
   {
     id: 'pool',
-    name: { en: 'Aurora Pool & Snack Shop', zh: '極光戲水池與點心站' },
+    name: { en: 'Aurora Pool & Airstream Snack Shop', zh: '極光戲水池與 Airstream 點心站' },
     tagline: {
       en: 'A palm-fringed pool, watched over by a certified lifeguard.',
       zh: '棕櫚環繞的戲水池，由合格救生員守護。',
     },
     summary: {
-      en: `Bambi’s Aurora Pool is an open-air, palm-fringed pool that is ${pool.depthMinCm} cm at the shallow end and ${pool.depthMaxCm} cm at its deepest. In Summer sessions, campers join supervised pool relays and splash time with a Sports Administration–certified lifeguard on duty, and the snack shop right beside the pool keeps everyone refueled.`,
-      zh: `斑比跳跳的極光戲水池是一座棕櫚環繞的露天泳池，水深從最淺 ${pool.depthMinCm} 公分到最深 ${pool.depthMaxCm} 公分。夏季梯次期間，營員在體育署合格救生員值勤下進行戲水接力與戲水時光，緊鄰池畔的點心站隨時補充體力。`,
+      en: `Bambi’s Aurora Pool is an open-air, palm-fringed pool that is ${pool.depthMinCm} cm at the shallow end and ${pool.depthMaxCm} cm at its deepest. In Summer sessions, campers join supervised pool relays and splash time with a Sports Administration–certified lifeguard on duty, and the silver Airstream snack shop sits right at the pool’s edge. The pool has three depth levels, with curved steps and rounded edges throughout.`,
+      zh: `斑比跳跳的極光戲水池是一座棕櫚環繞的露天泳池，水深從最淺 ${pool.depthMinCm} 公分到最深 ${pool.depthMaxCm} 公分。夏季梯次期間，營員在體育署合格救生員值勤下進行戲水接力與戲水時光，銀色 Airstream 點心站就在池畔邊。泳池設計三段水深，並以弧形階梯與圓潤邊緣打造。`,
     },
     icon: 'Waves',
     accent: '#0f8f9d',
@@ -471,16 +374,16 @@ export const AREAS: Area[] = [
         icon: 'ShowerHead',
         title: { en: 'Changing rooms & showers', zh: '更衣室與淋浴間' },
         body: {
-          en: 'Changing rooms, showers, a drinking-water station and a spin-dryer for wet swimwear sit beside the pool.',
+          en: 'Changing rooms, showers, a hot-and-cold drinking-water dispenser and a spin-dryer for wet swimwear sit beside the pool.',
           zh: '池畔設有更衣室、淋浴間、飲水機，並備有泳衣脫水機。',
         },
       },
       {
         icon: 'CupSoda',
-        title: { en: 'Poolside snack shop', zh: '池畔點心站' },
+        title: { en: 'Airstream snack shop', zh: 'Airstream 點心站' },
         body: {
-          en: 'A silver retro trailer serving cold drinks and fresh snacks — every item alcohol-free.',
-          zh: '復古銀色露營拖車改造的點心站，提供冰涼飲品與新鮮點心，全部不含酒精。',
+          en: 'The classic silver Airstream right at the pool’s edge is the camp snack shop. During camp it serves soft drinks and snacks only, with no alcohol.',
+          zh: '池畔邊那輛經典銀色 Airstream 就是營隊點心站。營期間只供應無酒精飲品與點心。',
         },
       },
       {
@@ -509,7 +412,7 @@ export const AREAS: Area[] = [
       },
     },
     menu: {
-      title: { en: 'Poolside Snack Shop', zh: '池畔點心站' },
+      title: { en: 'Airstream Snack Shop', zh: 'Airstream 點心站' },
       intro: {
         en: 'Cold drinks and light bites for after the splash. A kid-friendly menu with no alcohol.',
         zh: '戲水之後的冰涼飲品與輕食。兒童友善菜單，完全不含酒精。',
@@ -631,10 +534,88 @@ export const AREAS: Area[] = [
     },
   },
 
+  // ───────────────────────────────────────────────────────────── CINEMA
+  {
+    id: 'cinema',
+    name: { en: 'Star Cinema', zh: '星空電影院' },
+    tagline: { en: 'Movie night under the stars — a camp highlight.', zh: '星空下的電影之夜，營隊亮點。' },
+    summary: {
+      en: 'When night falls, the lawn beside the campfire becomes an open-air cinema: a big screen, rows of camp chairs, string lights overhead and the fire crackling close by. Every film is shown under a public-performance licence (公播版) and is chosen for ages 10–14.',
+      zh: '夜幕低垂後，營火旁的草地化身露天電影院：大螢幕、成排的露營椅、頭頂的串燈，還有一旁劈啪作響的營火。所有影片皆為取得公開播映授權的公播版，並依 10–14 歲營員挑選。',
+    },
+    icon: 'Film',
+    accent: '#3b3f7a',
+    accent2: '#c9c2ff',
+    features: [
+      { icon: 'Film', title: { en: 'Big screen on the lawn', zh: '草地上的大螢幕' }, body: { en: 'An outdoor screen with camp chairs set out in rows on the grass.', zh: '戶外大螢幕，草地上整齊排好露營椅。' } },
+      { icon: 'BadgeCheck', title: { en: 'Licensed films only', zh: '只播公播版影片' }, body: { en: 'Films are public-performance licensed (公播版) and age-appropriate for 10–14.', zh: '影片皆為公播版授權，內容適合 10–14 歲。' } },
+      { icon: 'Flame', title: { en: 'Campfire alongside', zh: '營火相伴' }, body: { en: 'The campfire circle is steps away, with marshmallows and popcorn from the evening snack.', zh: '營火區就在旁邊，搭配晚間點心的棉花糖與爆米花。' } },
+      { icon: 'Users', title: { en: 'Seated with your team', zh: '與小隊同坐' }, body: { en: 'Cabin teams sit together with their counselors.', zh: '各小隊與隊輔坐在一起。' } },
+    ],
+    facts: [
+      { label: { en: 'Show time', zh: '放映時間' }, value: { en: 'From 19:30', zh: '19:30 起' } },
+      { label: { en: 'Where', zh: '地點' }, value: { en: 'Lawn beside the campfire', zh: '營火區旁草地' } },
+      { label: { en: 'Films', zh: '影片' }, value: { en: 'Public-performance licensed', zh: '公播版授權' } },
+    ],
+    seasonNote: {
+      winter: { en: 'Winter nights: bring your warm coat and a fleece layer.', zh: '冬季夜晚：請穿上保暖外套與刷毛外層。' },
+      summer: { en: 'Summer nights: mosquito repellent before the show.', zh: '夏季夜晚：開演前先噴防蚊液。' },
+    },
+    safety: {
+      title: { en: 'Cinema Night Rules', zh: '電影之夜守則' },
+      rules: [
+        { icon: 'Users', title: { en: 'Stay with your team', zh: '與小隊同行' }, body: { en: 'Walk to and from the lawn with your counselor, and tell them before you leave your seat.', zh: '由隊輔帶隊往返草地，離開座位前先告訴隊輔。' } },
+        { icon: 'Flame', title: { en: 'Chairs stay clear of the fire', zh: '座椅遠離營火' }, body: { en: 'Seating stays in the marked area, away from the campfire circle.', zh: '座椅擺放在標示範圍內，與營火區保持距離。' } },
+        { icon: 'Moon', title: { en: 'Torch for the walk back', zh: '回程使用手電筒' }, body: { en: 'Counselors light the path back to the vans before lights out at 21:30.', zh: '隊輔會照亮回露營車的路，21:30 熄燈就寢。' } },
+      ],
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────── CAMPFIRE
+  {
+    id: 'campfire',
+    name: { en: 'Starlight Campfire Circle', zh: '星空營火圈' },
+    tagline: {
+      en: 'S’mores, skits and trivia under the stars.',
+      zh: '在星空下烤棉花糖、演短劇、玩問答。',
+    },
+    summary: {
+      en: 'Each evening the whole camp gathers around the fire for S’mores, team skits and trivia night. It is the loudest, funniest and warmest part of the day, with counselors tending the fire throughout.',
+      zh: '每天晚上全營隊圍坐營火旁，一起烤棉花糖夾心餅、演出團隊短劇、玩問答之夜。這是一天中最熱鬧、最歡樂也最溫暖的時刻，營火全程由隊輔看顧。',
+    },
+    icon: 'Flame',
+    accent: '#c4561f',
+    accent2: '#ffc27a',
+    features: [
+      { icon: 'Flame', title: { en: 'Campfire S’mores', zh: '營火棉花糖夾心餅' }, body: { en: 'Toast, sandwich, repeat — with long sticks and a counselor close by.', zh: '用長長的烤叉烤棉花糖，隊輔就在身邊。' } },
+      { icon: 'Sparkles', title: { en: 'Skits & Trivia Night', zh: '短劇與問答之夜' }, body: { en: 'Teams write, rehearse and perform their own skits, then go head to head in camp trivia.', zh: '小隊自己編劇、排練、演出，接著進行營隊知識問答對決。' } },
+      { icon: 'Moon', title: { en: 'Night ecology walk', zh: '夜間生態散步' }, body: { en: 'A short, counselor-led walk to listen for night sounds.', zh: '由隊輔帶領的夜間散步，一起聆聽夜晚的聲音。' } },
+      { icon: 'Clock', title: { en: 'Lights out at 21:30', zh: '21:30 熄燈' }, body: { en: 'An evening cabin check wraps up the day.', zh: '晚間內務檢查後熄燈就寢。' } },
+    ],
+    facts: [
+      { label: { en: 'Evening', zh: '時段' }, value: { en: '19:30 Campfire S’mores, Skits & Trivia', zh: '19:30 營火棉花糖、短劇與問答' } },
+      { label: { en: 'Lights out', zh: '熄燈' }, value: { en: cohort.lightsOut, zh: cohort.lightsOut } },
+    ],
+    seasonNote: {
+      winter: { en: 'Winter evenings: a warm coat and fleece layers are on the packing list.', zh: '冬季夜晚：行李清單包含保暖外套與刷毛外層。' },
+      summer: { en: 'Summer evenings: mosquito repellent is on the packing list.', zh: '夏季夜晚：行李清單包含防蚊液。' },
+    },
+    safety: {
+      title: { en: 'Campfire Safety', zh: '營火安全守則' },
+      rules: [
+        { icon: 'Flame', title: { en: 'Counselors tend the fire', zh: '營火由隊輔看顧' }, body: { en: 'Only counselors add wood or adjust the fire, and it never burns unattended.', zh: '只有隊輔能添柴與調整火勢，營火絕不無人看守。' } },
+        { icon: 'Users', title: { en: 'Sit on the logs', zh: '坐在原木座位上' }, body: { en: 'Everyone stays seated on the log ring, outside the stone circle.', zh: '大家坐在原木圈上，保持在石圈之外。' } },
+        { icon: 'Shirt', title: { en: 'Tie back hair and loose sleeves', zh: '綁好頭髮、收好衣袖' }, body: { en: 'Long hair and loose clothing stay clear of the flames.', zh: '長髮與寬鬆衣物遠離火焰。' } },
+        { icon: 'Ban', title: { en: 'Nothing thrown into the fire', zh: '不可丟東西進火堆' }, body: { en: 'Only counselor-approved firewood goes in.', zh: '只有隊輔同意的木柴可以放入火堆。' } },
+        { icon: 'Droplets', title: { en: 'Water stays within reach', zh: '隨時備妥滅火水源' }, body: { en: 'A water source and extinguisher stay beside the circle.', zh: '營火圈旁隨時備有水源與滅火器。' } },
+      ],
+    },
+  },
+
   // ───────────────────────────────────────────────────────────── KAYAK
   {
     id: 'kayak',
-    name: { en: 'Lakeside Kayak Dock', zh: '湖畔獨木舟碼頭（跳跳船）' },
+    name: { en: 'Kayak Lake (Tiao-Tiao Boats)', zh: '跳跳船體驗區（獨木舟）' },
     tagline: {
       en: 'Paddle the lake with a coach beside you.',
       zh: '在教練陪伴下，划向湖心。',
@@ -659,8 +640,8 @@ export const AREAS: Area[] = [
         icon: 'LifeBuoy',
         title: { en: 'Life jacket, every time', zh: '全程穿著救生衣' },
         body: {
-          en: 'Every camper wears a fitted life jacket from the dock to the shore.',
-          zh: '從碼頭上船到回岸，所有營員全程穿著合身救生衣。',
+          en: 'Every camper wears a fitted life jacket from the dock to the shore. Child-size jackets are provided.',
+          zh: '從碼頭上船到回岸，所有營員全程穿著合身救生衣，園區備有兒童尺寸。',
         },
       },
       {
@@ -762,17 +743,53 @@ export const AREAS: Area[] = [
     },
   },
 
+  // ───────────────────────────────────────────────────────────── BIRDS
+  {
+    id: 'birds',
+    name: { en: 'Wild Waterbird Lake', zh: '野生水鳥觀賞區' },
+    tagline: { en: 'Hundreds of egrets fly home here at dusk.', zh: '黃昏時分，上百隻鷺鳥在這裡歸巢。' },
+    summary: {
+      en: 'The west lake is a wildlife habitat, kept quiet for the birds. Cattle egrets (黃頭鷺) roost in the trees at its centre, and between about 4 and 6 pm they return in flocks — a sight campers watch from the shore and from the eco-tram. Mallards and geese share the water, and bald cypress trees line the bank.',
+      zh: '西側的湖是野生動物棲地，特別為鳥類保持安靜。黃頭鷺在湖心的樹叢棲息，約下午四點到六點成群歸巢，營員可以在岸邊或遊園車上觀賞。綠頭鴨與大白鵝也在湖面悠游，岸邊則是成排的落羽松。',
+    },
+    icon: 'Bird',
+    accent: '#3f7f6a',
+    accent2: '#bfe6d2',
+    features: [
+      { icon: 'Bird', title: { en: 'Egrets returning at dusk', zh: '黃昏鷺鳥歸巢' }, body: { en: 'Cattle egrets come home in flocks between about 16:00 and 18:00.', zh: '黃頭鷺約在 16:00 到 18:00 之間成群歸巢。' } },
+      { icon: 'Binoculars', title: { en: 'Watch from shore or tram', zh: '岸邊或遊園車觀賞' }, body: { en: 'The lakeside path and the eco-tram both give a clear view without disturbing the birds.', zh: '湖畔步道與遊園車都能清楚觀賞，又不打擾鳥類。' } },
+      { icon: 'TreePine', title: { en: 'Bald cypress shoreline', zh: '落羽松湖岸' }, body: { en: 'Bald cypress trees line the bank and turn copper in winter.', zh: '岸邊成排落羽松，冬季會轉為紅銅色。' } },
+      { icon: 'Leaf', title: { en: 'A habitat, kept quiet', zh: '安靜的棲地' }, body: { en: 'No boats and no swimming here. Kayaking happens on the east lake.', zh: '這裡不划船、不戲水；獨木舟活動在東側的湖進行。' } },
+    ],
+    facts: [
+      { label: { en: 'Best time', zh: '最佳時段' }, value: { en: 'About 16:00–18:00', zh: '約 16:00–18:00' } },
+      { label: { en: 'Residents', zh: '常見生態' }, value: { en: 'Cattle egrets, mallards, geese', zh: '黃頭鷺、綠頭鴨、大白鵝' } },
+      { label: { en: 'Lakeside units', zh: '湖畔露營車' }, value: { en: 'Zones F and G', zh: 'F 區與 G 區' } },
+    ],
+    seasonNote: {
+      winter: { en: 'Winter: the bald cypress along the shore turns copper.', zh: '冬季：岸邊落羽松轉為紅銅色。' },
+    },
+    safety: {
+      title: { en: 'Lakeside Rules', zh: '湖畔守則' },
+      rules: [
+        { icon: 'Users', title: { en: 'Never at the lake alone', zh: '絕不單獨靠近湖邊' }, body: { en: 'Campers go to the lakeshore only with a counselor.', zh: '未經隊輔陪同，不得單獨靠近湖泊。' } },
+        { icon: 'Volume2', title: { en: 'Quiet voices', zh: '放低音量' }, body: { en: 'Calm voices keep the birds settled, so everyone sees more.', zh: '輕聲細語讓鳥兒安心，大家也能看到更多。' } },
+        { icon: 'Ban', title: { en: 'No feeding, no chasing', zh: '不餵食、不追逐' }, body: { en: 'We watch wildlife from the path and leave it undisturbed.', zh: '在步道上觀察野生動物，不打擾牠們。' } },
+      ],
+    },
+  },
+
   // ───────────────────────────────────────────────────────────── TRAM
   {
     id: 'tram',
-    name: { en: 'Waterbird Eco-Safari Tram', zh: '歡樂遊園車生態導覽' },
+    name: { en: 'Eco-Safari Tram', zh: '生態導覽遊園車' },
     tagline: {
       en: 'A guided loop through forest, meadow and lakeshore.',
       zh: '穿越森林、草原與湖畔的導覽小旅行。',
     },
     summary: {
-      en: 'The Happy Garden Tram circles the grounds while a guide introduces the landscape and its wildlife. Egrets and other waterbirds gather around the lakes, and at dusk flocks return to roost — a sight campers don’t forget.',
-      zh: '歡樂遊園車繞行整座營地，由導覽人員介紹地景與生態。白鷺等水鳥聚集在湖畔，黃昏時成群歸巢，是營員難忘的畫面。',
+      en: 'The eco-tram boards beside check-in and circles the grounds while a guide introduces the landscape and its wildlife. Egrets and other waterbirds gather around the lakes, and at dusk flocks return to roost — a sight campers don’t forget.',
+      zh: '遊園車在報到處旁搭車，繞行整座營地，由導覽人員介紹地景與生態。白鷺等水鳥聚集在湖畔，黃昏時成群歸巢，是營員難忘的畫面。',
     },
     icon: 'Bird',
     accent: '#5b7f3a',
@@ -820,154 +837,103 @@ export const AREAS: Area[] = [
     },
   },
 
-  // ───────────────────────────────────────────────────────────── MEADOW
+  // ───────────────────────────────────────────────────────────── CARE
   {
-    id: 'meadow',
-    name: { en: 'Great Meadow', zh: '大草原挑戰場' },
+    id: 'care',
+    name: { en: 'Restrooms, AED & First Aid', zh: '洗手間・AED 與急救' },
     tagline: {
-      en: 'Room to run, and a whole team cheering.',
-      zh: '寬闊草地，整個小隊一起吶喊。',
+      en: 'A Registered Nurse on site, day and night.',
+      zh: '日夜駐點的專任護理師。',
     },
     summary: {
-      en: 'The open meadow is home base for the morning team huddle and warm-up, Capture the Flag and lawn team challenges. Age-based cabin teams plan, cheer and play together, all in English.',
-      zh: '開闊的大草原是晨間團隊集合與暖身、奪旗大戰與草地團隊挑戰的主場。依年齡分組的小隊在這裡一起討論、加油、玩，全程使用英語溝通。',
+      en: 'The service block beside the Grand Dining Hall has the public restrooms and the camp’s AED. A licensed Registered Nurse is stationed at camp around the clock to look after everyday scrapes, medications and anything unexpected. Every counselor, nurse and support worker provides a police criminal-record certificate (良民證) before camp begins.',
+      zh: '斑比大飯店旁的服務區設有公共洗手間與 AED。營隊全天候駐點一位合格的專任護理師，照顧日常外傷、給藥與任何突發狀況。每位隊輔、護理師與支援人員，在營隊開始前都會提供警察刑事紀錄證明（良民證）。',
     },
-    icon: 'Flag',
-    accent: '#5d8f3a',
-    accent2: '#d3ee9f',
+    icon: 'HeartPulse',
+    accent: '#2f7d6b',
+    accent2: '#8fd3b6',
     features: [
-      { icon: 'Flag', title: { en: 'Capture the Flag', zh: '奪旗大戰' }, body: { en: 'Strategy, speed and teamwork across the full meadow.', zh: '在整片草原上比策略、比速度，更比團隊默契。' } },
-      { icon: 'Zap', title: { en: 'Lawn challenges', zh: '草地團隊挑戰' }, body: { en: 'Relays and team puzzles led by counselors.', zh: '由隊輔帶領的接力賽與團隊任務。' } },
-      { icon: 'Sun', title: { en: 'Morning Team Huddle & Warm-Up', zh: '晨間團隊集合與暖身' }, body: { en: 'A 09:00 team huddle to stretch, set goals and get moving.', zh: '09:00 小隊集合，伸展暖身、設定今日目標。' } },
-      { icon: 'Compass', title: { en: 'Scavenger hunts', zh: '尋寶任務' }, body: { en: 'Clue-by-clue hunts that start and finish on the meadow.', zh: '從草原出發、在草原集合的線索尋寶。' } },
+      {
+        icon: 'Stethoscope',
+        title: { en: '24/7 Registered Nurse', zh: '24 小時專任護理師' },
+        body: {
+          en: 'A dedicated camp nurse (營隊專任護理師) lives on site for the whole session, including overnight.',
+          zh: '營隊專任護理師全程駐點，夜間同樣在營地待命。',
+        },
+      },
+      {
+        icon: 'Pill',
+        title: { en: 'Medication custody', zh: '藥物統一保管' },
+        body: {
+          en: 'Prescriptions are stored by the nurse and given at the times you write on the health form.',
+          zh: '處方藥由護理師統一保管，並依您在健康調查表填寫的時間給藥。',
+        },
+      },
+      {
+        icon: 'ShieldCheck',
+        title: { en: 'Background-checked team', zh: '背景查核的團隊' },
+        body: {
+          en: 'Counselors, nurse and support workers are screened, with a clean 良民證 on file for each.',
+          zh: '隊輔、護理師與支援人員皆經查核，並備有良民證。',
+        },
+      },
+      {
+        icon: 'HeartPulse',
+        title: { en: 'CPR + AED trained counselors', zh: 'CPR + AED 急救訓練隊輔' },
+        body: {
+          en: 'Counselors hold CPR + AED / first-aid certification and know exactly who to call.',
+          zh: '隊輔具備 CPR + AED／急救訓練，清楚知道第一時間該聯繫誰。',
+        },
+      },
+      {
+        icon: 'Lock',
+        title: { en: 'Private health records', zh: '健康資料保密' },
+        body: {
+          en: 'Medical and allergy details are seen only by the camp director, nurse, dining safety lead and insurer, and are securely destroyed within 30 days after camp.',
+          zh: '過敏與病史資料僅限營隊主任、護理師、餐飲安全主管與承保保險公司於必要範圍內查閱，營隊結束後 30 日內安全銷毀。',
+        },
+      },
     ],
     facts: [
-      { label: { en: 'Teams', zh: '分組' }, value: { en: 'Age-based cabin teams', zh: '依年齡小隊分組' } },
-      { label: { en: 'Morning huddle', zh: '晨間集合' }, value: { en: '09:00', zh: '09:00' } },
-    ],
-    seasonNote: {
-      winter: { en: 'Winter mornings start with extra warm-up and fleece layers.', zh: '冬季清晨多一點暖身，也別忘了穿保暖的刷毛外套。' },
-      summer: { en: 'Summer play comes with shade, sunscreen and water breaks.', zh: '夏季遊戲搭配遮陰、防曬與補水休息。' },
-    },
-    safety: {
-      title: { en: 'Field Rules', zh: '草地活動守則' },
-      rules: [
-        { icon: 'Footprints', title: { en: 'Closed shoes', zh: '穿包鞋' }, body: { en: 'Sneakers on the field keep feet safe on uneven ground.', zh: '草地凹凸不平，請穿運動鞋保護雙腳。' } },
-        { icon: 'Flag', title: { en: 'Stay inside the flags', zh: '待在旗標範圍內' }, body: { en: 'Boundary flags mark the play area.', zh: '旗標標出活動範圍，請勿超出。' } },
-        { icon: 'Smile', title: { en: 'Fair play, kind words', zh: '公平競賽、友善鼓勵' }, body: { en: 'We cheer teammates, thank opponents and help anyone who falls.', zh: '為隊友加油、感謝對手，並主動幫助跌倒的人。' } },
-        { icon: 'GlassWater', title: { en: 'Water breaks', zh: '定時補水' }, body: { en: 'Everyone drinks regularly; tell a counselor if you feel dizzy or sore.', zh: '請定時補充水分，頭暈或疼痛時立刻告訴隊輔。' } },
-      ],
-    },
-  },
-
-  // ───────────────────────────────────────────────────────────── GUILD
-  {
-    id: 'guild',
-    name: { en: 'Guild Grove & Covered Pavilion', zh: '戶外工坊與遮雨棚' },
-    tagline: {
-      en: 'Hands-on making under the trees — rain or shine.',
-      zh: '在樹蔭下動手做，晴雨都不受影響。',
-    },
-    summary: {
-      en: 'Outdoor guilds meet here: wilderness shelter and knot skills, paracord and moss-ball crafts, and the covered pavilion that keeps everything going when the weather turns.',
-      zh: '戶外工坊在這裡集合：野外庇護所與繩結技巧、傘繩與苔球手作，還有遮雨棚，天氣轉變時活動也能照常進行。',
-    },
-    icon: 'Tent',
-    accent: '#7a5a34',
-    accent2: '#e2c391',
-    features: [
-      { icon: 'Tent', title: { en: 'Wilderness Shelter & Knot Skills', zh: '野外庇護所與繩結技巧' }, body: { en: 'Teams build a lean-to shelter and learn the knots that hold it together.', zh: '小隊合作搭建庇護所，並學會讓它穩固的繩結。' } },
-      { icon: 'Link2', title: { en: 'Paracord Studio', zh: '傘繩工坊' }, body: { en: 'Braid a keepsake bracelet or key fob to take home.', zh: '編織手環或鑰匙圈，帶回家當紀念。' } },
-      { icon: 'Leaf', title: { en: 'Moss-Ball Craft Studio', zh: '苔球手作工坊' }, body: { en: 'Shape a living moss ball from natural materials.', zh: '用天然素材親手做一顆有生命的苔球。' } },
-      { icon: 'Umbrella', title: { en: 'Covered pavilion', zh: '遮雨棚活動區' }, body: { en: 'Crafts and team challenges continue in the shade or in the rain.', zh: '無論遮陽或遇雨，手作與團隊挑戰都能照常進行。' } },
-    ],
-    facts: [
-      { label: { en: 'Afternoon guild', zh: '午後工坊' }, value: { en: '13:30 Shelter & Craft Studio', zh: '13:30 庇護所與手作工坊' } },
-      { label: { en: 'Rain plan', zh: '雨天備案' }, value: { en: 'Covered pavilion + dining hall', zh: '遮雨棚＋斑比大飯店' } },
+      { label: { en: 'Nurse on site', zh: '駐點護理師' }, value: { en: '24 hours, every day of camp', zh: '營期間每日 24 小時' } },
+      { label: { en: 'Nearest hospital', zh: '就近醫院' }, value: venue.hospital },
+      { label: { en: 'Counselor ratio', zh: '隊輔比例' }, value: { en: `About ${cohort.counselorRatio}`, zh: `約 ${cohort.counselorRatio}` } },
     ],
     safety: {
-      title: { en: 'Workshop Rules', zh: '工坊守則' },
+      title: { en: 'If your camper feels unwell', zh: '營員不舒服時' },
       rules: [
-        { icon: 'Hand', title: { en: 'Tools with a counselor', zh: '工具由隊輔協助' }, body: { en: 'Cutting tools are handled only by counselors or with one beside you.', zh: '裁切工具只由隊輔操作，或在隊輔陪同下使用。' } },
-        { icon: 'Ban', title: { en: 'Cord stays off necks', zh: '繩索不繞頸' }, body: { en: 'Cords and ropes are never wrapped around necks or other people.', zh: '繩索不可繞在脖子上，也不可綁人。' } },
-        { icon: 'Leaf', title: { en: 'Look first, then collect', zh: '先觀察再採集' }, body: { en: 'We gather only the natural materials a counselor approves and leave habitats as we found them.', zh: '只採集隊輔同意的天然素材，並讓棲地保持原樣。' } },
-      ],
-    },
-  },
-
-  // ───────────────────────────────────────────────────────────── CAMPFIRE
-  {
-    id: 'campfire',
-    name: { en: 'Starlight Campfire Circle', zh: '星空營火圈' },
-    tagline: {
-      en: 'S’mores, skits and trivia under the stars.',
-      zh: '在星空下烤棉花糖、演短劇、玩問答。',
-    },
-    summary: {
-      en: 'Each evening the whole camp gathers around the fire for S’mores, team skits and trivia night. It is the loudest, funniest and warmest part of the day, with counselors tending the fire throughout.',
-      zh: '每天晚上全營隊圍坐營火旁，一起烤棉花糖夾心餅、演出團隊短劇、玩問答之夜。這是一天中最熱鬧、最歡樂也最溫暖的時刻，營火全程由隊輔看顧。',
-    },
-    icon: 'Flame',
-    accent: '#c4561f',
-    accent2: '#ffc27a',
-    features: [
-      { icon: 'Flame', title: { en: 'Campfire S’mores', zh: '營火棉花糖夾心餅' }, body: { en: 'Toast, sandwich, repeat — with long sticks and a counselor close by.', zh: '用長長的烤叉烤棉花糖，隊輔就在身邊。' } },
-      { icon: 'Sparkles', title: { en: 'Skits & Trivia Night', zh: '短劇與問答之夜' }, body: { en: 'Teams write, rehearse and perform their own skits, then go head to head in camp trivia.', zh: '小隊自己編劇、排練、演出，接著進行營隊知識問答對決。' } },
-      { icon: 'Moon', title: { en: 'Night ecology walk', zh: '夜間生態散步' }, body: { en: 'A short, counselor-led walk to listen for night sounds.', zh: '由隊輔帶領的夜間散步，一起聆聽夜晚的聲音。' } },
-      { icon: 'Clock', title: { en: 'Lights out at 21:30', zh: '21:30 熄燈' }, body: { en: 'An evening cabin check wraps up the day.', zh: '晚間內務檢查後熄燈就寢。' } },
-    ],
-    facts: [
-      { label: { en: 'Evening', zh: '時段' }, value: { en: '19:30 Campfire S’mores, Skits & Trivia', zh: '19:30 營火棉花糖、短劇與問答' } },
-      { label: { en: 'Lights out', zh: '熄燈' }, value: { en: cohort.lightsOut, zh: cohort.lightsOut } },
-    ],
-    seasonNote: {
-      winter: { en: 'Winter evenings: a warm coat and fleece layers are on the packing list.', zh: '冬季夜晚：行李清單包含保暖外套與刷毛外層。' },
-      summer: { en: 'Summer evenings: mosquito repellent is on the packing list.', zh: '夏季夜晚：行李清單包含防蚊液。' },
-    },
-    safety: {
-      title: { en: 'Campfire Safety', zh: '營火安全守則' },
-      rules: [
-        { icon: 'Flame', title: { en: 'Counselors tend the fire', zh: '營火由隊輔看顧' }, body: { en: 'Only counselors add wood or adjust the fire, and it never burns unattended.', zh: '只有隊輔能添柴與調整火勢，營火絕不無人看守。' } },
-        { icon: 'Users', title: { en: 'Sit on the logs', zh: '坐在原木座位上' }, body: { en: 'Everyone stays seated on the log ring, outside the stone circle.', zh: '大家坐在原木圈上，保持在石圈之外。' } },
-        { icon: 'Shirt', title: { en: 'Tie back hair and loose sleeves', zh: '綁好頭髮、收好衣袖' }, body: { en: 'Long hair and loose clothing stay clear of the flames.', zh: '長髮與寬鬆衣物遠離火焰。' } },
-        { icon: 'Ban', title: { en: 'Nothing thrown into the fire', zh: '不可丟東西進火堆' }, body: { en: 'Only counselor-approved firewood goes in.', zh: '只有隊輔同意的木柴可以放入火堆。' } },
-        { icon: 'Droplets', title: { en: 'Water stays within reach', zh: '隨時備妥滅火水源' }, body: { en: 'A water source and extinguisher stay beside the circle.', zh: '營火圈旁隨時備有水源與滅火器。' } },
-      ],
-    },
-  },
-
-  // ───────────────────────────────────────────────────────────── TRAILS
-  {
-    id: 'trails',
-    name: { en: 'Forest Trails & Orienteering', zh: '森林步道與定向越野' },
-    tagline: {
-      en: 'Maps, clues and a night walk under the canopy.',
-      zh: '地圖、線索，與林蔭下的夜間散步。',
-    },
-    summary: {
-      en: 'Forest trails link the vans, the meadow and the lake. Teams read maps and follow clues in orienteering and scavenger hunts, and after dark a counselor-led night ecology walk reveals a different forest.',
-      zh: '森林步道串起露營車、草原與湖畔。小隊透過定向越野與尋寶任務練習看地圖、找線索，入夜後還有隊輔帶領的夜間生態散步，看見不一樣的森林。',
-    },
-    icon: 'TreePine',
-    accent: '#2f6b4a',
-    accent2: '#9ccfa6',
-    features: [
-      { icon: 'Compass', title: { en: 'Orienteering & scavenger hunts', zh: '定向越野與尋寶' }, body: { en: 'Teams use a map to find checkpoints and solve clues.', zh: '小隊利用地圖尋找檢查點、解開線索。' } },
-      { icon: 'Moon', title: { en: 'Night Ecology Walk & Camp Trivia', zh: '夜間生態散步與營隊問答' }, body: { en: 'Listen for frogs and night insects, then test what you noticed.', zh: '聆聽蛙鳴與夜行昆蟲，再用問答檢驗大家的觀察。' } },
-      { icon: 'TreePine', title: { en: 'Forest, meadow and lake edge', zh: '森林、草原與湖畔' }, body: { en: 'Trails wind through very different habitats within minutes.', zh: '短短幾分鐘就能穿越截然不同的棲地。' } },
-      { icon: 'Footprints', title: { en: 'Steps and slopes', zh: '階梯與坡道' }, body: { en: 'Natural terrain with steps and gentle slopes — sneakers recommended.', zh: '自然地形含階梯與緩坡，建議穿運動鞋。' } },
-    ],
-    facts: [
-      { label: { en: 'Terrain', zh: '地形' }, value: { en: 'Forest paths, steps and slopes', zh: '森林小徑、階梯與坡道' } },
-      { label: { en: 'Pack', zh: '請自備' }, value: { en: 'Sneakers, mosquito repellent, water bottle', zh: '運動鞋、防蚊液、水壺' } },
-    ],
-    safety: {
-      title: { en: 'Trail Rules', zh: '步道守則' },
-      rules: [
-        { icon: 'Users', title: { en: 'Stay with your team', zh: '與小隊同行' }, body: { en: 'Walk with your buddy and your counselor, never off alone.', zh: '與夥伴及隊輔同行，不單獨離隊。' } },
-        { icon: 'Route', title: { en: 'Stay on the marked trail', zh: '走在標示步道上' }, body: { en: 'Trail markers show the safe route; we stay on it.', zh: '沿著步道標示前進，不擅自離開。' } },
-        { icon: 'Hand', title: { en: 'If you are separated, stay put', zh: '走散時原地等待' }, body: { en: 'Stay where you are and call out. Counselors will come to you.', zh: '留在原地大聲呼喊，隊輔會來找你。' } },
-        { icon: 'Leaf', title: { en: 'Look, don’t pick', zh: '只看不採' }, body: { en: 'We leave plants and animals as we found them.', zh: '不傷害植物與動物，讓自然保持原貌。' } },
+        {
+          icon: 'Hand',
+          title: { en: '1 · Tell any counselor', zh: '1 · 告訴任何一位隊輔' },
+          body: {
+            en: 'Any counselor can bring your camper to the nurse right away.',
+            zh: '任何一位隊輔都能立刻陪營員找護理師。',
+          },
+        },
+        {
+          icon: 'Stethoscope',
+          title: { en: '2 · The nurse checks and treats', zh: '2 · 護理師評估與處置' },
+          body: {
+            en: 'First aid, rest and medication are handled on site according to your health form.',
+            zh: '依據您填寫的健康調查表，在營地內完成急救、休息與給藥。',
+          },
+        },
+        {
+          icon: 'Phone',
+          title: { en: '3 · You hear from us first', zh: '3 · 第一時間聯繫家長' },
+          body: {
+            en: 'We contact the legal guardian first, then the backup contact if needed.',
+            zh: '我們會先聯繫法定代理人，必要時再聯繫第二緊急聯絡人。',
+          },
+        },
+        {
+          icon: 'Siren',
+          title: { en: '4 · Urgent? Straight to hospital', zh: '4 · 情況危急，立即送醫' },
+          body: {
+            en: 'If it is urgent and no guardian can be reached, staff take your camper to the nearest accredited hospital, as authorized on the signed form.',
+            zh: '若情況危急且一時無法聯繫上家長，依您簽署的授權書，由營隊人員護送至鄰近合格醫療院所。',
+          },
+        },
       ],
     },
   },

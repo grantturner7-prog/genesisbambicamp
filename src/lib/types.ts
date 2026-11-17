@@ -8,18 +8,9 @@ export interface L {
   zh: string
 }
 
-export type AreaId =
-  | 'gate'
-  | 'care'
-  | 'vans'
-  | 'dining'
-  | 'pool'
-  | 'kayak'
-  | 'tram'
-  | 'meadow'
-  | 'guild'
-  | 'campfire'
-  | 'trails'
+export type AreaId = 'gate' | 'vans' | 'dining' | 'pool' | 'cinema' | 'campfire' | 'kayak' | 'birds' | 'tram' | 'care'
+
+export type Zone = 'A' | 'B' | 'D' | 'E' | 'F' | 'G'
 
 export type Vec3 = [number, number, number]
 

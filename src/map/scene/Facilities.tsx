@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { layout, mulberry32, toWorld, poi, type Pt } from '../layout/layout'
+import { mulberry32, toWorld, poi, type Pt } from '../layout/layout'
 import { M } from './materials'
 import { Cabin } from './Cabins'
 
@@ -20,21 +20,6 @@ function Cyl({ p, r, h, m, seg = 10, rot }: { p: V3; r: number; h: number; m: TH
     <mesh position={p} rotation={rot} material={m} castShadow receiveShadow>
       <cylinderGeometry args={[r, r, h, seg]} />
     </mesh>
-  )
-}
-function Gable({ w, d, h, rh, wall, roof, p }: { w: number; d: number; h: number; rh: number; wall: THREE.Material; roof: THREE.Material; p: V3 }) {
-  const shape = new THREE.Shape()
-  shape.moveTo(-d / 2 - 0.15, 0)
-  shape.lineTo(d / 2 + 0.15, 0)
-  shape.lineTo(0, rh)
-  shape.closePath()
-  return (
-    <group position={p}>
-      <Box p={[0, h / 2, 0]} s={[w, h, d]} m={wall} />
-      <mesh position={[-w / 2 - 0.15, h, 0]} rotation={[0, Math.PI / 2, 0]} material={roof} castShadow>
-        <extrudeGeometry args={[shape, { depth: w + 0.3, bevelEnabled: false }]} />
-      </mesh>
-    </group>
   )
 }
 
@@ -83,21 +68,35 @@ function Tram() {
     <group position={[x, 0, z]}>
       {car(-1.5, M.red, 1.1)}
       {car(-0.2, M.yellow, 1.2)}
-      {car(1.1, M.yellow, 1.2)}
+      {car(1.1, M.green, 1.2)}
       <Box p={[-0.2, 0.01, 0.6]} s={[4.2, 0.03, 0.12]} m={M.charcoal} cast={false} />
     </group>
   )
 }
 
-/** Bambi Grand Dining Hall (斑比大飯店). Massing only — refine from photos. */
+/** Bambi Grand Dining Hall (斑比大飯店): a dark steel-and-glass hall with floor-to-ceiling windows, raised on steps. */
 function DiningHall() {
   const [x, z] = at('dining')
+  const W = 7.6
+  const D = 3.6
+  const H = 1.9
   return (
-    <group position={[x, 0, z]}>
-      <Gable w={7.2} d={2.8} h={1.3} rh={1.1} wall={M.cream} roof={M.roofGold} p={[0, 0, 0]} />
-      <Box p={[0, 0.07, -2.1]} s={[6.9, 0.14, 1.4]} m={M.deck} />
-      {[-2.7, -0.9, 0.9, 2.7].map((px) => (
-        <Box key={px} p={[px, 0.7, -1.42]} s={[0.9, 0.7, 0.04]} m={M.glass} />
+    <group position={[x, 0, z + 0.6]}>
+      <Box p={[0, 0.15, 0]} s={[W + 0.8, 0.3, D + 0.8]} m={M.rock} />
+      {/* glass volume */}
+      <Box p={[0, 0.3 + H / 2, 0]} s={[W, H, D]} m={M.hallGlass} />
+      {/* black steel frame */}
+      {Array.from({ length: 9 }).map((_, i) => (
+        <Box key={i} p={[-W / 2 + (i * W) / 8, 0.3 + H / 2, 0]} s={[0.07, H, D + 0.04]} m={M.charcoal} />
+      ))}
+      {[0.3, 0.3 + H * 0.55, 0.3 + H].map((y) => (
+        <Box key={y} p={[0, y, 0]} s={[W + 0.06, 0.07, D + 0.06]} m={M.charcoal} />
+      ))}
+      <Box p={[0, 0.3 + H + 0.12, 0]} s={[W + 0.7, 0.14, D + 0.7]} m={M.charcoal} />
+      {/* warm interior glow + front steps facing the road (north) */}
+      <Box p={[0, 0.3 + H * 0.45, 0]} s={[W - 0.5, H * 0.6, D - 0.5]} m={M.glow} cast={false} />
+      {[0, 1, 2].map((i) => (
+        <Box key={i} p={[0, 0.05 + i * 0.09, -D / 2 - 0.95 + i * 0.28]} s={[2.6, 0.1, 0.3]} m={M.woodDark} />
       ))}
     </group>
   )
@@ -129,35 +128,43 @@ function DrinkingWater() {
   )
 }
 
-/** Poolside silver trailer (the camp's snack-shop spot) with loungers and umbrellas. */
+/**
+ * The silver Airstream snack shop, right at the pool's north-east edge, with its orange
+ * "Bambi Glamping" roof sign, globe lamps and loungers (as in the venue's photos).
+ */
 function PoolSide() {
-  const [ax, az] = at('airstream')
+  const [ax, az] = at('airstreamSpot')
+  const face = poi('airstreamFace') // unit vector from the trailer toward the pool
+  const rot = Math.atan2(face[0], face[1]) // local +Z (serving side) faces the water
   return (
     <group>
-      <group position={[ax, 0, az]}>
-        <mesh position={[0, 0.55, 0]} scale={[1.9, 0.62, 0.72]} material={M.silver} castShadow receiveShadow>
-          <sphereGeometry args={[1, 18, 12]} />
+      <group position={[ax, 0, az]} rotation={[0, rot, 0]}>
+        <Box p={[0, 0.06, 0.2]} s={[3.6, 0.1, 1.9]} m={M.deck} />
+        <mesh position={[0, 0.62, 0]} scale={[1.55, 0.5, 0.56]} material={M.silver} castShadow receiveShadow>
+          <capsuleGeometry args={[0.9, 1.0, 6, 14]} />
         </mesh>
-        <Box p={[0, 0.2, 0]} s={[3.0, 0.14, 1.1]} m={M.charcoal} />
-        <Box p={[0, 0.78, 0.74]} s={[1.5, 0.05, 0.6]} m={M.cream} r={[0.3, 0, 0]} />
-        {[-0.8, 0.8].map((px) => (
-          <Cyl key={px} p={[px, 0.2, 1.1]} r={0.12} h={0.4} m={M.wood} />
+        <group rotation={[0, 0, Math.PI / 2]} />
+        <Box p={[0, 0.24, 0]} s={[2.9, 0.16, 0.95]} m={M.charcoal} />
+        {/* serving window + awning on the pool side */}
+        <Box p={[0.1, 0.7, 0.5]} s={[1.3, 0.34, 0.06]} m={M.glow} cast={false} />
+        <Box p={[0.1, 0.98, 0.78]} s={[1.5, 0.04, 0.6]} m={M.cream} r={[0.28, 0, 0]} />
+        {/* orange roof sign */}
+        <Box p={[0, 1.42, 0]} s={[2.5, 0.3, 0.05]} m={M.sign} cast={false} />
+        {[-1.1, 1.1].map((px) => (
+          <Box key={px} p={[px, 1.2, 0]} s={[0.04, 0.3, 0.04]} m={M.charcoal} />
+        ))}
+        {/* globe lamps */}
+        {[[-1.5, 1.2], [-0.7, 1.35], [0.9, 1.35], [1.7, 1.15]].map(([px, pz], i) => (
+          <mesh key={i} position={[px, 0.2 + (i % 2) * 0.05, pz]} material={M.lamp}>
+            <sphereGeometry args={[0.16 + (i % 2) * 0.05, 12, 10]} />
+          </mesh>
         ))}
       </group>
-      {/* umbrellas + loungers on the pool deck */}
-      {layout.lakes.pool.length > 0 &&
-        ([[602, 420], [585, 455]] as Pt[]).map(([px, py], i) => {
-          const [x, z] = toWorld([px, py])
-          return (
-            <group key={i} position={[x, 0, z]}>
-              <Cyl p={[0, 0.7, 0]} r={0.02} h={1.4} m={M.charcoal} seg={5} />
-              <mesh position={[0, 1.42, 0]} material={i ? M.red : M.yellow} castShadow>
-                <coneGeometry args={[0.7, 0.28, 10]} />
-              </mesh>
-              <Box p={[0.6, 0.12, 0.4]} s={[0.9, 0.1, 0.35]} m={M.white} />
-            </group>
-          )
-        })}
+      {/* loungers along the west side of the pool */}
+      {([[578, 462], [575, 478], [578, 494]] as Pt[]).map((p, i) => {
+        const [x, z] = toWorld(p)
+        return <Box key={i} p={[x, 0.14, z]} s={[0.85, 0.1, 0.32]} m={M.white} />
+      })}
     </group>
   )
 }
@@ -176,7 +183,8 @@ function Campfire() {
   })
   return (
     <group position={[x, 0, z]}>
-      <Cyl p={[0, 0.08, 0]} r={0.55} h={0.16} m={M.rock} seg={12} />
+      <Cyl p={[0, 0.14, 0]} r={0.62} h={0.28} m={M.brick} seg={14} />
+      <Cyl p={[0, 0.2, 0]} r={0.46} h={0.2} m={M.charcoal} seg={14} />
       {Array.from({ length: 8 }).map((_, i) => {
         const a = (i / 8) * Math.PI * 2
         return <Cyl key={i} p={[Math.cos(a) * 1.4, 0.13, Math.sin(a) * 1.4]} r={0.12} h={0.55} m={M.woodDark} seg={6} rot={[0, 0, Math.PI / 2]} />
@@ -194,16 +202,32 @@ function Campfire() {
   )
 }
 
-/** Open-air screen beside the campfire (星空電影院). */
+/** Star Cinema (星空電影院): white screen on the lawn, rows of camp chairs, string lights. */
 function CinemaScreen() {
   const [x, z] = at('cinema')
   return (
-    <group position={[x, 0, z]} rotation={[0, 0.5, 0]}>
-      <Box p={[0, 0.85, 0]} s={[1.9, 1.0, 0.05]} m={M.white} />
-      <Box p={[-1.0, 0.5, 0]} s={[0.07, 1.0, 0.07]} m={M.charcoal} />
-      <Box p={[1.0, 0.5, 0]} s={[0.07, 1.0, 0.07]} m={M.charcoal} />
-      {[-0.7, 0, 0.7].map((px) => (
-        <Box key={px} p={[px, 0.12, 1.6]} s={[0.6, 0.18, 0.28]} m={M.wood} />
+    <group position={[x, 0, z - 0.4]} rotation={[0, 0.35, 0]}>
+      <Box p={[0, 1.05, 0]} s={[2.6, 1.5, 0.08]} m={M.screen} />
+      <Box p={[0, 1.05, -0.06]} s={[2.8, 1.7, 0.06]} m={M.charcoal} />
+      {[-1.25, 1.25].map((px) => (
+        <Box key={px} p={[px, 0.2, -0.1]} s={[0.1, 0.4, 0.5]} m={M.charcoal} />
+      ))}
+      {[0, 1, 2].map((row) =>
+        [-1.5, -0.75, 0, 0.75, 1.5].map((px) => (
+          <group key={`${row}-${px}`} position={[px, 0, 2.0 + row * 0.85]}>
+            <Box p={[0, 0.16, 0]} s={[0.42, 0.05, 0.36]} m={row % 2 ? M.red : M.sail} />
+            <Box p={[0, 0.3, 0.19]} s={[0.42, 0.3, 0.04]} m={row % 2 ? M.red : M.sail} />
+          </group>
+        )),
+      )}
+      {/* string lights */}
+      {[-2.4, 2.4].map((px) => (
+        <Cyl key={px} p={[px, 0.9, 3.0]} r={0.03} h={1.8} m={M.charcoal} seg={5} />
+      ))}
+      {Array.from({ length: 9 }).map((_, i) => (
+        <mesh key={i} position={[-2.4 + i * 0.6, 1.7 - Math.sin((i / 8) * Math.PI) * 0.25, 3.0]} material={M.lamp}>
+          <sphereGeometry args={[0.06, 8, 6]} />
+        </mesh>
       ))}
     </group>
   )
@@ -228,10 +252,10 @@ function KayakDock() {
           <Box key={i} p={[0.3, -0.2, 0.2 + i * 0.9]} s={[0.07, 0.8, 0.07]} m={M.woodDark} />
         ))}
       </group>
-      {kayak(x - 0.7, z + 2.4, M.red, 1.57)}
+      {kayak(x - 0.7, z + 2.4, M.yellow, 1.57)}
       {kayak(x + 0.75, z + 2.9, M.yellow, 1.57)}
-      {kayak(x - 1.6, z + 4.4, M.green, 0.4)}
-      {kayak(x + 1.9, z + 5.4, M.red, -0.5)}
+      {kayak(x - 1.6, z + 4.4, M.yellow, 0.4)}
+      {kayak(x + 1.9, z + 5.4, M.yellow, -0.5)}
       {kayak(x, z + 6.4, M.yellow, 1.2)}
     </group>
   )

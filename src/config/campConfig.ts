@@ -1,5 +1,13 @@
 import type { L } from '../lib/types'
 
+/** One bookable option: human-readable dates and the all-in fee in TWD. */
+export interface SessionOffer {
+  dates: L
+  /** ISO date of the first camp day, used by the refund calculator. */
+  startDate: string
+  fee: number
+}
+
 /**
  * SINGLE CONFIG SOURCE (Doc 3, Part 1).
  *
@@ -84,6 +92,35 @@ export const campConfig = {
    */
   snackShop: {
     includedInFee: true,
+  },
+
+  /**
+   * Star Cinema. Movie nights may be advertised only while the screenings hold a
+   * public-performance licence (公播版) — Doc 3, Rule D. Confirmed by the camp operator.
+   * Set to false and `npm run audit` fails on any movie-night copy.
+   */
+  cinema: {
+    publicPerformanceLicensed: true,
+    startTime: '19:30',
+  },
+
+  /** Venue film on YouTube (Bambi Glamping's official video). Watch once before launch. */
+  venueFilmYoutubeId: 'c_8f6E4MU_k' as string | null,
+
+  /** Written permission from Bambi to publish their photos (public/media/bambi). */
+  venuePhotoPermissionOnFile: false,
+
+  /** Session dates and fees — owed by the partners (Doc 3, Section 1). */
+  sessions: {
+    winter: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
+    summer: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
+  },
+  payment: { deposit: null as number | null, balanceDueDays: null as number | null },
+
+  /** Registration. With no endpoint the form never transmits anything. */
+  registration: {
+    endpoint: null as string | null,
+    contractPdfUrl: null as string | null,
   },
 } as const
 

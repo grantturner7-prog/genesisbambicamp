@@ -1,10 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App'
+import { CampStateProvider } from './i18n/CampState'
+import { HomePage } from './pages/HomePage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <CampStateProvider page="home">
+      <HomePage />
+    </CampStateProvider>
   </StrictMode>,
 )

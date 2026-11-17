@@ -41,7 +41,7 @@ function defaultSeason(): Season {
   return m >= 11 || m <= 3 ? 'winter' : 'summer'
 }
 
-export function CampStateProvider({ children }: { children: ReactNode }) {
+export function CampStateProvider({ children, page = 'home' }: { children: ReactNode; page?: 'home' | 'facilities' }) {
   // Doc 3: default to idiomatic Taiwan Traditional Chinese, persisted in localStorage.
   const [lang, setLangState] = useState<Lang>(() => (readStore(LANG_KEY) === 'en' ? 'en' : 'zh-TW'))
   const [season, setSeasonState] = useState<Season>(() => {
@@ -61,8 +61,9 @@ export function CampStateProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang
-    document.title = strings[lang].meta.title
-  }, [lang])
+    const st = strings[lang]
+    document.title = page === 'facilities' ? `${st.nav.facilities}｜${st.meta.title}` : st.meta.title
+  }, [lang, page])
 
   const value = useMemo<CampState>(
     () => ({

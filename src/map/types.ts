@@ -1,4 +1,4 @@
-import type { AreaId, L, Vec3 } from '../lib/types'
+import type { AreaId, L } from '../lib/types'
 
 /** Name of a lucide-react icon, resolved in `icons.ts`. */
 export type IconKey = string
@@ -64,19 +64,4 @@ export interface Area {
     title: L
     rules: Rule[]
   }
-}
-
-/** A clickable label on the 3D map. Several hotspots can open the same area. */
-export interface Hotspot {
-  id: string
-  area: AreaId
-  /** Panel tab to open on click. */
-  tab?: TabId
-  /** Optional label override (e.g. the snack shop next to the pool). */
-  label?: L
-  icon?: IconKey
-  /** World position of the floating label. */
-  labelPos: Vec3
-  /** Camera framing when this hotspot is selected. */
-  view: { target: Vec3; distance: number; azimuth: number; polar: number }
 }
