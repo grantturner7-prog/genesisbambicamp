@@ -178,24 +178,28 @@ const SPOTS: { at: Pt; kind: Standing['kind']; yaw: number; size: number; low?: 
 ]
 
 /**
- * Where the egrets spend the night: trees round the wild lake, named by the map position
- * (px) of their traced crown, with how many birds settle on each (high tier, low tier).
- * The three cypresses that stand in the water take the most, as at a real roost.
+ * Where the egrets spend the night: the grove at the north end of the wild lake (the
+ * thicket of the venue's photos, white with birds), tree by tree. Each is named by the map
+ * position (px) of its crown, with how many birds settle on it (high tier, low tier): the
+ * cypresses the map draws in the water, then the trees of the grove round them.
  */
 const ROOSTS: [number, number, number, number][] = [
   [317, 299, 3, 2],
   [334, 307, 3, 2],
-  [423, 303, 3, 2],
-  [402, 256, 2, 1],
-  [254, 246, 2, 1],
-  [442, 457, 2, 1],
-  [439, 255, 1, 1],
-  [396, 463, 1, 1],
-  [484, 342, 1, 1],
-  [354, 240, 1, 0],
-  [314, 236, 1, 0],
-  [471, 266, 1, 0],
-  [464, 432, 1, 0],
+  [300, 290, 3, 2],
+  [345, 289, 3, 2],
+  [318, 318, 2, 1],
+  [322, 282, 2, 1],
+  [353, 309, 2, 1],
+  [285, 275, 2, 1],
+  [423, 303, 2, 1],
+  [407, 296, 2, 1],
+  [338, 328, 1, 0],
+  [330, 254, 1, 0],
+  [299, 309, 1, 0],
+  [365, 292, 1, 0],
+  [374, 258, 1, 0],
+  [421, 319, 1, 0],
 ]
 /** The side of a crown that faces the map's usual viewpoint (south): the lower perches are there. */
 const TOWARD_VIEWER = Math.PI / 2

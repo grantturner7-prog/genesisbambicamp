@@ -26,6 +26,8 @@ export interface TreeSpot {
   x: number
   y: number
   r: number
+  /** Set only for trees added by hand; traced trees get their species from where they stand. */
+  kind?: 'broadleaf' | 'cypress'
 }
 export interface Layout {
   size: [number, number]
@@ -53,6 +55,42 @@ export const ROAD_LINKS: Pt[][] = [
   [[934, 283], [992, 281], [997, 291], [936, 295]],
   [[607, 283], [618, 297], [576, 331], [558, 350], [553, 364], [538, 360], [530, 338], [560, 317]],
 ]
+/**
+ * Trees that are NOT on the official map, added at the client's request: a grove at the north
+ * end of the wild waterbird lake, on the bank between the lane and the water and standing in
+ * the shallows round the three trees the map draws in the lake. It is the egret roost of the
+ * venue's photos (a dense thicket at the water's edge, white with birds) and it is where the
+ * egrets settle at night. Map px; crowns stay clear of the lane, the kingfisher's stake and
+ * the places where the waders stand.
+ */
+export const EXTRA_TREES: TreeSpot[] = [
+  // on the bank
+  { x: 292, y: 251, r: 8, kind: 'broadleaf' },
+  { x: 307, y: 251, r: 7, kind: 'broadleaf' },
+  { x: 330, y: 254, r: 9, kind: 'broadleaf' },
+  { x: 346, y: 259, r: 6.5, kind: 'cypress' },
+  { x: 374, y: 258, r: 9, kind: 'broadleaf' },
+  { x: 389, y: 269, r: 9, kind: 'broadleaf' },
+  { x: 420, y: 269, r: 10, kind: 'broadleaf' },
+  // in the shallows, round the two cypresses of the map
+  { x: 300, y: 290, r: 12, kind: 'broadleaf' },
+  { x: 322, y: 282, r: 10, kind: 'broadleaf' },
+  { x: 345, y: 289, r: 12, kind: 'broadleaf' },
+  { x: 353, y: 309, r: 10, kind: 'broadleaf' },
+  { x: 318, y: 318, r: 11, kind: 'broadleaf' },
+  { x: 299, y: 309, r: 8, kind: 'cypress' },
+  { x: 285, y: 275, r: 10, kind: 'broadleaf' },
+  { x: 365, y: 292, r: 8, kind: 'cypress' },
+  { x: 338, y: 328, r: 10, kind: 'broadleaf' },
+  { x: 281, y: 297, r: 9, kind: 'broadleaf' },
+  // and round the third
+  { x: 407, y: 296, r: 10, kind: 'broadleaf' },
+  { x: 421, y: 319, r: 10, kind: 'broadleaf' },
+  { x: 438, y: 299, r: 8, kind: 'broadleaf' },
+]
+/** Every tree of the model: the 157 traced from the official map, then the grove. */
+export const trees: TreeSpot[] = [...layout.trees, ...EXTRA_TREES]
+
 /** Every piece of road: the traced polygons and the links under the crowns. */
 export const roads: Layout['roads'] = [...layout.roads, ...ROAD_LINKS.map((outer) => ({ outer, holes: [] }))]
 

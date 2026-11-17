@@ -421,12 +421,12 @@ if (section("Map life: the tram never stops and lights up at night; the egrets c
   // a visitor who arrives after dark, a little later: every egret is on its tree
   const night = await newPage('en')
   const n = await open(night, '?quality=high&time=night&life=75')
-  ok('night: the whole roost has settled on the trees', n.roost === '22/22' && n.flying === 0, n.raw)
+  ok('night: the whole roost has settled on the trees', n.roost === '30/30' && n.flying === 0, n.raw)
   ok('night: the tram is lit and on its round', n.lights === '1' && n.v > 0 && n.waiting === '0', n.raw)
   await night.context().close()
   const phone = await newPage('en')
   const p = await open(phone, '?quality=low&time=night&life=75')
-  ok('night/low tier: a smaller roost settles too', p.roost === '12/12' && p.flying === 0 && p.lights === '1', p.raw)
+  ok('night/low tier: a smaller roost settles too', p.roost === '14/14' && p.flying === 0 && p.lights === '1', p.raw)
   await phone.context().close()
 
   // reduced motion: a still picture
@@ -435,7 +435,7 @@ if (section("Map life: the tram never stops and lights up at night; the egrets c
   const calm = await ctx.newPage()
   calm.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
   const r = await open(calm, '?quality=high&time=night')
-  ok('reduced motion: tram parked at its stop, egrets already on the trees', r.still === '1' && r.waiting === '1' && r.v === 0 && r.roost === '22/22' && r.flying === 0, r.raw)
+  ok('reduced motion: tram parked at its stop, egrets already on the trees', r.still === '1' && r.waiting === '1' && r.v === 0 && r.roost === '30/30' && r.flying === 0, r.raw)
   await ctx.close()
 }
 // ── Photos: every image loads, and each place shows a photo of that place

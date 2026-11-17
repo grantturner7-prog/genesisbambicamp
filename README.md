@@ -62,8 +62,11 @@ including under a sub-path.
   night mode: evening photos on the landing page and the night map. The Day / Night
   switch overrides it for the rest of the visit.
 - **Evening return.** When night mode starts, and for a visitor who arrives after dark,
-  the egrets fly in from across the camp and settle on the trees round the west lake.
-  In the morning they leave again. Kayaks are on the water by day only.
+  the egrets fly in from across the camp and settle on the grove at the north end of the
+  west lake. In the morning they leave again. Kayaks are on the water by day only.
+- **The grove.** `EXTRA_TREES` in `src/map/layout/layout.ts` are 20 trees that are not on
+  the official map: the egret roost at the north end of the west lake, added at the
+  client's request after the venue's photos. Every other tree is traced from the map.
 - **Tram.** It makes one loop of the whole camp without stopping (south road, west ring,
   waterbird lake, past the Star Cinema, north road, kayak lake; about five minutes a lap).
   Headlights and lanterns are lit at night only.

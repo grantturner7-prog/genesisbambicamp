@@ -1,5 +1,5 @@
 import { HOTSPOTS } from '../../hotspots'
-import { layout, mulberry32, poi, roads, S, toWorld, type Pt } from '../../layout/layout'
+import { layout, mulberry32, poi, roads, S, toWorld, trees, type Pt } from '../../layout/layout'
 import { vnoise } from './geom'
 import { crownPerches, type Plant } from './species'
 
@@ -60,6 +60,8 @@ export interface TreePlan extends Plant {
 
 /** Height of the foot of a cypress standing in the lake: just under the water line. */
 const WATER_FOOT = -0.42
+/** The grove's broadleaf trees stand a little deeper, so that their foliage hangs down to the water as in the venue's photos. */
+const THICKET_FOOT = -0.72
 
 /**
  * Trees that the venue's photos show to be fan palms or Norfolk Island pines, named by the
@@ -78,11 +80,11 @@ function lakeside(px: number, py: number): boolean {
 }
 
 export function planTrees(): TreePlan[] {
-  return layout.trees.map((t, i) => {
+  return trees.map((t, i) => {
     const [x, z] = toWorld([t.x, t.y])
-    const species: Species = isAt(t, PALMS) ? 'palm' : isAt(t, ARAUCARIAS) ? 'araucaria' : lakeside(t.x, t.y) ? 'cypress' : 'broadleaf'
+    const species: Species = t.kind ?? (isAt(t, PALMS) ? 'palm' : isAt(t, ARAUCARIAS) ? 'araucaria' : lakeside(t.x, t.y) ? 'cypress' : 'broadleaf')
     const wet = inPoly(x, z, WILD) || inPoly(x, z, KAYAK)
-    return { x, z, y: wet ? WATER_FOOT : 0, r: t.r * S, seed: 977 + i * 7919, species }
+    return { x, z, y: wet ? (t.kind === 'broadleaf' ? THICKET_FOOT : WATER_FOOT) : 0, r: t.r * S, seed: 977 + i * 7919, species }
   })
 }
 
@@ -287,7 +289,7 @@ export function planPlanting(high: boolean): { shrubs: ShrubPlan[]; beds: BedPla
   }
 
   // reeds in the shallows and grass clumps on the bank, in drifts along the lake margins
-  const trees = layout.trees.map((t) => toWorld([t.x, t.y]))
+  const trunks = trees.map((t) => toWorld([t.x, t.y]))
   for (const shore of SHORES) {
     const poly = shore.poly
     let area = 0
@@ -316,14 +318,14 @@ export function planPlanting(high: boolean): { shrubs: ShrubPlan[]; beds: BedPla
           const d = 0.1 + rnd() * (0.25 + 0.35 * strength)
           const x = px - nx * d
           const z = pz - nz * d
-          if (inWater(x, z) && !trees.some(([tx, tz]) => Math.hypot(tx - x, tz - z) < 0.45))
+          if (inWater(x, z) && !trunks.some(([tx, tz]) => Math.hypot(tx - x, tz - z) < 0.45))
             tufts.push({ x, y: -0.55, z, rad: 0.18 + rnd() * 0.1, h: 0.82 + rnd() * 0.28 + 0.12 * strength, blades: high ? 7 + Math.floor(rnd() * 3) : 4, kind: 'reed', seed: 7000 + tufts.length * 53 })
         }
         if (rnd() < 0.34) {
           const d = 0.1 + rnd() * 0.22
           const x = px + nx * d
           const z = pz + nz * d
-          if (freeLawn(x, z, 0.2, 2.6) && !trees.some(([tx, tz]) => Math.hypot(tx - x, tz - z) < 0.4))
+          if (freeLawn(x, z, 0.2, 2.6) && !trunks.some(([tx, tz]) => Math.hypot(tx - x, tz - z) < 0.4))
             tufts.push({ x, y: -0.12, z, rad: 0.13 + rnd() * 0.07, h: 0.36 + rnd() * 0.16, blades: high ? 6 + Math.floor(rnd() * 3) : 4, kind: 'grass', seed: 7000 + tufts.length * 53 })
         }
       }
