@@ -1,0 +1,139 @@
+@import '@fontsource-variable/fraunces/index.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/noto-serif-tc/index.css';
+@import '@fontsource-variable/noto-sans-tc/index.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-pine: #1b4332;
+  --color-pine-900: #0f271d;
+  --color-pine-800: #153629;
+  --color-moss: #2d6a4f;
+  --color-sage: #b7c9b0;
+  --color-cedar: #d4a373;
+  --color-cedar-600: #b9854f;
+  --color-cedar-100: #f3e3d0;
+  --color-parchment: #faf7f2;
+  --color-parchment-200: #f1ebe0;
+  --color-ink: #1c2a23;
+  --color-lake: #2a7f8e;
+  --color-ember: #e07a3f;
+
+  --font-display: 'Fraunces Variable', 'Noto Serif TC Variable', 'Songti TC', serif;
+  --font-sans: 'Inter Variable', 'Noto Sans TC Variable', 'PingFang TC', system-ui, sans-serif;
+
+  --shadow-float: 0 24px 60px -20px rgb(8 28 20 / 0.55), 0 8px 24px -12px rgb(8 28 20 / 0.4);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Chinese text reads better with a touch more leading and no tight tracking */
+html[lang='zh-TW'] body {
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+html[lang='zh-TW'] .tracking-tight,
+html[lang='zh-TW'] .tracking-tighter {
+  letter-spacing: 0;
+}
+
+::selection {
+  background: var(--color-cedar);
+  color: var(--color-pine-900);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cedar);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+/* Glass surface used by the map UI */
+.glass {
+  background: linear-gradient(180deg, rgb(15 39 29 / 0.62), rgb(15 39 29 / 0.5));
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  border: 1px solid rgb(250 247 242 / 0.14);
+  box-shadow: var(--shadow-float);
+}
+.glass-light {
+  background: rgb(250 247 242 / 0.94);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  border: 1px solid rgb(27 67 50 / 0.1);
+  box-shadow: var(--shadow-float);
+}
+
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Map hotspot pulse */
+@keyframes ping-soft {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  80%, 100% { transform: scale(2.1); opacity: 0; }
+}
+.pin-pulse {
+  animation: ping-soft 2.4s var(--ease-premium) infinite;
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in {
+  animation: rise-in 0.7s var(--ease-premium) both;
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(32px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.panel-in {
+  animation: slide-in-right 0.55s var(--ease-premium) both;
+}
+@media (max-width: 767px) {
+  .panel-in {
+    animation-name: slide-in-up;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+.thin-scroll { scrollbar-width: thin; scrollbar-color: rgb(27 67 50 / 0.3) transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .pin-pulse, .rise-in, .panel-in { animation: none !important; }
+}
