@@ -1,12 +1,12 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { ArrowRight, Check, ChevronDown, CloudRain, MapPin, Star, X } from 'lucide-react'
+import { ArrowRight, Check, ChevronDown, MapPin, Star, X } from 'lucide-react'
 import { Kicker, SeasonToggle } from '../components/ui'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
 import { FACILITIES_URL, ROOT } from '../lib/root'
 import { Icon } from '../map/icons'
 import { PHOTO_CREDIT, photoSrc } from '../media/media'
-import { ACTIVITIES, FAMILY, FAQ, HERO, PACKING, PRICING, RAIN_PLAN, SAFETY, SCHEDULE_PENDING, SEASON_INTRO, STAY } from './content'
+import { ACTIVITIES, FAMILY, FAQ, HERO, PACKING, PRICING, SAFETY, SEASON_INTRO, STAY } from './content'
 
 /** Which option a Register button opens the form on. */
 export type CampOption = 'A' | 'B' | 'C'
@@ -130,18 +130,6 @@ export function SeasonExplorer() {
           </li>
         ))}
       </ul>
-      <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1.5fr]">
-        <aside className="rounded-3xl border border-dashed border-pine/25 bg-white/70 p-6" data-schedule-pending>
-          <Icon name="Clock" size={26} className="text-cedar-600" />
-          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug text-pine">{t(SCHEDULE_PENDING.title)}</h3>
-          <p className="mt-2 text-[15px] leading-relaxed text-ink/70">{t(SCHEDULE_PENDING.body)}</p>
-        </aside>
-        <aside className="rounded-3xl bg-pine p-6 text-white shadow-lg" data-rain-plan>
-          <CloudRain size={26} className="text-cedar" aria-hidden />
-          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug">{t(RAIN_PLAN.title)}</h3>
-          <p className="mt-2 text-[15px] leading-relaxed text-white/85">{t(RAIN_PLAN.body)}</p>
-        </aside>
-      </div>
     </Section>
   )
 }

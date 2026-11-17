@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Header } from '../components/Header'
 import { setUrl } from '../lib/root'
 import { LegalFooter } from '../components/LegalFooter'
+import { Games } from '../home/Games'
 import { RefundCalculator, RegisterModal } from '../home/Register'
 import { FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay, type CampOption } from '../home/Sections'
 
@@ -27,6 +28,7 @@ export function HomePage() {
       <main id="main">
         <Hero onRegister={open} />
         <SeasonExplorer />
+        <Games />
         <FacilitiesTeaser />
         <Stay />
         <Safety />

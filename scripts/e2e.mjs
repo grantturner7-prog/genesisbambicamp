@@ -54,6 +54,23 @@ const newPage = async (lang = 'en') => {
   ok('home: hero links to the family camp', (await page.locator('[data-family-pill]').getAttribute('href')) === '#family-camp' && (await page.locator('#family-camp').count()) === 1)
   ok('home: no made-up timetable; schedule marked as coming, rain plan kept', (await page.locator('#day').count()) === 0 && (await page.locator('[data-schedule-pending]').count()) === 1 && (await page.textContent('[data-rain-plan]')).includes('Grand Dining Hall'))
 
+  // camp games: the partners' 32 named activities, names kept as given
+  const GAME_NAMES = ['Bambi Amazing Race', 'Orienteering Quest', 'Glow Night Quest', 'Shelter Build Challenge', 'Campcraft Survival Circuit', 'Nature Photo Safari', 'Kayak Skills Relay', 'Capture the Flag',
+    'Mission Impossible Circuit', 'Tug-of-War Tournament', 'Camp Olympics Relay Medley', 'Giant Rope Jump Challenge', 'Spider Web Challenge', 'Pipeline Challenge', 'Island Hop', 'Blind Maze',
+    'Toxic Waste Transfer', 'Giant Ski Race', 'Crate Crossing', 'Indoor Escape Room Race', 'Minute-to-Win-It Mega Tournament', 'Mentos Geyser Challenge', 'Foam Explosion Spectacular', 'Giant Bubble Lab',
+    'Balloon Rocket Grand Prix', 'Bridge & Tower Build Challenge', 'Egg Drop Build Challenge', 'Oobleck Olympics', 'Vortex Cannon Target Challenge', 'Campfire Skit & Talent Showdown', 'Team Banner & Mascot Workshop', 'Color War Opening Ceremony']
+  const cards = await page.$$eval('[data-games] > li', (els) => els.map((e) => ({ title: e.querySelector('h3').textContent, alt: e.querySelector('h3 + p').textContent, body: e.querySelector('h3 + p + p').textContent })))
+  ok('games: all 32 activities listed in order, names as given', cards.length === 32 && GAME_NAMES.every((n, i) => cards[i].title === n), cards.map((c) => c.title).filter((t, i) => t !== GAME_NAMES[i]).join(' | '))
+  ok('games: every card also carries its Chinese name and a description', cards.every((c) => /[\u4e00-\u9fff]/.test(c.alt) && c.body.length > 30) && cards[0].alt === '斑比探索大挑戰')
+  ok('games: line icons only, no photos or drawings of people', (await page.locator('#games img').count()) === 0 && (await page.locator('[data-games] > li svg').count()) === 32)
+  ok('games: introduced as some of the fun activities campers take part in', (await page.textContent('#games h2')) === 'Some of the fun activities campers take part in')
+  await page.locator('[data-game-filter="team"]').click()
+  ok('games: filter by type (Team Challenges → 7)', (await page.locator('[data-games] > li').count()) === 7 && (await page.textContent('[data-games]')).includes('Spider Web Challenge') && !(await page.textContent('[data-games]')).includes('Tug-of-War'))
+  await page.locator('[data-game-filter="all"]').click()
+  ok('games: back to all 32', (await page.locator('[data-games] > li').count()) === 32)
+  ok('games: the seasonal highlights no longer repeat them', !/Orienteering & Scavenger|Capture the Flag & Lawn|Wilderness Shelter/.test(await page.textContent('#seasons')) && (await page.textContent('#seasons')).includes('Star Cinema Night'))
+  ok('games: the schedule note and rain plan close the section', (await page.locator('#games [data-schedule-pending]').count()) === 1 && (await page.locator('#games [data-rain-plan]').count()) === 1)
+
   // refund calculator
   const fee = page.locator('#refund input').first(); const days = page.locator('#refund input').nth(1)
   await fee.fill('20000')
@@ -320,6 +337,24 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   ok('fix: on a phone the chosen name does not sit on the Full map button', clear)
   await ph.close()
 }
+// ── Games in 繁體中文 on a phone
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true })
+  await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'zh-TW'); localStorage.setItem('gya.season', 'summer') })
+  const page = await ctx.newPage()
+  page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+  await page.goto(BASE + '/')
+  await page.waitForSelector('[data-games]')
+  const visible = () => page.$$eval('[data-games] > li', (els) => els.filter((e) => getComputedStyle(e).display !== 'none').length)
+  ok('games/phone: the first eight are shown, the rest wait behind a button', (await visible()) === 8 && await page.locator('[data-games-more]').isVisible())
+  await page.locator('[data-games-more]').click()
+  ok('games/phone: the button shows all 32', (await visible()) === 32 && (await page.locator('[data-games-more]').count()) === 0)
+  const first = await page.$eval('[data-game="1"]', (e) => [e.querySelector('h3').textContent, e.querySelector('h3 + p').textContent])
+  ok('games/zh: the Chinese name leads with the English name beneath', first[0] === '斑比探索大挑戰' && first[1] === 'Bambi Amazing Race', first.join(' / '))
+  ok('games/zh: Color War keeps its English name', (await page.$eval('[data-game="32"] h3', (e) => e.textContent)) === 'Color War 開幕式')
+  ok('games/phone: no sideways scrolling', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
+  await ctx.close()
+}
 // ── Photos: every image loads, and each place shows a photo of that place
 {
   const page = await newPage('en')
@@ -333,7 +368,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   const cardImg = (title) => page.evaluate((t) => { const li = [...document.querySelectorAll('#seasons li')].find((l) => l.textContent.includes(t)); const im = li && li.querySelector('img'); return im ? im.src.split('/').pop() : null }, title)
   ok('photos: tram card shows the tram', (await cardImg('Waterbird Eco-Safari Tram')) === 'tram-on-route.webp', String(await cardImg('Waterbird Eco-Safari Tram')))
   ok('photos: cinema card shows a screening', (await cardImg('Star Cinema Night')) === 'cinema-night.webp')
-  ok('photos: cards with no exact photo stay photo-free', (await cardImg('Capture the Flag')) === null && (await cardImg('Orienteering')) === null)
+  ok('photos: cards with no exact photo stay photo-free', (await cardImg('Night Ecology Walk')) === null && (await cardImg('Digital Camp Album')) === null)
   ok('photos: dining grid shows buffet food', (await page.evaluate(() => [...document.querySelectorAll('#stay img')].map((i) => i.src.split('/').pop()))).includes('buffet-eggs.webp'))
 
   await page.goto(BASE + '/facilities/'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
