@@ -133,6 +133,7 @@ export function Atmosphere({ env }: { env: SceneEnv }) {
       <Haze env={env} />
       <hemisphereLight args={dusk ? ['#93a0f2', '#33443a', sky.ambient] : ['#e4f1ff', '#7d9a62', sky.ambient]} />
       <directionalLight
+        key={high ? 'sun-high' : 'sun-low'} // a new light gets a shadow map of the new size
         position={sunPos}
         intensity={sky.sunIntensity}
         color={sky.sun}

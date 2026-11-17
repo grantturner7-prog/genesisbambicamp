@@ -485,22 +485,23 @@ export function CampMap3D({
   const high = quality === 'high'
   return (
     <div className="absolute inset-0 isolate bg-pine-900" role="application" aria-label={s.map.mapOf}>
-      <Canvas
-        key={quality}
-        shadows="soft"
-        flat={high}
-        dpr={high ? [1, 2] : [1, 1.5]}
-        camera={{ position: [0, 78, 92], fov: FOV, near: 1, far: 1600 }}
-        gl={{ antialias: !high, powerPreference: 'high-performance', toneMapping: high ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping }}
-      >
+      {/*
+        The canvas, camera and controls are never re-created when the quality tier changes, so a
+        device that steps down keeps its place on the map. `flat` hands tone mapping to the
+        effect composer on the high tier; resolution and tone mapping switch in place.
+      */}
+      <Canvas shadows="soft" flat={high} dpr={high ? [1, 2] : [1, 1.5]} camera={{ position: [0, 78, 92], fov: FOV, near: 1, far: 1600 }} gl={{ antialias: true, powerPreference: 'high-performance' }}>
         {high && !qualityForced() && <PerformanceMonitor ms={300} iterations={8} bounds={() => [28, 61]} flipflops={2} onDecline={() => setQuality('low')} />}
         <Suspense fallback={null}>
           <Atmosphere env={env} />
-          <Terrain env={env} />
-          <Trees env={env} />
-          <Cabins env={env} />
-          <Facilities env={env} />
-          <Life env={env} />
+          {/* only the scene layers are rebuilt for the other tier */}
+          <group key={quality}>
+            <Terrain env={env} />
+            <Trees env={env} />
+            <Cabins env={env} />
+            <Facilities env={env} />
+            <Life env={env} />
+          </group>
           <MarkerDriver selectedId={selected?.id ?? null} />
           <RenderStats quality={quality} />
         </Suspense>
