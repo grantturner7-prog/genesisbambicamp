@@ -1,13 +1,149 @@
-import { useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { mulberry32, toWorld, poi, type Pt } from '../layout/layout'
-import type { SceneEnv } from './env'
+import { isDusk, type Quality, type SceneEnv } from './env'
 import { M } from './materials'
-import { Cabin } from './Cabins'
+import { SCREEN, SNACK_SIGN, buildFacilities, cinemaFrame, firePos, snackFrame } from './buildings/facilities'
+import { Mesher, at, lathe, quads } from './buildings/geo'
+import { createBuildingMats } from './buildings/mats'
+import { screenTexture, signTexture } from './buildings/textures'
 
 type V3 = [number, number, number]
-const at = (name: string): [number, number] => toWorld(poi(name))
+const atPoi = (name: string): [number, number] => toWorld(poi(name))
+
+/**
+ * Every facility of the camp. All static parts are merged into six geometries that share
+ * the layer's materials (see `buildings/facilities.ts`); on top come the pools of light
+ * (one instanced mesh, dusk only), the cinema screen, the snack shop's roof sign and the
+ * campfire's flames. About 13 draw calls in total, shadows included, plus one real light
+ * (the fire).
+ */
+function buildKit(quality: Quality) {
+  const hi = quality === 'high'
+  const mats = createBuildingMats()
+  const b = buildFacilities(quality)
+  const group = new THREE.Group()
+  group.name = 'facilities'
+  const add = (g: THREE.BufferGeometry, mat: THREE.Material, cast: boolean, receive: boolean) => {
+    const m = new THREE.Mesh(g, mat)
+    m.castShadow = cast
+    m.receiveShadow = receive
+    group.add(m)
+    return m
+  }
+  add(b.mass, mats.matte, true, true)
+  add(b.detail, mats.matte, false, true)
+  add(b.metal, mats.metal, true, true)
+  add(b.glass, mats.glass, false, false)
+  add(b.glow, mats.glow, false, false)
+  const hall = add(b.hall, mats.hallGlass, false, false)
+  hall.renderOrder = 2
+
+  // pools of light
+  const poolGeo = quads([new THREE.Matrix4()])
+  const pools = new THREE.InstancedMesh(poolGeo, mats.pool, b.pools.length)
+  b.pools.forEach((p, i) => {
+    pools.setMatrixAt(i, p.m)
+    pools.setColorAt(i, p.color)
+  })
+  pools.instanceMatrix.needsUpdate = true
+  if (pools.instanceColor) pools.instanceColor.needsUpdate = true
+  pools.computeBoundingSphere()
+  pools.renderOrder = 1
+  group.add(pools)
+
+  // Star Cinema: the lit face of the screen
+  const screenTex = screenTexture()
+  const screenMat = new THREE.MeshStandardMaterial({ color: '#f6f4ee', roughness: 0.95, emissive: '#ffffff', emissiveMap: screenTex, emissiveIntensity: 0 })
+  const screenGeo = new THREE.PlaneGeometry(SCREEN.w, SCREEN.h)
+  const screen = new THREE.Mesh(screenGeo, screenMat)
+  screen.applyMatrix4(cinemaFrame().multiply(at(0, SCREEN.y, 0.004)))
+  screen.receiveShadow = true
+  group.add(screen)
+
+  // snack shop roof sign: the venue's name in marquee letters, as on the real Airstream
+  const signTex = signTexture('Bambi Glamping')
+  const signMat = new THREE.MeshBasicMaterial({ map: signTex, color: '#ff8a3a', transparent: true, alphaTest: 0.06, depthWrite: false, side: THREE.DoubleSide })
+  const signGeo = new THREE.PlaneGeometry(SNACK_SIGN.w, SNACK_SIGN.h)
+  const sign = new THREE.Mesh(signGeo, signMat)
+  sign.applyMatrix4(snackFrame().multiply(at(0, SNACK_SIGN.y, -0.02)))
+  sign.renderOrder = 3
+  sign.visible = !!signTex
+  group.add(sign)
+
+  // campfire: flames (dusk only) and the one real light of the layer
+  const fm = new Mesher()
+  const seg = hi ? 10 : 7
+  const tongue = (r: number, h: number): [number, number][] => [
+    [0, 0],
+    [r, h * 0.18],
+    [r * 0.82, h * 0.45],
+    [r * 0.36, h * 0.8],
+    [0, h],
+  ]
+  fm.add(lathe(tongue(0.2, 0.62), seg), { color: '#ff5a12' })
+  fm.add(lathe(tongue(0.15, 0.5), seg), { color: '#ff8c1f' }, at(0.03, 0.01, -0.02))
+  fm.add(lathe(tongue(0.085, 0.34), seg), { color: '#ffd166' }, at(-0.01, 0.02, 0.02))
+  fm.add(lathe(tongue(0.1, 0.4), seg), { color: '#ff7a1a' }, at(-0.13, 0, 0.07, 0, 0, 0.25))
+  fm.add(lathe(tongue(0.09, 0.36), seg), { color: '#ff7a1a' }, at(0.12, 0, 0.09, 0, 0.2, -0.25))
+  const flameGeo = fm.build()
+  const flameMat = new THREE.MeshBasicMaterial({ vertexColors: true, fog: false })
+  const flames = new THREE.Mesh(flameGeo, flameMat)
+  const fp = firePos()
+  flames.position.set(fp[0], fp[1] - 0.06, fp[2])
+  group.add(flames)
+  const emberGeo = new THREE.CircleGeometry(0.36, hi ? 16 : 10)
+  emberGeo.rotateX(-Math.PI / 2)
+  const emberMat = new THREE.MeshBasicMaterial({ color: '#ff6a1c', fog: false })
+  const emberBase = new THREE.Color('#ff6a1c')
+  const embers = new THREE.Mesh(emberGeo, emberMat)
+  embers.position.set(fp[0], 0.075, fp[2])
+  group.add(embers)
+  const fireLight = new THREE.PointLight('#ff9a3c', 0, 10, 2)
+  fireLight.position.set(fp[0], 0.95, fp[2])
+  group.add(fireLight)
+
+  let dusk = false
+  return {
+    group,
+    apply(env: SceneEnv) {
+      dusk = isDusk(env)
+      mats.apply(env)
+      pools.visible = dusk
+      screenMat.emissiveIntensity = dusk ? 1.25 : 0
+      screenMat.color.set(dusk ? '#8d8f96' : '#f6f4ee')
+      signMat.color.set(dusk ? '#ff8a3a' : '#f07a26').multiplyScalar(dusk ? 2.3 : 1)
+      flames.visible = dusk
+      embers.visible = dusk
+      if (!dusk) fireLight.intensity = 0
+    },
+    /** Per-frame motion: the fire flickers and far-away bulbs dim. No React state involved. */
+    tick(t: number, d: number) {
+      if (!dusk) return
+      const a = Math.sin(t * 9.1) * 0.5 + Math.sin(t * 13.7 + 1.3) * 0.3 + Math.sin(t * 5.3 + 0.4) * 0.2
+      const b2 = Math.sin(t * 7.3 + 2.1) * 0.6 + Math.sin(t * 11.9) * 0.4
+      flames.scale.set(1 + b2 * 0.07, 1 + a * 0.16, 1 - b2 * 0.07)
+      flames.rotation.y = t * 0.9
+      flameMat.color.setScalar(2.1 + a * 0.35)
+      emberMat.color.copy(emberBase).multiplyScalar(1.5 + b2 * 0.3)
+      fireLight.intensity = 7.5 + a * 1.9 + b2 * 1.0
+      const near = THREE.MathUtils.clamp(1 - (d - 55) / 70, 0, 1)
+      mats.glow.emissiveIntensity = 1.1 + 1.9 * near
+    },
+    dispose() {
+      for (const g of [b.mass, b.detail, b.metal, b.glass, b.glow, b.hall, poolGeo, screenGeo, signGeo, flameGeo, emberGeo]) g.dispose()
+      for (const m of [screenMat, signMat, flameMat, emberMat]) m.dispose()
+      screenTex.dispose()
+      signTex?.dispose()
+      pools.dispose()
+      mats.dispose()
+    },
+  }
+}
+
+// ---- kept as they were: the tram, the floating kayaks and the waterbirds are being replaced
+// ---- by animated versions in the Life layer -------------------------------------------------
 
 function Box({ p, s, m, r, cast = true }: { p: V3; s: V3; m: THREE.Material; r?: V3; cast?: boolean }) {
   return (
@@ -24,38 +160,12 @@ function Cyl({ p, r, h, m, seg = 10, rot }: { p: V3; r: number; h: number; m: TH
   )
 }
 
-/** Entrance gate (入口) across the south-east road. */
-function Gate() {
-  const [x, z] = at('entrance')
-  return (
-    <group position={[x, 0, z]}>
-      <Box p={[0, 0.9, -1.1]} s={[0.22, 1.8, 0.22]} m={M.woodDark} />
-      <Box p={[0, 0.9, 1.1]} s={[0.22, 1.8, 0.22]} m={M.woodDark} />
-      <Box p={[0, 1.85, 0]} s={[0.3, 0.26, 2.9]} m={M.wood} />
-      <Box p={[0, 2.12, 0]} s={[0.34, 0.08, 3.1]} m={M.charcoal} />
-      <Box p={[0.6, 0.55, 0.55]} s={[0.05, 0.05, 1.2]} m={M.red} />
-    </group>
-  )
-}
-
-/** Check-in (報到處): one of the camp's units serves as the reception. */
-function CheckIn() {
-  const [x, z] = at('checkin')
-  return (
-    <group position={[x, 0, z]} rotation={[0, Math.PI, 0]}>
-      <Cabin zone="B" />
-      <Cyl p={[1.1, 1.0, 0.7]} r={0.02} h={2} m={M.charcoal} seg={5} />
-      <Box p={[1.35, 1.8, 0.7]} s={[0.5, 0.28, 0.02]} m={M.green} />
-    </group>
-  )
-}
-
 /**
  * Eco-Safari tram (遊園車), as in the venue's photos: a cream golf cart towing four small
  * open cars in alternating liveries, zebra (white, green roof) and tiger (orange, yellow roof).
  */
 function Tram() {
-  const [x, z] = at('tramStop')
+  const [x, z] = atPoi('tramStop')
   const car = (dx: number, body: THREE.Material, roof: THREE.Material) => (
     <group position={[dx, 0, 0]}>
       <Box p={[0, 0.3, 0]} s={[0.62, 0.3, 0.46]} m={body} />
@@ -87,168 +197,9 @@ function Tram() {
   )
 }
 
-/** Bambi Grand Dining Hall (斑比大飯店): a dark steel-and-glass hall with floor-to-ceiling windows, raised on steps. */
-function DiningHall() {
-  const [x, z] = at('dining')
-  const W = 7.6
-  const D = 3.6
-  const H = 1.9
-  return (
-    <group position={[x, 0, z + 0.6]}>
-      <Box p={[0, 0.15, 0]} s={[W + 0.8, 0.3, D + 0.8]} m={M.rock} />
-      {/* glass volume */}
-      <Box p={[0, 0.3 + H / 2, 0]} s={[W, H, D]} m={M.hallGlass} />
-      {/* black steel frame */}
-      {Array.from({ length: 9 }).map((_, i) => (
-        <Box key={i} p={[-W / 2 + (i * W) / 8, 0.3 + H / 2, 0]} s={[0.07, H, D + 0.04]} m={M.charcoal} />
-      ))}
-      {[0.3, 0.3 + H * 0.55, 0.3 + H].map((y) => (
-        <Box key={y} p={[0, y, 0]} s={[W + 0.06, 0.07, D + 0.06]} m={M.charcoal} />
-      ))}
-      <Box p={[0, 0.3 + H + 0.12, 0]} s={[W + 0.7, 0.14, D + 0.7]} m={M.charcoal} />
-      {/* warm interior glow + front steps facing the road (north) */}
-      <Box p={[0, 0.3 + H * 0.45, 0]} s={[W - 0.5, H * 0.6, D - 0.5]} m={M.glow} cast={false} />
-      {[0, 1, 2].map((i) => (
-        <Box key={i} p={[0, 0.05 + i * 0.09, -D / 2 - 0.95 + i * 0.28]} s={[2.6, 0.1, 0.3]} m={M.woodDark} />
-      ))}
-    </group>
-  )
-}
-
-function Restrooms() {
-  const [x1, z1] = at('restroom')
-  const [x2] = at('aed')
-  const x = (x1 + x2) / 2
-  return (
-    <group position={[x, 0, z1]}>
-      <Box p={[0, 0.55, 0]} s={[3.2, 1.1, 1.3]} m={M.white} />
-      <Box p={[0, 1.13, 0]} s={[3.5, 0.08, 1.6]} m={M.roof} />
-      <group position={[1.35, 0.7, -0.67]}>
-        <Box p={[0, 0, 0]} s={[0.1, 0.34, 0.03]} m={M.green} />
-        <Box p={[0, 0, 0]} s={[0.34, 0.1, 0.03]} m={M.green} />
-      </group>
-    </group>
-  )
-}
-
-function DrinkingWater() {
-  const [x, z] = at('water')
-  return (
-    <group position={[x, 0, z]}>
-      <Cyl p={[0, 0.3, 0]} r={0.12} h={0.6} m={M.silver} />
-      <Box p={[0, 0.62, 0]} s={[0.4, 0.06, 0.3]} m={M.charcoal} />
-    </group>
-  )
-}
-
-/**
- * The silver Airstream snack shop, right at the pool's north-east edge, with its orange
- * "Bambi Glamping" roof sign, globe lamps and loungers (as in the venue's photos).
- */
-function PoolSide() {
-  const [ax, az] = at('airstreamSpot')
-  const face = poi('airstreamFace') // unit vector from the trailer toward the pool
-  const rot = Math.atan2(face[0], face[1]) // local +Z (serving side) faces the water
-  return (
-    <group>
-      <group position={[ax, 0, az]} rotation={[0, rot, 0]}>
-        <Box p={[0, 0.06, 0.2]} s={[3.6, 0.1, 1.9]} m={M.deck} />
-        <mesh position={[0, 0.62, 0]} scale={[1.55, 0.5, 0.56]} material={M.silver} castShadow receiveShadow>
-          <capsuleGeometry args={[0.9, 1.0, 6, 14]} />
-        </mesh>
-        <group rotation={[0, 0, Math.PI / 2]} />
-        <Box p={[0, 0.24, 0]} s={[2.9, 0.16, 0.95]} m={M.charcoal} />
-        {/* serving window + awning on the pool side */}
-        <Box p={[0.1, 0.7, 0.5]} s={[1.3, 0.34, 0.06]} m={M.glow} cast={false} />
-        <Box p={[0.1, 0.98, 0.78]} s={[1.5, 0.04, 0.6]} m={M.cream} r={[0.28, 0, 0]} />
-        {/* orange roof sign */}
-        <Box p={[0, 1.42, 0]} s={[2.5, 0.3, 0.05]} m={M.sign} cast={false} />
-        {[-1.1, 1.1].map((px) => (
-          <Box key={px} p={[px, 1.2, 0]} s={[0.04, 0.3, 0.04]} m={M.charcoal} />
-        ))}
-        {/* globe lamps */}
-        {[[-1.5, 1.2], [-0.7, 1.35], [0.9, 1.35], [1.7, 1.15]].map(([px, pz], i) => (
-          <mesh key={i} position={[px, 0.2 + (i % 2) * 0.05, pz]} material={M.lamp}>
-            <sphereGeometry args={[0.16 + (i % 2) * 0.05, 12, 10]} />
-          </mesh>
-        ))}
-      </group>
-      {/* loungers along the west side of the pool */}
-      {([[578, 462], [575, 478], [578, 494]] as Pt[]).map((p, i) => {
-        const [x, z] = toWorld(p)
-        return <Box key={i} p={[x, 0.14, z]} s={[0.85, 0.1, 0.32]} m={M.white} />
-      })}
-    </group>
-  )
-}
-
-/** Campfire circle (營火區): stone ring, log seats, animated flames and glow. */
-function Campfire() {
-  const [x, z] = at('campfire')
-  const flame = useRef<THREE.Group>(null)
-  const light = useRef<THREE.PointLight>(null)
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime
-    if (flame.current) {
-      flame.current.scale.set(1 + Math.sin(t * 9) * 0.08, 1 + Math.sin(t * 7.3) * 0.18, 1 + Math.cos(t * 8) * 0.08)
-    }
-    if (light.current) light.current.intensity = 6 + Math.sin(t * 11) * 1.4 + Math.sin(t * 5.3) * 0.8
-  })
-  return (
-    <group position={[x, 0, z]}>
-      <Cyl p={[0, 0.14, 0]} r={0.62} h={0.28} m={M.brick} seg={14} />
-      <Cyl p={[0, 0.2, 0]} r={0.46} h={0.2} m={M.charcoal} seg={14} />
-      {Array.from({ length: 8 }).map((_, i) => {
-        const a = (i / 8) * Math.PI * 2
-        return <Cyl key={i} p={[Math.cos(a) * 1.4, 0.13, Math.sin(a) * 1.4]} r={0.12} h={0.55} m={M.woodDark} seg={6} rot={[0, 0, Math.PI / 2]} />
-      })}
-      <group ref={flame} position={[0, 0.16, 0]}>
-        <mesh position={[0, 0.3, 0]} material={M.fire}>
-          <coneGeometry args={[0.3, 0.75, 7]} />
-        </mesh>
-        <mesh position={[0, 0.2, 0]} material={M.yellow}>
-          <coneGeometry args={[0.17, 0.45, 7]} />
-        </mesh>
-      </group>
-      <pointLight ref={light} position={[0, 0.9, 0]} color="#ff9a3c" distance={9} decay={2} />
-    </group>
-  )
-}
-
-/** Star Cinema (星空電影院): white screen on the lawn, rows of camp chairs, string lights. */
-function CinemaScreen() {
-  const [x, z] = at('cinema')
-  return (
-    <group position={[x, 0, z - 0.4]} rotation={[0, 0.35, 0]}>
-      <Box p={[0, 1.05, 0]} s={[2.6, 1.5, 0.08]} m={M.screen} />
-      <Box p={[0, 1.05, -0.06]} s={[2.8, 1.7, 0.06]} m={M.charcoal} />
-      {[-1.25, 1.25].map((px) => (
-        <Box key={px} p={[px, 0.2, -0.1]} s={[0.1, 0.4, 0.5]} m={M.charcoal} />
-      ))}
-      {[0, 1, 2].map((row) =>
-        [-1.5, -0.75, 0, 0.75, 1.5].map((px) => (
-          <group key={`${row}-${px}`} position={[px, 0, 2.0 + row * 0.85]}>
-            <Box p={[0, 0.16, 0]} s={[0.42, 0.05, 0.36]} m={row % 2 ? M.red : M.sail} />
-            <Box p={[0, 0.3, 0.19]} s={[0.42, 0.3, 0.04]} m={row % 2 ? M.red : M.sail} />
-          </group>
-        )),
-      )}
-      {/* string lights */}
-      {[-2.4, 2.4].map((px) => (
-        <Cyl key={px} p={[px, 0.9, 3.0]} r={0.03} h={1.8} m={M.charcoal} seg={5} />
-      ))}
-      {Array.from({ length: 9 }).map((_, i) => (
-        <mesh key={i} position={[-2.4 + i * 0.6, 1.7 - Math.sin((i / 8) * Math.PI) * 0.25, 3.0]} material={M.lamp}>
-          <sphereGeometry args={[0.06, 8, 6]} />
-        </mesh>
-      ))}
-    </group>
-  )
-}
-
-/** Boarding jetty and kayaks on the kayak lake (乘船處 / 跳跳船體驗區). */
-function KayakDock() {
-  const [x, z] = at('boardingLabel')
+/** Kayaks afloat on the kayak lake (跳跳船體驗區). The jetty itself is part of the merged facilities. */
+function FloatingKayaks() {
+  const [x, z] = atPoi('boardingLabel')
   const kayak = (px: number, pz: number, c: THREE.Material, rot = 0) => (
     <group position={[px, -0.2, pz]} rotation={[0, rot, 0]}>
       <mesh scale={[0.95, 0.12, 0.2]} material={c} castShadow>
@@ -259,12 +210,6 @@ function KayakDock() {
   )
   return (
     <group>
-      <group position={[x, 0, z + 0.9]}>
-        <Box p={[0, 0.02, 1.4]} s={[0.55, 0.1, 3.4]} m={M.deck} />
-        {[0, 1, 2, 3].map((i) => (
-          <Box key={i} p={[0.3, -0.2, 0.2 + i * 0.9]} s={[0.07, 0.8, 0.07]} m={M.woodDark} />
-        ))}
-      </group>
       {kayak(x - 0.7, z + 2.4, M.yellow, 1.57)}
       {kayak(x + 0.75, z + 2.9, M.yellow, 1.57)}
       {kayak(x - 1.6, z + 4.4, M.yellow, 0.4)}
@@ -292,8 +237,8 @@ function Heron({ p, s = 1 }: { p: V3; s?: number }) {
 /** Wild waterbird viewing area (野生水鳥觀賞區): herons and egrets along the west lake. */
 function Waterbirds() {
   const rnd = mulberry32(5)
-  const [hx, hz] = at('heron')
-  const [kx, kz] = at('kingfisher')
+  const [hx, hz] = atPoi('heron')
+  const [kx, kz] = atPoi('kingfisher')
   const extra = Array.from({ length: 7 }).map((_, i) => {
     const [x, z] = toWorld([300 + rnd() * 150, 300 + rnd() * 150] as Pt)
     return { x, z, s: 0.7 + rnd() * 0.4, k: i }
@@ -314,41 +259,20 @@ function Waterbirds() {
   )
 }
 
-/** Five parking areas, as marked P on the map. */
-function Parking() {
-  const spots = poi('parking') as unknown as Pt[]
+export function Facilities({ env }: { env: SceneEnv }) {
+  const kit = useMemo(() => buildKit(env.quality), [env.quality])
+  useEffect(() => () => kit.dispose(), [kit])
+  useLayoutEffect(() => kit.apply(env), [kit, env])
+  useFrame(({ clock, camera, controls }) => {
+    const target = (controls as unknown as { target?: THREE.Vector3 } | null)?.target
+    kit.tick(clock.elapsedTime, target ? camera.position.distanceTo(target) : camera.position.length())
+  })
   return (
     <group>
-      {spots.map((p, i) => {
-        const [x, z] = toWorld(p)
-        return (
-          <group key={i} position={[x, 0, z]}>
-            <Box p={[0, 0.03, 0]} s={[2.6, 0.06, 1.7]} m={M.sand} cast={false} />
-            {[-0.8, 0, 0.8].map((dx, j) => (
-              <Box key={j} p={[dx, 0.22, 0]} s={[0.55, 0.32, 0.3]} m={[M.white, M.red, M.charcoal][(i + j) % 3]} />
-            ))}
-          </group>
-        )
-      })}
-    </group>
-  )
-}
-
-export function Facilities(_props: { env: SceneEnv }) {
-  return (
-    <group>
-      <Gate />
-      <CheckIn />
+      <primitive object={kit.group} />
       <Tram />
-      <DiningHall />
-      <Restrooms />
-      <DrinkingWater />
-      <PoolSide />
-      <Campfire />
-      <CinemaScreen />
-      <KayakDock />
+      <FloatingKayaks />
       <Waterbirds />
-      <Parking />
     </group>
   )
 }

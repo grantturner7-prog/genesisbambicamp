@@ -1,126 +1,123 @@
-import { useMemo } from 'react'
+import { useEffect, useLayoutEffect, useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { layout, toWorld, type VanSpot } from '../layout/layout'
-import type { SceneEnv } from './env'
-import { M } from './materials'
+import { layout, mulberry32, toWorld } from '../layout/layout'
+import { isDusk, type Quality, type SceneEnv } from './env'
+import { ZONE_STYLE, camperWash, emitCamper } from './buildings/camper'
+import { Mesher } from './buildings/geo'
+import { createBuildingMats } from './buildings/mats'
 
 /**
- * A Bambi camper unit, modelled from the venue's own photos: a boxy trailer cabin with
- * splayed end walls and lap siding, black trim and flat roof, louvered door, a wooden
- * deck with posts, shade sail and bistro chairs, a small trailer wheel, and a dark
- * bathroom annex. Local +X is the long axis, local +Z is the deck side.
- * World size ≈ 9 m × 2.6 m (1 unit = 4 m).
+ * All 50 camper units as five instanced meshes (about seven draw calls with their shadow
+ * pass), at their exact map positions with the deck side facing the way it was traced.
+ * Zone differences seen in the venue's photos (siding, sail and chair colours, deck railing,
+ * steps) are per-instance attributes of one shared model: see `buildings/camper.ts`.
  */
-const L = 1.62
-const Wd = 0.62
-const H = 0.62
-const FLARE = 0.09
-const ANNEX = 0.52
+function buildCabins(quality: Quality) {
+  const mats = createBuildingMats()
+  const out = { mass: new Mesher(), detail: new Mesher(), glass: new Mesher(), bulbs: new Mesher() }
+  emitCamper(out, quality)
+  const geo = { mass: out.mass.build(), detail: out.detail.build(), glass: out.glass.build(), bulbs: out.bulbs.build(), wash: camperWash() }
 
-const SIDING: Record<VanSpot['zone'], THREE.Material> = { A: M.cream, B: M.white, D: M.cream, E: M.white, F: M.white, G: M.taupe }
+  const vans = layout.vans
+  const N = vans.length
+  const siding = new Float32Array(N * 3)
+  const sail = new Float32Array(N * 3)
+  const chair = new Float32Array(N * 3)
+  const opts = new Float32Array(N * 2)
+  const glow = new Float32Array(N)
+  const rnd = mulberry32(2024)
+  const c = new THREE.Color()
+  const m = new THREE.Matrix4()
+  const matrices: THREE.Matrix4[] = []
+  const levels: number[] = []
+  vans.forEach((v, i) => {
+    const st = ZONE_STYLE[v.zone]
+    // a hair of tone variation between neighbours keeps a row from looking stamped out
+    const k = 0.965 + rnd() * 0.05
+    c.set(st.siding).multiplyScalar(k).toArray(siding, i * 3)
+    c.set(st.sail).toArray(sail, i * 3)
+    c.set(st.chair).toArray(chair, i * 3)
+    opts[i * 2] = st.railing ? 1 : 0
+    opts[i * 2 + 1] = st.steps ? 1 : 0
+    glow[i] = 0.55 + rnd() * 0.45
+    const [x, z] = toWorld([v.x, v.y])
+    // A few units stand so close on the map that their roofs touch: give every unit a
+    // height step (a centimetre or two) that none of its near neighbours uses, so
+    // touching surfaces never z-fight.
+    const taken = new Set<number>()
+    for (let j = 0; j < i; j++) if (Math.hypot(vans[j].x - v.x, vans[j].y - v.y) < 24) taken.add(levels[j])
+    let level = 0
+    while (taken.has(level)) level++
+    levels.push(level)
+    // local +Z (deck side) -> world (faceX, faceY)
+    m.makeRotationY(Math.atan2(v.faceX, v.faceY)).setPosition(x, level * 0.004, z)
+    matrices.push(m.clone())
+  })
+  const iSiding = new THREE.InstancedBufferAttribute(siding, 3)
+  const iSail = new THREE.InstancedBufferAttribute(sail, 3)
+  const iChair = new THREE.InstancedBufferAttribute(chair, 3)
+  const iOpt = new THREE.InstancedBufferAttribute(opts, 2)
+  const iGlow = new THREE.InstancedBufferAttribute(glow, 1)
+  for (const g of [geo.mass, geo.detail]) {
+    g.setAttribute('iSiding', iSiding)
+    g.setAttribute('iSail', iSail)
+    g.setAttribute('iChair', iChair)
+    g.setAttribute('iOpt', iOpt)
+  }
+  geo.glass.setAttribute('iGlow', iGlow)
+  geo.bulbs.setAttribute('iGlow', iGlow)
 
-export function Cabin({ zone }: { zone: VanSpot['zone'] }) {
-  const body = useMemo(() => {
-    // side profile (x along length, y up): bottom narrower than the roof line = splayed ends
-    const s = new THREE.Shape()
-    s.moveTo(-L / 2 + FLARE, 0)
-    s.lineTo(L / 2 - FLARE, 0)
-    s.lineTo(L / 2, H)
-    s.lineTo(-L / 2, H)
-    s.closePath()
-    const g = new THREE.ExtrudeGeometry(s, { depth: Wd, bevelEnabled: false })
-    g.translate(0, 0, -Wd / 2)
-    return g
-  }, [])
-  const sail = useMemo(() => {
-    const g = new THREE.BufferGeometry()
-    const v = new Float32Array([
-      -0.55, 0.0, 0.0, 0.45, 0.0, 0.0, 0.5, -0.17, 0.52, -0.5, -0.1, 0.52,
-    ])
-    g.setAttribute('position', new THREE.BufferAttribute(v, 3))
-    g.setIndex([0, 1, 2, 0, 2, 3])
-    g.computeVertexNormals()
-    return g
-  }, [])
-  const siding = SIDING[zone]
-  const x0 = -ANNEX / 2 // main cabin centre; annex on +x
-  return (
-    <group>
-      <group position={[x0, 0.14, 0]}>
-        <mesh geometry={body} material={siding} castShadow receiveShadow />
-        {/* roof slab + dark parapet */}
-        <mesh position={[0, H + 0.03, 0]} material={M.roof} castShadow>
-          <boxGeometry args={[L + FLARE * 2 + 0.1, 0.06, Wd + 0.1]} />
-        </mesh>
-        {/* black end-wall frames + windows */}
-        {[-1, 1].map((s) => (
-          <group key={s} position={[(s * (L / 2 - FLARE * 0.45)), H * 0.5, 0]} rotation={[0, 0, -s * 0.15]}>
-            <mesh material={M.charcoal}>
-              <boxGeometry args={[0.03, H * 0.98, Wd * 0.98]} />
-            </mesh>
-            <mesh material={M.glass} position={[s * 0.02, 0.02, 0]}>
-              <boxGeometry args={[0.02, H * 0.52, Wd * 0.62]} />
-            </mesh>
-          </group>
-        ))}
-        {/* louvered door + lamp */}
-        <mesh position={[-0.22, H * 0.46, Wd / 2 + 0.012]} material={M.charcoal}>
-          <boxGeometry args={[0.2, H * 0.86, 0.025]} />
-        </mesh>
-        {/* skirt */}
-        <mesh position={[0, -0.06, 0]} material={M.charcoal}>
-          <boxGeometry args={[L - 0.1, 0.1, Wd - 0.06]} />
-        </mesh>
-        {/* small trailer wheel */}
-        <mesh position={[-L / 2 + 0.14, 0.0, Wd / 2 + 0.01]} rotation={[Math.PI / 2, 0, 0]} material={M.charcoal} castShadow>
-          <cylinderGeometry args={[0.1, 0.1, 0.07, 10]} />
-        </mesh>
-        {/* deck, posts, shade sail, chairs */}
-        <mesh position={[-0.12, -0.04, Wd / 2 + 0.27]} material={M.deck} receiveShadow castShadow>
-          <boxGeometry args={[1.0, 0.05, 0.55]} />
-        </mesh>
-        {[-0.58, 0.34].map((px) => (
-          <mesh key={px} position={[px, 0.2, Wd / 2 + 0.5]} material={M.charcoal} castShadow>
-            <cylinderGeometry args={[0.012, 0.012, 0.52, 5]} />
-          </mesh>
-        ))}
-        <mesh geometry={sail} material={M.sail} position={[-0.12, H * 0.82, Wd / 2]} castShadow />
-        {[-0.3, 0.05].map((px) => (
-          <mesh key={px} position={[px, 0.05, Wd / 2 + 0.34]} material={M.charcoal}>
-            <boxGeometry args={[0.1, 0.14, 0.1]} />
-          </mesh>
-        ))}
-      </group>
-      {/* bathroom annex */}
-      <group position={[L / 2 - ANNEX / 2 + x0 + ANNEX * 0.55, 0.14, 0]}>
-        <mesh material={M.annex} position={[0, (H - 0.06) / 2, 0]} castShadow receiveShadow>
-          <boxGeometry args={[ANNEX, H - 0.06, Wd - 0.04]} />
-        </mesh>
-        <mesh material={M.woodDark} position={[0, (H - 0.06) / 2, Wd / 2 - 0.015]}>
-          <boxGeometry args={[ANNEX * 0.7, H * 0.8, 0.02]} />
-        </mesh>
-        <mesh material={M.roof} position={[0, H - 0.03, 0]}>
-          <boxGeometry args={[ANNEX + 0.06, 0.05, Wd + 0.04]} />
-        </mesh>
-      </group>
-    </group>
-  )
+  const mesh = (g: THREE.BufferGeometry, mat: THREE.Material, cast: boolean, receive: boolean) => {
+    const im = new THREE.InstancedMesh(g, mat, N)
+    matrices.forEach((mm, i) => im.setMatrixAt(i, mm))
+    im.instanceMatrix.needsUpdate = true
+    im.castShadow = cast
+    im.receiveShadow = receive
+    im.computeBoundingSphere()
+    return im
+  }
+  const mass = mesh(geo.mass, mats.camper, true, true)
+  const detail = mesh(geo.detail, mats.camper, false, true)
+  const glass = mesh(geo.glass, mats.camperGlass, false, false)
+  const bulbs = mesh(geo.bulbs, mats.camperGlow, false, false)
+  const wash = mesh(geo.wash, mats.pool, false, false)
+  vans.forEach((_, i) => wash.setColorAt(i, c.set('#ffae5e').multiplyScalar(0.5 * glow[i])))
+  if (wash.instanceColor) wash.instanceColor.needsUpdate = true
+  wash.renderOrder = 1
+
+  const group = new THREE.Group()
+  group.name = 'camper-units'
+  group.add(mass, detail, glass, bulbs, wash)
+  const meshes = [mass, detail, glass, bulbs, wash]
+  return {
+    group,
+    mats,
+    wash,
+    dispose() {
+      for (const im of meshes) im.dispose()
+      for (const g of Object.values(geo)) g.dispose()
+      mats.dispose()
+    },
+  }
 }
 
-/** All 50 units at their exact map positions, decks facing the water/lawn as traced. */
-export function Cabins(_props: { env: SceneEnv }) {
-  return (
-    <group>
-      {layout.vans.map((v) => {
-        const [x, z] = toWorld([v.x, v.y])
-        // local +Z (deck side) → world direction (faceX, faceY); map y maps to world z
-        const rot = Math.atan2(v.faceX, v.faceY)
-        return (
-          <group key={v.id} position={[x, 0, z]} rotation={[0, rot, 0]} userData={{ unit: v.id }}>
-            <Cabin zone={v.zone} />
-          </group>
-        )
-      })}
-    </group>
-  )
+export function Cabins({ env }: { env: SceneEnv }) {
+  const kit = useMemo(() => buildCabins(env.quality), [env.quality])
+  useEffect(() => () => kit.dispose(), [kit])
+  const dusk = isDusk(env)
+  useLayoutEffect(() => {
+    kit.mats.apply(env)
+    kit.wash.visible = dusk
+  }, [kit, env, dusk])
+  // String-light bulbs are smaller than a pixel from far away: fade their glow out with
+  // distance so they do not sparkle, and let the windows and the pools of light carry the
+  // dusk mood in the full-map view.
+  useFrame(({ camera, controls }) => {
+    const target = (controls as unknown as { target?: THREE.Vector3 } | null)?.target
+    const d = target ? camera.position.distanceTo(target) : camera.position.length()
+    const near = THREE.MathUtils.clamp(1 - (d - 45) / 60, 0, 1)
+    kit.mats.camperGlow.emissiveIntensity = dusk ? 0.35 + 2.65 * near : 0.04
+  })
+  return <primitive object={kit.group} />
 }
