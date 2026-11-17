@@ -8,6 +8,13 @@ export interface SessionOffer {
   fee: number
 }
 
+/** Family-camp fee for one camper van, by who shares it (e.g. 1 adult + 3 campers). */
+export interface FamilyFee {
+  adults: number
+  campers: number
+  fee: number
+}
+
 /**
  * SINGLE CONFIG SOURCE (Doc 3, Part 1).
  *
@@ -32,7 +39,26 @@ export const campConfig = {
     counselorRatio: '1:4',
     minGroupSize: 24 as number | null, // Doc 2: "Min. [24] campers to run" — partners to confirm
     gateCurfew: '23:00',
-    lightsOut: '21:30',
+  },
+
+  /**
+   * Option C: 3 Days / 2 Nights family camp for younger campers, each group with an
+   * accompanying adult. One camper van sleeps four. Dates and fees are owed by the partners.
+   */
+  familyCamp: {
+    ageMin: 7,
+    ageMax: 9,
+    vanSleeps: 4,
+    /** Who may share one camper van. */
+    groups: [
+      { adults: 1, maxCampers: 3 },
+      { adults: 2, maxCampers: 2 },
+    ],
+    /** Adults look after their own campers before / after these times; the camp team runs the day. */
+    adultCareUntil: '09:00',
+    adultCareFrom: '19:00',
+    dates: null as L | null,
+    fees: null as FamilyFee[] | null,
   },
 
   /** Venue partner — verified in Docs 2–4. */
@@ -85,13 +111,19 @@ export const campConfig = {
   },
 
   /**
-   * Poolside snack shop. DRAFT menu: confirm with the camp kitchen before launch.
-   * Rules for this list (enforced by `npm run audit`): no alcohol products, ever.
-   * `includedInFee` mirrors the contract promise that no extra charges are collected
-   * beyond the itemised fee — confirm this is how the shop will really run.
+   * Airstream snack shop beside the pool. Snacks and drinks are NOT part of the camp fee
+   * (the fee covers three meals a day). Parents may choose a coupon pack; campers are given
+   * the coupons at check-in and exchange them at the shop.
+   * DRAFT menu: confirm with the camp kitchen before launch. Rule for the menu (enforced by
+   * `npm run audit`): no alcohol products, ever.
    */
   snackShop: {
-    includedInFee: true,
+    /** Coupon packs parents can choose, in TWD. */
+    couponPacks: [1000, 2000, 3000],
+    /** How packs are paid for and what happens to unused coupons — owed by the partners. Shown wherever coupons are offered. */
+    couponTerms: null as L | null,
+    /** The menu in src/map/areas.ts is a draft until the camp kitchen confirms what coupons buy. */
+    menuConfirmed: false,
   },
 
   /**
@@ -101,7 +133,6 @@ export const campConfig = {
    */
   cinema: {
     publicPerformanceLicensed: true,
-    startTime: '19:30',
   },
 
   /** Venue film on YouTube (Bambi Glamping's official video). Watch once before launch. */
@@ -110,7 +141,11 @@ export const campConfig = {
   /** Written permission from Bambi to publish their photos (public/media/bambi). */
   venuePhotoPermissionOnFile: false,
 
-  /** Session dates and fees — owed by the partners (Doc 3, Section 1). */
+  /**
+   * Session dates and fees — owed by the partners (Doc 3, Section 1).
+   * Option A (5 Days / 4 Nights) runs Tuesday to Saturday; Option B (4 Days / 3 Nights)
+   * runs Wednesday to Saturday.
+   */
   sessions: {
     winter: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
     summer: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },

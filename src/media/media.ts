@@ -64,12 +64,13 @@ export const AREA_PHOTOS: Record<AreaId, Photo[]> = {
     P('hall-buffet', 'The buffet counter under the fairy lights', '燈串下的自助餐檯'),
     P('buffet-eggs', 'Scrambled eggs, kept warm on the buffet line', '自助餐檯上保溫的炒蛋'),
     P('buffet-fruit-yogurt', 'Fresh fruit and yogurt on the buffet', '自助餐檯上的水果與優格'),
-    P('breakfast-plate', 'A full plate from the breakfast buffet', '自助早餐盛好的一盤'),
+    P('breakfast-plate', 'A full plate from the breakfast buffet', '自助式早餐盛好的一盤'),
     P('breakfast-closeup', 'French toast, scrambled eggs and fruit yogurt', '法式吐司、炒蛋與水果優格'),
     P('pizza-hands', 'Topping a handmade pizza with cheese', '為手工披薩鋪上起司'),
     P('pizza-oven', 'Pizzas heading for the oven', '準備進爐的披薩'),
     P('pizza-fresh', 'Fresh from the pizza oven', '剛出爐的披薩'),
     P('pizza-counter', 'Handmade pizzas on the serving counter', '餐檯上的手工披薩'),
+    P('wagyu-platter', 'Wagyu beef for the signature family dinner on the final evening', '最後一晚招牌家宴的和牛'),
     P('moss-ball-table', 'Making moss balls at a table in the dining hall', '在斑比大飯店的餐桌上做苔球'),
   ],
   pool: [
@@ -123,7 +124,8 @@ export const AREA_PHOTOS: Record<AreaId, Photo[]> = {
 
 /** Food photos shown with the menu and on the dining highlights. */
 export const MENU_PHOTOS: Partial<Record<AreaId, Photo[]>> = {
-  dining: (['buffet-eggs', 'buffet-fruit-yogurt', 'breakfast-plate', 'breakfast-closeup', 'pizza-hands', 'pizza-fresh', 'pizza-counter'] as const).map(
+  // The first six are shown as the highlights strip: breakfast buffet, DIY lunch, signature dinner.
+  dining: (['buffet-eggs', 'breakfast-plate', 'buffet-fruit-yogurt', 'pizza-hands', 'pizza-fresh', 'wagyu-platter', 'breakfast-closeup', 'pizza-counter'] as const).map(
     (id) => AREA_PHOTOS.dining.find((p) => p.id === id)!,
   ),
 }

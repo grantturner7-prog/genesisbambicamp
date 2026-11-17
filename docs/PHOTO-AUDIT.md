@@ -29,9 +29,9 @@ nothing unsuitable for a youth camp, unit numbers read for every zone photo).
 ## Photos the venue does not have (to be taken on site or requested from Bambi)
 
 - Tram: boarding point, children riding, the tram at dusk, any landscape-format or large photo.
-- Dining: a wide shot of the open buffet, the camp dinner, a non-pizza chef-led lunch, campers cooking, special-diet trays, s'mores, popcorn.
+- Dining: a wide shot of the open buffet, the evening buffet, a non-pizza chef-led lunch, campers cooking, special-diet trays, the signature family dinner as it is served to campers (the site uses Bambi's own Wagyu platter photo, `wagyu-platter`, chosen because it shows no alcohol; most of Bambi's dinner photos include wine or beer and were rejected), s'mores.
 - Entrance gate and sign, the check-in unit, restrooms / showers / changing rooms, the water dispenser, the AED, parking, the charter bus.
-- Pool: a bright-daylight overview showing the depth zones, pool relays, the lifeguard, the Airstream working as a snack shop.
+- Pool: a bright-daylight overview showing the depth zones, pool relays, the lifeguard, the Airstream working as a snack shop, the snack coupons.
 - Kayak: the coach briefing, life jackets being fitted, camp-age children paddling.
 - Evening: a group around the fire, skits, trivia, the night walk.
 - Camp programme with no venue photo at all: shelter building, paracord, orienteering, capture the flag, the camp T-shirt and album. These cards stay photo-free.

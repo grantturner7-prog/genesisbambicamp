@@ -204,14 +204,14 @@ function MenuTab({ area }: { area: Area }) {
       </div>
       <div className="mt-2.5 flex flex-wrap gap-1.5 text-[11px] font-bold">
         <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-900">{s.panel.alcoholFree}</span>
-        {area.id === 'pool' && campConfig.snackShop.includedInFee && <span className="rounded-full bg-amber-100 px-2.5 py-1 text-amber-900">{s.panel.included}</span>}
+        {area.id === 'pool' && <span className="rounded-full bg-amber-100 px-2.5 py-1 text-amber-900">{s.panel.coupons}</span>}
       </div>
       {m.sections.map((sec) => (
-        <section key={sec.title.en} className="mt-3 overflow-hidden rounded-2xl border border-pine/10 bg-white">
+        <section key={sec.title.en} data-menu-section={sec.highlight ? 'highlight' : ''} className={`mt-3 overflow-hidden rounded-2xl border bg-white ${sec.highlight ? 'border-cedar ring-2 ring-cedar/30' : 'border-pine/10'}`}>
           <h4 className="flex items-center gap-2 bg-parchment-200/70 px-4 py-2.5 text-sm font-bold text-pine-900">
             <Icon name={sec.icon} size={16} className="text-cedar-600" />
             {t(sec.title)}
-            {sec.time && <span className="ml-auto text-xs font-semibold text-ink/50">{sec.time}</span>}
+            {sec.tag && <span className={`ml-auto rounded-full px-2 py-0.5 text-[11px] font-bold ${sec.highlight ? 'bg-cedar text-pine-900' : 'text-ink/50'}`}>{t(sec.tag)}</span>}
           </h4>
           <ul className="divide-y divide-pine/10">
             {sec.items.map((it) => (

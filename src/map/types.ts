@@ -27,7 +27,10 @@ export interface MenuItem {
 export interface MenuSection {
   title: L
   icon: IconKey
-  time?: string
+  /** Short label on the right of the section header, e.g. "Final evening". */
+  tag?: L
+  /** The star of the menu: drawn with a highlight border. */
+  highlight?: boolean
   items: MenuItem[]
 }
 
