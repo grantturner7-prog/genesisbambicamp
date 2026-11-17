@@ -40,5 +40,6 @@ export const M = {
   screen: new THREE.MeshStandardMaterial({ color: '#fbfbf8', emissive: '#cfe0ff', emissiveIntensity: 0.05 }),
   hallGlass: new THREE.MeshStandardMaterial({ color: '#31454a', roughness: 0.12, metalness: 0.35, transparent: true, opacity: 0.72 }),
   brick: std('#a8553b'),
+  tiger: std('#f08a2c'),
   fire: new THREE.MeshStandardMaterial({ color: '#ff9a2e', emissive: '#ff6a00', emissiveIntensity: 2.2 }),
 }

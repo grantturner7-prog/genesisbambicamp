@@ -185,7 +185,7 @@ export function Stay() {
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">{t(STAY.diet)}</p>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {(['hall-interior', 'pizza-fresh', 'hall-windows', 'pizza-oven'] as const).map((id) => (
+          {(['buffet-eggs', 'breakfast-plate', 'buffet-fruit-yogurt', 'pizza-fresh'] as const).map((id) => (
             <img key={id} src={photoSrc(id)} alt="" loading="lazy" className="h-full min-h-36 w-full rounded-2xl object-cover" />
           ))}
         </div>

@@ -17,6 +17,8 @@ export interface Hotspot {
   icon: string
   /** Camera distance when focused. */
   dist: number
+  /** Photo shown first for this hotspot (defaults to the area's first photo). */
+  lead?: string
 }
 
 const at = (p: Pt, y: number): [number, number, number] => {
@@ -33,7 +35,7 @@ export const HOTSPOTS: Hotspot[] = [
   { id: 'dining', name: { en: 'Bambi Grand Dining Hall', zh: '斑比大飯店' }, pos: at(poi('dining'), 3.6), kind: 'place', area: 'dining', icon: 'Utensils', dist: 28 },
   { id: 'restroom', name: { en: 'Restrooms · AED', zh: '洗手間・AED' }, pos: at([582, 578], 2.2), kind: 'place', area: 'care', icon: 'HeartPulse', dist: 22 },
   { id: 'pool', name: { en: 'Aurora Pool', zh: '極光戲水池' }, pos: at(centroid(layout.lakes.pool), 1.6), kind: 'place', area: 'pool', icon: 'Waves', dist: 24 },
-  { id: 'snack', name: { en: 'Airstream Snack Shop', zh: 'Airstream 點心站' }, pos: at(poi('airstreamSpot'), 2.6), kind: 'place', area: 'pool', tab: 'menu', icon: 'CupSoda', dist: 20 },
+  { id: 'snack', name: { en: 'Airstream Snack Shop', zh: 'Airstream 點心站' }, pos: at(poi('airstreamSpot'), 2.6), kind: 'place', area: 'pool', tab: 'menu', icon: 'CupSoda', dist: 20, lead: 'pool-airstream' },
   { id: 'campfire', name: { en: 'Campfire Circle', zh: '營火區' }, pos: at(poi('campfire'), 1.9), kind: 'place', area: 'campfire', icon: 'Flame', dist: 22 },
   { id: 'cinema', name: { en: 'Star Cinema', zh: '星空電影院' }, pos: at(poi('cinema'), 3.0), kind: 'place', area: 'cinema', highlight: true, icon: 'Film', dist: 24 },
   { id: 'birds', name: { en: 'Wild Waterbird Lake', zh: '野生水鳥觀賞區' }, pos: at(poi('wildLakeLabel'), 1.8), kind: 'place', area: 'birds', icon: 'Bird', dist: 40 },

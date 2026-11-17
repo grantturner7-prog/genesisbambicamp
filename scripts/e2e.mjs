@@ -114,6 +114,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
   await page.waitForTimeout(1500)
   const zoom = () => page.evaluate(() => Number(document.documentElement.dataset.mapZoom))
+  const settle = async () => { let last = -1, same = 0; for (let i = 0; i < 80 && same < 4; i++) { await page.waitForTimeout(400); const z = await zoom(); same = z === last ? same + 1 : 0; last = z } }
   // spread of the markers relative to the canvas = how much of the board the map covers
   const spread = () => page.evaluate(() => {
     const c = document.querySelector('main canvas').getBoundingClientRect()
@@ -149,22 +150,22 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
 
   // choose a place
   await page.evaluate(() => document.querySelector('[data-hotspot="pool"]').click())
-  await page.waitForSelector('[data-panel="pool"]'); await page.waitForTimeout(4500)
+  await page.waitForSelector('[data-panel="pool"]'); await settle()
   const names = await shownNames()
   ok(T + 'chosen marker shows its name, and only that one', names.length === 1 && names[0].includes('Aurora Pool'), JSON.stringify(names))
   ok(T + 'camera moved in to the place', (await zoom()) < 0.6, String(await zoom()))
   ok(T + 'Full map button appears', await page.locator('[data-full-map]').isVisible())
 
   // Full map pressed while the panel is still open must land exactly on the full map
-  await page.click('[data-full-map]'); await page.waitForTimeout(4500)
+  await page.click('[data-full-map]'); await settle()
   ok(T + 'Full map with the panel open lands on the full map', Math.abs((await zoom()) - 1) <= 0.01 && (await page.locator('[data-panel]').count()) === 0, `zoom ${await zoom()}`)
   await page.evaluate(() => document.querySelector('[data-hotspot="pool"]').click())
-  await page.waitForSelector('[data-panel="pool"]'); await page.waitForTimeout(4500)
+  await page.waitForSelector('[data-panel="pool"]'); await settle()
 
   // closing the panel keeps the view; Full map goes back out
   await page.keyboard.press('Escape'); await page.waitForTimeout(800)
   ok(T + 'closing the panel keeps the view at the place', (await zoom()) < 0.6 && (await page.locator('[data-full-map]').isVisible()))
-  await page.click('[data-full-map]'); await page.waitForTimeout(4500)
+  await page.click('[data-full-map]'); await settle()
   const s3 = await spread()
   ok(T + 'Full map returns to the whole camp', (await zoom()) >= 0.99 && s3.inside === s3.total && (await page.locator('[data-panel]').count()) === 0, `zoom ${await zoom()}`)
   ok(T + 'Full map button hides again', (await page.locator('[data-full-map]').count()) === 0)
@@ -180,7 +181,7 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   ok(T + 'panning far while zoomed in still leaves the camp on screen', s4.inside >= 1, JSON.stringify(s4))
 
   // overlapping markers are thinned out, never stacked
-  await page.click('[data-full-map]'); await page.waitForTimeout(4500)
+  await page.click('[data-full-map]'); await settle()
   const overlaps = await page.evaluate(() => {
     const els = [...document.querySelectorAll('[data-hotspot]:not([data-hidden])')].map((e) => e.getBoundingClientRect())
     let n = 0
@@ -189,6 +190,43 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   })
   ok(T + 'no markers stacked on each other on the full map', overlaps.stacked === 0 && overlaps.visible >= 8, JSON.stringify(overlaps))
   await ctx.close()
+}
+// ── Photos: every image loads, and each place shows a photo of that place
+{
+  const page = await newPage('en')
+  const bad = []
+  page.on('response', (r) => { if (r.status() >= 400 && /\.(webp|jpg|png)/.test(r.url())) bad.push(r.status() + ' ' + r.url().split('/').pop()) })
+  await page.goto(BASE + '/')
+  for (let y = 0; y < 12000; y += 600) { await page.evaluate((yy) => window.scrollTo(0, yy), y); await page.waitForTimeout(80) }
+  await page.waitForTimeout(800)
+  const broken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src.split('/').pop()))
+  ok('photos: every landing-page image loads', broken.length === 0 && bad.length === 0, JSON.stringify([...broken, ...bad]))
+  const cardImg = (title) => page.evaluate((t) => { const li = [...document.querySelectorAll('#seasons li')].find((l) => l.textContent.includes(t)); const im = li && li.querySelector('img'); return im ? im.src.split('/').pop() : null }, title)
+  ok('photos: tram card shows the tram', (await cardImg('Waterbird Eco-Safari Tram')) === 'tram-on-route.webp', String(await cardImg('Waterbird Eco-Safari Tram')))
+  ok('photos: cinema card shows a screening', (await cardImg('Star Cinema Night')) === 'cinema-night.webp')
+  ok('photos: cards with no exact photo stay photo-free', (await cardImg('Capture the Flag')) === null && (await cardImg('Orienteering')) === null)
+  ok('photos: dining grid shows buffet food', (await page.evaluate(() => [...document.querySelectorAll('#stay img')].map((i) => i.src.split('/').pop()))).includes('buffet-eggs.webp'))
+
+  await page.goto(BASE + '/facilities/'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
+  const open = async (id) => { await page.evaluate((i) => document.querySelector(`[data-hotspot="${i}"]`).click(), id); await page.waitForSelector(`[data-panel="${id}"]`) }
+  const lead = (id) => page.evaluate((i) => { const im = document.querySelector(`[data-panel="${i}"] figure img`); return im ? im.src.split('/').pop() : null }, id)
+  const tabs = (id) => page.evaluate((i) => [...document.querySelectorAll(`[data-panel="${i}"] [role=tab]`)].map((t) => t.textContent), id)
+  await open('tram'); ok('photos: tram panel leads with the tram photo', (await lead('tram')) === 'tram-on-route.webp', String(await lead('tram')))
+  await open('birds'); ok('photos: waterbird lake leads with the egret roost', (await lead('birds')) === 'birds-roost-lake.webp')
+  await open('restroom'); ok('photos: restrooms have no photo, so no Photos tab', (await lead('restroom')) === null && !(await tabs('restroom')).includes('Photos & Video'), JSON.stringify(await tabs('restroom')))
+  await open('dining')
+  const food = await page.evaluate(() => [...document.querySelectorAll('[data-panel="dining"] ul img')].map((i) => i.src.split('/').pop()))
+  ok('photos: dining hall highlights the buffet food', food.includes('buffet-eggs.webp') && food.includes('breakfast-plate.webp') && food.length >= 6, JSON.stringify(food))
+  await page.getByRole('tab', { name: 'Menu' }).click()
+  ok('photos: dining menu opens with food photos', (await lead('dining')) === 'buffet-eggs.webp')
+  await open('snack')
+  await page.getByRole('tab', { name: 'Highlights' }).click()
+  ok('photos: snack shop leads with the Airstream', (await lead('snack')) === 'pool-airstream.webp', String(await lead('snack')))
+  await open('zone-E'); await page.getByRole('tab', { name: 'Photos & Video' }).click()
+  const zoneE = await page.evaluate(() => [...document.querySelectorAll('[data-panel="zone-E"] button img')].map((i) => i.src.split('/').pop()))
+  ok('photos: Zone E gallery starts with Zone E photos only', zoneE.slice(0, 3).join() === 'zone-e-1.webp,zone-e-2.webp,zone-e-3.webp', zoneE.slice(0, 4).join())
+  ok('photos: no image request failed on the map page', bad.length === 0, bad.join(' '))
+  await page.context().close()
 }
 ok('no console or page errors', errs.length === 0, [...new Set(errs)].slice(0, 3).join(' | '))
 console.log(results.join('\n'))

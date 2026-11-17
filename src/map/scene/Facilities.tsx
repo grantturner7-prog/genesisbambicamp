@@ -49,27 +49,39 @@ function CheckIn() {
   )
 }
 
-/** Eco-Safari tram (遊園車): red cab and yellow cars. */
+/**
+ * Eco-Safari tram (遊園車), as in the venue's photos: a cream golf cart towing four small
+ * open cars in alternating liveries, zebra (white, green roof) and tiger (orange, yellow roof).
+ */
 function Tram() {
   const [x, z] = at('tramStop')
-  const car = (dx: number, m: THREE.Material, len: number) => (
+  const car = (dx: number, body: THREE.Material, roof: THREE.Material) => (
     <group position={[dx, 0, 0]}>
-      <Box p={[0, 0.42, 0]} s={[len, 0.5, 0.62]} m={m} />
-      <Box p={[0, 0.95, 0]} s={[len, 0.05, 0.7]} m={M.roof} />
-      {[-1, 1].map((s) => (
-        <Box key={s} p={[s * (len / 2 - 0.05), 0.65, 0]} s={[0.04, 0.55, 0.04]} m={M.charcoal} />
+      <Box p={[0, 0.3, 0]} s={[0.62, 0.3, 0.46]} m={body} />
+      {[-0.26, 0.26].map((px) => [-0.19, 0.19].map((pz) => <Box key={`${px}${pz}`} p={[px, 0.62, pz]} s={[0.05, 0.4, 0.05]} m={roof} />))}
+      <Box p={[0, 0.85, 0]} s={[0.7, 0.07, 0.54]} m={roof} />
+      {[-0.2, 0.2].map((w) => (
+        <Cyl key={w} p={[w, 0.09, 0.25]} r={0.09} h={0.05} m={M.charcoal} rot={[Math.PI / 2, 0, 0]} />
       ))}
-      {[-0.25, 0.25].map((w) => (
-        <Cyl key={w} p={[w * len, 0.12, 0.34]} r={0.12} h={0.06} m={M.charcoal} rot={[Math.PI / 2, 0, 0]} />
-      ))}
+      <Box p={[0.36, 0.2, 0]} s={[0.12, 0.03, 0.03]} m={M.woodDark} cast={false} />
     </group>
   )
   return (
     <group position={[x, 0, z]}>
-      {car(-1.5, M.red, 1.1)}
-      {car(-0.2, M.yellow, 1.2)}
-      {car(1.1, M.green, 1.2)}
-      <Box p={[-0.2, 0.01, 0.6]} s={[4.2, 0.03, 0.12]} m={M.charcoal} cast={false} />
+      {/* golf cart */}
+      <group position={[1.75, 0, 0]}>
+        <Box p={[0, 0.28, 0]} s={[0.78, 0.26, 0.46]} m={M.cream} />
+        <Box p={[0.32, 0.44, 0]} s={[0.14, 0.14, 0.44]} m={M.cream} />
+        {[-0.3, 0.3].map((px) => [-0.2, 0.2].map((pz) => <Box key={`${px}${pz}`} p={[px, 0.62, pz]} s={[0.03, 0.46, 0.03]} m={M.charcoal} />))}
+        <Box p={[0, 0.87, 0]} s={[0.86, 0.05, 0.54]} m={M.cream} />
+        {[-0.25, 0.25].map((w) => (
+          <Cyl key={w} p={[w, 0.1, 0.25]} r={0.1} h={0.05} m={M.charcoal} rot={[Math.PI / 2, 0, 0]} />
+        ))}
+      </group>
+      {car(0.85, M.white, M.green)}
+      {car(0.05, M.tiger, M.yellow)}
+      {car(-0.75, M.white, M.green)}
+      {car(-1.55, M.tiger, M.yellow)}
     </group>
   )
 }

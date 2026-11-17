@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Play, Snowflake, Sun, X } from 'lucide-react'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
-import { AREA_PHOTOS, PHOTO_CREDIT, ZONE_PHOTOS, ZONES, photoSrc, type Photo } from '../media/media'
+import { AREA_PHOTOS, MENU_PHOTOS, PHOTO_CREDIT, ZONE_PHOTOS, ZONES, photoSize, photoSrc, type Photo } from '../media/media'
 import { AREA_BY_ID } from './areas'
 import type { Hotspot } from './hotspots'
 import { Icon } from './icons'
@@ -19,8 +19,12 @@ const ALLERGEN: Record<Allergen, { en: string; zh: string }> = {
 /** One photo with caption, credit and optional labelled pins. */
 function Figure({ photo, tall }: { photo: Photo; tall?: boolean }) {
   const { t } = useCamp()
+  // Show each photo in its own shape (square photos stay square), within sensible limits,
+  // so the subject is never cropped away and the label pins stay on target.
+  const { w, h } = photoSize(photo.id)
+  const ratio = Math.min(tall ? 1.5 : 1.6, Math.max(tall ? 1 : 1.25, w / h))
   return (
-    <figure className={`relative overflow-hidden rounded-2xl bg-pine-900 ${tall ? 'aspect-[3/2]' : 'aspect-[16/10]'}`}>
+    <figure className="relative overflow-hidden rounded-2xl bg-pine-900" style={{ aspectRatio: String(ratio) }}>
       <img src={photoSrc(photo.id)} alt={t(photo.caption)} loading="lazy" className="h-full w-full object-cover" />
       {photo.pins?.map((p, i) => (
         <span key={i} className="absolute flex -translate-y-1/2 items-center gap-1.5 rounded-full bg-white/95 py-0.5 pl-0.5 pr-2.5 text-[11px] font-bold text-pine-900 shadow-md" style={{ left: `${p.x}%`, top: `${p.y}%`, transform: 'translate(-11px,-50%)' }}>
@@ -87,7 +91,8 @@ function VenueFilm() {
 function Highlights({ area, hotspot }: { area: Area; hotspot: Hotspot }) {
   const { t, s, season, lang } = useCamp()
   const zone = hotspot.zone
-  const lead = zone ? ZONE_PHOTOS[zone][0] : AREA_PHOTOS[area.id][0]
+  const lead = zone ? ZONE_PHOTOS[zone][0] : (AREA_PHOTOS[area.id].find((p) => p.id === hotspot.lead) ?? AREA_PHOTOS[area.id][0])
+  const food = MENU_PHOTOS[area.id]
   const note = area.seasonNote?.[season]
   const off = area.summerOnly && season === 'winter'
   const cm = lang === 'en' ? ' cm' : ' 公分'
@@ -111,6 +116,19 @@ function Highlights({ area, hotspot }: { area: Area; hotspot: Hotspot }) {
         </p>
       )}
       <p className="mt-3 text-[15px] leading-relaxed text-ink/85">{t(area.summary)}</p>
+      {food && (
+        <div className="mt-4">
+          <h3 className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-cedar-600">{s.panel.foodHighlights}</h3>
+          <ul className="grid grid-cols-3 gap-2">
+            {food.slice(0, 6).map((p) => (
+              <li key={p.id} className="overflow-hidden rounded-xl bg-white shadow-sm">
+                <img src={photoSrc(p.id)} alt={t(p.caption)} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                <p className="px-2 py-1.5 text-[11px] font-semibold leading-snug text-pine-900">{t(p.caption)}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {area.id === 'pool' && (
         <div className="mt-3 rounded-2xl border border-cyan-200 bg-white p-4">
           <div className="flex justify-between text-xs font-bold text-cyan-900">
@@ -167,8 +185,14 @@ function Highlights({ area, hotspot }: { area: Area; hotspot: Hotspot }) {
 function MenuTab({ area }: { area: Area }) {
   const { t, s, lang } = useCamp()
   const m = area.menu!
+  const food = MENU_PHOTOS[area.id]
   return (
     <div>
+      {food && (
+        <div className="mb-4">
+          <Gallery photos={food} />
+        </div>
+      )}
       <div className="flex items-center gap-3 rounded-2xl p-4 text-white" style={{ background: `linear-gradient(135deg, ${area.accent}, ${area.accent2})` }}>
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white/25">
           <Icon name={area.id === 'pool' ? 'CupSoda' : 'Utensils'} size={22} />
@@ -245,9 +269,16 @@ function SafetyTab({ area }: { area: Area }) {
 export function AreaPanel({ hotspot, tab, setTab, onClose, onStep, index, total }: { hotspot: Hotspot; tab: TabId; setTab: (t: TabId) => void; onClose: () => void; onStep: (d: 1 | -1) => void; index: number; total: number }) {
   const { t, s } = useCamp()
   const area = AREA_BY_ID[hotspot.area]
-  const tabs: TabId[] = ['highlights', 'media', ...(area.menu ? (['menu'] as TabId[]) : []), ...(area.safety ? (['safety'] as TabId[]) : [])]
+  const areaPhotos = AREA_PHOTOS[area.id]
+  const photos = hotspot.zone
+    ? [...ZONE_PHOTOS[hotspot.zone], ...AREA_PHOTOS.vans.filter((p) => !ZONE_PHOTOS[hotspot.zone!].some((z) => z.id === p.id))]
+    : hotspot.lead
+      ? [...areaPhotos.filter((p) => p.id === hotspot.lead), ...areaPhotos.filter((p) => p.id !== hotspot.lead)]
+      : areaPhotos
+  const hasFilm = (area.id === 'gate' || area.id === 'vans') && !!campConfig.venueFilmYoutubeId
+  // An area with no exact photo simply has no Photos tab.
+  const tabs: TabId[] = ['highlights', ...(photos.length || hasFilm ? (['media'] as TabId[]) : []), ...(area.menu ? (['menu'] as TabId[]) : []), ...(area.safety ? (['safety'] as TabId[]) : [])]
   const active = tabs.includes(tab) ? tab : 'highlights'
-  const photos = hotspot.zone ? [...ZONE_PHOTOS[hotspot.zone], ...AREA_PHOTOS.vans] : AREA_PHOTOS[area.id]
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
@@ -288,7 +319,7 @@ export function AreaPanel({ hotspot, tab, setTab, onClose, onStep, index, total 
         {active === 'media' && (
           <div>
             <Gallery photos={photos} />
-            {(area.id === 'gate' || area.id === 'vans') && <VenueFilm />}
+            {hasFilm && <VenueFilm />}
           </div>
         )}
         {active === 'menu' && area.menu && <MenuTab area={area} />}

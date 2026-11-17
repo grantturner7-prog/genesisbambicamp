@@ -4,11 +4,6 @@
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/05/內13.jpg"
  },
- "van-window-kids": {
-  "w": 1200,
-  "h": 800,
-  "source": "https://iglamping.tw/wp-content/uploads/2025/05/車1.jpg"
- },
  "van-bed": {
   "w": 1200,
   "h": 800,
@@ -33,11 +28,6 @@
   "w": 1200,
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/07/f38.jpg"
- },
- "van-dusk-2": {
-  "w": 1200,
-  "h": 800,
-  "source": "https://iglamping.tw/wp-content/uploads/2025/07/f39.jpg"
  },
  "zone-a-1": {
   "w": 1200,
@@ -94,11 +84,6 @@
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/07/f16.jpg"
  },
- "zone-f-2": {
-  "w": 1200,
-  "h": 799,
-  "source": "https://iglamping.tw/wp-content/uploads/2022/04/1200x800-12.jpg"
- },
  "zone-g-1": {
   "w": 1200,
   "h": 800,
@@ -129,25 +114,10 @@
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/05/4.jpg"
  },
- "pool-jump": {
-  "w": 1200,
-  "h": 800,
-  "source": "https://iglamping.tw/wp-content/uploads/2024/02/1200800-1拷貝2.jpg"
- },
  "pool-swim": {
   "w": 1200,
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/05/7-1.jpg"
- },
- "pool-dusk": {
-  "w": 1200,
-  "h": 800,
-  "source": "https://iglamping.tw/wp-content/uploads/2024/02/1200800-4.jpg"
- },
- "pool-night": {
-  "w": 1200,
-  "h": 800,
-  "source": "https://iglamping.tw/wp-content/uploads/2024/02/泳2.jpg"
  },
  "hall-exterior": {
   "w": 1200,
@@ -158,11 +128,6 @@
   "w": 1200,
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/05/餐廳18.jpg"
- },
- "hall-interior": {
-  "w": 1200,
-  "h": 800,
-  "source": "https://iglamping.tw/wp-content/uploads/2025/05/餐廳25.jpg"
  },
  "hall-buffet": {
   "w": 1200,
@@ -184,14 +149,9 @@
   "h": 800,
   "source": "https://iglamping.tw/wp-content/uploads/2025/05/1200800.jpg"
  },
- "breakfast": {
-  "w": 800,
-  "h": 800,
-  "source": "https://img.iglamping.tw/2023/03/@cherrylin0821-06-2.jpg"
- },
  "cinema-screen": {
   "w": 800,
-  "h": 1200,
+  "h": 835,
   "source": "https://img.iglamping.tw/2025/08/3.jpg"
  },
  "cinema-lawn": {
@@ -209,11 +169,6 @@
   "h": 1080,
   "source": "https://img.iglamping.tw/2023/03/@zcy6113-01.jpg"
  },
- "campfire-snacks": {
-  "w": 1200,
-  "h": 1200,
-  "source": "https://img.iglamping.tw/2026/01/宵夜.jpg"
- },
  "kayak-shore": {
   "w": 1200,
   "h": 800,
@@ -224,14 +179,149 @@
   "h": 800,
   "source": "https://img.iglamping.tw/2023/07/IMG_3390.jpg"
  },
- "kayak-pair": {
+ "tram-on-route": {
+  "w": 980,
+  "h": 980,
+  "source": "https://img.iglamping.tw/2023/02/325780006_544922011033997_7757415540663765666_n.jpeg"
+ },
+ "buffet-eggs": {
   "w": 1200,
   "h": 800,
-  "source": "https://img.iglamping.tw/2023/07/IMG_3393.jpg"
+  "source": "https://img.iglamping.tw/2025/05/1200800-3.jpg"
  },
- "kayak-family": {
-  "w": 720,
+ "breakfast-plate": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2025/05/早餐1.jpg"
+ },
+ "buffet-fruit-yogurt": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2025/05/1200800-2.jpg"
+ },
+ "pizza-counter": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2022/04/pizza3.jpg"
+ },
+ "breakfast-closeup": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2025/05/早餐3.jpg"
+ },
+ "hall-tables": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2025/05/餐廳16.jpg"
+ },
+ "birds-roost-lake": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/05/11.jpg"
+ },
+ "birds-treetop": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2025/05/28.jpg"
+ },
+ "birds-flight": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2024/07/1200800-1.jpg"
+ },
+ "birds-ducks-geese": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/03/ducks-9146.jpg"
+ },
+ "winter-cypress": {
+  "w": 1200,
+  "h": 756,
+  "source": "https://img.iglamping.tw/2024/02/4-3.jpg"
+ },
+ "birds-ducks-lawn": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2022/04/1200x800-13.jpg"
+ },
+ "birds-cattle-egrets": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2025/05/30.jpg"
+ },
+ "grounds-palm-road": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/03/269598731_4740935172610767_4639749331893893631_n_1.jpg"
+ },
+ "kayak-jetty": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/12/5-2.jpg"
+ },
+ "pool-airstream": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2024/02/1200800-11.jpg"
+ },
+ "kayak-double": {
+  "w": 1080,
   "h": 720,
-  "source": "https://img.iglamping.tw/2023/02/320926222_901990004482549_8695697708807910224_n-e1677221997788.jpg"
+  "source": "https://img.iglamping.tw/2023/02/320926222_901990004482549_8695697708807910224_n.jpg"
+ },
+ "pool-steps": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2024/02/1200800-1.jpg"
+ },
+ "kayak-calm": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/12/2-2.jpg"
+ },
+ "cinema-night": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/12/6.jpg"
+ },
+ "campfire-burning": {
+  "w": 800,
+  "h": 500,
+  "source": "https://img.iglamping.tw/2023/06/7-2.jpg"
+ },
+ "cinema-day": {
+  "w": 800,
+  "h": 800,
+  "source": "https://img.iglamping.tw/2023/06/9-2.jpg"
+ },
+ "zone-e-3": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://iglamping.tw/wp-content/uploads/2025/07/E003.jpg"
+ },
+ "van-bed-ac": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://iglamping.tw/wp-content/uploads/2025/05/內3.jpg"
+ },
+ "van-lake-window": {
+  "w": 1200,
+  "h": 800,
+  "source": "https://iglamping.tw/wp-content/uploads/2025/05/內19.jpg"
+ },
+ "zone-f-3": {
+  "w": 1200,
+  "h": 752,
+  "source": "https://img.iglamping.tw/2024/02/2-2.jpg"
+ },
+ "moss-ball": {
+  "w": 1200,
+  "h": 675,
+  "source": "https://img.iglamping.tw/2023/11/1200方形-1.jpg"
+ },
+ "moss-ball-table": {
+  "w": 1200,
+  "h": 675,
+  "source": "https://img.iglamping.tw/2023/11/1200方形.jpg"
  }
 }

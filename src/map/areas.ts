@@ -749,8 +749,8 @@ export const AREAS: Area[] = [
     name: { en: 'Wild Waterbird Lake', zh: '野生水鳥觀賞區' },
     tagline: { en: 'Hundreds of egrets fly home here at dusk.', zh: '黃昏時分，上百隻鷺鳥在這裡歸巢。' },
     summary: {
-      en: 'The west lake is a wildlife habitat, kept quiet for the birds. Cattle egrets (黃頭鷺) roost in the trees at its centre, and between about 4 and 6 pm they return in flocks — a sight campers watch from the shore and from the eco-tram. Mallards and geese share the water, and bald cypress trees line the bank.',
-      zh: '西側的湖是野生動物棲地，特別為鳥類保持安靜。黃頭鷺在湖心的樹叢棲息，約下午四點到六點成群歸巢，營員可以在岸邊或遊園車上觀賞。綠頭鴨與大白鵝也在湖面悠游，岸邊則是成排的落羽松。',
+      en: 'The west lake is a wildlife habitat, kept quiet for the birds. Cattle egrets (黃頭鷺) roost in the trees at its centre, and between about 4 and 6 pm they return in flocks — a sight campers watch from the shore and from the eco-tram. Ducks and geese roam the grounds, and bald cypress trees line the bank.',
+      zh: '西側的湖是野生動物棲地，特別為鳥類保持安靜。黃頭鷺在湖心的樹叢棲息，約下午四點到六點成群歸巢，營員可以在岸邊或遊園車上觀賞。園區裡還有鴨群與大白鵝，岸邊則是成排的落羽松。',
     },
     icon: 'Bird',
     accent: '#3f7f6a',
@@ -763,7 +763,7 @@ export const AREAS: Area[] = [
     ],
     facts: [
       { label: { en: 'Best time', zh: '最佳時段' }, value: { en: 'About 16:00–18:00', zh: '約 16:00–18:00' } },
-      { label: { en: 'Residents', zh: '常見生態' }, value: { en: 'Cattle egrets, mallards, geese', zh: '黃頭鷺、綠頭鴨、大白鵝' } },
+      { label: { en: 'Residents', zh: '常見生態' }, value: { en: 'Cattle egrets, ducks, geese', zh: '黃頭鷺、鴨、大白鵝' } },
       { label: { en: 'Lakeside units', zh: '湖畔露營車' }, value: { en: 'Zones F and G', zh: 'F 區與 G 區' } },
     ],
     seasonNote: {
