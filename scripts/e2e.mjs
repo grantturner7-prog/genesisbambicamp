@@ -191,6 +191,80 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
   ok(T + 'no markers stacked on each other on the full map', overlaps.stacked === 0 && overlaps.visible >= 8, JSON.stringify(overlaps))
   await ctx.close()
 }
+// ── Facilities: problems found by independent testing stay fixed
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
+  const page = await ctx.newPage()
+  page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+  await page.goto(BASE + '/facilities/'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 }); await page.waitForTimeout(1500)
+  const zoom = () => page.evaluate(() => Number(document.documentElement.dataset.mapZoom))
+  const settle = async () => { let last = -1, same = 0; for (let i = 0; i < 80 && same < 4; i++) { await page.waitForTimeout(400); const z = await zoom(); same = z === last ? same + 1 : 0; last = z } }
+  const box = await page.locator('main canvas').boundingBox(); const mid = [box.x + box.width / 2, box.y + box.height / 2]
+
+  // scroll wheel over an icon zooms the map and does not scroll the page
+  const m = await page.evaluate(() => { const r = document.querySelector('[data-hotspot="dining"]').getBoundingClientRect(); return [r.left + r.width / 2, r.top + 14] })
+  await page.mouse.move(m[0], m[1]); for (let i = 0; i < 4; i++) await page.mouse.wheel(0, -300)
+  await settle()
+  ok('fix: wheel over an icon zooms the map, page stays put', (await zoom()) < 0.95 && (await page.evaluate(() => window.scrollY)) === 0, `zoom ${await zoom()}`)
+  await page.click('[data-full-map]'); await settle()
+
+  // hidden markers are out of the Tab order
+  ok('fix: thinned-out markers cannot take keyboard focus', await page.evaluate(() => [...document.querySelectorAll('[data-hotspot][data-hidden]')].every((e) => getComputedStyle(e).visibility === 'hidden')))
+
+  // a marker under the Full map button must not steal its click
+  await page.evaluate(() => document.querySelector('[data-hotspot="checkin"]').click()); await page.waitForSelector('[data-panel="checkin"]'); await settle()
+  const fb = await page.locator('[data-full-map]').boundingBox()
+  await page.mouse.click(fb.x + fb.width - 8, fb.y + fb.height / 2); await settle()
+  ok('fix: Full map button is never covered by an icon', (await page.locator('[data-panel]').count()) === 0 && Math.abs((await zoom()) - 1) <= 0.01, `zoom ${await zoom()}`)
+  ok('fix: intro card does not come back after a place was opened', !(await page.textContent('main')).includes('Walk the camp before you arrive'))
+
+  // hard panning while zoomed in keeps the look-at point over the island
+  for (const id of ['zone-G', 'entrance', 'zone-D']) {
+    await page.evaluate((i) => document.querySelector(`[data-hotspot="${i}"]`).click(), id); await settle(); await page.keyboard.press('Escape')
+    for (const [dx, dy] of [[0.6, 0.55], [-0.6, -0.55], [0.6, -0.55]]) for (let k = 0; k < 3; k++) { await page.mouse.move(...mid); await page.mouse.down({ button: 'right' }); await page.mouse.move(mid[0] + box.width * dx, mid[1] + box.height * dy, { steps: 6 }); await page.mouse.up({ button: 'right' }) }
+    await page.waitForTimeout(1200)
+    ok(`fix: cannot drag into empty sky when zoomed in (${id})`, (await page.evaluate(() => document.documentElement.dataset.mapOnLand)) === '1')
+    await page.click('[data-full-map]'); await settle()
+  }
+
+  // rotated full map offers Full map, which restores the standard view
+  await page.mouse.move(...mid); await page.mouse.down(); await page.mouse.move(mid[0] + 420, mid[1], { steps: 8 }); await page.mouse.up(); await settle()
+  ok('fix: a rotated full map offers Full map', await page.locator('[data-full-map]').isVisible())
+  await page.click('[data-full-map]'); await settle()
+  ok('fix: Full map restores the standard view', (await page.locator('[data-full-map]').count()) === 0 && Math.abs((await zoom()) - 1) <= 0.01)
+
+  // place list: mouse wheel scrolls it sideways, arrows work, chosen place is brought into view
+  const chips = page.locator('main nav')
+  const cb = await chips.boundingBox(); await page.mouse.move(cb.x + cb.width / 2, cb.y + cb.height - 20); await page.mouse.wheel(0, 500); await page.waitForTimeout(500)
+  ok('fix: mouse wheel scrolls the place list sideways', (await chips.evaluate((e) => e.scrollLeft)) > 100 && (await page.evaluate(() => window.scrollY)) === 0)
+  await page.evaluate(() => document.querySelector('[data-hotspot="zone-G"]').click())
+  const chipInView = () => page.evaluate(() => { const n = document.querySelector('main nav').getBoundingClientRect(); const c = document.querySelector('[data-chip="zone-G"]').getBoundingClientRect(); return c.left >= n.left && c.right <= n.right })
+  for (let i = 0; i < 20 && !(await chipInView()); i++) await page.waitForTimeout(400)
+  ok('fix: chosen place is scrolled into view in the place list', await chipInView())
+  await ctx.close()
+
+  // phone held sideways: the whole map area fits on the screen
+  const land = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true })
+  const lp = await land.newPage(); await lp.goto(BASE + '/facilities/'); await lp.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 }); await lp.waitForTimeout(3000)
+  const cv = await lp.locator('main canvas').boundingBox()
+  const inside = await lp.evaluate(() => { const c = document.querySelector('main canvas').getBoundingClientRect(); return [...document.querySelectorAll('[data-hotspot]')].every((e) => { const r = e.getBoundingClientRect(); return r.bottom <= Math.min(c.bottom, innerHeight) + 1 }) })
+  ok('fix: phone landscape shows the whole map without scrolling', cv.y + cv.height <= 391 && inside, JSON.stringify(cv))
+  await land.close()
+
+  // phone portrait with a panel open: the chosen name stays clear of the Full map button
+  const ph = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true })
+  await ph.addInitScript(() => { localStorage.setItem('gya.lang', 'en') })
+  const pp = await ph.newPage(); await pp.goto(BASE + '/facilities/'); await pp.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 }); await pp.waitForTimeout(1500)
+  let clear = true
+  for (const id of ['dining', 'cinema', 'snack']) {
+    await pp.evaluate((i) => document.querySelector(`[data-hotspot="${i}"]`).click(), id); await pp.waitForSelector(`[data-panel="${id}"]`)
+    let last = '', same = 0; for (let i = 0; i < 60 && same < 4; i++) { await pp.waitForTimeout(400); const z = await pp.evaluate(() => document.documentElement.dataset.mapZoom); same = z === last ? same + 1 : 0; last = z }
+    clear = clear && await pp.evaluate((i) => { const a = document.querySelector(`[data-hotspot="${i}"] [data-marker-name]`).getBoundingClientRect(); const b = document.querySelector('[data-full-map]').getBoundingClientRect(); return a.top >= b.bottom || a.left >= b.right || a.right <= b.left }, id)
+  }
+  ok('fix: on a phone the chosen name does not sit on the Full map button', clear)
+  await ph.close()
+}
 // ── Photos: every image loads, and each place shows a photo of that place
 {
   const page = await newPage('en')

@@ -28,8 +28,58 @@ const MAX_X = Math.max(...LAND.map((p) => p[0]))
 const MIN_Z = Math.min(...LAND.map((p) => p[1]))
 const MAX_Z = Math.max(...LAND.map((p) => p[1]))
 const CENTER = new THREE.Vector3((MIN_X + MAX_X) / 2, 0, (MIN_Z + MAX_Z) / 2)
-const HALF_X = (MAX_X - MIN_X) / 2
-const HALF_Z = (MAX_Z - MIN_Z) / 2
+/** Island outline relative to its centre, used to keep the look-at point over land. */
+const LAND_REL: [number, number][] = LAND.map(([x, z]) => [x - CENTER.x, z - CENTER.z])
+const LAND_INSET = 0.86
+
+function insideLand(px: number, pz: number, k: number): boolean {
+  let inside = false
+  for (let i = 0, j = LAND_REL.length - 1; i < LAND_REL.length; j = i++) {
+    const xi = LAND_REL[i][0] * k
+    const zi = LAND_REL[i][1] * k
+    const xj = LAND_REL[j][0] * k
+    const zj = LAND_REL[j][1] * k
+    if (zi > pz !== zj > pz && px < ((xj - xi) * (pz - zi)) / (zj - zi) + xi) inside = !inside
+  }
+  return inside
+}
+
+/**
+ * Nearest point to (px, pz) that lies on the island outline scaled by `k` about the centre
+ * (all coordinates relative to CENTER). Returns the point unchanged when it is already inside.
+ */
+function clampToLand(px: number, pz: number, k: number, out: [number, number]) {
+  if (k <= 1e-4) {
+    out[0] = 0
+    out[1] = 0
+    return
+  }
+  if (insideLand(px, pz, k)) {
+    out[0] = px
+    out[1] = pz
+    return
+  }
+  let best = Infinity
+  for (let i = 0, j = LAND_REL.length - 1; i < LAND_REL.length; j = i++) {
+    const ax = LAND_REL[j][0] * k
+    const az = LAND_REL[j][1] * k
+    const bx = LAND_REL[i][0] * k
+    const bz = LAND_REL[i][1] * k
+    const ex = bx - ax
+    const ez = bz - az
+    const len = ex * ex + ez * ez || 1
+    const t = Math.max(0, Math.min(1, ((px - ax) * ex + (pz - az) * ez) / len))
+    const qx = ax + ex * t
+    const qz = az + ez * t
+    const d = (px - qx) * (px - qx) + (pz - qz) * (pz - qz)
+    if (d < best) {
+      best = d
+      out[0] = qx
+      out[1] = qz
+    }
+  }
+}
+
 const OUTLINE = LAND.filter((_, i) => i % 2 === 0).flatMap(([x, z]) => [
   new THREE.Vector3(x - CENTER.x, 0, z - CENTER.z),
   new THREE.Vector3(x - CENTER.x, 2.4, z - CENTER.z), // tree tops
@@ -69,14 +119,17 @@ type Goal = { kind: 'overview' } | { kind: 'focus'; h: Hotspot }
  * Camera pose for a goal at the current canvas shape. It is recomputed every frame of a
  * flight, because the canvas changes size while a detail panel opens or closes.
  */
-function poseInto(goal: Goal, aspect: number, pos: THREE.Vector3, target: THREE.Vector3) {
+function poseInto(goal: Goal, aspect: number, pos: THREE.Vector3, target: THREE.Vector3, short = false) {
   if (goal.kind === 'overview') {
     const dir = aspect >= 0.9 ? DIR_LANDSCAPE : DIR_PORTRAIT
     target.copy(CENTER)
     pos.copy(dir).multiplyScalar(fitDistance(dir, aspect)).add(CENTER)
   } else {
-    target.set(goal.h.pos[0], 0.4, goal.h.pos[2])
     const dist = Math.min(goal.h.dist, fitDistance(DIR_FOCUS, aspect) * 0.6)
+    // Looking a little past the place (away from the camera) moves it down the screen,
+    // clear of the buttons along the top of a short map.
+    const beyond = short ? dist * 0.2 : 0
+    target.set(goal.h.pos[0] - DIR_FOCUS.x * beyond, 0.4, goal.h.pos[2] - DIR_FOCUS.z * beyond)
     pos.copy(DIR_FOCUS).multiplyScalar(dist).add(target)
   }
 }
@@ -107,6 +160,9 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
   const aspect = size.width / Math.max(1, size.height)
   const aspectRef = useRef(aspect)
   aspectRef.current = aspect
+  const shortRef = useRef(false)
+  shortRef.current = size.height < 400
+  const spot = useMemo<[number, number]>(() => [0, 0], [])
   const dir = useMemo(() => new THREE.Vector3(), [])
   const shift = useMemo(() => new THREE.Vector3(), [])
   const gPos = useMemo(() => new THREE.Vector3(), [])
@@ -116,7 +172,7 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
   // First frame: the full map, or the deep-linked place.
   useEffect(() => {
     if (!controls || snapped.current) return
-    poseInto(focus ? { kind: 'focus', h: focus } : { kind: 'overview' }, aspectRef.current, gPos, gTarget)
+    poseInto(focus ? { kind: 'focus', h: focus } : { kind: 'overview' }, aspectRef.current, gPos, gTarget, shortRef.current)
     camera.position.copy(gPos)
     controls.target.copy(gTarget)
     controls.update()
@@ -162,7 +218,7 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
     if (!controls || !snapped.current) return
     const g = goal.current
     if (g) {
-      poseInto(g, aspectRef.current, gPos, gTarget)
+      poseInto(g, aspectRef.current, gPos, gTarget, shortRef.current)
       controls.maxDistance = Infinity
       // exponential ease, independent of frame rate (dt capped so a stalled tab cannot jump)
       const k = 1 - Math.exp(-Math.min(dt, 0.25) * 3.4)
@@ -184,17 +240,15 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
       // The further out, the closer the look-at point must stay to the island centre.
       const f = THREE.MathUtils.clamp((1 - d / dMax) * 1.2, 0, 1)
       const t = controls.target
-      shift.set(
-        THREE.MathUtils.clamp(t.x, CENTER.x - HALF_X * f, CENTER.x + HALF_X * f) - t.x,
-        THREE.MathUtils.clamp(t.y, 0, 1.2) - t.y,
-        THREE.MathUtils.clamp(t.z, CENTER.z - HALF_Z * f, CENTER.z + HALF_Z * f) - t.z,
-      )
+      clampToLand(t.x - CENTER.x, t.z - CENTER.z, f * LAND_INSET, spot)
+      shift.set(spot[0] + CENTER.x - t.x, THREE.MathUtils.clamp(t.y, 0, 1.2) - t.y, spot[1] + CENTER.z - t.z)
       if (shift.lengthSq() > 1e-8) {
         t.add(shift)
         camera.position.add(shift)
       }
     }
-    const z = d < dMax * 0.94
+    const home = aspectRef.current >= 0.9 ? DIR_LANDSCAPE : DIR_PORTRAIT
+    const z = d < dMax * 0.94 || dir.angleTo(home) > 0.14
     if (z !== zoomed.current) {
       zoomed.current = z
       onZoomedChange(z)
@@ -204,6 +258,8 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
       lastZoom.current = ratio
       document.documentElement.dataset.mapZoom = ratio // read by the browser tests
     }
+    const onLand = insideLand(controls.target.x - CENTER.x, controls.target.z - CENTER.z, 1.02) ? '1' : '0'
+    if (document.documentElement.dataset.mapOnLand !== onLand) document.documentElement.dataset.mapOnLand = onLand
   })
   return null
 }
@@ -255,6 +311,7 @@ function MarkerDriver({ selectedId }: { selectedId: string | null }) {
       } else hidden.current.add(h.id)
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -100%)`
       el.style.opacity = show ? '1' : '0'
+      el.style.visibility = show ? 'visible' : 'hidden' // also removes it from the Tab order
       el.style.pointerEvents = show ? 'auto' : 'none'
       el.style.zIndex = String(Math.max(1, Math.round((1 - v.z) * 5000)))
       if (show) el.removeAttribute('data-hidden')
@@ -271,8 +328,22 @@ function MarkerDriver({ selectedId }: { selectedId: string | null }) {
  */
 function MarkerLayer({ selectedId, onSelect }: { selectedId: string | null; onSelect: (id: string) => void }) {
   const { t, s } = useCamp()
+  const layer = useRef<HTMLDivElement>(null)
+  // The markers are DOM buttons above the canvas, so pass scroll-wheel zooming through to the map.
+  useEffect(() => {
+    const el = layer.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      const canvas = el.parentElement?.querySelector('canvas')
+      if (!canvas) return
+      e.preventDefault()
+      canvas.dispatchEvent(new WheelEvent('wheel', { deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode, clientX: e.clientX, clientY: e.clientY, ctrlKey: e.ctrlKey, bubbles: true, cancelable: true }))
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div ref={layer} className="pointer-events-none absolute inset-0 overflow-clip">
       {HOTSPOTS.map((h) => {
         const sel = h.id === selectedId
         const zone = h.kind === 'zone'
@@ -297,7 +368,7 @@ function MarkerLayer({ selectedId, onSelect }: { selectedId: string | null; onSe
             title={t(h.name)}
             data-hotspot={h.id}
             data-selected={sel || undefined}
-            className={`group absolute left-0 top-0 flex cursor-pointer flex-col items-center transition-opacity duration-200 will-change-transform hover:!z-[99998] focus-visible:!z-[99998] ${sel ? '!z-[99999]' : ''}`}
+            className={`group absolute left-0 top-0 flex cursor-pointer touch-none flex-col items-center transition-opacity duration-200 will-change-transform hover:!z-[99998] focus-visible:!z-[99998] ${sel ? '!z-[99999]' : ''}`}
             style={{ opacity: 0 }}
           >
             {/* name: selected, hovered or focused markers only */}
@@ -353,7 +424,7 @@ export function CampMap3D({
         ? 'linear-gradient(180deg,#a9c6e2 0%,#e9eef0 100%)'
         : 'linear-gradient(180deg,#8fcbf5 0%,#e3f4fd 100%)'
   return (
-    <div className="absolute inset-0" style={{ background: sky }} role="application" aria-label={s.map.mapOf}>
+    <div className="absolute inset-0 isolate" style={{ background: sky }} role="application" aria-label={s.map.mapOf}>
       <Canvas shadows dpr={[1, 1.75]} camera={{ position: [0, 78, 92], fov: FOV, near: 1, far: 900 }} gl={{ antialias: true, alpha: true, toneMapping: THREE.NeutralToneMapping }}>
         <Suspense fallback={null}>
           <Atmosphere season={season} time={time} />
