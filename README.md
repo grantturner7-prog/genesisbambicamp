@@ -1,11 +1,12 @@
 # Genesis Youth Adventures × Bambi Glamping
 
 Bilingual (繁體中文 / English) website for an American-style winter and summer camp
-for ages 10–14 at Bambi Glamping, Sanwan, Miaoli.
+at Bambi Glamping, Sanwan, Miaoli: Options A and B for ages 10–14, and Option C, a
+3-day family camp for ages 7–9 with an accompanying adult.
 
 | Page | Path | What it is |
 | --- | --- | --- |
-| Landing page | `/` | Hero, activities by season, stay & meals, daily schedule, safety & insurance, dates & fees, refund calculator, packing list, FAQ, registration |
+| Landing page | `/` | Hero, activities by season, stay & meals, safety & insurance, dates & fees, refund calculator, packing list, FAQ, registration |
 | Explore the Facilities | `/facilities/` | 3D camp map laid out one-to-one from Bambi's official camp map, with click-through panels (photos, features, menus, safety rules) |
 
 ## Run it
@@ -34,7 +35,23 @@ including under a sub-path.
 - `src/media/`: photo manifest and the source URL of every photo.
 - `scripts/audit-copy.mjs`: fails the build on cram-school wording, banned
   disclaimers, the wrong township, "wooden cabins", alcohol on a menu, unlicensed
-  movie-night copy, or a missing statutory disclosure.
+  movie-night copy, a missing statutory disclosure, or copy that contradicts the camp
+  facts below.
+
+## Camp facts the copy must match
+
+- Three meals a day: buffet breakfast, a DIY lunch with the chef, evening buffet. The
+  final evening is the signature family dinner with Wagyu beef. No afternoon tea.
+- Snacks are not part of the fee. Parents choose a coupon pack (`snackShop.couponPacks`:
+  NT$1,000 / 2,000 / 3,000); campers get the coupons at check-in and exchange them at
+  the Airstream snack shop beside the pool.
+- Option A (5 Days / 4 Nights) runs Tuesday to Saturday. Option B (4 Days / 3 Nights)
+  runs Wednesday to Saturday.
+- Option C (3 Days / 2 Nights, `familyCamp`): ages 7–9 with an accompanying adult. One
+  camper van sleeps four: 1 adult + up to 3 campers, or 2 parents + up to 2 campers.
+  Adults look after their campers until 09:00 and from 19:00; the camp team runs the day.
+- No daily timetable is published yet. Add it (and the list of activities) to
+  `src/home/content.ts` when the partners supply it.
 
 ## Before going public
 
@@ -46,3 +63,6 @@ Run `npm run launch-check`. In particular:
 - The registration form sends nothing until `registration.endpoint` is set.
 - The snack-shop menu and the pool, kayak and campfire rules are drafts for the camp
   kitchen, lifeguard and insurer to confirm.
+- The handover documents (Docs 2–4, including the contract) still describe four meals
+  a day and Monday/Tuesday starts. Update them to match the camp facts above before the
+  contract PDF is linked.

@@ -4,6 +4,11 @@ import type { Area } from './types'
 
 const { cohort, pool, venue } = campConfig
 
+const twd = (n: number) => `NT$${n.toLocaleString('en-US')}`
+const packs = campConfig.snackShop.couponPacks.map(twd)
+/** "NT$1,000, NT$2,000 or NT$3,000" */
+const COUPON_PACKS = { en: packs.slice(0, -1).join(', ') + ' or ' + packs[packs.length - 1], zh: packs.slice(0, -1).join('、') + ' 或 ' + packs[packs.length - 1] }
+
 /**
  * Area content. Every string is bilingual (en + zh-TW) and is scanned by
  * `npm run audit` against the Taiwan regulatory guardrails (Doc 3, Part 2).
@@ -24,8 +29,8 @@ export const AREAS: Area[] = [
       zh: '每位營員的冒險，從這裡開始。',
     },
     summary: {
-      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, and check in at the reception unit just inside, where counselors greet every family. Option A campers ride the round-trip charter bus from the Designated Tour Bus Zone near National Taichung Theater. Option B families drop off on Tuesday between 14:00 and 14:30, and campers ride the charter bus back on Friday.',
-      zh: '營員抵達苗栗三灣斑比跳跳大門後，在入口旁的報到處報到，隊輔會親切迎接每個家庭。方案 A 營員搭乘由臺中國家歌劇院周邊指定遊覽車臨停區出發的專車往返；方案 B 家長於週二 14:00–14:30 送達園區，週五由遊覽車專車返回。',
+      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, and check in at the reception unit just inside, where counselors greet every family. Option A campers ride the round-trip charter bus from the Designated Tour Bus Zone near National Taichung Theater. Option B families drop off on Wednesday between 14:00 and 14:30, and campers ride the charter bus back on Saturday.',
+      zh: '營員抵達苗栗三灣斑比跳跳大門後，在入口旁的報到處報到，隊輔會親切迎接每個家庭。方案 A 營員搭乘由臺中國家歌劇院周邊指定遊覽車臨停區出發的專車往返；方案 B 家長於週三 14:00–14:30 送達園區，週六由遊覽車專車返回。',
     },
     icon: 'DoorClosed',
     accent: '#8a6a43',
@@ -43,8 +48,8 @@ export const AREAS: Area[] = [
         icon: 'Car',
         title: { en: 'Parent drop-off (Option B)', zh: '家長送達（方案 B）' },
         body: {
-          en: 'Tuesday 14:00–14:30 at the Sanwan gate. The Friday return charter bus is included.',
-          zh: '週二 14:00–14:30 於三灣園區大門報到；週五搭乘遊覽車專車返回，費用已含。',
+          en: 'Wednesday 14:00–14:30 at the Sanwan gate. The Saturday return charter bus is included.',
+          zh: '週三 14:00–14:30 於三灣園區大門報到；週六搭乘遊覽車專車返回，費用已含。',
         },
       },
       {
@@ -74,13 +79,13 @@ export const AREAS: Area[] = [
     ],
     facts: [
       { label: { en: 'Venue', zh: '營地' }, value: { en: 'Bambi Glamping, Sanwan, Miaoli', zh: '斑比跳跳・苗栗三灣' } },
-      { label: { en: 'Option B drop-off', zh: '方案 B 報到' }, value: { en: 'Tuesday 14:00–14:30', zh: '週二 14:00–14:30' } },
+      { label: { en: 'Option B drop-off', zh: '方案 B 報到' }, value: { en: 'Wednesday 14:00–14:30', zh: '週三 14:00–14:30' } },
       { label: { en: 'Gate curfew', zh: '大門管制' }, value: { en: 'Nightly at 23:00', zh: '每晚 23:00' } },
       { label: { en: 'Address', zh: '地址' }, value: venue.address },
     ],
     parentNote: {
-      en: 'Arrive relaxed: counselors handle luggage and van assignments while you say your goodbyes.',
-      zh: '輕鬆抵達：行李與露營車分配交給隊輔，您只需要好好跟孩子道別。',
+      en: 'Options A and B: arrive relaxed. Counselors handle luggage and van assignments while you say your goodbyes.',
+      zh: '方案 A、B：輕鬆抵達，行李與露營車分配交給隊輔，您只需要好好跟孩子道別。',
     },
   },
 
@@ -89,12 +94,12 @@ export const AREAS: Area[] = [
     id: 'vans',
     name: { en: 'Luxury Camper Vans', zh: '頂級豪華露營車' },
     tagline: {
-      en: 'Hotel comfort, three campers to a van.',
-      zh: '三人一車，飯店等級的舒適小窩。',
+      en: 'Hotel comfort in every camper van.',
+      zh: '每一輛露營車，都是飯店等級的舒適小窩。',
     },
     summary: {
-      en: 'Campers sleep in Bambi’s climate-controlled luxury camper vans: three same-gender campers per van, each van with a double bed, a bunk bed and its own wet/dry bathroom. The camp has 50 units in six zones (A to G) across lakeside, meadow and forest settings, and counselors check every van each morning and evening.',
-      zh: '營員入住斑比跳跳的冷暖空調頂級豪華露營車：每車三名同性別營員，配備一張雙人床、一組上下舖與獨立乾濕分離衛浴。全區共 50 輛，分為 A 到 G 六區，分佈於湖畔、草地與森林之間，隊輔每日早晚各檢查一次。',
+      en: 'Campers sleep in Bambi’s climate-controlled luxury camper vans, each with a double bed, a bunk bed and its own wet/dry bathroom. In Options A and B, three same-gender campers share a van and counselors check every van each morning and evening; in the Option C family camp, each group shares a van with its accompanying adult. The camp has 50 units in six zones (A to G) across lakeside, meadow and forest settings.',
+      zh: '營員入住斑比跳跳的冷暖空調頂級豪華露營車，每車配備一張雙人床、一組上下舖與獨立乾濕分離衛浴。方案 A 與方案 B 每車三名同性別營員，隊輔每日早晚各檢查一次；方案 C 親子梯則由陪同成人與同組營員同住一車。全區共 50 輛，分為 A 到 G 六區，分佈於湖畔、草地與森林之間。',
     },
     icon: 'BedDouble',
     accent: '#3e6f8f',
@@ -102,7 +107,7 @@ export const AREAS: Area[] = [
     features: [
       {
         icon: 'Users',
-        title: { en: '3 campers per van', zh: '每車三名營員' },
+        title: { en: '3 campers per van (Options A and B)', zh: '每車三名營員（方案 A、B）' },
         body: {
           en: 'Three same-gender campers share each van, grouped in age-based cabin teams.',
           zh: '每車三名同性別營員，並依年齡小隊分組。',
@@ -150,7 +155,7 @@ export const AREAS: Area[] = [
       },
     ],
     facts: [
-      { label: { en: 'Campers per van', zh: '每車人數' }, value: { en: `${cohort.campersPerVan}, same gender`, zh: `${cohort.campersPerVan} 人，同性別` } },
+      { label: { en: 'Campers per van (Options A and B)', zh: '每車人數（方案 A、B）' }, value: { en: `${cohort.campersPerVan}, same gender`, zh: `${cohort.campersPerVan} 人，同性別` } },
       { label: { en: 'Beds', zh: '床鋪' }, value: { en: '1 double + 1 bunk', zh: '雙人床 1 張＋上下舖 1 組' } },
       { label: { en: 'Settings', zh: '營位環境' }, value: { en: 'Lakeside · Meadow · Forest', zh: '湖畔・草地・森林' } },
       { label: { en: 'Inspections', zh: '檢查' }, value: { en: 'Morning and evening', zh: '每日早晚各一次' } },
@@ -196,7 +201,7 @@ export const AREAS: Area[] = [
         },
         {
           icon: 'Clock',
-          title: { en: 'Lights out at 21:30', zh: '21:30 熄燈' },
+          title: { en: 'Lights out after the evening check', zh: '晚間檢查後熄燈' },
           body: {
             en: 'An evening cabin check wraps up the day before lights out.',
             zh: '隊輔進行晚間內務檢查後熄燈就寢。',
@@ -219,12 +224,12 @@ export const AREAS: Area[] = [
     id: 'dining',
     name: { en: 'Bambi Grand Dining Hall', zh: '斑比大飯店（餐廳）' },
     tagline: {
-      en: 'Four meals a day — and our rainy-day headquarters.',
-      zh: '一泊四食的美味基地，也是雨天備案大本營。',
+      en: 'Three meals a day — and our rainy-day headquarters.',
+      zh: '每日三餐的美味基地，也是雨天備案大本營。',
     },
     summary: {
-      en: 'Breakfast, lunch, pizza afternoon tea and dinner are served in the Grand Dining Hall (斑比大飯店), a glass-walled hall with floor-to-ceiling windows onto the palms, with campfire snacks in the evening. When rain or a cold front arrives, the hall and the covered activity area host team challenges and craft workshops, so the day carries on.',
-      zh: '早餐、午餐、披薩下午茶與晚餐都在斑比大飯店享用，大面落地窗外就是棕櫚樹景，晚間再加上營火點心。遇到下雨或寒流時，大廳與遮雨棚活動區會化身團隊挑戰與手作工坊，讓一天的行程照常進行。',
+      en: 'The Grand Dining Hall (斑比大飯店) is a glass-walled hall with floor-to-ceiling windows onto the palms. Three meals a day are served here: a buffet breakfast, a lunch that campers make themselves with the chef, and an evening buffet. The final evening is the signature family dinner with Wagyu beef. When rain or a cold front arrives, the hall and the covered activity area host team challenges and craft workshops, so the day carries on.',
+      zh: '每日三餐都在斑比大飯店享用：自助式早餐、營員跟著主廚親手做的午餐，以及自助式晚餐；最後一晚則是和牛招牌家宴。餐廳的大面落地窗外就是棕櫚樹景。遇到下雨或寒流時，大廳與遮雨棚活動區會化身團隊挑戰與手作工坊，讓一天的行程照常進行。',
     },
     icon: 'Utensils',
     accent: '#a8652f',
@@ -232,10 +237,18 @@ export const AREAS: Area[] = [
     features: [
       {
         icon: 'Utensils',
-        title: { en: 'Four daily meals (一泊四食)', zh: '一泊四食' },
+        title: { en: 'Three meals a day', zh: '每日三餐' },
         body: {
-          en: 'Buffet breakfast, a chef-led lunch that campers cook themselves, afternoon tea with handmade Neapolitan pizza and a dinner feast — plus campfire snacks.',
-          zh: '自助早餐、營員親手完成的主廚帶領午餐、手工拿坡里披薩下午茶與晚餐盛宴，晚上還有營火點心。',
+          en: 'A buffet breakfast, a DIY lunch that campers make with the chef, and an evening buffet. Snacks are separate: campers use snack coupons at the Airstream snack shop.',
+          zh: '自助式早餐、營員跟著主廚親手做的 DIY 午餐，以及自助式晚餐。點心另計：營員憑點心券到 Airstream 點心站兌換。',
+        },
+      },
+      {
+        icon: 'Star',
+        title: { en: 'Signature family dinner on the final evening', zh: '最後一晚：招牌家宴' },
+        body: {
+          en: 'The last night ends with Bambi Glamping’s signature family dinner, with Wagyu beef at the centre of the table. Campers registered as non-beef or vegetarian have their own alternative.',
+          zh: '營隊最後一晚，由斑比跳跳的招牌家宴壓軸，主角是和牛。事先登記不吃牛或素食的營員，另有專屬餐點。',
         },
       },
       {
@@ -264,59 +277,49 @@ export const AREAS: Area[] = [
       },
     ],
     facts: [
-      { label: { en: 'Meals', zh: '餐點' }, value: { en: '4 daily + campfire snacks', zh: '每日四餐＋營火點心' } },
+      { label: { en: 'Meals', zh: '餐點' }, value: { en: 'Breakfast buffet · DIY lunch · Evening buffet', zh: '自助式早餐・DIY 午餐・自助式晚餐' } },
+      { label: { en: 'Final evening', zh: '最後一晚' }, value: { en: 'Signature family dinner with Wagyu beef', zh: '和牛招牌家宴' } },
       { label: { en: 'Dietary trays', zh: '特殊餐盤' }, value: { en: 'Non-beef · Pork-free · Vegetarian · Allergy-safe', zh: '不吃牛・不吃豬・蛋奶素・過敏專盤' } },
       { label: { en: 'Rain plan', zh: '雨天備案' }, value: { en: 'Dining hall + covered pavilion', zh: '斑比大飯店＋遮雨棚' } },
     ],
     menu: {
       title: { en: 'A day at the table', zh: '一日餐桌' },
       intro: {
-        en: 'The rhythm of meals across a camp day. Daily dishes change with the chef and the season.',
-        zh: '營隊一日的用餐節奏。每日菜色會依主廚安排與季節調整。',
+        en: 'Three meals a day, with a signature dinner to finish. Daily dishes change with the chef and the season.',
+        zh: '每日三餐，最後一晚以招牌家宴壓軸。每日菜色會依主廚安排與季節調整。',
       },
       sections: [
         {
           title: { en: 'Breakfast', zh: '早餐' },
           icon: 'Sunrise',
-          time: '08:00',
           items: [
-            { name: { en: 'Buffet breakfast', zh: '自助早餐' }, note: { en: 'Hot and cold choices, fruit and drinks to start the day.', zh: '冷熱餐點、水果與飲品，元氣開場。' } },
+            { name: { en: 'Buffet breakfast', zh: '自助式早餐' }, note: { en: 'Hot and cold choices, fruit and drinks to start the day.', zh: '冷熱餐點、水果與飲品，元氣開場。' } },
           ],
         },
         {
           title: { en: 'Lunch', zh: '午餐' },
-          icon: 'Soup',
-          time: '12:00',
+          icon: 'ChefHat',
+          tag: { en: 'DIY with the chef', zh: '跟著主廚動手做' },
           items: [
-            { name: { en: 'Chef-led lunch', zh: '主廚帶領午餐' }, note: { en: 'Made by the campers with the chef in the Culinary Guild. A different dish each day, with handmade pizza on one of them.', zh: '由營員在主廚美食工坊與主廚一起完成，每天不同菜色，其中一天是手工披薩。' } },
-          ],
-        },
-        {
-          title: { en: 'Afternoon tea', zh: '下午茶' },
-          icon: 'Pizza',
-          time: '15:30',
-          items: [
-            { name: { en: 'Italian herb chicken pizza', zh: '義式香料嫩雞披薩' }, note: { en: 'Handmade Neapolitan-style, baked fresh by the kitchen.', zh: '手工拿坡里式披薩，由廚房現烤。' }, allergens: ['gluten', 'milk'] },
-            { name: { en: 'Hawaiian pizza', zh: '夏威夷披薩' }, note: { en: 'Contains pork (ham).', zh: '含豬肉（火腿）。' }, allergens: ['gluten', 'milk'] },
-            { name: { en: 'Garden vegetable pizza', zh: '蔬食蛋奶披薩' }, note: { en: 'Ovo-lacto vegetarian.', zh: '蛋奶素。' }, allergens: ['gluten', 'milk', 'egg'], vegetarian: true },
-            { name: { en: 'Cinnamon apple pizza', zh: '肉桂蘋果披薩' }, note: { en: 'A sweet one to finish.', zh: '甜口味收尾。' }, allergens: ['gluten', 'milk'], vegetarian: true },
+            { name: { en: 'DIY lunch with the chef', zh: '主廚帶領的 DIY 午餐' }, note: { en: 'Made by the campers with the chef in the Culinary Guild. A different dish each day.', zh: '由營員在主廚美食工坊與主廚一起完成，每天不同菜色。' } },
+            { name: { en: 'Handmade Neapolitan pizza', zh: '手工拿坡里披薩' }, note: { en: 'On pizza day, campers make their own.', zh: '披薩日由營員親手製作。' }, allergens: ['gluten', 'milk'] },
           ],
         },
         {
           title: { en: 'Dinner', zh: '晚餐' },
           icon: 'Utensils',
-          time: '18:00',
           items: [
-            { name: { en: 'Camp dinner feast', zh: '營隊晚餐盛宴' }, note: { en: 'A shared, family-style evening meal.', zh: '大家一起圍桌共享的豐盛晚餐。' } },
+            { name: { en: 'Evening buffet', zh: '自助式晚餐' }, note: { en: 'A buffet dinner together in the Grand Dining Hall.', zh: '全營隊在斑比大飯店一起享用自助式晚餐。' } },
           ],
         },
         {
-          title: { en: 'Campfire snacks', zh: '營火點心' },
-          icon: 'Flame',
-          time: '19:30',
+          title: { en: 'Signature family dinner', zh: '招牌家宴' },
+          icon: 'Star',
+          tag: { en: 'Final evening', zh: '最後一晚' },
+          highlight: true,
           items: [
-            { name: { en: 'S’mores by the fire', zh: '營火棉花糖夾心餅' }, allergens: ['gluten', 'milk', 'soy'] },
-            { name: { en: 'Popcorn', zh: '爆米花' }, vegetarian: true },
+            { name: { en: 'Wagyu beef', zh: '和牛' }, note: { en: 'The centrepiece of the last evening of camp.', zh: '營隊最後一晚的主角。' } },
+            { name: { en: 'Non-beef and vegetarian alternatives', zh: '不吃牛與素食專屬餐點' }, note: { en: 'For campers who registered them on the health form.', zh: '提供給已在健康調查表登記的營員。' } },
           ],
         },
       ],
@@ -324,6 +327,10 @@ export const AREAS: Area[] = [
         {
           en: 'Non-beef, pork-free, vegetarian and allergy trays are pre-registered on the health form.',
           zh: '不吃牛、不吃豬、蛋奶素與過敏餐盤，請於健康調查表事先登記。',
+        },
+        {
+          en: 'Snacks between meals are not part of the camp fee: campers use snack coupons at the Airstream snack shop beside the pool.',
+          zh: '正餐之間的點心不包含在營隊費用內：營員憑點心券到戲水池旁的 Airstream 點心站兌換。',
         },
       ],
     },
@@ -382,8 +389,8 @@ export const AREAS: Area[] = [
         icon: 'CupSoda',
         title: { en: 'Airstream snack shop', zh: 'Airstream 點心站' },
         body: {
-          en: 'The classic silver Airstream right at the pool’s edge is the camp snack shop. During camp it serves soft drinks and snacks only, with no alcohol.',
-          zh: '池畔邊那輛經典銀色 Airstream 就是營隊點心站。營期間只供應無酒精飲品與點心。',
+          en: 'The classic silver Airstream right at the pool’s edge is the camp snack shop. Campers exchange their snack coupons here for soft drinks and snacks. No alcohol is served during camp.',
+          zh: '池畔邊那輛經典銀色 Airstream 就是營隊點心站，營員憑點心券在這裡兌換無酒精飲品與點心。營期間不供應任何含酒精飲品。',
         },
       },
       {
@@ -414,15 +421,14 @@ export const AREAS: Area[] = [
     menu: {
       title: { en: 'Airstream Snack Shop', zh: 'Airstream 點心站' },
       intro: {
-        en: 'Cold drinks and light bites for after the splash. A kid-friendly menu with no alcohol.',
-        zh: '戲水之後的冰涼飲品與輕食。兒童友善菜單，完全不含酒精。',
+        en: 'Cold drinks and light bites, exchanged for snack coupons. A kid-friendly menu with no alcohol.',
+        zh: '憑點心券兌換的冰涼飲品與輕食。兒童友善菜單，完全不含酒精。',
       },
       sections: [
         {
           title: { en: 'Cool drinks', zh: '冰涼飲品' },
           icon: 'CupSoda',
           items: [
-            { name: { en: 'Chilled water', zh: '冰鎮飲用水' }, note: { en: 'Free refills at the water station.', zh: '飲水機可無限續杯。' }, vegetarian: true, caffeineFree: true },
             { name: { en: 'Fresh lemonade', zh: '鮮榨檸檬水' }, vegetarian: true, caffeineFree: true },
             { name: { en: 'Iced barley tea', zh: '冰麥茶' }, note: { en: 'Roasted-barley tea, naturally caffeine-free.', zh: '烘焙大麥茶，天然無咖啡因。' }, allergens: ['gluten'], vegetarian: true, caffeineFree: true },
             { name: { en: 'Orange or apple juice', zh: '柳橙汁或蘋果汁' }, vegetarian: true, caffeineFree: true },
@@ -451,7 +457,8 @@ export const AREAS: Area[] = [
         },
       ],
       footnotes: [
-        { en: 'Included in your camper’s fee — no spending money needed.', zh: '已含在營隊費用中，孩子不需要另外準備零用錢。' },
+        { en: `Snacks are not part of the camp fee. Parents can choose a coupon pack of ${COUPON_PACKS.en}; the coupons are handed to campers at check-in.`, zh: `點心不包含在營隊費用內。家長可選購 ${COUPON_PACKS.zh} 的點心券，於報到時交給營員。` },
+        { en: 'Drinking water is free at the water dispenser by the pool. Items on this menu vary with the season.', zh: '池畔飲水機免費供應飲用水。點心站供應品項依季節調整。' },
         { en: 'Allergies and dietary needs recorded on the health form are checked by the nurse and dining lead.', zh: '健康調查表登記的過敏與飲食需求，由護理師與餐飲安全主管核對。' },
       ],
     },
@@ -540,20 +547,20 @@ export const AREAS: Area[] = [
     name: { en: 'Star Cinema', zh: '星空電影院' },
     tagline: { en: 'Movie night under the stars — a camp highlight.', zh: '星空下的電影之夜，營隊亮點。' },
     summary: {
-      en: 'When night falls, the lawn beside the campfire becomes an open-air cinema: a big screen, rows of camp chairs, string lights overhead and the fire crackling close by. Every film is shown under a public-performance licence (公播版) and is chosen for ages 10–14.',
-      zh: '夜幕低垂後，營火旁的草地化身露天電影院：大螢幕、成排的露營椅、頭頂的串燈，還有一旁劈啪作響的營火。所有影片皆為取得公開播映授權的公播版，並依 10–14 歲營員挑選。',
+      en: 'When night falls, the lawn beside the campfire becomes an open-air cinema: a big screen, rows of camp chairs, string lights overhead and the fire crackling close by. Every film is shown under a public-performance licence (公播版) and is chosen to suit the campers’ ages.',
+      zh: '夜幕低垂後，營火旁的草地化身露天電影院：大螢幕、成排的露營椅、頭頂的串燈，還有一旁劈啪作響的營火。所有影片皆為取得公開播映授權的公播版，並依營員年齡挑選。',
     },
     icon: 'Film',
     accent: '#3b3f7a',
     accent2: '#c9c2ff',
     features: [
       { icon: 'Film', title: { en: 'Big screen on the lawn', zh: '草地上的大螢幕' }, body: { en: 'An outdoor screen with camp chairs set out in rows on the grass.', zh: '戶外大螢幕，草地上整齊排好露營椅。' } },
-      { icon: 'BadgeCheck', title: { en: 'Licensed films only', zh: '只播公播版影片' }, body: { en: 'Films are public-performance licensed (公播版) and age-appropriate for 10–14.', zh: '影片皆為公播版授權，內容適合 10–14 歲。' } },
-      { icon: 'Flame', title: { en: 'Campfire alongside', zh: '營火相伴' }, body: { en: 'The campfire circle is steps away, with marshmallows and popcorn from the evening snack.', zh: '營火區就在旁邊，搭配晚間點心的棉花糖與爆米花。' } },
+      { icon: 'BadgeCheck', title: { en: 'Licensed films only', zh: '只播公播版影片' }, body: { en: 'Films are public-performance licensed (公播版) and age-appropriate for the campers.', zh: '影片皆為公播版授權，內容適合營員年齡。' } },
+      { icon: 'Flame', title: { en: 'Campfire alongside', zh: '營火相伴' }, body: { en: 'The campfire circle is only a few steps away.', zh: '營火區就在旁邊，幾步路就到。' } },
       { icon: 'Users', title: { en: 'Seated with your team', zh: '與小隊同坐' }, body: { en: 'Cabin teams sit together with their counselors.', zh: '各小隊與隊輔坐在一起。' } },
     ],
     facts: [
-      { label: { en: 'Show time', zh: '放映時間' }, value: { en: 'From 19:30', zh: '19:30 起' } },
+      { label: { en: 'Show time', zh: '放映時間' }, value: { en: 'After dark', zh: '天黑之後' } },
       { label: { en: 'Where', zh: '地點' }, value: { en: 'Lawn beside the campfire', zh: '營火區旁草地' } },
       { label: { en: 'Films', zh: '影片' }, value: { en: 'Public-performance licensed', zh: '公播版授權' } },
     ],
@@ -566,7 +573,7 @@ export const AREAS: Area[] = [
       rules: [
         { icon: 'Users', title: { en: 'Stay with your team', zh: '與小隊同行' }, body: { en: 'Walk to and from the lawn with your counselor, and tell them before you leave your seat.', zh: '由隊輔帶隊往返草地，離開座位前先告訴隊輔。' } },
         { icon: 'Flame', title: { en: 'Chairs stay clear of the fire', zh: '座椅遠離營火' }, body: { en: 'Seating stays in the marked area, away from the campfire circle.', zh: '座椅擺放在標示範圍內，與營火區保持距離。' } },
-        { icon: 'Moon', title: { en: 'Torch for the walk back', zh: '回程使用手電筒' }, body: { en: 'Counselors light the path back to the vans before lights out at 21:30.', zh: '隊輔會照亮回露營車的路，21:30 熄燈就寢。' } },
+        { icon: 'Moon', title: { en: 'Torch for the walk back', zh: '回程使用手電筒' }, body: { en: 'Counselors light the path back to the vans.', zh: '隊輔會照亮回露營車的路。' } },
       ],
     },
   },
@@ -580,8 +587,8 @@ export const AREAS: Area[] = [
       zh: '在星空下烤棉花糖、演短劇、玩問答。',
     },
     summary: {
-      en: 'Each evening the whole camp gathers around the fire for S’mores, team skits and trivia night. It is the loudest, funniest and warmest part of the day, with counselors tending the fire throughout.',
-      zh: '每天晚上全營隊圍坐營火旁，一起烤棉花糖夾心餅、演出團隊短劇、玩問答之夜。這是一天中最熱鬧、最歡樂也最溫暖的時刻，營火全程由隊輔看顧。',
+      en: 'On campfire nights the whole camp gathers around the fire for S’mores, team skits and trivia. It is the loudest, funniest and warmest part of the day, with counselors tending the fire throughout.',
+      zh: '營火之夜，全營隊圍坐營火旁，一起烤棉花糖夾心餅、演出團隊短劇、玩問答。這是一天中最熱鬧、最歡樂也最溫暖的時刻，營火全程由隊輔看顧。',
     },
     icon: 'Flame',
     accent: '#c4561f',
@@ -590,11 +597,10 @@ export const AREAS: Area[] = [
       { icon: 'Flame', title: { en: 'Campfire S’mores', zh: '營火棉花糖夾心餅' }, body: { en: 'Toast, sandwich, repeat — with long sticks and a counselor close by.', zh: '用長長的烤叉烤棉花糖，隊輔就在身邊。' } },
       { icon: 'Sparkles', title: { en: 'Skits & Trivia Night', zh: '短劇與問答之夜' }, body: { en: 'Teams write, rehearse and perform their own skits, then go head to head in camp trivia.', zh: '小隊自己編劇、排練、演出，接著進行營隊知識問答對決。' } },
       { icon: 'Moon', title: { en: 'Night ecology walk', zh: '夜間生態散步' }, body: { en: 'A short, counselor-led walk to listen for night sounds.', zh: '由隊輔帶領的夜間散步，一起聆聽夜晚的聲音。' } },
-      { icon: 'Clock', title: { en: 'Lights out at 21:30', zh: '21:30 熄燈' }, body: { en: 'An evening cabin check wraps up the day.', zh: '晚間內務檢查後熄燈就寢。' } },
+      { icon: 'Clock', title: { en: 'Evening check, then lights out', zh: '晚間檢查後熄燈' }, body: { en: 'An evening cabin check wraps up the day.', zh: '晚間內務檢查後熄燈就寢。' } },
     ],
     facts: [
-      { label: { en: 'Evening', zh: '時段' }, value: { en: '19:30 Campfire S’mores, Skits & Trivia', zh: '19:30 營火棉花糖、短劇與問答' } },
-      { label: { en: 'Lights out', zh: '熄燈' }, value: { en: cohort.lightsOut, zh: cohort.lightsOut } },
+      { label: { en: 'Evening', zh: '時段' }, value: { en: 'Campfire S’mores, Skits & Trivia', zh: '營火棉花糖、短劇與問答' } },
     ],
     seasonNote: {
       winter: { en: 'Winter evenings: a warm coat and fleece layers are on the packing list.', zh: '冬季夜晚：行李清單包含保暖外套與刷毛外層。' },

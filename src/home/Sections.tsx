@@ -6,7 +6,10 @@ import { useCamp } from '../i18n/CampState'
 import { FACILITIES_URL, ROOT } from '../lib/root'
 import { Icon } from '../map/icons'
 import { PHOTO_CREDIT, photoSrc } from '../media/media'
-import { ACTIVITIES, FAQ, HERO, PACKING, PRICING, RAIN_PLAN, SAFETY, SEASON_INTRO, STAY, TIMELINE } from './content'
+import { ACTIVITIES, FAMILY, FAQ, HERO, PACKING, PRICING, RAIN_PLAN, SAFETY, SCHEDULE_PENDING, SEASON_INTRO, STAY } from './content'
+
+/** Which option a Register button opens the form on. */
+export type CampOption = 'A' | 'B' | 'C'
 
 const fmtTWD = (n: number) => `NT$${n.toLocaleString('en-US')}`
 
@@ -43,6 +46,10 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-cedar/60 bg-cedar/20 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-cedar-100">{s.hero.badge}</span>
             <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">{offerA ? t(offerA.dates) : t(HERO.datesPending)}</span>
+            <a href="#family-camp" data-family-pill className="flex items-center gap-1 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur transition hover:bg-white/20">
+              {t(HERO.familyCamp)}
+              <ArrowRight size={12} aria-hidden />
+            </a>
           </div>
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.24em] text-cedar">{s.hero.kicker}</p>
           <h1 className="font-display mt-2 text-[2.6rem] font-semibold leading-[1.04] tracking-tight sm:text-6xl">{s.hero.headline[season]}</h1>
@@ -60,7 +67,7 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
             ))}
           </ul>
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <button type="button" onClick={onRegister} className="rounded-full bg-cedar px-6 py-3.5 text-[15px] font-bold text-pine-900 shadow-lg transition hover:brightness-105">
+            <button type="button" onClick={() => onRegister()} className="rounded-full bg-cedar px-6 py-3.5 text-[15px] font-bold text-pine-900 shadow-lg transition hover:brightness-105">
               {s.nav.register}
             </button>
             <a href={FACILITIES_URL} className="flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-6 py-3.5 text-[15px] font-bold backdrop-blur transition hover:bg-white/20">
@@ -123,6 +130,18 @@ export function SeasonExplorer() {
           </li>
         ))}
       </ul>
+      <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1.5fr]">
+        <aside className="rounded-3xl border border-dashed border-pine/25 bg-white/70 p-6" data-schedule-pending>
+          <Icon name="Clock" size={26} className="text-cedar-600" />
+          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug text-pine">{t(SCHEDULE_PENDING.title)}</h3>
+          <p className="mt-2 text-[15px] leading-relaxed text-ink/70">{t(SCHEDULE_PENDING.body)}</p>
+        </aside>
+        <aside className="rounded-3xl bg-pine p-6 text-white shadow-lg" data-rain-plan>
+          <CloudRain size={26} className="text-cedar" aria-hidden />
+          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug">{t(RAIN_PLAN.title)}</h3>
+          <p className="mt-2 text-[15px] leading-relaxed text-white/85">{t(RAIN_PLAN.body)}</p>
+        </aside>
+      </div>
     </Section>
   )
 }
@@ -168,57 +187,67 @@ export function Stay() {
           </article>
         ))}
       </div>
-      <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_1fr]">
+      <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_1fr]" data-meals>
         <div className="rounded-3xl border border-pine/10 bg-white p-6 shadow-sm">
           <h3 className="font-display text-2xl font-semibold text-pine">{t(STAY.mealsTitle)}</h3>
           <ol className="mt-4 divide-y divide-pine/10">
             {STAY.meals.map((m) => (
-              <li key={m.time} className="flex items-center gap-4 py-3">
+              <li key={m.name.en} className="flex items-start gap-4 py-3.5">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cedar-100 text-cedar-600">
                   <Icon name={m.icon} size={19} />
                 </span>
-                <span className="w-12 text-sm font-bold tabular-nums text-ink/50">{m.time}</span>
-                <span className="text-[15px] font-semibold text-pine-900">{t(m.name)}</span>
+                <span>
+                  <span className="block text-[16px] font-bold text-pine-900">{t(m.name)}</span>
+                  <span className="mt-0.5 block text-sm leading-relaxed text-ink/70">{t(m.note)}</span>
+                </span>
               </li>
             ))}
           </ol>
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">{t(STAY.diet)}</p>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <article className="relative isolate flex min-h-[27rem] flex-col justify-end overflow-hidden rounded-3xl bg-pine-900 text-white shadow-lg ring-2 ring-cedar/50 lg:min-h-80" data-signature-dinner>
+          <img src={photoSrc(STAY.signature.photo)} alt="" loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-pine-900 via-pine-900/70 to-pine-900/10" />
+          <div className="p-6">
+            <span className="inline-flex items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
+              <Star size={11} fill="currentColor" aria-hidden />
+              {t(STAY.signature.kicker)}
+            </span>
+            <h3 className="font-display mt-3 text-2xl font-semibold leading-snug sm:text-[1.75rem]">{t(STAY.signature.title)}</h3>
+            <p className="mt-2 text-[15px] leading-relaxed text-white/85">{t(STAY.signature.body)}</p>
+          </div>
+        </article>
+      </div>
+      <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_1.1fr]">
+        <div className="rounded-3xl border border-pine/10 bg-white p-6 shadow-sm" data-snack-coupons>
+          <h3 className="flex items-center gap-2.5 font-display text-2xl font-semibold text-pine">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cedar-100 text-cedar-600">
+              <Icon name="Ticket" size={19} />
+            </span>
+            {t(STAY.snacks.title)}
+          </h3>
+          <p className="mt-3 text-[15px] leading-relaxed text-ink/75">{t(STAY.snacks.body)}</p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {campConfig.snackShop.couponPacks.map((n) => (
+              <li key={n} className="rounded-full border border-cedar/50 bg-cedar-100/60 px-3.5 py-1.5 text-sm font-bold tabular-nums text-pine-900">
+                {fmtTWD(n)}
+              </li>
+            ))}
+          </ul>
+          {campConfig.snackShop.couponTerms && <p className="mt-3 text-[13px] leading-relaxed text-ink/65">{t(campConfig.snackShop.couponTerms)}</p>}
+          <a href={`${FACILITIES_URL}#snack`} className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-cedar-600 hover:underline">
+            {t(STAY.snacks.link)}
+            <ArrowRight size={14} aria-hidden />
+          </a>
+        </div>
+        {/* on wide screens the photos take the height of the coupon card instead of stretching it */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:h-0 lg:min-h-full lg:grid-cols-2 lg:grid-rows-2">
           {(['buffet-eggs', 'breakfast-plate', 'buffet-fruit-yogurt', 'pizza-fresh'] as const).map((id) => (
-            <img key={id} src={photoSrc(id)} alt="" loading="lazy" className="h-full min-h-36 w-full rounded-2xl object-cover" />
+            <img key={id} src={photoSrc(id)} alt="" loading="lazy" className="h-full min-h-32 w-full rounded-2xl object-cover lg:min-h-0" />
           ))}
         </div>
       </div>
       <p className="mt-3 text-right text-[11px] text-ink/45">{t(PHOTO_CREDIT)}</p>
-    </Section>
-  )
-}
-
-/* ───────────────────────────────────────────────────────── Daily timeline */
-export function Timeline() {
-  const { s, t } = useCamp()
-  return (
-    <Section id="day">
-      <Heading kicker={s.home.dayKicker} title={s.home.dayTitle} />
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-        <ol className="relative border-l-2 border-cedar/40 pl-6">
-          {TIMELINE.map((e) => (
-            <li key={e.time} className="relative pb-5 last:pb-0">
-              <span className="absolute -left-[2.15rem] grid h-8 w-8 place-items-center rounded-full border-2 border-cedar bg-parchment text-cedar-600">
-                <Icon name={e.icon} size={15} />
-              </span>
-              <p className="text-sm font-bold tabular-nums text-cedar-600">{e.time}</p>
-              <p className="text-[16px] font-semibold text-pine-900">{t(e.name)}</p>
-            </li>
-          ))}
-        </ol>
-        <aside className="h-fit rounded-3xl bg-pine p-6 text-white shadow-lg">
-          <CloudRain size={28} className="text-cedar" aria-hidden />
-          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug">{t(RAIN_PLAN.title)}</h3>
-          <p className="mt-3 text-[15px] leading-relaxed text-white/85">{t(RAIN_PLAN.body)}</p>
-        </aside>
-      </div>
     </Section>
   )
 }
@@ -260,10 +289,11 @@ export function Safety() {
 }
 
 /* ───────────────────────────────────────────────────────── Pricing */
-export function Pricing({ onRegister, children }: { onRegister: () => void; children?: ReactNode }) {
+export function Pricing({ onRegister, children }: { onRegister: (option?: CampOption) => void; children?: ReactNode }) {
   const { s, t, season } = useCamp()
   const ses = campConfig.sessions[season]
   const ta = campConfig.travelAgency
+  const fam = campConfig.familyCamp
   const pending = s.footer.pending
   const card = (key: 'optionA' | 'optionB') => {
     const o = PRICING[key]
@@ -275,8 +305,8 @@ export function Pricing({ onRegister, children }: { onRegister: () => void; chil
         <p className="mt-4 text-sm font-semibold text-cedar-600">{offer ? t(offer.dates) : t(PRICING.datesPending)}</p>
         <p className="font-display mt-1 text-4xl font-semibold text-pine-900">{offer ? fmtTWD(offer.fee) : t(PRICING.feePending)}</p>
         <p className="mt-4 text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
-        <p className="mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(o.bus)}</p>
-        <button type="button" onClick={onRegister} className="mt-5 rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
+        <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(o.bus)}</p>
+        <button type="button" aria-label={`${s.nav.register}: ${t(o.name)}`} data-register-open={key === 'optionA' ? 'A' : 'B'} onClick={() => onRegister(key === 'optionA' ? 'A' : 'B')} className="mt-auto rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
           {s.nav.register}
         </button>
       </article>
@@ -289,6 +319,49 @@ export function Pricing({ onRegister, children }: { onRegister: () => void; chil
         <SeasonToggle tone="light" />
       </div>
       <div className="mt-10 grid gap-5 md:grid-cols-2">{(['optionA', 'optionB'] as const).map(card)}</div>
+      <article id="family-camp" className="mt-5 scroll-mt-20 overflow-hidden rounded-3xl border-2 border-cedar/60 bg-white shadow-sm" data-family-camp>
+        <div className="grid lg:grid-cols-[1fr_1.3fr]">
+          <div className="flex flex-col p-6">
+            <span className="inline-flex w-fit items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
+              <Star size={11} fill="currentColor" aria-hidden />
+              {t(FAMILY.badge)}
+            </span>
+            <h3 className="font-display mt-3 text-2xl font-semibold text-pine">{t(FAMILY.name)}</h3>
+            <p className="mt-1 text-sm font-semibold text-ink/60">{t(FAMILY.who)}</p>
+            <p className="mt-4 text-sm font-semibold text-cedar-600">{fam.dates ? t(fam.dates) : t(FAMILY.datesPending)}</p>
+            {fam.fees?.length ? (
+              <ul className="mt-2 divide-y divide-pine/10 text-[15px]">
+                {fam.fees.map((x) => (
+                  <li key={`${x.adults}-${x.campers}`} className="flex items-baseline justify-between gap-4 py-2">
+                    <span className="font-semibold text-ink/75">{t(FAMILY.feeRow(x.adults, x.campers))}</span>
+                    <span className="font-display text-2xl font-semibold tabular-nums text-pine-900">{fmtTWD(x.fee)}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="font-display mt-1 text-4xl font-semibold text-pine-900">{t(FAMILY.feePending)}</p>
+            )}
+            <p className="mt-1.5 text-[13px] font-medium text-ink/60">{t(FAMILY.feeNote)}</p>
+            <p className="mb-5 mt-4 text-sm leading-relaxed text-ink/75">{t(FAMILY.intro)}</p>
+            <button type="button" aria-label={`${s.nav.register}: ${t(FAMILY.name)}`} data-register-open="C" onClick={() => onRegister('C')} className="mt-auto w-fit rounded-full bg-pine px-6 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
+              {s.nav.register}
+            </button>
+          </div>
+          <ul className="grid content-center gap-3 bg-parchment-200/60 p-6">
+            {FAMILY.facts.map((x) => (
+              <li key={x.title.en} className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cedar-100 text-cedar-600">
+                  <Icon name={x.icon} size={19} />
+                </span>
+                <span>
+                  <span className="block text-[16px] font-bold text-pine-900">{t(x.title)}</span>
+                  <span className="mt-0.5 block text-sm leading-relaxed text-ink/70">{t(x.body)}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </article>
       <div className="mt-5 grid gap-5 lg:grid-cols-3">
         <div className="rounded-3xl border border-pine/10 bg-white p-6">
           <h3 className="flex items-center gap-2 text-lg font-bold text-pine-900">
