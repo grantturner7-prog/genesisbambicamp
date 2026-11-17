@@ -35,6 +35,7 @@ export interface Activity {
   highlight?: boolean
 }
 const both: Season[] = ['winter', 'summer']
+/** Seasonal highlights tied to the venue. The named camp games live in `games.ts`. */
 export const ACTIVITIES: Activity[] = [
   { icon: 'Sailboat', name: l('Lakeside Kayaking', '湖畔獨木舟（跳跳船）'), body: l('Single and double kayaks on the calm east lake, with a coach and a life jacket for every camper.', '在平靜的東側湖面划單人或雙人獨木舟，教練陪同、全員穿救生衣。'), seasons: both, photo: 'kayak-lake', spot: 'kayak' },
   { icon: 'Waves', name: l('Aurora Pool Relays', '極光戲水池接力'), body: l(`Supervised relays in the ${campConfig.pool.depthMinCm}–${campConfig.pool.depthMaxCm} cm Aurora Pool with a Sports Administration–certified lifeguard on duty. Summer sessions.`, `在水深 ${campConfig.pool.depthMinCm}–${campConfig.pool.depthMaxCm} 公分的極光戲水池進行接力，全程由體育署合格救生員值勤。夏季梯次限定。`), seasons: ['summer'], photo: 'pool-swim', spot: 'pool' },
@@ -42,10 +43,7 @@ export const ACTIVITIES: Activity[] = [
   { icon: 'Flame', name: l('Campfire S’mores, Skits & Trivia', '營火棉花糖、短劇與問答'), body: l('The whole camp around the brick fire pit: toast marshmallows, perform team skits and battle at trivia.', '全營隊圍著磚砌營火圈：烤棉花糖、演出小隊短劇、進行問答對決。'), seasons: both, photo: 'campfire-marshmallow', spot: 'campfire' },
   { icon: 'Bird', name: l('Waterbird Eco-Safari Tram', '歡樂遊園車生態導覽'), body: l('A guided tram loop through forest, meadow and lakeshore, timed to see egrets fly home at dusk.', '搭乘遊園車繞行森林、草原與湖岸，由導覽員解說，黃昏時欣賞鷺鳥歸巢。'), seasons: both, photo: 'tram-on-route', spot: 'tram' },
   { icon: 'ChefHat', name: l('Chef-Led Culinary Guild', '主廚美食工坊'), body: l('Lunch is hands-on. Every day the chef shows campers how to make that day’s lunch themselves: handmade Neapolitan pizza one day, a different dish the next. Then everyone eats what they made.', '午餐自己動手做。每天由主廚帶著營員親手完成當日午餐：一天是手工拿坡里披薩，隔天換另一道菜，每天都不一樣。做完就是大家的午餐。'), seasons: both, photo: 'pizza-hands', spot: 'dining' },
-  { icon: 'Tent', name: l('Wilderness Shelter & Knot Skills', '野外庇護所與繩結技巧'), body: l('Teams build a shelter that stands up on its own and learn the knots that hold it together.', '小隊合作搭建穩固的庇護所，並學會關鍵繩結。'), seasons: both },
   { icon: 'Leaf', name: l('Paracord & Moss-Ball Craft Studio', '傘繩與苔球手作工坊'), body: l('Braid a paracord keepsake and shape a living moss ball to take home.', '編織傘繩紀念品，再親手做一顆可以帶回家的苔球。'), seasons: both, photo: 'moss-ball' },
-  { icon: 'Compass', name: l('Orienteering & Scavenger Hunts', '定向越野與尋寶任務'), body: l('Read the map, find the checkpoints and solve the clues as a team.', '看地圖、找檢查點、解線索，全隊一起完成任務。'), seasons: both },
-  { icon: 'Flag', name: l('Capture the Flag & Lawn Challenges', '奪旗大戰與草地挑戰'), body: l('Strategy, speed and teamwork on the open meadow.', '在開闊草原上比策略、比速度，更比團隊默契。'), seasons: both },
   { icon: 'Moon', name: l('Night Ecology Walk & Camp Trivia', '夜間生態散步與營隊問答'), body: l('A counselor-led walk to listen for the night, then trivia on what you noticed.', '由隊輔帶領夜間散步聆聽自然，再用問答檢驗觀察力。'), seasons: both },
   { icon: 'Camera', name: l('Digital Camp Album & Keepsakes', '數位營隊相簿與紀念品'), body: l('A private digital photo album for families, a camp T-shirt and a Camp Participation Award.', '家長專屬數位相簿、營隊紀念 T-Shirt 與營隊參與證明。'), seasons: both },
 ]

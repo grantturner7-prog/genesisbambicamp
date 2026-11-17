@@ -8,6 +8,7 @@ const [{ AREAS }, { strings }, home, { campConfig }, media] = await Promise.all(
   load('/src/map/areas.ts'), load('/src/i18n/strings.ts'), load('/src/home/content.ts'), load('/src/config/campConfig.ts'), load('/src/media/media.ts'),
 ])
 const { HOTSPOTS } = await load('/src/map/hotspots.ts')
+const games = await load('/src/home/games.ts')
 
 /** Collect every string with its path. */
 const all = []
@@ -16,7 +17,7 @@ const walk = (v, path) => {
   else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}[${i}]`))
   else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`)
 }
-walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
+walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(games, 'games'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
 walk({ AREA_PHOTOS: media.AREA_PHOTOS, ZONE_PHOTOS: media.ZONE_PHOTOS, ZONES: media.ZONES }, 'media')
 walk({ sessions: campConfig.sessions, familyCamp: { dates: campConfig.familyCamp.dates }, snackShop: { couponTerms: campConfig.snackShop.couponTerms } }, 'config')
 
