@@ -228,9 +228,21 @@ for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone'
     await page.click('[data-full-map]'); await settle()
   }
 
+  // clicking the place that is already chosen flies back to it
+  await page.evaluate(() => document.querySelector('[data-hotspot="pool"]').click()); await page.waitForSelector('[data-panel="pool"]'); await settle()
+  const z0 = await zoom()
+  await page.mouse.move(mid[0] - 220, mid[1]); for (let i = 0; i < 5; i++) await page.mouse.wheel(0, 300)
+  await settle(); const z1 = await zoom()
+  await page.evaluate(() => document.querySelector('[data-hotspot="pool"]').click()); await settle()
+  ok('fix: clicking the chosen place again flies back to it', z1 > z0 + 0.03 && Math.abs((await zoom()) - z0) <= 0.02, `${z0} -> ${z1} -> ${await zoom()}`)
+  await page.click('[data-full-map]'); await settle()
+
   // rotated full map offers Full map, which restores the standard view
   await page.mouse.move(...mid); await page.mouse.down(); await page.mouse.move(mid[0] + 420, mid[1], { steps: 8 }); await page.mouse.up(); await settle()
   ok('fix: a rotated full map offers Full map', await page.locator('[data-full-map]').isVisible())
+  for (let k = 0; k < 2; k++) { await page.mouse.move(...mid); await page.mouse.down(); await page.mouse.move(mid[0] + 300, mid[1] + 40, { steps: 8 }); await page.mouse.up(); await settle() }
+  const rot = await page.evaluate(() => { const c = document.querySelector('main canvas').getBoundingClientRect(); return [...document.querySelectorAll('[data-hotspot]')].filter((e) => { const r = e.getBoundingClientRect(); const x = r.left + r.width / 2; return x >= c.left && x <= c.right && r.bottom >= c.top && r.bottom <= c.bottom }).length })
+  ok('fix: turning the full map keeps the whole camp framed', Math.abs((await zoom()) - 1) <= 0.01 && rot === 17, `zoom ${await zoom()} markers on canvas ${rot}/17`)
   await page.click('[data-full-map]'); await settle()
   ok('fix: Full map restores the standard view', (await page.locator('[data-full-map]').count()) === 0 && Math.abs((await zoom()) - 1) <= 0.01)
 

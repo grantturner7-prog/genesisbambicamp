@@ -149,7 +149,7 @@ interface Controls {
  *  - the look-at point is kept over the island, in a zone that shrinks to the centre
  *    as the camera zooms out, so the map can never be dragged off the board.
  */
-function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hotspot | null; resetKey: number; onZoomedChange: (z: boolean) => void; onInteract: () => void }) {
+function CameraRig({ focus, flyKey, resetKey, onZoomedChange, onInteract }: { focus: Hotspot | null; flyKey: number; resetKey: number; onZoomedChange: (z: boolean) => void; onInteract: () => void }) {
   const camera = useThree((st) => st.camera)
   const size = useThree((st) => st.size)
   const controls = useThree((st) => st.controls) as unknown as Controls | null
@@ -163,6 +163,13 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
   const shortRef = useRef(false)
   shortRef.current = size.height < 400
   const spot = useMemo<[number, number]>(() => [0, 0], [])
+  const off = useMemo(() => new THREE.Vector3(), [])
+  const sphNow = useMemo(() => new THREE.Spherical(), [])
+  const sphGoal = useMemo(() => new THREE.Spherical(), [])
+  const prevDir = useMemo(() => new THREE.Vector3(), [])
+  const prevD = useRef(0)
+  /** True while the view is the full map; rotating then keeps the whole camp framed. */
+  const pinnedFull = useRef(true)
   const dir = useMemo(() => new THREE.Vector3(), [])
   const shift = useMemo(() => new THREE.Vector3(), [])
   const gPos = useMemo(() => new THREE.Vector3(), [])
@@ -180,11 +187,12 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controls])
 
-  // Selecting a place flies there. Closing its panel leaves the camera where it is.
+  // Selecting a place flies there, also when it is clicked again after the view was moved.
+  // Closing its panel leaves the camera where it is.
   useEffect(() => {
     if (snapped.current && focus) goal.current = { kind: 'focus', h: focus }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusId])
+  }, [focusId, flyKey])
 
   // "Full map".
   const firstReset = useRef(true)
@@ -222,20 +230,43 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
       controls.maxDistance = Infinity
       // exponential ease, independent of frame rate (dt capped so a stalled tab cannot jump)
       const k = 1 - Math.exp(-Math.min(dt, 0.25) * 3.4)
-      camera.position.lerp(gPos, k)
+      // Fly in orbit coordinates: ease the look-at point, the distance, the tilt and the
+      // heading (the short way round) separately, so the camera swings around the camp
+      // instead of cutting across the top of it.
+      sphNow.setFromVector3(off.subVectors(camera.position, controls.target))
+      sphGoal.setFromVector3(off.subVectors(gPos, gTarget))
+      let dTheta = sphGoal.theta - sphNow.theta
+      dTheta = ((((dTheta + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) - Math.PI
+      sphNow.radius *= Math.pow(sphGoal.radius / Math.max(sphNow.radius, 1e-3), k)
+      sphNow.phi += (sphGoal.phi - sphNow.phi) * k
+      sphNow.theta += dTheta * k
+      sphNow.makeSafe()
       controls.target.lerp(gTarget, k)
-      if (camera.position.distanceTo(gPos) < 0.08) {
+      camera.position.setFromSpherical(sphNow).add(controls.target)
+      if (camera.position.distanceTo(gPos) < 0.08 && controls.target.distanceTo(gTarget) < 0.05) {
         camera.position.copy(gPos)
         controls.target.copy(gTarget)
+        pinnedFull.current = g.kind === 'overview'
         goal.current = null
       }
       controls.update()
     }
     dir.subVectors(camera.position, controls.target)
-    const d = Math.max(dir.length(), 1e-3)
+    let d = Math.max(dir.length(), 1e-3)
     dir.multiplyScalar(1 / d)
     const dMax = fitDistance(dir, aspectRef.current)
     if (!goal.current) {
+      // On the full map, turning the view must keep the whole camp framed: the fitting
+      // distance changes with the heading, so follow it. Only a zoom-in (distance drops
+      // while the heading stays put) leaves the full map.
+      const turned = prevDir.angleTo(dir) > 0.002
+      const zoomedIn = prevD.current > 0 && d < prevD.current * 0.99 && !turned
+      if (pinnedFull.current && zoomedIn) pinnedFull.current = false
+      else if (!pinnedFull.current && d >= dMax * 0.985) pinnedFull.current = true
+      if (pinnedFull.current && Math.abs(d - dMax) > 1e-3) {
+        camera.position.copy(controls.target).addScaledVector(dir, dMax)
+        d = dMax
+      }
       controls.maxDistance = dMax
       // The further out, the closer the look-at point must stay to the island centre.
       const f = THREE.MathUtils.clamp((1 - d / dMax) * 1.2, 0, 1)
@@ -247,6 +278,8 @@ function CameraRig({ focus, resetKey, onZoomedChange, onInteract }: { focus: Hot
         camera.position.add(shift)
       }
     }
+    prevDir.copy(dir)
+    prevD.current = d
     const home = aspectRef.current >= 0.9 ? DIR_LANDSCAPE : DIR_PORTRAIT
     const z = d < dMax * 0.94 || dir.angleTo(home) > 0.14
     if (z !== zoomed.current) {
@@ -405,12 +438,15 @@ function MarkerLayer({ selectedId, onSelect }: { selectedId: string | null; onSe
 
 export function CampMap3D({
   selected,
+  flyKey,
   onSelect,
   resetKey,
   onZoomedChange,
   onInteract,
 }: {
   selected: Hotspot | null
+  /** Bumped on every place click, so clicking the current place again flies back to it. */
+  flyKey: number
   onSelect: (id: string) => void
   resetKey: number
   onZoomedChange: (zoomedIn: boolean) => void
@@ -437,7 +473,7 @@ export function CampMap3D({
           <Facilities />
           <MarkerDriver selectedId={selected?.id ?? null} />
         </Suspense>
-        <CameraRig focus={selected} resetKey={resetKey} onZoomedChange={onZoomedChange} onInteract={onInteract} />
+        <CameraRig focus={selected} flyKey={flyKey} resetKey={resetKey} onZoomedChange={onZoomedChange} onInteract={onInteract} />
         <OrbitControls makeDefault enableDamping dampingFactor={0.08} screenSpacePanning={false} minDistance={MIN_DISTANCE} maxDistance={400} minPolarAngle={0.2} maxPolarAngle={1.25} />
       </Canvas>
       <MarkerLayer selectedId={selected?.id ?? null} onSelect={onSelect} />

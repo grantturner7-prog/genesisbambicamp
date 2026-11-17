@@ -20,6 +20,7 @@ export function FacilitiesPage() {
   })
   const [tab, setTab] = useState<TabId>(() => HOTSPOT_BY_ID[window.location.hash.slice(1)]?.tab ?? 'highlights')
   const [resetKey, setResetKey] = useState(0)
+  const [flyKey, setFlyKey] = useState(0)
   // True once the camera is closer than the full-map framing (by a click, scroll or pinch).
   const [zoomedIn, setZoomedIn] = useState(false)
   const [introSeen, setIntroSeen] = useState(false)
@@ -28,7 +29,10 @@ export function FacilitiesPage() {
 
   const select = useCallback((id: string | null) => {
     setSelId(id)
-    if (id) setIntroSeen(true)
+    if (id) {
+      setIntroSeen(true)
+      setFlyKey((k) => k + 1)
+    }
     setTab((id && HOTSPOT_BY_ID[id].tab) || 'highlights')
     setUrl(id ? `#${id}` : window.location.pathname + window.location.search)
   }, [])
@@ -79,7 +83,7 @@ export function FacilitiesPage() {
       <Header page="facilities" />
       <main id="main" className="relative flex h-[calc(100svh-4rem)] min-h-[300px] flex-col md:flex-row">
         <div className="relative min-h-0 flex-1">
-          <CampMap3D selected={selected} onSelect={select} resetKey={resetKey} onZoomedChange={setZoomedIn} onInteract={onInteract} />
+          <CampMap3D selected={selected} flyKey={flyKey} onSelect={select} resetKey={resetKey} onZoomedChange={setZoomedIn} onInteract={onInteract} />
 
           {/* intro card: shown until the visitor first touches the map */}
           {!selected && !zoomedIn && !introSeen && (
