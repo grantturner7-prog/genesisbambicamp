@@ -6,6 +6,7 @@ import { SeasonToggle, TimeToggle } from '../components/ui'
 import { useCamp } from '../i18n/CampState'
 import { AreaPanel } from '../map/AreaPanel'
 import { CampMap3D } from '../map/CampMap3D'
+import { setUrl } from '../lib/root'
 import { HOTSPOTS, HOTSPOT_BY_ID } from '../map/hotspots'
 import { Icon } from '../map/icons'
 import type { TabId } from '../map/types'
@@ -24,7 +25,7 @@ export function FacilitiesPage() {
   const select = useCallback((id: string | null) => {
     setSelId(id)
     setTab((id && HOTSPOT_BY_ID[id].tab) || 'highlights')
-    window.history.replaceState(null, '', id ? `#${id}` : window.location.pathname + window.location.search)
+    setUrl(id ? `#${id}` : window.location.pathname + window.location.search)
   }, [])
   // Deep links such as /facilities/#cinema also work while the page is already open.
   useEffect(() => {

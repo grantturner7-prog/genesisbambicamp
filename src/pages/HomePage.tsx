@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Header } from '../components/Header'
+import { setUrl } from '../lib/root'
 import { LegalFooter } from '../components/LegalFooter'
 import { RefundCalculator, RegisterModal } from '../home/Register'
 import { FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay, Timeline } from '../home/Sections'
@@ -10,7 +11,7 @@ export function HomePage() {
   const open = useCallback(() => setRegistering(true), [])
   const close = useCallback(() => {
     setRegistering(false)
-    if (window.location.hash === '#register') window.history.replaceState(null, '', window.location.pathname)
+    if (window.location.hash === '#register') setUrl(window.location.pathname)
   }, [])
   // "#register" (e.g. from the Facilities page header) opens the modal.
   useEffect(() => {
