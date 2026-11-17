@@ -35,7 +35,8 @@ export function makeGroundMaterial(tex: { mask: THREE.Texture; noise: THREE.Text
     cMud: color('#6a5f43'),
     cReed: color('#4c6f36'),
   }
-  const material = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.92, metalness: 0 })
+  // phones get the plain diffuse model: the land is matt, so nothing is lost but shading work
+  const material = high ? new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.92, metalness: 0 }) : new THREE.MeshLambertMaterial({ color: '#ffffff' })
   material.customProgramCacheKey = () => `terrain-ground-${high ? 'high' : 'low'}`
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms)
@@ -79,7 +80,11 @@ export function makeGroundMaterial(tex: { mask: THREE.Texture; noise: THREE.Text
           vec4 nA = texture2D(tNoise, gp * 0.0125);
           vec4 nB = texture2D(tNoise, gp * 0.083 + vec2(0.37, 0.11));
           vec4 nC = texture2D(tNoise, gp * 0.71);
-          vec4 nD = texture2D(tNoise, gp * 0.27 + vec2(0.13, 0.61));
+          #ifdef TERRAIN_HIGH
+            vec4 nD = texture2D(tNoise, gp * 0.27 + vec2(0.13, 0.61));
+          #else
+            vec4 nD = nB.gbar; // one lookup fewer on phones
+          #endif
           float grain = nC.b;
           float tuft = nD.b * 0.55 + nD.g * 0.45;
           float nearPool = 1.0 - smoothstep(uPool.z - 1.2, uPool.z, distance(gp, uPool.xy));
@@ -243,9 +248,9 @@ export function makeCopingMaterial(tex: { mask: THREE.Texture; noise: THREE.Text
 }
 
 /** Woodland crowns: one tinted, softly shaded material, darker underneath. */
-export function makeCrownMaterial() {
-  const material = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.9, metalness: 0 })
-  material.customProgramCacheKey = () => 'terrain-crown'
+export function makeCrownMaterial(high: boolean) {
+  const material = high ? new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.9, metalness: 0 }) : new THREE.MeshLambertMaterial({ color: '#ffffff' })
+  material.customProgramCacheKey = () => `terrain-crown-${high ? 'high' : 'low'}`
   material.onBeforeCompile = (shader) => {
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nvarying float vCrownY;')

@@ -17,16 +17,16 @@ export { POOL_WATER_Y, WATER_Y } from './terrain/fields'
  */
 function buildTerrain(high: boolean) {
   const fields = buildFields(high)
-  const noise = groundNoiseTexture(256)
-  const ripple = rippleTexture(high ? 256 : 128)
-  const canopy = canopyTexture(high ? 512 : 256, CANOPY_CROWNS, CANOPY_TILE)
+  const noise = groundNoiseTexture(256, high)
+  const ripple = rippleTexture(high ? 256 : 128, high)
+  const canopy = canopyTexture(high ? 512 : 256, CANOPY_CROWNS, CANOPY_TILE, high)
   const pool = buildPool(fields)
 
   const ground = makeGroundMaterial({ mask: fields.mask, noise, canopy }, pool.bounds, high)
   const lake = makeLakeMaterial({ mask: fields.mask, ripple }, high)
   const poolWater = makePoolMaterial({ mask: fields.mask, ripple }, pool.steps, pool.lights, high)
   const coping = makeCopingMaterial({ mask: fields.mask, noise })
-  const crown = makeCrownMaterial()
+  const crown = makeCrownMaterial(high)
 
   const groundGeo = buildGround(fields, high)
   const lakeGeo = buildLakeSurface(fields)

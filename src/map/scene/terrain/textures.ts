@@ -41,14 +41,18 @@ function tileFbm(size: number, seed: number, cells: number, octaves: number, gai
   return acc
 }
 
-function dataTexture(data: Uint8Array, size: number, aniso: number): THREE.DataTexture {
+/**
+ * A tiling, mip-mapped data texture. The high tier filters it fully (trilinear, with a little
+ * anisotropy where asked); phones take the cheaper nearest-mip filtering.
+ */
+function dataTexture(data: Uint8Array, size: number, high: boolean, anisotropy = 1): THREE.DataTexture {
   const tex = new THREE.DataTexture(data, size, size, THREE.RGBAFormat)
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping
   tex.colorSpace = THREE.NoColorSpace
   tex.magFilter = THREE.LinearFilter
-  tex.minFilter = THREE.LinearMipmapLinearFilter
+  tex.minFilter = high ? THREE.LinearMipmapLinearFilter : THREE.LinearMipmapNearestFilter
   tex.generateMipmaps = true
-  tex.anisotropy = aniso
+  tex.anisotropy = high ? anisotropy : 1
   tex.needsUpdate = true
   return tex
 }
@@ -57,7 +61,7 @@ function dataTexture(data: Uint8Array, size: number, aniso: number): THREE.DataT
  * Four independent tiling noises in one texture:
  * R broad patches, G medium patches, B fine grain, A a second set of medium patches.
  */
-export function groundNoiseTexture(size: number): THREE.DataTexture {
+export function groundNoiseTexture(size: number, high: boolean): THREE.DataTexture {
   const r = tileFbm(size, 11, 4, 4)
   const g = tileFbm(size, 23, 8, 3)
   const b = tileFbm(size, 37, 32, 3, 0.7)
@@ -69,11 +73,11 @@ export function groundNoiseTexture(size: number): THREE.DataTexture {
     data[i * 4 + 2] = b[i] * 255
     data[i * 4 + 3] = a[i] * 255
   }
-  return dataTexture(data, size, 4)
+  return dataTexture(data, size, high, 4)
 }
 
 /** Water surface: RG = ripple slope (x, z), B = ripple height, A = a second height field (caustics). */
-export function rippleTexture(size: number): THREE.DataTexture {
+export function rippleTexture(size: number, high: boolean): THREE.DataTexture {
   const h = tileFbm(size, 71, 5, 4, 0.55)
   const c = tileFbm(size, 83, 7, 3, 0.5)
   const data = new Uint8Array(size * size * 4)
@@ -89,7 +93,7 @@ export function rippleTexture(size: number): THREE.DataTexture {
       data[i + 3] = c[y * size + x] * 255
     }
   }
-  return dataTexture(data, size, 1)
+  return dataTexture(data, size, high)
 }
 
 /**
@@ -97,7 +101,7 @@ export function rippleTexture(size: number): THREE.DataTexture {
  * RG = surface normal (x, z), B = a random tint per crown, A = crown height (0 in the gaps).
  * Draped over the land around the camp it reads as a continuous forest canopy.
  */
-export function canopyTexture(size: number, crowns: number, tileWorld: number): THREE.DataTexture {
+export function canopyTexture(size: number, crowns: number, tileWorld: number, high: boolean): THREE.DataTexture {
   const rnd = mulberry32(97)
   const G = crowns
   const px = new Float32Array(G * G)
@@ -161,5 +165,5 @@ export function canopyTexture(size: number, crowns: number, tileWorld: number): 
       out[i + 3] = height[row + x] * 255
     }
   }
-  return dataTexture(data, size, 4)
+  return dataTexture(data, size, high, 4)
 }
