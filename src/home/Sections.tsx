@@ -25,7 +25,7 @@ export function Heading({ kicker, title, intro, dark }: { kicker: string; title:
   return (
     <div className="max-w-2xl">
       <Kicker className={dark ? '!text-cedar' : ''}>{kicker}</Kicker>
-      <h2 className={`font-display mt-2 text-3xl font-semibold leading-tight tracking-tight sm:text-[2.6rem] ${dark ? 'text-white' : 'text-pine'}`}>{title}</h2>
+      <h2 className={`font-display mt-2 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-[2.6rem] ${dark ? 'text-white' : 'text-pine'}`}>{title}</h2>
       {intro && <p className={`mt-4 text-[17px] leading-relaxed ${dark ? 'text-white/80' : 'text-ink/75'}`}>{intro}</p>}
     </div>
   )
@@ -102,7 +102,7 @@ export function SeasonExplorer() {
       </div>
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((a) => (
-          <li key={a.name.en} className={`group flex flex-col overflow-hidden rounded-3xl border bg-white shadow-sm ${a.highlight ? 'border-cedar ring-2 ring-cedar/30' : 'border-pine/10'}`}>
+          <li key={a.name.en} className={`group flex flex-col overflow-hidden rounded-3xl border bg-white shadow-sm ${a.photo ? '' : 'self-start'} ${a.highlight ? 'border-cedar ring-2 ring-cedar/30' : 'border-pine/10'}`}>
             {a.photo && (
               <div className="relative aspect-[16/9] overflow-hidden">
                 <img src={photoSrc(a.photo)} alt="" loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
