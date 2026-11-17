@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { RotateCcw, Route } from 'lucide-react'
+import { Map as MapIcon, Route } from 'lucide-react'
 import { Header } from '../components/Header'
 import { LegalFooter } from '../components/LegalFooter'
-import { SeasonToggle, TimeToggle } from '../components/ui'
+import { TimeToggle } from '../components/ui'
 import { useCamp } from '../i18n/CampState'
 import { AreaPanel } from '../map/AreaPanel'
 import { CampMap3D } from '../map/CampMap3D'
@@ -20,6 +20,10 @@ export function FacilitiesPage() {
   })
   const [tab, setTab] = useState<TabId>(() => HOTSPOT_BY_ID[window.location.hash.slice(1)]?.tab ?? 'highlights')
   const [resetKey, setResetKey] = useState(0)
+  // True once the camera is closer than the full-map framing (by a click, scroll or pinch).
+  const [zoomedIn, setZoomedIn] = useState(false)
+  const [introSeen, setIntroSeen] = useState(false)
+  const onInteract = useCallback(() => setIntroSeen(true), [])
   const selected = selId ? HOTSPOT_BY_ID[selId] : null
 
   const select = useCallback((id: string | null) => {
@@ -41,7 +45,12 @@ export function FacilitiesPage() {
   }, [])
   const index = selected ? HOTSPOTS.indexOf(selected) : -1
   const step = useCallback((d: 1 | -1) => select(HOTSPOTS[(index + d + HOTSPOTS.length) % HOTSPOTS.length].id), [index, select])
+  // Closing a panel keeps the camera where it is; "Full map" is the way back out.
   const close = useCallback(() => select(null), [select])
+  const fullMap = useCallback(() => {
+    select(null)
+    setResetKey((k) => k + 1)
+  }, [select])
   const places = useMemo(() => HOTSPOTS, [])
 
   return (
@@ -49,41 +58,38 @@ export function FacilitiesPage() {
       <Header page="facilities" />
       <main id="main" className="relative flex h-[calc(100svh-4rem)] min-h-[520px] flex-col md:flex-row">
         <div className="relative min-h-0 flex-1">
-          <CampMap3D selected={selected} onSelect={select} resetKey={resetKey} />
+          <CampMap3D selected={selected} onSelect={select} resetKey={resetKey} onZoomedChange={setZoomedIn} onInteract={onInteract} />
 
-          {/* intro card */}
-          {!selected && (
-            <div className="rise-in glass pointer-events-none absolute left-3 top-3 max-w-[min(22rem,calc(100%-1.5rem))] rounded-2xl p-4 text-white sm:left-5 sm:top-5 sm:p-5">
+          {/* intro card: shown until the visitor first touches the map */}
+          {!selected && !zoomedIn && !introSeen && (
+            <div className="rise-in glass pointer-events-none absolute left-3 top-3 max-w-[calc(100%-11.5rem)] rounded-2xl p-3.5 text-white sm:left-5 sm:top-5 sm:max-w-80 sm:p-4">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cedar">{s.map.kicker}</p>
-              <h1 className="font-display mt-1 text-xl font-semibold leading-tight sm:text-2xl">{s.map.title}</h1>
-              <p className="mt-2 hidden text-[13px] leading-relaxed text-white/85 sm:block">{s.map.intro}</p>
-              <p className="mt-2 text-[11px] text-white/60">
-                {s.map.hintDrag} · {s.map.hintZoom} · {s.map.hintTap}
+              <h1 className="font-display mt-1 text-lg font-semibold leading-tight sm:text-xl">{s.map.title}</h1>
+              <p className="mt-1.5 text-[11px] leading-relaxed text-white/70">
+                {s.map.hintTap}
+                <span className="hidden sm:inline">
+                  {' '}
+                  · {s.map.hintDrag} · {s.map.hintZoom}
+                </span>
               </p>
             </div>
+          )}
+
+          {/* Full map: appears once the view is closer than the whole camp */}
+          {(selected || zoomedIn) && (
+            <button type="button" onClick={fullMap} data-full-map className="rise-in absolute left-3 top-3 flex items-center gap-2 rounded-full bg-cedar px-4 py-2.5 text-sm font-bold text-pine-900 shadow-lg transition hover:brightness-105 sm:left-5 sm:top-5">
+              <MapIcon size={16} aria-hidden />
+              {s.map.fullMap}
+            </button>
           )}
 
           {/* controls */}
           <div className="absolute right-3 top-3 flex flex-col items-end gap-2 sm:right-5 sm:top-5">
             <TimeToggle />
-            <div className={`md:hidden ${selected ? 'hidden' : ''}`}>
-              <SeasonToggle />
-            </div>
             <div className={`gap-2 ${selected ? 'hidden md:flex' : 'flex'}`}>
               <button type="button" onClick={() => select(HOTSPOTS[0].id)} className="glass flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-semibold text-white hover:brightness-125">
                 <Route size={15} aria-hidden />
                 {s.map.tour}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  select(null)
-                  setResetKey((k) => k + 1)
-                }}
-                className="glass flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-semibold text-white hover:brightness-125"
-              >
-                <RotateCcw size={15} aria-hidden />
-                {s.map.reset}
               </button>
             </div>
           </div>

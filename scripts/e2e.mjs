@@ -104,6 +104,92 @@ const newPage = async (lang = 'en') => {
   ok('map: Zone A shows 14 camper vans', (await page.textContent('[data-panel="zone-A"]')).includes('14 camper vans'))
   await page.context().close()
 }
+// ── Facilities: the map stays on the board, icon markers, Full map button
+for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone', width: 390, height: 844 }]) {
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: vp.width < 600 })
+  await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'summer') })
+  const page = await ctx.newPage()
+  page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+  await page.goto(BASE + '/facilities/')
+  await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
+  await page.waitForTimeout(1500)
+  const zoom = () => page.evaluate(() => Number(document.documentElement.dataset.mapZoom))
+  // spread of the markers relative to the canvas = how much of the board the map covers
+  const spread = () => page.evaluate(() => {
+    const c = document.querySelector('main canvas').getBoundingClientRect()
+    const pts = [...document.querySelectorAll('[data-hotspot]')].map((e) => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2 - c.left, r.bottom - c.top] })
+    const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1])
+    const inside = pts.filter(([x, y]) => x >= 0 && x <= c.width && y >= 0 && y <= c.height).length
+    return { w: (Math.max(...xs) - Math.min(...xs)) / c.width, h: (Math.max(...ys) - Math.min(...ys)) / c.height, cx: (Math.max(...xs) + Math.min(...xs)) / 2 / c.width, cy: (Math.max(...ys) + Math.min(...ys)) / 2 / c.height, inside, total: pts.length }
+  })
+  const shownNames = () => page.evaluate(() => [...document.querySelectorAll('[data-marker-name]')].filter((e) => getComputedStyle(e).display !== 'none').map((e) => e.textContent))
+  const T = `map/${vp.name}: `
+  const box = await page.locator('main canvas').boundingBox()
+  const mid = [box.x + box.width / 2, box.y + box.height / 2]
+
+  ok(T + 'opens on the full map', (await zoom()) >= 0.99, String(await zoom()))
+  const s0 = await spread()
+  ok(T + 'full map fills the board and every marker is on it', s0.inside === s0.total && Math.max(s0.w, s0.h) >= 0.4, JSON.stringify(s0))
+  ok(T + 'markers are icons: no names shown until one is chosen', (await shownNames()).length === 0)
+  ok(T + 'no Full map button while already on the full map', (await page.locator('[data-full-map]').count()) === 0)
+
+  // try hard to zoom out
+  await page.mouse.move(...mid)
+  for (let i = 0; i < 40; i++) await page.mouse.wheel(0, 400)
+  await page.waitForTimeout(1200)
+  const s1 = await spread()
+  ok(T + 'cannot zoom out past the full map', (await zoom()) <= 1.0 && Math.abs(Math.max(s1.w, s1.h) - Math.max(s0.w, s0.h)) < 0.04, `zoom ${await zoom()} spread ${JSON.stringify(s1)}`)
+
+  // try hard to drag the map away (pan = right mouse button)
+  await page.mouse.move(...mid); await page.mouse.down({ button: 'right' })
+  await page.mouse.move(mid[0] + box.width * 0.9, mid[1] + box.height * 0.6, { steps: 12 }); await page.mouse.up({ button: 'right' })
+  await page.waitForTimeout(1200)
+  const s2 = await spread()
+  ok(T + 'cannot drag the full map off the board', s2.inside === s2.total && Math.abs(s2.cx - s0.cx) < 0.06 && Math.abs(s2.cy - s0.cy) < 0.06, JSON.stringify(s2))
+
+  // choose a place
+  await page.evaluate(() => document.querySelector('[data-hotspot="pool"]').click())
+  await page.waitForSelector('[data-panel="pool"]'); await page.waitForTimeout(4500)
+  const names = await shownNames()
+  ok(T + 'chosen marker shows its name, and only that one', names.length === 1 && names[0].includes('Aurora Pool'), JSON.stringify(names))
+  ok(T + 'camera moved in to the place', (await zoom()) < 0.6, String(await zoom()))
+  ok(T + 'Full map button appears', await page.locator('[data-full-map]').isVisible())
+
+  // Full map pressed while the panel is still open must land exactly on the full map
+  await page.click('[data-full-map]'); await page.waitForTimeout(4500)
+  ok(T + 'Full map with the panel open lands on the full map', Math.abs((await zoom()) - 1) <= 0.01 && (await page.locator('[data-panel]').count()) === 0, `zoom ${await zoom()}`)
+  await page.evaluate(() => document.querySelector('[data-hotspot="pool"]').click())
+  await page.waitForSelector('[data-panel="pool"]'); await page.waitForTimeout(4500)
+
+  // closing the panel keeps the view; Full map goes back out
+  await page.keyboard.press('Escape'); await page.waitForTimeout(800)
+  ok(T + 'closing the panel keeps the view at the place', (await zoom()) < 0.6 && (await page.locator('[data-full-map]').isVisible()))
+  await page.click('[data-full-map]'); await page.waitForTimeout(4500)
+  const s3 = await spread()
+  ok(T + 'Full map returns to the whole camp', (await zoom()) >= 0.99 && s3.inside === s3.total && (await page.locator('[data-panel]').count()) === 0, `zoom ${await zoom()}`)
+  ok(T + 'Full map button hides again', (await page.locator('[data-full-map]').count()) === 0)
+
+  // zooming in by hand also offers Full map, and panning while zoomed stays over the camp
+  await page.mouse.move(...mid)
+  for (let i = 0; i < 6; i++) await page.mouse.wheel(0, -300)
+  await page.waitForTimeout(1000)
+  ok(T + 'zooming in by hand offers Full map', await page.locator('[data-full-map]').isVisible())
+  for (let k = 0; k < 4; k++) { await page.mouse.move(...mid); await page.mouse.down({ button: 'right' }); await page.mouse.move(mid[0] - box.width * 0.9, mid[1] - box.height * 0.8, { steps: 8 }); await page.mouse.up({ button: 'right' }) }
+  await page.waitForTimeout(1200)
+  const s4 = await spread()
+  ok(T + 'panning far while zoomed in still leaves the camp on screen', s4.inside >= 1, JSON.stringify(s4))
+
+  // overlapping markers are thinned out, never stacked
+  await page.click('[data-full-map]'); await page.waitForTimeout(4500)
+  const overlaps = await page.evaluate(() => {
+    const els = [...document.querySelectorAll('[data-hotspot]:not([data-hidden])')].map((e) => e.getBoundingClientRect())
+    let n = 0
+    for (let i = 0; i < els.length; i++) for (let j = i + 1; j < els.length; j++) { const a = els[i], b = els[j]; if (Math.hypot(a.left + a.width / 2 - (b.left + b.width / 2), a.bottom - b.bottom) < 20) n++ }
+    return { visible: els.length, stacked: n }
+  })
+  ok(T + 'no markers stacked on each other on the full map', overlaps.stacked === 0 && overlaps.visible >= 8, JSON.stringify(overlaps))
+  await ctx.close()
+}
 ok('no console or page errors', errs.length === 0, [...new Set(errs)].slice(0, 3).join(' | '))
 console.log(results.join('\n'))
 await browser.close()
