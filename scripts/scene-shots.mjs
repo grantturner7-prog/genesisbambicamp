@@ -1,12 +1,14 @@
 // Renders clean pictures of the 3D map (no header, panels or markers) for before/after
 // comparison and visual review.
-//   node scripts/scene-shots.mjs <baseUrl> <outDir> [view,view,...] [quality]
+//   node scripts/scene-shots.mjs <baseUrl> <outDir> [view,view,...] [quality] [extraQuery]
+// extraQuery is added to the page address, e.g. life=20 to picture the scene 20 s into its motion.
 // Views: overview-day, overview-dusk, overview-winter, pool, snack, vans-b, vans-f, dining,
-//        kayak, cinema-dusk, campfire-dusk, tram, birds, entrance, phone-overview, phone-pool
+//        kayak, cinema-dusk, campfire-dusk, tram, birds, entrance, phone-overview, phone-pool,
+//        birds-dusk, tram-dusk, kayak-dusk, phone-overview-dusk
 import { createRequire } from 'node:module'
 import { mkdirSync } from 'node:fs'
 const { chromium } = createRequire(import.meta.url)('playwright')
-const [base = 'http://127.0.0.1:5199', out = '/tmp/scene-shots', only = '', quality = ''] = process.argv.slice(2)
+const [base = 'http://127.0.0.1:5199', out = '/tmp/scene-shots', only = '', quality = '', extra = ''] = process.argv.slice(2)
 mkdirSync(out, { recursive: true })
 
 const VIEWS = {
@@ -23,8 +25,12 @@ const VIEWS = {
   'campfire-dusk': { spot: 'campfire', dusk: true },
   tram: { spot: 'tram' },
   birds: { spot: 'birds' },
+  'birds-dusk': { spot: 'birds', dusk: true },
+  'tram-dusk': { spot: 'tram', dusk: true },
+  'kayak-dusk': { spot: 'kayak', dusk: true },
   entrance: { spot: 'entrance' },
   'phone-overview': { phone: true },
+  'phone-overview-dusk': { phone: true, dusk: true },
   'phone-pool': { phone: true, spot: 'pool' },
 }
 const names = only ? only.split(',') : Object.keys(VIEWS)
@@ -38,7 +44,7 @@ for (const name of names) {
   const errs = []
   page.on('pageerror', (e) => errs.push(e.message))
   page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)) })
-  const q = `?quality=${quality || (v.phone ? 'low' : 'high')}&time=${v.dusk ? 'night' : 'day'}`
+  const q = `?quality=${quality || (v.phone ? 'low' : 'high')}&time=${v.dusk ? 'night' : 'day'}${extra ? '&' + extra : ''}`
   await page.goto(`${base}/facilities/${q}${v.spot ? '#' + v.spot : ''}`)
   await page.waitForSelector('html[data-map-ready="1"]', { timeout: 420000 })
   // hide everything except the canvas; the camera keeps its pose

@@ -34,15 +34,14 @@ function startOffset(): number {
 
 /**
  * Everything that moves. Per tier:
- *  - high: tram, kayaks with their wake, waders and the gliding flock, and at dusk the low
- *    pair of egrets, the tram's lamps, campfire smoke and sparks, and (summer) fireflies;
- *  - low: tram, kayaks with their wake, a few waders, and the tram's lamps at dusk.
+ *  - high: the tram on its round, kayaks with their wake, waders and the gliding flock; at
+ *    night the tram's headlights and lanterns, the egrets flying in to roost on the trees
+ *    round the wild lake, campfire smoke and sparks, and (summer) fireflies;
+ *  - low: tram, kayaks with their wake, a few waders; at night the tram's lights and a
+ *    smaller roost.
  * Winter is quieter on the water and busier in the air: one kayak fewer, two more egrets in
  * the flock (they winter here), and no fireflies.
- * Three skinned meshes and a few instanced sprite pools. Measured against the scene without
- * this layer, shadow passes included: high 8 draw calls / 34k triangles by day and 14 / 35k
- * at dusk (the ambient-occlusion pass draws each sprite pool a second time); low 7 / 13k by
- * day and 9 / 13k at dusk.
+ * Three skinned meshes and a few instanced sprite pools.
  */
 function createLife(quality: Quality) {
   const hi = quality === 'high'
@@ -90,8 +89,7 @@ function createLife(quality: Quality) {
     birds.update(dt, still, level.wild)
     ambient.update(dt, still, camera, eye, tram.lamps, level.wild, level.kayak)
   }
-  // a requested head start, in small steps so that paths, pauses and wakes all take part
-  for (let left = still ? 0 : startOffset(); left > 0; left -= 0.05) step(0.05, noCamera, noEye)
+  let begun = false
 
   return {
     group,
@@ -100,8 +98,12 @@ function createLife(quality: Quality) {
       const winter = isWinter(env)
       tram.setDusk(dusk)
       kayaks.setEnv(dusk, winter)
-      birds.setEnv(dusk, winter)
+      birds.setEnv(dusk, winter, still)
       ambient.apply(dusk, !winter)
+      if (begun) return
+      begun = true
+      // a requested head start, in small steps so that paths, wakes and the evening return all take part
+      for (let left = still ? 0 : startOffset(); left > 0; left -= 0.05) step(0.05, noCamera, noEye)
     },
     tick(delta: number, camera: THREE.Camera, scene: THREE.Scene) {
       frames++
@@ -119,7 +121,8 @@ function createLife(quality: Quality) {
         const f = (v: number) => v.toFixed(2)
         let boats = ''
         for (let i = 0; i < k.length; i += 2) boats += `${i ? '|' : ''}${f(k[i])},${f(k[i + 1])}`
-        document.documentElement.dataset.mapLife = `tram=${f(p[0])},${f(p[1])} s=${f(st.s)} v=${f(st.speed)} waiting=${st.waiting ? 1 : 0} kayaks=${boats} road=${level.road.toFixed(3)} water=${level.wild.toFixed(3)},${level.kayak.toFixed(3)} still=${still ? 1 : 0}`
+        const roost = birds.census()
+        document.documentElement.dataset.mapLife = `tram=${f(p[0])},${f(p[1])} s=${f(st.s)} v=${f(st.speed)} waiting=${st.waiting ? 1 : 0} kayaks=${boats} roost=${roost.perched}/${roost.total} flying=${roost.flying} road=${level.road.toFixed(3)} water=${level.wild.toFixed(3)},${level.kayak.toFixed(3)} still=${still ? 1 : 0}`
       }
     },
     /** Follows the visitor's motion preference while mounted; returns the disconnect. */
@@ -137,7 +140,7 @@ function createLife(quality: Quality) {
   }
 }
 
-/** Moving things: the tram on its round, kayaks on the lake, waterbirds, and small lights at dusk. */
+/** Moving things: the tram on its round, kayaks on the lake, waterbirds and their evening return, and small lights at night. */
 export function Life({ env }: { env: SceneEnv }) {
   const kit = useMemo(() => createLife(env.quality), [env.quality])
   useEffect(() => {

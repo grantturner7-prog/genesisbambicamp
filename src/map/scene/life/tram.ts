@@ -236,18 +236,16 @@ export function buildTram(hi: boolean): TramModel {
   return { geometry: M.build(), vehicles, ahead: (CART.len - CART.wheelbase) / 2, behind: tail }
 }
 
-/** Cruising speed in world units per second (about 19 km/h at the map's scale). */
-const V_MAX = 1.3
-/** Seconds the tram waits at the stop: on first view, and on every later lap. */
-const FIRST_DWELL = 10
-const DWELL = 22
-const V_MIN = 0.035
+/** Cruising speed in world units per second: an unhurried 11 km/h or so at the map's scale. */
+const V_MAX = 0.82
+const V_MIN = 0.3
 
 /**
- * The tram and its drive. It starts parked at the tram stop, pulls away gently, runs along
- * the south road, round the west ring past the waterbird lake and back, turns in the loop at
- * the east junction and stops again. Carriages keep both axles on the route, so the train
- * bends through every curve.
+ * The tram and its drive. It is always on its round: from the tram stop west along the south
+ * road, round the west ring past the waterbird lake, back past the stop and round the kayak
+ * lake, slowing for the bends and never stopping (about five and a half minutes a lap).
+ * Carriages keep both axles on the route, so the train bends through every curve.
+ * Its headlights and lanterns are lit at night only.
  */
 export function createTram(hi: boolean) {
   const model = buildTram(hi)
@@ -265,18 +263,18 @@ export function createTram(hi: boolean) {
   // the route starts just east of the stop, heading west: park with the train centred on it
   const [stopX, stopZ] = toWorld(poi('tramStop'))
   const stopS = nearestS(path, stopX, stopZ, 0, 8) + (model.behind - model.ahead) / 2
-  const profile = speedProfile(path, { vMax: V_MAX, aLat: 0.42, acc: 0.2, brake: 0.28, stopS, trainLength: model.behind + model.ahead })
+  const profile = speedProfile(path, { vMax: V_MAX, aLat: 0.42, acc: 0.12, brake: 0.16, trainLength: model.behind + model.ahead })
   const speedAt = (s: number) => {
     const f = (s / path.step) % path.n
     const i = Math.floor(f)
     return profile[i] + (profile[(i + 1) % path.n] - profile[i]) * (f - i)
   }
 
-  // headlights' pool of light on the road (dusk)
+  // the headlights' beam on the road ahead (night only)
   const poolTex = spriteTexture(48)
-  const poolGeo = new THREE.PlaneGeometry(1.7, 1.0)
+  const poolGeo = new THREE.PlaneGeometry(2.7, 1.25)
   poolGeo.rotateX(-Math.PI / 2)
-  const poolMat = new THREE.MeshBasicMaterial({ map: poolTex, color: '#ffcf8f', transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 })
+  const poolMat = new THREE.MeshBasicMaterial({ map: poolTex, color: '#ffd89c', transparent: true, opacity: 0.72, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 })
   const pool = new THREE.Mesh(poolGeo, poolMat)
   pool.renderOrder = 3
   pool.raycast = () => {}
@@ -288,8 +286,8 @@ export function createTram(hi: boolean) {
   const f: [number, number] = [0, 0]
   const r: [number, number] = [0, 0]
   let s = stopS
-  let dwell = FIRST_DWELL
   let speed = 0
+  let parked = false
 
   function pose(roadY: number) {
     let li = 0
@@ -313,7 +311,7 @@ export function createTram(hi: boolean) {
         lamps[li++] = l[4]
       }
       if (i === 0) {
-        pool.position.set(cx + 1.25 * cos, roadY + 0.014, cz - 1.25 * sin)
+        pool.position.set(cx + 1.75 * cos, roadY + 0.014, cz - 1.75 * sin)
         pool.rotation.y = yaw
       }
     }
@@ -324,30 +322,20 @@ export function createTram(hi: boolean) {
     pool,
     lamps,
     path,
-    /** Where the train's reference point is along the route, its speed, and whether it is waiting. */
-    state: () => ({ s, speed, waiting: dwell > 0, stopS }),
+    /** Where the train's reference point is along the route, its speed, and whether it is held at the stop (reduced motion). */
+    state: () => ({ s, speed, waiting: parked, stopS }),
     setDusk(dusk: boolean) {
       pool.visible = dusk
     },
     update(dt: number, still: boolean, roadY: number) {
+      parked = still
       if (still) {
+        // reduced motion: a still picture with the tram at its stop
         s = stopS
-        dwell = FIRST_DWELL
         speed = 0
-      } else if (dwell > 0) {
-        dwell -= dt
-        speed = 0
-        if (dwell <= 0) s = stopS + 1e-3
       } else {
         speed = Math.max(speedAt(s), V_MIN)
-        const ahead = (stopS - s + path.length * 2) % path.length
-        if (ahead <= speed * dt) {
-          s = stopS
-          dwell = DWELL
-          speed = 0
-        } else {
-          s = (s + speed * dt) % path.length
-        }
+        s = (s + speed * dt) % path.length
       }
       pose(roadY)
     },

@@ -39,6 +39,19 @@ export interface Layout {
 
 export const layout = raw as unknown as Layout
 
+/**
+ * Road that the official map draws but covers: two tree crowns stand over the lane round the
+ * kayak lake, and the boarding label overlaps its edge. The trace stops at each of them, so
+ * these short pieces (map px) put the hidden road back and the lane is one circuit again.
+ */
+export const ROAD_LINKS: Pt[][] = [
+  [[804, 381], [812, 386], [829, 361], [821, 355]],
+  [[1025, 352], [1043, 350], [1053, 387], [1035, 389]],
+  [[934, 283], [992, 281], [997, 291], [936, 295]],
+]
+/** Every piece of road: the traced polygons and the links under the crowns. */
+export const roads: Layout['roads'] = [...layout.roads, ...ROAD_LINKS.map((outer) => ({ outer, holes: [] }))]
+
 export const S = 0.1
 export const CX = 600
 export const CY = 400

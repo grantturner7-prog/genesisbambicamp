@@ -1,16 +1,12 @@
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { mulberry32, toWorld, poi, type Pt } from '../layout/layout'
 import { isDusk, type Quality, type SceneEnv } from './env'
-import { M } from './materials'
 import { SCREEN, SNACK_SIGN, buildFacilities, cinemaFrame, firePos, snackFrame } from './buildings/facilities'
 import { Mesher, at, lathe, quads } from './buildings/geo'
 import { createBuildingMats } from './buildings/mats'
 import { screenTexture, signTexture } from './buildings/textures'
 
-type V3 = [number, number, number]
-const atPoi = (name: string): [number, number] => toWorld(poi(name))
 
 /**
  * Every facility of the camp. All static parts are merged into six geometries that share
@@ -142,123 +138,6 @@ function buildKit(quality: Quality) {
   }
 }
 
-// ---- kept as they were: the tram, the floating kayaks and the waterbirds are being replaced
-// ---- by animated versions in the Life layer -------------------------------------------------
-
-function Box({ p, s, m, r, cast = true }: { p: V3; s: V3; m: THREE.Material; r?: V3; cast?: boolean }) {
-  return (
-    <mesh position={p} scale={s} rotation={r} material={m} castShadow={cast} receiveShadow>
-      <boxGeometry args={[1, 1, 1]} />
-    </mesh>
-  )
-}
-function Cyl({ p, r, h, m, seg = 10, rot }: { p: V3; r: number; h: number; m: THREE.Material; seg?: number; rot?: V3 }) {
-  return (
-    <mesh position={p} rotation={rot} material={m} castShadow receiveShadow>
-      <cylinderGeometry args={[r, r, h, seg]} />
-    </mesh>
-  )
-}
-
-/**
- * Eco-Safari tram (遊園車), as in the venue's photos: a cream golf cart towing four small
- * open cars in alternating liveries, zebra (white, green roof) and tiger (orange, yellow roof).
- */
-function Tram() {
-  const [x, z] = atPoi('tramStop')
-  const car = (dx: number, body: THREE.Material, roof: THREE.Material) => (
-    <group position={[dx, 0, 0]}>
-      <Box p={[0, 0.3, 0]} s={[0.62, 0.3, 0.46]} m={body} />
-      {[-0.26, 0.26].map((px) => [-0.19, 0.19].map((pz) => <Box key={`${px}${pz}`} p={[px, 0.62, pz]} s={[0.05, 0.4, 0.05]} m={roof} />))}
-      <Box p={[0, 0.85, 0]} s={[0.7, 0.07, 0.54]} m={roof} />
-      {[-0.2, 0.2].map((w) => (
-        <Cyl key={w} p={[w, 0.09, 0.25]} r={0.09} h={0.05} m={M.charcoal} rot={[Math.PI / 2, 0, 0]} />
-      ))}
-      <Box p={[0.36, 0.2, 0]} s={[0.12, 0.03, 0.03]} m={M.woodDark} cast={false} />
-    </group>
-  )
-  return (
-    <group position={[x, 0, z]}>
-      {/* golf cart */}
-      <group position={[1.75, 0, 0]}>
-        <Box p={[0, 0.28, 0]} s={[0.78, 0.26, 0.46]} m={M.cream} />
-        <Box p={[0.32, 0.44, 0]} s={[0.14, 0.14, 0.44]} m={M.cream} />
-        {[-0.3, 0.3].map((px) => [-0.2, 0.2].map((pz) => <Box key={`${px}${pz}`} p={[px, 0.62, pz]} s={[0.03, 0.46, 0.03]} m={M.charcoal} />))}
-        <Box p={[0, 0.87, 0]} s={[0.86, 0.05, 0.54]} m={M.cream} />
-        {[-0.25, 0.25].map((w) => (
-          <Cyl key={w} p={[w, 0.1, 0.25]} r={0.1} h={0.05} m={M.charcoal} rot={[Math.PI / 2, 0, 0]} />
-        ))}
-      </group>
-      {car(0.85, M.white, M.green)}
-      {car(0.05, M.tiger, M.yellow)}
-      {car(-0.75, M.white, M.green)}
-      {car(-1.55, M.tiger, M.yellow)}
-    </group>
-  )
-}
-
-/** Kayaks afloat on the kayak lake (跳跳船體驗區). The jetty itself is part of the merged facilities. */
-function FloatingKayaks() {
-  const [x, z] = atPoi('boardingLabel')
-  const kayak = (px: number, pz: number, c: THREE.Material, rot = 0) => (
-    <group position={[px, -0.2, pz]} rotation={[0, rot, 0]}>
-      <mesh scale={[0.95, 0.12, 0.2]} material={c} castShadow>
-        <sphereGeometry args={[1, 12, 6]} />
-      </mesh>
-      <Box p={[0, 0.1, 0]} s={[0.3, 0.05, 0.14]} m={M.charcoal} />
-    </group>
-  )
-  return (
-    <group>
-      {kayak(x - 0.7, z + 2.4, M.yellow, 1.57)}
-      {kayak(x + 0.75, z + 2.9, M.yellow, 1.57)}
-      {kayak(x - 1.6, z + 4.4, M.yellow, 0.4)}
-      {kayak(x + 1.9, z + 5.4, M.yellow, -0.5)}
-      {kayak(x, z + 6.4, M.yellow, 1.2)}
-    </group>
-  )
-}
-
-function Heron({ p, s = 1 }: { p: V3; s?: number }) {
-  return (
-    <group position={p} scale={s}>
-      <Cyl p={[0, 0.28, 0]} r={0.02} h={0.56} m={M.charcoal} seg={4} />
-      <mesh position={[0, 0.7, 0]} scale={[0.14, 0.2, 0.34]} material={M.white} castShadow>
-        <sphereGeometry args={[1, 8, 6]} />
-      </mesh>
-      <Cyl p={[0, 0.92, 0.18]} r={0.02} h={0.34} m={M.white} seg={4} rot={[0.5, 0, 0]} />
-      <mesh position={[0, 1.07, 0.3]} rotation={[Math.PI / 2, 0, 0]} material={M.yellow}>
-        <coneGeometry args={[0.025, 0.2, 4]} />
-      </mesh>
-    </group>
-  )
-}
-
-/** Wild waterbird viewing area (野生水鳥觀賞區): herons and egrets along the west lake. */
-function Waterbirds() {
-  const rnd = mulberry32(5)
-  const [hx, hz] = atPoi('heron')
-  const [kx, kz] = atPoi('kingfisher')
-  const extra = Array.from({ length: 7 }).map((_, i) => {
-    const [x, z] = toWorld([300 + rnd() * 150, 300 + rnd() * 150] as Pt)
-    return { x, z, s: 0.7 + rnd() * 0.4, k: i }
-  })
-  return (
-    <group>
-      <Heron p={[hx, -0.3, hz]} s={1.5} />
-      {extra.map((e) => (
-        <Heron key={e.k} p={[e.x, -0.3, e.z]} s={e.s} />
-      ))}
-      <group position={[kx, 0, kz]}>
-        <Cyl p={[0, 0.5, 0]} r={0.05} h={1.0} m={M.trunk} seg={5} />
-        <mesh position={[0, 1.05, 0]} scale={[0.12, 0.12, 0.2]} material={M.green} castShadow>
-          <sphereGeometry args={[1, 8, 6]} />
-        </mesh>
-      </group>
-    </group>
-  )
-}
-
 export function Facilities({ env }: { env: SceneEnv }) {
   const kit = useMemo(() => buildKit(env.quality), [env.quality])
   useEffect(() => () => kit.dispose(), [kit])
@@ -267,12 +146,5 @@ export function Facilities({ env }: { env: SceneEnv }) {
     const target = (controls as unknown as { target?: THREE.Vector3 } | null)?.target
     kit.tick(clock.elapsedTime, target ? camera.position.distanceTo(target) : camera.position.length())
   })
-  return (
-    <group>
-      <primitive object={kit.group} />
-      <Tram />
-      <FloatingKayaks />
-      <Waterbirds />
-    </group>
-  )
+  return <primitive object={kit.group} />
 }

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { layout } from '../../layout/layout'
+import { layout, roads } from '../../layout/layout'
 import { fillSdf, makeField, makeNoise, sample, smoothClosed, smoothstep, toWorldPoly, type Field, type V2 } from './geo'
 
 /** Height of the lake surface and of the pool surface (the lawn is y = 0). */
@@ -102,7 +102,7 @@ export function buildFields(high: boolean): Fields {
   const water = makeField(x0, z0, sx, sz, 1 / res)
   const land = makeField(x0, z0, sx, sz, 1 / res)
   const lane = accessLane(landFar)
-  const roadShapes = layout.roads.map((r) => [smoothClosed(toWorldPoly(r.outer), 2), ...r.holes.map((h) => smoothClosed(toWorldPoly(h), 2))])
+  const roadShapes = roads.map((r) => [smoothClosed(toWorldPoly(r.outer), 2), ...r.holes.map((h) => smoothClosed(toWorldPoly(h), 2))])
   if (lane) roadShapes.push([smoothClosed(lane, 2)])
   fillSdf(road, roadShapes, BAND.road)
   fillSdf(water, [...lakeRings.map((r) => [r]), [poolRing]], BAND.water)

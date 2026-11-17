@@ -117,10 +117,11 @@ export function nearestS(p: Path, x: number, z: number, from = 0, to = p.length)
 
 /**
  * Speed limit along a closed path for a train: slow enough in bends (lateral acceleration
- * `aLat`) for the whole length of the train, never above `vMax`, zero at `stopS`, and reached
- * with gentle acceleration `acc` and braking `brake`.
+ * `aLat`) for the whole length of the train, never above `vMax`, and reached with gentle
+ * acceleration `acc` and braking `brake`. With `stopS` the train comes to rest there;
+ * without it the train never stops.
  */
-export function speedProfile(p: Path, opts: { vMax: number; aLat: number; acc: number; brake: number; stopS: number; trainLength: number }): Float32Array {
+export function speedProfile(p: Path, opts: { vMax: number; aLat: number; acc: number; brake: number; stopS?: number; trainLength: number }): Float32Array {
   const kappa = curvature(p)
   const raw = new Float32Array(p.n)
   for (let i = 0; i < p.n; i++) raw[i] = Math.min(opts.vMax, Math.sqrt(opts.aLat / Math.max(kappa[i], 1e-4)))
@@ -132,8 +133,14 @@ export function speedProfile(p: Path, opts: { vMax: number; aLat: number; acc: n
     for (let k = 1; k <= win; k += 2) m = Math.min(m, raw[(i - k + p.n * 2) % p.n])
     v[i] = m
   }
-  const stop = Math.round(opts.stopS / p.step) % p.n
-  v[stop] = 0
+  // the passes start from the stop, or else from the slowest place of the lap (its limit holds as it is)
+  let stop = 0
+  if (opts.stopS === undefined) {
+    for (let i = 1; i < p.n; i++) if (v[i] < v[stop]) stop = i
+  } else {
+    stop = Math.round(opts.stopS / p.step) % p.n
+    v[stop] = 0
+  }
   for (let pass = 0; pass < 2; pass++) {
     for (let k = 0; k < p.n; k++) {
       const i = (stop + k) % p.n

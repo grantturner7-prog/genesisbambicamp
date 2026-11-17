@@ -172,7 +172,8 @@ function blob(lobes: Lobe[], dx: number, dy: number, dz: number, k: number) {
  * of soft lobes that fills the traced radius, on a short stout trunk. A much simpler copy
  * of the crown, drawn just inside it, goes to `shadow`: it casts the tree's shadow.
  */
-export function addBroadleaf(b: Builder, shadow: Builder, pl: Plant, high: boolean) {
+/** Size and stance of a broadleaf tree: the first draws of its seed (the rest shape the crown). */
+function broadleafForm(pl: Plant) {
   const rnd = mulberry32(pl.seed)
   const r = pl.r
   const Rc = r * (0.97 + rnd() * 0.03)
@@ -183,6 +184,11 @@ export function addBroadleaf(b: Builder, shadow: Builder, pl: Plant, high: boole
   const down = crownH * 0.38
   const cy = clear + down
   const f = frame(pl.x, pl.y, pl.z, rnd() * TAU, (rnd() - 0.5) * 0.08, (rnd() - 0.5) * 0.08)
+  return { rnd, r, Rc, H, clear, crownH, up, down, cy, f }
+}
+
+export function addBroadleaf(b: Builder, shadow: Builder, pl: Plant, high: boolean) {
+  const { rnd, r, Rc, H, clear, crownH, up, down, cy, f } = broadleafForm(pl)
   const phase = rnd() * TAU
   const fam = LEAF[rnd() < 0.42 ? 0 : rnd() < 0.55 ? 1 : 2]
   const bright = 0.9 + rnd() * 0.2
@@ -320,7 +326,14 @@ export function addBroadleaf(b: Builder, shadow: Builder, pl: Plant, high: boole
  * in summer; from deep rust in the folds to gold at the tips in winter. A simpler copy of
  * the spire, drawn just inside it, goes to `shadow`: it casts the tree's shadow.
  */
-export function addCypress(b: Builder, shadow: Builder, pl: Plant, high: boolean) {
+/** Where the skirt of a cypress is widest, as a share of its foliage height. */
+const CYPRESS_SKIRT = 0.12
+/** Radius of a cypress at share `t` of its foliage height: a skirt swelling out above the bare trunk, then a slim ogive to the tip. */
+const cypressEnvelope = (Rc: number, t: number) =>
+  Rc * (t < CYPRESS_SKIRT ? lerp(0.3, 1, Math.pow(Math.sin((t / CYPRESS_SKIRT) * Math.PI * 0.5), 0.8)) : Math.pow(1 - Math.pow((t - CYPRESS_SKIRT) / (1 - CYPRESS_SKIRT), 1.2), 0.84))
+
+/** Size and stance of a bald cypress: the first draws of its seed (the rest shape the plumes). */
+function cypressForm(pl: Plant) {
   const rnd = mulberry32(pl.seed)
   const r = pl.r
   const Rc = clamp(0.55 * r + 0.12, 0.42, 0.86) * (0.94 + rnd() * 0.06)
@@ -328,6 +341,43 @@ export function addCypress(b: Builder, shadow: Builder, pl: Plant, high: boolean
   const y0 = H * (0.2 + rnd() * 0.06)
   const span = H - y0
   const f = frame(pl.x, pl.y, pl.z, rnd() * TAU, (rnd() - 0.5) * 0.06, (rnd() - 0.5) * 0.06)
+  return { rnd, Rc, H, y0, span, f }
+}
+
+/**
+ * Places on a tree's crown where a bird can settle, as world positions of its feet: the
+ * first is the top, the others sit lower on the side of the crown that faces `toward`
+ * (a direction in the ground plane, as an angle from +X toward +Z).
+ * Each is a little inside the foliage, so a perched bird stands in the leaves, not above them.
+ */
+export function crownPerches(pl: Plant, species: 'broadleaf' | 'cypress', count: number, toward: number): [number, number, number][] {
+  const out: [number, number, number][] = []
+  if (count < 1) return out
+  // a crown is round in plan, so the offsets can be taken along world axes; the lean still applies
+  const put = (f: Frame, ox: number, y: number, oz: number) => out.push([f.x + ox + f.leanX * y, f.y + y, f.z + oz + f.leanZ * y])
+  if (species === 'cypress') {
+    const { Rc, H, y0, span, f } = cypressForm(pl)
+    put(f, 0, H - 0.2, 0)
+    for (let k = 1; k < count; k++) {
+      const t = 0.8 - 0.17 * k
+      const a = toward + (k % 2 ? 0.8 : -0.9) * (1 + 0.25 * Math.floor((k - 1) / 2))
+      const d = cypressEnvelope(Rc, t) * 0.72
+      put(f, Math.cos(a) * d, y0 + span * t + 0.04, Math.sin(a) * d)
+    }
+  } else {
+    const { Rc, up, cy, f } = broadleafForm(pl)
+    put(f, 0, cy + up * 0.93, 0)
+    for (let k = 1; k < count; k++) {
+      const a = toward + (k % 2 ? 0.75 : -0.85) * (1 + 0.3 * Math.floor((k - 1) / 2))
+      const d = Rc * 0.46
+      put(f, Math.cos(a) * d, cy + up * 0.6, Math.sin(a) * d)
+    }
+  }
+  return out
+}
+
+export function addCypress(b: Builder, shadow: Builder, pl: Plant, high: boolean) {
+  const { rnd, Rc, H, y0, span, f } = cypressForm(pl)
   const phase = rnd() * TAU
   const rows = high ? 20 : 9
   const cols = high ? 12 : 8
@@ -336,9 +386,7 @@ export function addCypress(b: Builder, shadow: Builder, pl: Plant, high: boolean
   const olive = rnd() < 0.3 ? 0.35 + rnd() * 0.3 : 0 // some keep a little green low down
   const bright = 0.92 + rnd() * 0.16
   const ns = pl.seed * 0.173
-  const tm = 0.12 // where the skirt is widest
-  // envelope: a skirt swelling out above the bare trunk, then a slim ogive to the tip
-  const env = (t: number) => Rc * (t < tm ? lerp(0.3, 1, Math.pow(Math.sin((t / tm) * Math.PI * 0.5), 0.8)) : Math.pow(1 - Math.pow((t - tm) / (1 - tm), 1.2), 0.84))
+  const env = (t: number) => cypressEnvelope(Rc, t)
   const sway = (y: number) => Math.pow(clamp(y / H), 1.6) * 0.9
 
   // plumes: soft lobes spiralling up the trunk, each reaching the envelope

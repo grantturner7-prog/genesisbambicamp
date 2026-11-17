@@ -1,7 +1,7 @@
 import { HOTSPOTS } from '../../hotspots'
-import { layout, mulberry32, poi, S, toWorld, type Pt } from '../../layout/layout'
+import { layout, mulberry32, poi, roads, S, toWorld, type Pt } from '../../layout/layout'
 import { vnoise } from './geom'
-import type { Plant } from './species'
+import { crownPerches, type Plant } from './species'
 
 /**
  * Where every plant goes. Trees stand exactly on the crowns traced from the official map;
@@ -15,7 +15,7 @@ const LAND = world(layout.land)
 const WILD = world(layout.lakes.wild)
 const KAYAK = world(layout.lakes.kayak)
 const POOL = world(layout.lakes.pool)
-const ROADS = layout.roads.map((r) => ({ outer: world(r.outer), holes: r.holes.map(world) }))
+const ROADS = roads.map((r) => ({ outer: world(r.outer), holes: r.holes.map(world) }))
 
 function inPoly(x: number, z: number, poly: P2[]): boolean {
   let c = false
@@ -84,6 +84,26 @@ export function planTrees(): TreePlan[] {
     const wet = inPoly(x, z, WILD) || inPoly(x, z, KAYAK)
     return { x, z, y: wet ? WATER_FOOT : 0, r: t.r * S, seed: 977 + i * 7919, species }
   })
+}
+
+/**
+ * Places for birds to settle on the crown of the tree traced nearest to a map position (px):
+ * world positions of their feet, the top of the crown first. `toward` is the side of the
+ * crown the lower places face, as an angle in the ground plane from +X toward +Z.
+ */
+export function perchesOn(px: Pt, count: number, toward: number): [number, number, number][] {
+  let best: TreePlan | null = null
+  let bestD = Infinity
+  const [x, z] = toWorld(px)
+  for (const t of planTrees()) {
+    if (t.species !== 'cypress' && t.species !== 'broadleaf') continue
+    const d = Math.hypot(t.x - x, t.z - z)
+    if (d < bestD) {
+      bestD = d
+      best = t
+    }
+  }
+  return best ? crownPerches(best, best.species as 'cypress' | 'broadleaf', count, toward) : []
 }
 
 // ── keep-clear zones ─────────────────────────────────────────────────────────────────────

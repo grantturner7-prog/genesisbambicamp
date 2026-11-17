@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { layout, poi, toWorld, type Pt } from '../../layout/layout'
+import { layout, roads, poi, toWorld, type Pt } from '../../layout/layout'
 import { PALETTE, type Quality } from '../env'
 import { DECK_Y, LAMP, Wd, ZONE_STYLE, emitCamper } from './camper'
 import { BAND, Mesher, at, ball, box, cyl, lathe, loft, prism, rbox, sheet, tone, type Part, type Style } from './geo'
@@ -907,7 +907,7 @@ function inside(pt: Pt, poly: Pt[]): boolean {
   }
   return c
 }
-const onRoad = (pt: Pt) => layout.roads.some((r) => inside(pt, r.outer) && !r.holes.some((h) => inside(pt, h)))
+const onRoad = (pt: Pt) => roads.some((r) => inside(pt, r.outer) && !r.holes.some((h) => inside(pt, h)))
 const around = (pt: Pt, r: number): Pt[] => Array.from({ length: 8 }, (_, k) => [pt[0] + Math.cos((k * Math.PI) / 4) * r, pt[1] + Math.sin((k * Math.PI) / 4) * r] as Pt)
 
 /** Bollard positions (map px): just off the road edge, clear of units, trees, water and facilities. */

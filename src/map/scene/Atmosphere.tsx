@@ -3,8 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { Bloom, EffectComposer, N8AO, SMAA, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
-import { isDusk, isWinter, skyFor, type SceneEnv } from './env'
-import { M } from './materials'
+import { isDusk, skyFor, type SceneEnv } from './env'
 
 /**
  * Sky dome: zenith-to-horizon gradient with a soft sun glow and, at dusk, stars.
@@ -103,29 +102,12 @@ function Haze({ env }: { env: SceneEnv }) {
 /** Sky, sun, fill light, haze and (on capable devices) ambient occlusion, bloom and vignette. */
 export function Atmosphere({ env }: { env: SceneEnv }) {
   const dusk = isDusk(env)
-  const winter = isWinter(env)
   const sky = skyFor(env)
   const high = env.quality === 'high'
   // Late-afternoon sun from the south-west: faces toward the default camera are lit and
   // shadows fall away to the north-east. At dusk the sun sits low in the west.
   const sunPos = useMemo<[number, number, number]>(() => (dusk ? [-110, 34, 30] : [-70, 95, 62]), [dusk])
   const sunDir = useMemo(() => new THREE.Vector3(...sunPos).normalize(), [sunPos])
-
-  // Legacy shared materials (still used by layers that have not been restyled).
-  useLayoutEffect(() => {
-    M.grass.color.set(winter ? '#6f9654' : '#5f9a45')
-    M.crown.color.set(winter ? '#5b8f4c' : '#4f9a4f')
-    M.crown2.color.set(winter ? '#4b7f52' : '#3e8a52')
-    M.cypress.color.set(winter ? '#b5652f' : '#3f8a4a')
-    M.glow.emissiveIntensity = dusk ? 2.4 : 0.15
-    M.lamp.emissiveIntensity = dusk ? 3.2 : 0.4
-    M.sign.emissiveIntensity = dusk ? 2.6 : 0.5
-    M.screen.emissiveIntensity = dusk ? 1.6 : 0.05
-    M.glass.emissive.set(dusk ? '#ffc56b' : '#000000')
-    M.glass.emissiveIntensity = dusk ? 1.5 : 0
-    M.pool.emissiveIntensity = dusk ? 0.75 : 0.25
-    M.water.color.set(dusk ? '#4a6f9a' : winter ? '#77b4cc' : '#7cc7de')
-  }, [winter, dusk])
 
   return (
     <>
