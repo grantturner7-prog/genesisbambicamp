@@ -17,7 +17,7 @@ const walk = (v, path) => {
   else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}[${i}]`))
   else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`)
 }
-walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(games, 'games'); walk(games.GAMES_COPY.showAll(games.GAMES.length), 'games.GAMES_COPY.showAll()'); walk(home.PRICING.pilotLimit(30), 'home.PRICING.pilotLimit()'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
+walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(games, 'games'); walk(games.GAMES_COPY.showAll(games.GAMES.length), 'games.GAMES_COPY.showAll()'); walk(home.PRICING.pilotLimit(30), 'home.PRICING.pilotLimit()'); walk(home.PRICING.withoutA.intro(30), 'home.PRICING.withoutA.intro()'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
 walk({ AREA_PHOTOS: media.AREA_PHOTOS, ZONE_PHOTOS: media.ZONE_PHOTOS, ZONES: media.ZONES }, 'media')
 walk({ sessions: campConfig.sessions, familyCamp: { dates: campConfig.familyCamp.dates }, snackShop: { couponTerms: campConfig.snackShop.couponTerms } }, 'config')
 

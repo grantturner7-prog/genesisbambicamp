@@ -124,11 +124,18 @@ function Field({ label, children, required }: { label: string; children: ReactNo
 }
 
 /** 3-step registration with five separate consent boxes (Doc 3, Part 5). Nothing is transmitted without an endpoint. */
+/** The chosen option if it runs in that season; otherwise the option for the same age group that does. */
+function offeredOption(season: Season, option: CampOption): CampOption {
+  const off = campConfig.optionsNotOffered[season]
+  if (option === 'C' || !off.includes(option)) return option
+  return option === 'A' && !off.includes('B') ? 'B' : !off.includes('A') ? 'A' : 'C'
+}
+
 export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () => void; initialOption?: CampOption }) {
   const { s, t, season, lang } = useCamp()
   const R = s.register
   const [step, setStep] = useState(1)
-  const [f, setF] = useState<Form>({ season, option: initialOption, adults: '1', groupCampers: '1', others: '', coupon: '', camper: '', dob: '', gender: '', guardian: '', relation: '', mobile: '', email: '', address: '', backup: '', diet: [], dietOther: '', allergies: '', conditions: '', medications: '', water: '' })
+  const [f, setF] = useState<Form>({ season, option: offeredOption(season, initialOption), adults: '1', groupCampers: '1', others: '', coupon: '', camper: '', dob: '', gender: '', guardian: '', relation: '', mobile: '', email: '', address: '', backup: '', diet: [], dietOther: '', allergies: '', conditions: '', medications: '', water: '' })
   // Consent 5 (media) is optional and unchecked by default.
   const [consent, setConsent] = useState<Record<string, boolean>>({})
   const [err, setErr] = useState('')
@@ -245,15 +252,15 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
           {(state === 'form' || state === 'sending') && step === 1 && (
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label={R.session} required>
-                <select className={input} value={f.season} onChange={(e) => set('season', e.target.value as Season)}>
+                <select className={input} value={f.season} onChange={(e) => setF((p) => ({ ...p, season: e.target.value as Season, option: offeredOption(e.target.value as Season, p.option) }))}>
                   <option value="winter">{s.seasons.winterLong}</option>
                   <option value="summer">{s.seasons.summerLong}</option>
                 </select>
               </Field>
               <Field label={R.option} required>
                 <select className={input} value={f.option} data-register-option onChange={(e) => set('option', e.target.value as CampOption)}>
-                  <option value="A">{t(PRICING.optionA.name)}</option>
-                  <option value="B">{t(PRICING.optionB.name)}</option>
+                  {!campConfig.optionsNotOffered[f.season].includes('A') && <option value="A">{t(PRICING.optionA.name)}</option>}
+                  {!campConfig.optionsNotOffered[f.season].includes('B') && <option value="B">{t(PRICING.optionB.name)}</option>}
                   <option value="C">{t(FAMILY.name)}</option>
                 </select>
               </Field>

@@ -163,6 +163,11 @@ export const campConfig = {
     },
     summer: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
   },
+  /**
+   * Options that do not run in a season. They are left off the site for that season: no
+   * card under Dates & Fees and no entry in the registration form.
+   */
+  optionsNotOffered: { winter: ['A'], summer: [] } as Record<'winter' | 'summer', ('A' | 'B')[]>,
   payment: { deposit: null as number | null, balanceDueDays: null as number | null },
 
   /** Registration. With no endpoint the form never transmits anything. */

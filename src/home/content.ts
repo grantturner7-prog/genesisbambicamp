@@ -132,6 +132,15 @@ export const PRICING = {
   },
   feePending: l('Fee announced soon', '費用即將公布'),
   datesPending: l('Dates announced soon', '日期即將公布'),
+  /** Heading and intro of the section in a season when Option A does not run. `pilot`: the first camp's limit, if it is a pilot. */
+  withoutA: {
+    title: l('Two ways to join', '兩種參加方式'),
+    intro: (pilot: number | null) =>
+      l(
+        `Option B is for campers aged 10–14${pilot ? `; the first camp is a pilot limited to ${pilot}` : ''}. Option C is a shorter family camp for ages 7–9 with an accompanying adult; what its fee covers will be announced with its dates and fees. For Option B, what is included, the refund rules and the guarantees below are written into your contract.`,
+        `方案 B 適合 10–14 歲營員${pilot ? `，首梯為試辦營，限額 ${pilot} 名` : ''}；方案 C 為 7–9 歲、由成人陪同的三天兩夜親子梯，費用內容將與日期、費用一併公布。以下的費用內容、退費標準與各項保障適用於方案 B，皆明訂於契約中。`,
+      ),
+  },
   /** Beside a fee: it is charged for each camper. */
   perCamper: l('per camper', '每位營員'),
   /** Shown on a session that is a pilot camp. */

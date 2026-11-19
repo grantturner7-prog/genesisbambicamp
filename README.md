@@ -47,6 +47,8 @@ including under a sub-path.
   the Airstream snack shop beside the pool.
 - The first camp is the winter Option B: Wednesday 27 to Saturday 30 January 2027, a pilot
   camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter.optionB`).
+- Option A does not run in winter (`optionsNotOffered`): the winter site shows Option B
+  and the family camp only.
 - Option A (5 Days / 4 Nights) runs Tuesday to Saturday. Option B (4 Days / 3 Nights)
   runs Wednesday to Saturday.
 - Option C (3 Days / 2 Nights, `familyCamp`): ages 7–9 with an accompanying adult. One

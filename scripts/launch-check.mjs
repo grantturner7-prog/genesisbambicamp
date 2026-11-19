@@ -10,6 +10,7 @@ need(c.operator.lineId && c.operator.lineUrl, 'Camp Operations Lead', 'Official 
 need(c.travelAgency.legalName && c.travelAgency.category && c.travelAgency.tourismRegNo && c.travelAgency.tqaaNo && c.travelAgency.phone, 'Travel Agency Partner', 'legal name, licence tier (甲種/乙種), 交觀 number, 品保 number, phone')
 for (const season of ['winter', 'summer']) for (const o of ['optionA', 'optionB']) {
   const offer = c.sessions[season][o]
+  if (c.optionsNotOffered[season].includes(o === 'optionA' ? 'A' : 'B')) continue // does not run this season
   if (!offer) need(false, 'Joint Partners', `${season} ${o}: exact dates, start date and TWD fee`)
   else need(offer.fee != null, 'Joint Partners', `${season} ${o} (${offer.dates.en}): TWD fee`)
 }

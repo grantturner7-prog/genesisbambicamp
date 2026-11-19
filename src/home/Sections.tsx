@@ -291,40 +291,50 @@ export function Pricing({ onRegister, children }: { onRegister: (option?: CampOp
   const ta = campConfig.travelAgency
   const fam = campConfig.familyCamp
   const pending = s.footer.pending
+  // options that do not run this season are left off
+  const offered = (['optionA', 'optionB'] as const).filter((k) => !campConfig.optionsNotOffered[season].includes(k === 'optionA' ? 'A' : 'B'))
+  const withoutA = !offered.includes('optionA')
+  const solo = offered.length === 1
   const card = (key: 'optionA' | 'optionB') => {
     const o = PRICING[key]
     const offer = ses[key]
     return (
-      <article key={key} data-option-card={key === 'optionA' ? 'A' : 'B'} className={`flex flex-col rounded-3xl border bg-white p-6 shadow-sm ${offer?.pilot ? 'border-2 border-cedar/60' : 'border-pine/10'}`}>
-        {offer?.pilot && (
-          <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
-            <Star size={11} fill="currentColor" aria-hidden />
-            {t(PRICING.pilotBadge)}
-          </span>
-        )}
-        <h3 className="font-display text-2xl font-semibold text-pine">{t(o.name)}</h3>
-        <p className="mt-1 text-sm font-semibold text-ink/60">{t(o.when)}</p>
-        <p className="mt-4 text-sm font-semibold text-cedar-600">{offer ? t(offer.dates) : t(PRICING.datesPending)}</p>
-        <p className="font-display mt-1 text-4xl font-semibold text-pine-900">
-          {offer?.fee != null ? fmtTWD(offer.fee) : t(PRICING.feePending)}
-          {offer?.fee != null && <span className="ml-2 font-sans text-sm font-semibold text-ink/60">{t(PRICING.perCamper)}</span>}
-        </p>
-        {offer?.pilot && <p className="mt-1.5 text-[13px] font-semibold text-ink/70">{t(PRICING.pilotLimit(offer.pilot.maxCampers))}</p>}
-        <p className="mt-4 text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
-        <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(o.bus)}</p>
-        <button type="button" aria-label={`${s.nav.register}: ${t(o.name)}`} data-register-open={key === 'optionA' ? 'A' : 'B'} onClick={() => onRegister(key === 'optionA' ? 'A' : 'B')} className="mt-auto rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
-          {s.nav.register}
-        </button>
+      // a lone card lies across the row: what it is on the left, what it includes and the button on the right
+      <article key={key} data-option-card={key === 'optionA' ? 'A' : 'B'} className={`flex flex-col rounded-3xl border bg-white p-6 shadow-sm ${solo ? 'md:flex-row md:items-stretch md:gap-10' : ''} ${offer?.pilot ? 'border-2 border-cedar/60' : 'border-pine/10'}`}>
+        <div className={solo ? 'md:flex-1' : ''}>
+          {offer?.pilot && (
+            <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
+              <Star size={11} fill="currentColor" aria-hidden />
+              {t(PRICING.pilotBadge)}
+            </span>
+          )}
+          <h3 className="font-display text-2xl font-semibold text-pine">{t(o.name)}</h3>
+          <p className="mt-1 text-sm font-semibold text-ink/60">{t(o.when)}</p>
+          <p className="mt-4 text-sm font-semibold text-cedar-600">{offer ? t(offer.dates) : t(PRICING.datesPending)}</p>
+          <p className="font-display mt-1 text-4xl font-semibold text-pine-900">
+            {offer?.fee != null ? fmtTWD(offer.fee) : t(PRICING.feePending)}
+            {offer?.fee != null && <span className="ml-2 font-sans text-sm font-semibold text-ink/60">{t(PRICING.perCamper)}</span>}
+          </p>
+          {offer?.pilot && <p className="mt-1.5 text-[13px] font-semibold text-ink/70">{t(PRICING.pilotLimit(offer.pilot.maxCampers))}</p>}
+        </div>
+        <div className={`mt-4 flex flex-1 flex-col ${solo ? 'md:mt-0 md:justify-center' : ''}`}>
+          <p className="text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
+          <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(o.bus)}</p>
+          <button type="button" aria-label={`${s.nav.register}: ${t(o.name)}`} data-register-open={key === 'optionA' ? 'A' : 'B'} onClick={() => onRegister(key === 'optionA' ? 'A' : 'B')} className={`rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800 ${solo ? '' : 'mt-auto'}`}>
+            {s.nav.register}
+          </button>
+        </div>
       </article>
     )
   }
+  const pilotCap = offered.map((k) => ses[k]?.pilot?.maxCampers).find((n) => n != null) ?? null
   return (
     <Section id="pricing" tone="cream">
       <div className="flex flex-wrap items-end justify-between gap-5">
-        <Heading kicker={s.home.pricingKicker} title={s.home.pricingTitle} intro={s.home.pricingIntro} />
+        <Heading kicker={s.home.pricingKicker} title={withoutA ? t(PRICING.withoutA.title) : s.home.pricingTitle} intro={withoutA ? t(PRICING.withoutA.intro(pilotCap)) : s.home.pricingIntro} />
         <SeasonToggle tone="light" />
       </div>
-      <div className="mt-10 grid gap-5 md:grid-cols-2">{(['optionA', 'optionB'] as const).map(card)}</div>
+      <div className={`mt-10 grid gap-5 ${solo ? '' : 'md:grid-cols-2'}`}>{offered.map(card)}</div>
       <article id="family-camp" className="mt-5 scroll-mt-20 overflow-hidden rounded-3xl border-2 border-cedar/60 bg-white shadow-sm" data-family-camp>
         <div className="grid lg:grid-cols-[1fr_1.3fr]">
           <div className="flex flex-col p-6">
