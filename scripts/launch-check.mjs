@@ -8,7 +8,11 @@ const need = (ok, owner, what) => { if (!ok) todo.push(`[${owner}] ${what}`) }
 need(c.operator.legalName && c.operator.taxId && c.operator.phone && c.operator.address, 'Camp Operations Lead', 'operator legal name, Tax ID (統編), phone, address')
 need(c.operator.lineId && c.operator.lineUrl, 'Camp Operations Lead', 'Official LINE ID and link')
 need(c.travelAgency.legalName && c.travelAgency.category && c.travelAgency.tourismRegNo && c.travelAgency.tqaaNo && c.travelAgency.phone, 'Travel Agency Partner', 'legal name, licence tier (甲種/乙種), 交觀 number, 品保 number, phone')
-for (const season of ['winter', 'summer']) for (const o of ['optionA', 'optionB']) need(c.sessions[season][o], 'Joint Partners', `${season} ${o}: exact dates, start date and TWD fee`)
+for (const season of ['winter', 'summer']) for (const o of ['optionA', 'optionB']) {
+  const offer = c.sessions[season][o]
+  if (!offer) need(false, 'Joint Partners', `${season} ${o}: exact dates, start date and TWD fee`)
+  else need(offer.fee != null, 'Joint Partners', `${season} ${o} (${offer.dates.en}): TWD fee`)
+}
 need(c.familyCamp.dates && c.familyCamp.fees?.length, 'Joint Partners', 'Option C family camp (ages 7–9): dates, and the fee for each adult + camper combination')
 need(c.snackShop.couponTerms, 'Joint Partners', 'snack coupons: how packs are paid for, and what happens to unused coupons')
 need(c.snackShop.menuConfirmed, 'Bambi Glamping Partner', 'the Airstream snack-shop menu that coupons can be exchanged for (src/map/areas.ts holds a draft)')

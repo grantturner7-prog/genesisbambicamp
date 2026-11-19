@@ -5,7 +5,10 @@ export interface SessionOffer {
   dates: L
   /** ISO date of the first camp day, used by the refund calculator. */
   startDate: string
-  fee: number
+  /** `null` while the partners still owe the fee: the site then shows "announced soon". */
+  fee: number | null
+  /** Set for a pilot camp: its own, smaller limit on campers. */
+  pilot?: { maxCampers: number }
 }
 
 /** Family-camp fee for one camper van, by who shares it (e.g. 1 adult + 3 campers). */
@@ -145,9 +148,19 @@ export const campConfig = {
    * Session dates and fees — owed by the partners (Doc 3, Section 1).
    * Option A (5 Days / 4 Nights) runs Tuesday to Saturday; Option B (4 Days / 3 Nights)
    * runs Wednesday to Saturday.
+   * The first camp is the winter Option B: Wednesday 27 to Saturday 30 January 2027, a pilot
+   * camp limited to 30 campers. Its fee is still owed.
    */
   sessions: {
-    winter: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
+    winter: {
+      optionA: null as SessionOffer | null,
+      optionB: {
+        dates: { en: '27–30 January 2027 (Wednesday to Saturday)', zh: '2027 年 1 月 27 日至 30 日（週三至週六）' },
+        startDate: '2027-01-27',
+        fee: null,
+        pilot: { maxCampers: 30 },
+      } as SessionOffer | null,
+    },
     summer: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
   },
   payment: { deposit: null as number | null, balanceDueDays: null as number | null },

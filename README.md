@@ -45,6 +45,8 @@ including under a sub-path.
 - Snacks are not part of the fee. Parents choose a coupon pack (`snackShop.couponPacks`:
   NT$1,000 / 2,000 / 3,000); campers get the coupons at check-in and exchange them at
   the Airstream snack shop beside the pool.
+- The first camp is the winter Option B: Wednesday 27 to Saturday 30 January 2027, a pilot
+  camp limited to 30 campers (`sessions.winter.optionB`). Its fee is still owed.
 - Option A (5 Days / 4 Nights) runs Tuesday to Saturday. Option B (4 Days / 3 Nights)
   runs Wednesday to Saturday.
 - Option C (3 Days / 2 Nights, `familyCamp`): ages 7–9 with an accompanying adult. One

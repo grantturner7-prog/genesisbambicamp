@@ -15,7 +15,7 @@ type Reason = 'family' | 'lowEnrollment' | 'forceMajeure'
 export function RefundCalculator() {
   const { s, t, season } = useCamp()
   const offer = campConfig.sessions[season].optionA
-  const [fee, setFee] = useState<string>(offer ? String(offer.fee) : '')
+  const [fee, setFee] = useState<string>(offer?.fee != null ? String(offer.fee) : '')
   const [days, setDays] = useState<string>('45')
   const [reason, setReason] = useState<Reason>('family')
   const feeN = Math.max(0, Number(fee) || 0)
@@ -138,6 +138,8 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
   const pdf = campConfig.registration.contractPdfUrl
   const family = f.option === 'C'
   const optionCopy = f.option === 'A' ? PRICING.optionA : f.option === 'B' ? PRICING.optionB : FAMILY
+  // the dated camp behind the chosen season and option, if its dates are set
+  const chosen = f.option === 'C' ? null : campConfig.sessions[f.season][f.option === 'A' ? 'optionA' : 'optionB']
   /** Campers allowed in the van for the chosen number of adults. */
   const maxCampers = campConfig.familyCamp.groups.find((g) => String(g.adults) === f.adults)?.maxCampers ?? 1
   const groupCampers = Math.min(Number(f.groupCampers) || 1, maxCampers)
@@ -257,6 +259,12 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
               <p className="rounded-xl bg-cedar-100/70 px-4 py-3 text-[13px] font-medium leading-relaxed text-pine-900 sm:col-span-2" data-register-note>
                 {t(f.option === 'A' ? PRICING.optionA.bus : f.option === 'B' ? PRICING.optionB.bus : FAMILY.registerNote)}
               </p>
+              {chosen && (
+                <p className="text-[13px] font-semibold text-pine sm:col-span-2" data-register-dates>
+                  {t(chosen.dates)}
+                  {chosen.pilot ? ` · ${t(PRICING.pilotLimit(chosen.pilot.maxCampers))}` : ''}
+                </p>
+              )}
               {family && (
                 <>
                   <Field label={R.adults} required>

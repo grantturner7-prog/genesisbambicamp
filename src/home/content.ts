@@ -22,6 +22,8 @@ export const HERO = {
     l('Three meals a day, a 24/7 nurse and four layers of insurance', '每日三餐、24 小時護理師與四重保險'),
   ],
   datesPending: l('Session dates announced soon', '梯次日期即將公布'),
+  /** The hero's camper figure, when the season's first camp is a pilot. */
+  pilotMetric: l('campers at most in the pilot camp', '試辦營名額上限'),
   /** Pill under the hero badges, linking to the family-camp card. */
   familyCamp: l(`New: 3-day family camp for ages ${fc.ageMin}–${fc.ageMax}`, `全新：${fc.ageMin}–${fc.ageMax} 歲三天兩夜親子梯`),
 }
@@ -130,6 +132,9 @@ export const PRICING = {
   },
   feePending: l('Fee announced soon', '費用即將公布'),
   datesPending: l('Dates announced soon', '日期即將公布'),
+  /** Shown on a session that is a pilot camp. */
+  pilotBadge: l('First camp · Pilot', '首梯・試辦營'),
+  pilotLimit: (n: number) => l(`Pilot camp, limited to ${n} campers`, `試辦營，限額 ${n} 名營員`),
   shared: l('3 campers per luxury camper van · 3 meals a day · all activities', '三人一輛豪華露營車・每日三餐・全部活動'),
   busTitle: l('Charter bus meeting point', '遊覽車集合地點'),
   bus: l('Designated Tour Bus Zone near National Taichung Theater (Shizheng N. 2nd Rd.). Licensed charter buses under 10 years old, with a pre-departure emergency-exit briefing.', '臺中國家歌劇院周邊指定遊覽車臨停區（市政北二路）。使用車齡十年內合法遊覽車，出發前進行逃生門安全說明。'),
