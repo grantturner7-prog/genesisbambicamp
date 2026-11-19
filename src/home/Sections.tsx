@@ -305,7 +305,10 @@ export function Pricing({ onRegister, children }: { onRegister: (option?: CampOp
         <h3 className="font-display text-2xl font-semibold text-pine">{t(o.name)}</h3>
         <p className="mt-1 text-sm font-semibold text-ink/60">{t(o.when)}</p>
         <p className="mt-4 text-sm font-semibold text-cedar-600">{offer ? t(offer.dates) : t(PRICING.datesPending)}</p>
-        <p className="font-display mt-1 text-4xl font-semibold text-pine-900">{offer?.fee != null ? fmtTWD(offer.fee) : t(PRICING.feePending)}</p>
+        <p className="font-display mt-1 text-4xl font-semibold text-pine-900">
+          {offer?.fee != null ? fmtTWD(offer.fee) : t(PRICING.feePending)}
+          {offer?.fee != null && <span className="ml-2 font-sans text-sm font-semibold text-ink/60">{t(PRICING.perCamper)}</span>}
+        </p>
         {offer?.pilot && <p className="mt-1.5 text-[13px] font-semibold text-ink/70">{t(PRICING.pilotLimit(offer.pilot.maxCampers))}</p>}
         <p className="mt-4 text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
         <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(o.bus)}</p>

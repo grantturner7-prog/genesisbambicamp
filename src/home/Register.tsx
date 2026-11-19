@@ -14,7 +14,8 @@ type Reason = 'family' | 'lowEnrollment' | 'forceMajeure'
 /** Statutory refund calculator (Domestic Travel Standard Contract, Art. 12/13). */
 export function RefundCalculator() {
   const { s, t, season } = useCamp()
-  const offer = campConfig.sessions[season].optionA
+  const ses = campConfig.sessions[season]
+  const offer = ses.optionA?.fee != null ? ses.optionA : ses.optionB
   const [fee, setFee] = useState<string>(offer?.fee != null ? String(offer.fee) : '')
   const [days, setDays] = useState<string>('45')
   const [reason, setReason] = useState<Reason>('family')

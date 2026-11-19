@@ -149,7 +149,7 @@ export const campConfig = {
    * Option A (5 Days / 4 Nights) runs Tuesday to Saturday; Option B (4 Days / 3 Nights)
    * runs Wednesday to Saturday.
    * The first camp is the winter Option B: Wednesday 27 to Saturday 30 January 2027, a pilot
-   * camp limited to 30 campers. Its fee is still owed.
+   * camp limited to 30 campers, at NT$35,000 per camper.
    */
   sessions: {
     winter: {
@@ -157,7 +157,7 @@ export const campConfig = {
       optionB: {
         dates: { en: '27–30 January 2027 (Wednesday to Saturday)', zh: '2027 年 1 月 27 日至 30 日（週三至週六）' },
         startDate: '2027-01-27',
-        fee: null,
+        fee: 35000, // per camper
         pilot: { maxCampers: 30 },
       } as SessionOffer | null,
     },

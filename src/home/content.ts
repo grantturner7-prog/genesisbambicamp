@@ -132,6 +132,8 @@ export const PRICING = {
   },
   feePending: l('Fee announced soon', '費用即將公布'),
   datesPending: l('Dates announced soon', '日期即將公布'),
+  /** Beside a fee: it is charged for each camper. */
+  perCamper: l('per camper', '每位營員'),
   /** Shown on a session that is a pilot camp. */
   pilotBadge: l('First camp · Pilot', '首梯・試辦營'),
   pilotLimit: (n: number) => l(`Pilot camp, limited to ${n} campers`, `試辦營，限額 ${n} 名營員`),
