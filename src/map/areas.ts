@@ -29,8 +29,8 @@ export const AREAS: Area[] = [
       zh: '每位營員的冒險，從這裡開始。',
     },
     summary: {
-      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, and check in at the reception unit just inside, where counselors greet every family. Option A campers ride the round-trip charter bus from the Designated Tour Bus Zone near National Taichung Theater. Option B families drop off on Wednesday between 14:00 and 14:30, and campers ride the charter bus back on Saturday.',
-      zh: '營員抵達苗栗三灣斑比跳跳大門後，在入口旁的報到處報到，隊輔會親切迎接每個家庭。方案 A 營員搭乘由臺中國家歌劇院周邊指定遊覽車臨停區出發的專車往返；方案 B 家長於週三 14:00–14:30 送達園區，週六由遊覽車專車返回。',
+      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, and check in at the reception unit just inside, where counselors greet every family. Families drop off on Wednesday between 14:00 and 14:30, and campers ride the charter bus back on Saturday.',
+      zh: '營員抵達苗栗三灣斑比跳跳大門後，在入口旁的報到處報到，隊輔會親切迎接每個家庭。家長於週三 14:00–14:30 送達園區，週六由遊覽車專車返回。',
     },
     icon: 'DoorClosed',
     accent: '#8a6a43',
@@ -38,15 +38,15 @@ export const AREAS: Area[] = [
     features: [
       {
         icon: 'Bus',
-        title: { en: 'Charter bus (Option A)', zh: '遊覽車專車（方案 A）' },
+        title: { en: 'Saturday return charter bus', zh: '週六回程遊覽車專車' },
         body: {
-          en: 'Round-trip charter bus from the Designated Tour Bus Zone near National Taichung Theater (Shizheng N. 2nd Rd.).',
-          zh: '由臺中國家歌劇院周邊指定遊覽車臨停區（市政北二路）出發，專車來回接駁。',
+          en: 'On Saturday campers ride the charter bus back to the Designated Tour Bus Zone near National Taichung Theater (Shizheng N. 2nd Rd.). It is included in the fee.',
+          zh: '週六搭乘遊覽車專車返回臺中國家歌劇院周邊指定遊覽車臨停區（市政北二路），費用已含。',
         },
       },
       {
         icon: 'Car',
-        title: { en: 'Parent drop-off (Option B)', zh: '家長送達（方案 B）' },
+        title: { en: 'Parent drop-off', zh: '家長送達' },
         body: {
           en: 'Wednesday 14:00–14:30 at the Sanwan gate. The Saturday return charter bus is included.',
           zh: '週三 14:00–14:30 於三灣園區大門報到；週六搭乘遊覽車專車返回，費用已含。',
@@ -79,13 +79,13 @@ export const AREAS: Area[] = [
     ],
     facts: [
       { label: { en: 'Venue', zh: '營地' }, value: { en: 'Bambi Glamping, Sanwan, Miaoli', zh: '斑比跳跳・苗栗三灣' } },
-      { label: { en: 'Option B drop-off', zh: '方案 B 報到' }, value: { en: 'Wednesday 14:00–14:30', zh: '週三 14:00–14:30' } },
+      { label: { en: 'Drop-off', zh: '報到' }, value: { en: 'Wednesday 14:00–14:30', zh: '週三 14:00–14:30' } },
       { label: { en: 'Gate curfew', zh: '大門管制' }, value: { en: 'Nightly at 23:00', zh: '每晚 23:00' } },
       { label: { en: 'Address', zh: '地址' }, value: venue.address },
     ],
     parentNote: {
-      en: 'Options A and B: arrive relaxed. Counselors handle luggage and van assignments while you say your goodbyes.',
-      zh: '方案 A、B：輕鬆抵達，行李與露營車分配交給隊輔，您只需要好好跟孩子道別。',
+      en: 'Arrive relaxed. Counselors handle luggage and van assignments while you say your goodbyes.',
+      zh: '輕鬆抵達，行李與露營車分配交給隊輔，您只需要好好跟孩子道別。',
     },
   },
 
@@ -98,8 +98,8 @@ export const AREAS: Area[] = [
       zh: '每一輛露營車，都是飯店等級的舒適小窩。',
     },
     summary: {
-      en: 'Campers sleep in Bambi’s climate-controlled luxury camper vans, each with a double bed, a bunk bed and its own wet/dry bathroom. In Options A and B, three same-gender campers share a van and counselors check every van each morning and evening; in the Option C family camp, each group shares a van with its accompanying adult. The camp has 50 units in six zones (A to G) across lakeside, meadow and forest settings.',
-      zh: '營員入住斑比跳跳的冷暖空調頂級豪華露營車，每車配備一張雙人床、一組上下舖與獨立乾濕分離衛浴。方案 A 與方案 B 每車三名同性別營員，隊輔每日早晚各檢查一次；方案 C 親子梯則由陪同成人與同組營員同住一車。全區共 50 輛，分為 A 到 G 六區，分佈於湖畔、草地與森林之間。',
+      en: 'Campers sleep in Bambi’s climate-controlled luxury camper vans, each with a double bed, a bunk bed and its own wet/dry bathroom. Three same-gender campers share a van and counselors check every van each morning and evening. The camp has 50 units in six zones (A to G) across lakeside, meadow and forest settings.',
+      zh: '營員入住斑比跳跳的冷暖空調頂級豪華露營車，每車配備一張雙人床、一組上下舖與獨立乾濕分離衛浴。每車三名同性別營員，隊輔每日早晚各檢查一次。全區共 50 輛，分為 A 到 G 六區，分佈於湖畔、草地與森林之間。',
     },
     icon: 'BedDouble',
     accent: '#3e6f8f',
@@ -107,7 +107,7 @@ export const AREAS: Area[] = [
     features: [
       {
         icon: 'Users',
-        title: { en: '3 campers per van (Options A and B)', zh: '每車三名營員（方案 A、B）' },
+        title: { en: '3 campers per van', zh: '每車三名營員' },
         body: {
           en: 'Three same-gender campers share each van, grouped in age-based cabin teams.',
           zh: '每車三名同性別營員，並依年齡小隊分組。',
@@ -155,7 +155,7 @@ export const AREAS: Area[] = [
       },
     ],
     facts: [
-      { label: { en: 'Campers per van (Options A and B)', zh: '每車人數（方案 A、B）' }, value: { en: `${cohort.campersPerVan}, same gender`, zh: `${cohort.campersPerVan} 人，同性別` } },
+      { label: { en: 'Campers per van', zh: '每車人數' }, value: { en: `${cohort.campersPerVan}, same gender`, zh: `${cohort.campersPerVan} 人，同性別` } },
       { label: { en: 'Beds', zh: '床鋪' }, value: { en: '1 double + 1 bunk', zh: '雙人床 1 張＋上下舖 1 組' } },
       { label: { en: 'Settings', zh: '營位環境' }, value: { en: 'Lakeside · Meadow · Forest', zh: '湖畔・草地・森林' } },
       { label: { en: 'Inspections', zh: '檢查' }, value: { en: 'Morning and evening', zh: '每日早晚各一次' } },

@@ -3,8 +3,7 @@ import { Check, Download, X } from 'lucide-react'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
 import type { Season } from '../lib/types'
-import { CONSENTS, COUPONS, FAMILY, PRICING, REFUND } from './content'
-import type { CampOption } from './Sections'
+import { CONSENTS, COUPONS, PRICING, REFUND } from './content'
 
 const fmtTWD = (n: number) => `NT$${Math.round(n).toLocaleString('en-US')}`
 
@@ -14,8 +13,7 @@ type Reason = 'family' | 'lowEnrollment' | 'forceMajeure'
 /** Statutory refund calculator (Domestic Travel Standard Contract, Art. 12/13). */
 export function RefundCalculator() {
   const { s, t, season } = useCamp()
-  const ses = campConfig.sessions[season]
-  const offer = ses.optionA?.fee != null ? ses.optionA : ses.optionB
+  const offer = campConfig.sessions[season]
   const [fee, setFee] = useState<string>(offer?.fee != null ? String(offer.fee) : '')
   const [days, setDays] = useState<string>('45')
   const [reason, setReason] = useState<Reason>('family')
@@ -89,11 +87,6 @@ export function RefundCalculator() {
 /* ───────────────────────────────────────────────────────── Registration modal */
 interface Form {
   season: Season
-  option: CampOption
-  /** Option C (family camp): who shares the camper van. */
-  adults: string
-  groupCampers: string
-  others: string
   /** Optional snack coupon pack in TWD ('' = none). */
   coupon: string
   camper: string
@@ -124,18 +117,11 @@ function Field({ label, children, required }: { label: string; children: ReactNo
 }
 
 /** 3-step registration with five separate consent boxes (Doc 3, Part 5). Nothing is transmitted without an endpoint. */
-/** The chosen option if it runs in that season; otherwise the option for the same age group that does. */
-function offeredOption(season: Season, option: CampOption): CampOption {
-  const off = campConfig.optionsNotOffered[season]
-  if (option === 'C' || !off.includes(option)) return option
-  return option === 'A' && !off.includes('B') ? 'B' : !off.includes('A') ? 'A' : 'C'
-}
-
-export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () => void; initialOption?: CampOption }) {
+export function RegisterModal({ onClose }: { onClose: () => void }) {
   const { s, t, season, lang } = useCamp()
   const R = s.register
   const [step, setStep] = useState(1)
-  const [f, setF] = useState<Form>({ season, option: offeredOption(season, initialOption), adults: '1', groupCampers: '1', others: '', coupon: '', camper: '', dob: '', gender: '', guardian: '', relation: '', mobile: '', email: '', address: '', backup: '', diet: [], dietOther: '', allergies: '', conditions: '', medications: '', water: '' })
+  const [f, setF] = useState<Form>({ season, coupon: '', camper: '', dob: '', gender: '', guardian: '', relation: '', mobile: '', email: '', address: '', backup: '', diet: [], dietOther: '', allergies: '', conditions: '', medications: '', water: '' })
   // Consent 5 (media) is optional and unchecked by default.
   const [consent, setConsent] = useState<Record<string, boolean>>({})
   const [err, setErr] = useState('')
@@ -144,13 +130,8 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
   const input = 'mt-1 w-full rounded-xl border border-pine/20 bg-white px-3.5 py-2.5 text-[15px] font-medium text-pine-900 outline-none focus:border-cedar-600'
   const endpoint = campConfig.registration.endpoint
   const pdf = campConfig.registration.contractPdfUrl
-  const family = f.option === 'C'
-  const optionCopy = f.option === 'A' ? PRICING.optionA : f.option === 'B' ? PRICING.optionB : FAMILY
-  // the dated camp behind the chosen season and option, if its dates are set
-  const chosen = f.option === 'C' ? null : campConfig.sessions[f.season][f.option === 'A' ? 'optionA' : 'optionB']
-  /** Campers allowed in the van for the chosen number of adults. */
-  const maxCampers = campConfig.familyCamp.groups.find((g) => String(g.adults) === f.adults)?.maxCampers ?? 1
-  const groupCampers = Math.min(Number(f.groupCampers) || 1, maxCampers)
+  // the dated camp of the chosen season, if its dates are set
+  const chosen = campConfig.sessions[f.season]
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
@@ -166,8 +147,7 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
     const L = (k: string, v: string) => `${k}: ${v || '-'}`
     return [
       campConfig.brand[lang === 'en' ? 'en' : 'zh'],
-      L(R.session, `${s.seasons[f.season]} · ${t(optionCopy.name)}`),
-      ...(family ? [L(R.adults, f.adults), L(R.groupCampers, String(groupCampers)), ...(groupCampers > 1 ? [L(R.others, f.others)] : [])] : []),
+      L(R.session, `${s.seasons[f.season]} · ${t(PRICING.camp.name)}`),
       L(t(COUPONS.label), f.coupon ? t(COUPONS.pack(Number(f.coupon))) : t(COUPONS.none)),
       L(R.camper, f.camper),
       L(R.dob, f.dob),
@@ -184,11 +164,10 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
       L(R.water, f.water),
       ...CONSENTS.map((c, i) => `[${consent[c.key] ? 'x' : ' '}] ${i + 1}. ${t(c.title)}`),
     ].join('\n')
-  }, [f, consent, lang, R, s, t, family, optionCopy, groupCampers])
+  }, [f, consent, lang, R, s, t])
 
   const next = () => {
     if (step === 1 && !(f.camper && f.dob && f.gender && f.guardian && f.relation && f.mobile && f.address)) return setErr(R.missing)
-    if (step === 1 && family && groupCampers > 1 && !f.others.trim()) return setErr(R.missing)
     if (step === 2 && !f.water) return setErr(R.missing)
     setErr('')
     setStep(step + 1)
@@ -199,7 +178,7 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
     if (!endpoint) return setState('local')
     setState('sending')
     try {
-      const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...f, adults: family ? f.adults : null, groupCampers: family ? String(groupCampers) : null, others: family && groupCampers > 1 ? f.others : '', consent, lang }) })
+      const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...f, consent, lang }) })
       if (!res.ok) throw new Error(String(res.status))
       setState('sent')
     } catch {
@@ -252,59 +231,17 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
           {(state === 'form' || state === 'sending') && step === 1 && (
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label={R.session} required>
-                <select className={input} value={f.season} onChange={(e) => setF((p) => ({ ...p, season: e.target.value as Season, option: offeredOption(e.target.value as Season, p.option) }))}>
+                <select className={input} value={f.season} onChange={(e) => set('season', e.target.value as Season)}>
                   <option value="winter">{s.seasons.winterLong}</option>
                   <option value="summer">{s.seasons.summerLong}</option>
                 </select>
               </Field>
-              <Field label={R.option} required>
-                <select className={input} value={f.option} data-register-option onChange={(e) => set('option', e.target.value as CampOption)}>
-                  {!campConfig.optionsNotOffered[f.season].includes('A') && <option value="A">{t(PRICING.optionA.name)}</option>}
-                  {!campConfig.optionsNotOffered[f.season].includes('B') && <option value="B">{t(PRICING.optionB.name)}</option>}
-                  <option value="C">{t(FAMILY.name)}</option>
-                </select>
-              </Field>
-              <p className="rounded-xl bg-cedar-100/70 px-4 py-3 text-[13px] font-medium leading-relaxed text-pine-900 sm:col-span-2" data-register-note>
-                {t(f.option === 'A' ? PRICING.optionA.bus : f.option === 'B' ? PRICING.optionB.bus : FAMILY.registerNote)}
+              <p className="self-end pb-2.5 text-[13px] font-semibold text-pine" data-register-dates>
+                {chosen ? `${t(chosen.dates)}${chosen.pilot ? ` · ${t(PRICING.pilotLimit(chosen.pilot.maxCampers))}` : ''}` : t(PRICING.datesPending)}
               </p>
-              {chosen && (
-                <p className="text-[13px] font-semibold text-pine sm:col-span-2" data-register-dates>
-                  {t(chosen.dates)}
-                  {chosen.pilot ? ` · ${t(PRICING.pilotLimit(chosen.pilot.maxCampers))}` : ''}
-                </p>
-              )}
-              {family && (
-                <>
-                  <Field label={R.adults} required>
-                    <select
-                      className={input}
-                      value={f.adults}
-                      data-register-adults
-                      onChange={(e) => {
-                        // keep the stored group size within what the van sleeps for this many adults
-                        const adults = e.target.value
-                        const max = campConfig.familyCamp.groups.find((g) => String(g.adults) === adults)?.maxCampers ?? 1
-                        setF((p) => ({ ...p, adults, groupCampers: String(Math.min(Number(p.groupCampers) || 1, max)) }))
-                      }}
-                    >
-                      {campConfig.familyCamp.groups.map((g) => (
-                        <option key={g.adults} value={g.adults}>
-                          {g.adults}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                  <Field label={R.groupCampers} required>
-                    <select className={input} value={groupCampers} data-register-group onChange={(e) => set('groupCampers', e.target.value)}>
-                      {Array.from({ length: maxCampers }, (_, i) => i + 1).map((n) => (
-                        <option key={n} value={n}>
-                          {n}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                </>
-              )}
+              <p className="rounded-xl bg-cedar-100/70 px-4 py-3 text-[13px] font-medium leading-relaxed text-pine-900 sm:col-span-2" data-register-note>
+                {t(PRICING.camp.bus)}
+              </p>
               <Field label={R.camper} required>
                 <input className={input} value={f.camper} onChange={(e) => set('camper', e.target.value)} autoComplete="off" />
               </Field>
@@ -338,13 +275,6 @@ export function RegisterModal({ onClose, initialOption = 'A' }: { onClose: () =>
                   <input className={input} value={f.address} onChange={(e) => set('address', e.target.value)} autoComplete="street-address" />
                 </Field>
               </div>
-              {family && groupCampers > 1 && (
-                <div className="sm:col-span-2">
-                  <Field label={R.others} required>
-                    <textarea className={input} rows={3} value={f.others} data-register-others onChange={(e) => set('others', e.target.value)} />
-                  </Field>
-                </div>
-              )}
               <div className="sm:col-span-2">
                 <Field label={t(COUPONS.label)}>
                   <select className={input} value={f.coupon} data-register-coupon onChange={(e) => set('coupon', e.target.value)}>

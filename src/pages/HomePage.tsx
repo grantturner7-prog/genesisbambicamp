@@ -4,20 +4,19 @@ import { setUrl } from '../lib/root'
 import { LegalFooter } from '../components/LegalFooter'
 import { Games } from '../home/Games'
 import { RefundCalculator, RegisterModal } from '../home/Register'
-import { FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay, type CampOption } from '../home/Sections'
+import { FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay } from '../home/Sections'
 
 /** Landing page (Doc 3, sections 1–10 plus refund calculator and registration). */
 export function HomePage() {
-  // false = closed; otherwise the option the form opens on.
-  const [registering, setRegistering] = useState<false | CampOption>(false)
-  const open = useCallback((option?: CampOption) => setRegistering(option === 'B' || option === 'C' ? option : 'A'), [])
+  const [registering, setRegistering] = useState(false)
+  const open = useCallback(() => setRegistering(true), [])
   const close = useCallback(() => {
     setRegistering(false)
     if (window.location.hash === '#register') setUrl(window.location.pathname)
   }, [])
   // "#register" (e.g. from the Facilities page header) opens the modal.
   useEffect(() => {
-    const check = () => window.location.hash === '#register' && setRegistering((cur) => cur || 'A')
+    const check = () => window.location.hash === '#register' && setRegistering(true)
     check()
     window.addEventListener('hashchange', check)
     return () => window.removeEventListener('hashchange', check)
@@ -39,7 +38,7 @@ export function HomePage() {
         <Faq />
       </main>
       <LegalFooter />
-      {registering && <RegisterModal initialOption={registering} onClose={close} />}
+      {registering && <RegisterModal onClose={close} />}
     </>
   )
 }

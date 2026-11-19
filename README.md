@@ -1,8 +1,8 @@
 # Genesis Youth Adventures × Bambi Glamping
 
 Bilingual (繁體中文 / English) website for an American-style winter and summer camp
-at Bambi Glamping, Sanwan, Miaoli: Options A and B for ages 10–14, and Option C, a
-3-day family camp for ages 7–9 with an accompanying adult.
+at Bambi Glamping, Sanwan, Miaoli. There is one kind of camp: 4 days and 3 nights,
+Wednesday to Saturday, for ages 10–14.
 
 | Page | Path | What it is |
 | --- | --- | --- |
@@ -45,15 +45,12 @@ including under a sub-path.
 - Snacks are not part of the fee. Parents choose a coupon pack (`snackShop.couponPacks`:
   NT$1,000 / 2,000 / 3,000); campers get the coupons at check-in and exchange them at
   the Airstream snack shop beside the pool.
-- The first camp is the winter Option B: Wednesday 27 to Saturday 30 January 2027, a pilot
-  camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter.optionB`).
-- Option A does not run in winter (`optionsNotOffered`): the winter site shows Option B
-  and the family camp only.
-- Option A (5 Days / 4 Nights) runs Tuesday to Saturday. Option B (4 Days / 3 Nights)
-  runs Wednesday to Saturday.
-- Option C (3 Days / 2 Nights, `familyCamp`): ages 7–9 with an accompanying adult. One
-  camper van sleeps four: 1 adult + up to 3 campers, or 2 parents + up to 2 campers.
-  Adults look after their campers until 09:00 and from 19:00; the camp team runs the day.
+- There is one kind of camp: 4 Days / 3 Nights, Wednesday to Saturday (parents drop off
+  at Sanwan on Wednesday 14:00–14:30; the Saturday return charter bus is included). The
+  site never names options: there is nothing to choose between.
+- The first camp is the winter one: Wednesday 27 to Saturday 30 January 2027, a pilot
+  camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter`). The summer
+  camp's dates and fee are still owed (`sessions.summer` is `null`).
 - No daily timetable is published yet. Add it (and the list of activities) to
   `src/home/content.ts` when the partners supply it.
 
@@ -97,5 +94,6 @@ Run `npm run launch-check`. In particular:
 - The snack-shop menu and the pool, kayak and campfire rules are drafts for the camp
   kitchen, lifeguard and insurer to confirm.
 - The handover documents (Docs 2–4, including the contract) still describe four meals
-  a day and Monday/Tuesday starts. Update them to match the camp facts above before the
+  a day, Options A and B and Monday/Tuesday starts. Update them to match the camp facts
+  above (one 4 Days / 3 Nights camp, Wednesday to Saturday, three meals a day) before the
   contract PDF is linked.

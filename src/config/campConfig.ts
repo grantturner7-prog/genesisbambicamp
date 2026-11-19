@@ -1,6 +1,6 @@
 import type { L } from '../lib/types'
 
-/** One bookable option: human-readable dates and the all-in fee in TWD. */
+/** One camp: human-readable dates and the fee per camper in TWD. */
 export interface SessionOffer {
   dates: L
   /** ISO date of the first camp day, used by the refund calculator. */
@@ -9,13 +9,6 @@ export interface SessionOffer {
   fee: number | null
   /** Set for a pilot camp: its own, smaller limit on campers. */
   pilot?: { maxCampers: number }
-}
-
-/** Family-camp fee for one camper van, by who shares it (e.g. 1 adult + 3 campers). */
-export interface FamilyFee {
-  adults: number
-  campers: number
-  fee: number
 }
 
 /**
@@ -44,25 +37,6 @@ export const campConfig = {
     gateCurfew: '23:00',
   },
 
-  /**
-   * Option C: 3 Days / 2 Nights family camp for younger campers, each group with an
-   * accompanying adult. One camper van sleeps four. Dates and fees are owed by the partners.
-   */
-  familyCamp: {
-    ageMin: 7,
-    ageMax: 9,
-    vanSleeps: 4,
-    /** Who may share one camper van. */
-    groups: [
-      { adults: 1, maxCampers: 3 },
-      { adults: 2, maxCampers: 2 },
-    ],
-    /** Adults look after their own campers before / after these times; the camp team runs the day. */
-    adultCareUntil: '09:00',
-    adultCareFrom: '19:00',
-    dates: null as L | null,
-    fees: null as FamilyFee[] | null,
-  },
 
   /** Venue partner — verified in Docs 2–4. */
   venue: {
@@ -145,29 +119,20 @@ export const campConfig = {
   venuePhotoPermissionOnFile: false,
 
   /**
-   * Session dates and fees — owed by the partners (Doc 3, Section 1).
-   * Option A (5 Days / 4 Nights) runs Tuesday to Saturday; Option B (4 Days / 3 Nights)
-   * runs Wednesday to Saturday.
-   * The first camp is the winter Option B: Wednesday 27 to Saturday 30 January 2027, a pilot
-   * camp limited to 30 campers, at NT$35,000 per camper.
+   * The camp is one kind only: 4 Days / 3 Nights, Wednesday to Saturday, one camp a season.
+   * `null`: the partners still owe that season's dates and fee.
+   * The first camp is the winter one: Wednesday 27 to Saturday 30 January 2027, a pilot camp
+   * limited to 30 campers, at NT$35,000 per camper.
    */
   sessions: {
     winter: {
-      optionA: null as SessionOffer | null,
-      optionB: {
-        dates: { en: '27–30 January 2027 (Wednesday to Saturday)', zh: '2027 年 1 月 27 日至 30 日（週三至週六）' },
-        startDate: '2027-01-27',
-        fee: 35000, // per camper
-        pilot: { maxCampers: 30 },
-      } as SessionOffer | null,
-    },
-    summer: { optionA: null as SessionOffer | null, optionB: null as SessionOffer | null },
+      dates: { en: '27–30 January 2027 (Wednesday to Saturday)', zh: '2027 年 1 月 27 日至 30 日（週三至週六）' },
+      startDate: '2027-01-27',
+      fee: 35000, // per camper
+      pilot: { maxCampers: 30 },
+    } as SessionOffer | null,
+    summer: null as SessionOffer | null,
   },
-  /**
-   * Options that do not run in a season. They are left off the site for that season: no
-   * card under Dates & Fees and no entry in the registration form.
-   */
-  optionsNotOffered: { winter: ['A'], summer: [] } as Record<'winter' | 'summer', ('A' | 'B')[]>,
   payment: { deposit: null as number | null, balanceDueDays: null as number | null },
 
   /** Registration. With no endpoint the form never transmits anything. */

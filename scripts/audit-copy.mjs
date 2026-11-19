@@ -17,9 +17,9 @@ const walk = (v, path) => {
   else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}[${i}]`))
   else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`)
 }
-walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(games, 'games'); walk(games.GAMES_COPY.showAll(games.GAMES.length), 'games.GAMES_COPY.showAll()'); walk(home.PRICING.pilotLimit(30), 'home.PRICING.pilotLimit()'); walk(home.PRICING.withoutA.intro(30), 'home.PRICING.withoutA.intro()'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
+walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(games, 'games'); walk(games.GAMES_COPY.showAll(games.GAMES.length), 'games.GAMES_COPY.showAll()'); walk(home.PRICING.pilotLimit(30), 'home.PRICING.pilotLimit()'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
 walk({ AREA_PHOTOS: media.AREA_PHOTOS, ZONE_PHOTOS: media.ZONE_PHOTOS, ZONES: media.ZONES }, 'media')
-walk({ sessions: campConfig.sessions, familyCamp: { dates: campConfig.familyCamp.dates }, snackShop: { couponTerms: campConfig.snackShop.couponTerms } }, 'config')
+walk({ sessions: campConfig.sessions, snackShop: { couponTerms: campConfig.snackShop.couponTerms } }, 'config')
 
 const RULES = [
   // Rule A — zero cram-school (buxiban) triggers
@@ -52,14 +52,13 @@ for (const { path, text } of all) if (/afternoon tea|午茶/i.test(text) && !/co
   }
 }
 
-// Sessions: Option A runs Tuesday to Saturday, Option B Wednesday to Saturday. (Option C's days
-// are still to be announced, so weekdays are only checked where the copy is about A or B.)
+// One kind of camp: 4 Days / 3 Nights, Wednesday to Saturday. No option letters, no other
+// lengths, no family camp, and no other camp days anywhere in the copy.
 {
-  const SESSION_CTX = /option [ab]\b|方案 ?[AB]|charter bus|遊覽車/i
-  const STALE_DAY = /\b(mon|fri)day\b|(週|星期|禮拜)[一五]|tuesday[^.]{0,20}14:00|週二 ?14:00/i
-  for (const { path, text } of all) if ((SESSION_CTX.test(text) || /^(home\.PRICING\.option[AB]|config\.sessions)\./.test(path)) && STALE_DAY.test(text)) fail('D stale session days (A: Tuesday to Saturday, B: Wednesday to Saturday)', path, text)
-  for (const [season, o] of Object.entries(campConfig.sessions)) for (const [k, day, name] of [['optionA', 2, 'Tuesday'], ['optionB', 3, 'Wednesday']]) {
-    if (o[k] && new Date(o[k].startDate + 'T00:00:00Z').getUTCDay() !== day) errors.push(`Session ${season}.${k} must start on a ${name}: ${o[k].startDate}`)
+  const STALE = /\boptions? [abc]\b|方案 ?[ABC]|family camp|親子梯|5 days|五天四夜|3 days \/ 2 nights|三天兩夜|\b(mon|tues|fri)day\b|(週|星期|禮拜)[一二五]/i
+  for (const { path, text } of all) if (STALE.test(text)) fail('D stale option or camp day (one camp: 4 Days / 3 Nights, Wednesday to Saturday)', path, text)
+  for (const [season, o] of Object.entries(campConfig.sessions)) {
+    if (o && new Date(o.startDate + 'T00:00:00Z').getUTCDay() !== 3) errors.push(`The ${season} camp must start on a Wednesday: ${o.startDate}`)
   }
 }
 
@@ -84,16 +83,14 @@ const need = [
   ['rainy-day plan (斑比大飯店)', '斑比大飯店', text],
   ['minimum-group 7-day 100% guarantee', '100%', home.PRICING.guarantee.en + home.PRICING.guarantee.zh],
   ['Insurance Act Art. 107', '107', home.SAFETY.under15.en + home.SAFETY.under15.zh],
-  ['Option B Wednesday 14:00–14:30 drop-off', 'Wednesday 14:00–14:30', home.PRICING.optionB.bus.en],
-  ['Option B Wednesday 14:00–14:30 drop-off (zh)', '週三 14:00–14:30', home.PRICING.optionB.bus.zh],
-  ['Option A runs Tuesday to Saturday', 'Tuesday to Saturday', home.PRICING.optionA.when.en],
-  ['Option B runs Wednesday to Saturday', 'Wednesday to Saturday', home.PRICING.optionB.when.en],
+  ['Wednesday 14:00–14:30 drop-off', 'Wednesday 14:00–14:30', home.PRICING.camp.bus.en],
+  ['Wednesday 14:00–14:30 drop-off (zh)', '週三 14:00–14:30', home.PRICING.camp.bus.zh],
+  ['the camp is 4 Days / 3 Nights', '4 Days / 3 Nights', home.PRICING.camp.name.en],
+  ['the camp runs Wednesday to Saturday', 'Wednesday to Saturday', home.PRICING.camp.when.en],
   ['three meals a day', 'Three meals a day', home.STAY.mealsTitle.en],
   ['signature Wagyu dinner on the final evening', 'Wagyu', home.STAY.signature.title.en + home.STAY.signature.body.en],
   ...campConfig.snackShop.couponPacks.map((n) => [`snack coupon pack NT$${n.toLocaleString('en-US')}`, `NT$${n.toLocaleString('en-US')}`, home.STAY.snacks.body.en]),
   ['snack coupons listed under "Not included"', 'coupon', home.PRICING.excluded.map((x) => x.en).join(' ')],
-  ['family camp ages', `${campConfig.familyCamp.ageMin}–${campConfig.familyCamp.ageMax}`, home.FAMILY.who.en],
-  ['family camp adult hours', campConfig.familyCamp.adultCareFrom, home.FAMILY.facts.map((x) => x.body.en).join(' ')],
   ['Venue tax ID 88491889', '88491889', campConfig.venue.taxId],
 ]
 for (const [name, needle, hay] of need) if (!String(hay).includes(needle)) errors.push(`Missing required disclosure: ${name}`)

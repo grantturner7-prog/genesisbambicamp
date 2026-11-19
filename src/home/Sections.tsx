@@ -6,10 +6,9 @@ import { useCamp } from '../i18n/CampState'
 import { FACILITIES_URL, ROOT } from '../lib/root'
 import { Icon } from '../map/icons'
 import { PHOTO_CREDIT, photoSrc } from '../media/media'
-import { ACTIVITIES, FAMILY, FAQ, HERO, PACKING, PRICING, SAFETY, SEASON_INTRO, STAY } from './content'
+import { ACTIVITIES, FAQ, HERO, PACKING, PRICING, SAFETY, SEASON_INTRO, STAY } from './content'
 
 /** Which option a Register button opens the form on. */
-export type CampOption = 'A' | 'B' | 'C'
 
 const fmtTWD = (n: number) => `NT$${n.toLocaleString('en-US')}`
 
@@ -34,9 +33,8 @@ export function Heading({ kicker, title, intro, dark }: { kicker: string; title:
 /* ───────────────────────────────────────────────────────── Hero */
 export function Hero({ onRegister }: { onRegister: () => void }) {
   const { s, t, season, time } = useCamp()
-  const ses = campConfig.sessions[season]
-  const offer = ses.optionA ?? ses.optionB
-  const pilot = [ses.optionA, ses.optionB].find((o) => o?.pilot)?.pilot
+  const offer = campConfig.sessions[season]
+  const pilot = offer?.pilot
   const m = s.hero.metrics
   const photo = (time === 'dusk' ? HERO.photoNight : HERO.photo)[season]
   return (
@@ -54,10 +52,6 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
                 {t(PRICING.pilotLimit(pilot.maxCampers))}
               </a>
             )}
-            <a href="#family-camp" data-family-pill className="flex items-center gap-1 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur transition hover:bg-white/20">
-              {t(HERO.familyCamp)}
-              <ArrowRight size={12} aria-hidden />
-            </a>
           </div>
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.24em] text-cedar">{s.hero.kicker}</p>
           <h1 className="font-display mt-2 text-[2.6rem] font-semibold leading-[1.04] tracking-tight sm:text-6xl">{s.hero.headline[season]}</h1>
@@ -285,31 +279,28 @@ export function Safety() {
 }
 
 /* ───────────────────────────────────────────────────────── Pricing */
-export function Pricing({ onRegister, children }: { onRegister: (option?: CampOption) => void; children?: ReactNode }) {
+export function Pricing({ onRegister, children }: { onRegister: () => void; children?: ReactNode }) {
   const { s, t, season } = useCamp()
-  const ses = campConfig.sessions[season]
+  const offer = campConfig.sessions[season]
   const ta = campConfig.travelAgency
-  const fam = campConfig.familyCamp
   const pending = s.footer.pending
-  // options that do not run this season are left off
-  const offered = (['optionA', 'optionB'] as const).filter((k) => !campConfig.optionsNotOffered[season].includes(k === 'optionA' ? 'A' : 'B'))
-  const withoutA = !offered.includes('optionA')
-  const solo = offered.length === 1
-  const card = (key: 'optionA' | 'optionB') => {
-    const o = PRICING[key]
-    const offer = ses[key]
-    return (
-      // a lone card lies across the row: what it is on the left, what it includes and the button on the right
-      <article key={key} data-option-card={key === 'optionA' ? 'A' : 'B'} className={`flex flex-col rounded-3xl border bg-white p-6 shadow-sm ${solo ? 'md:flex-row md:items-stretch md:gap-10' : ''} ${offer?.pilot ? 'border-2 border-cedar/60' : 'border-pine/10'}`}>
-        <div className={solo ? 'md:flex-1' : ''}>
+  return (
+    <Section id="pricing" tone="cream">
+      <div className="flex flex-wrap items-end justify-between gap-5">
+        <Heading kicker={s.home.pricingKicker} title={s.home.pricingTitle} intro={s.home.pricingIntro} />
+        <SeasonToggle tone="light" />
+      </div>
+      {/* the camp: what it is on the left, what it includes and the button on the right */}
+      <article data-camp-card className={`mt-10 flex flex-col rounded-3xl border bg-white p-6 shadow-sm md:flex-row md:items-stretch md:gap-10 ${offer?.pilot ? 'border-2 border-cedar/60' : 'border-pine/10'}`}>
+        <div className="md:flex-1">
           {offer?.pilot && (
             <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
               <Star size={11} fill="currentColor" aria-hidden />
               {t(PRICING.pilotBadge)}
             </span>
           )}
-          <h3 className="font-display text-2xl font-semibold text-pine">{t(o.name)}</h3>
-          <p className="mt-1 text-sm font-semibold text-ink/60">{t(o.when)}</p>
+          <h3 className="font-display text-2xl font-semibold text-pine">{t(PRICING.camp.name)}</h3>
+          <p className="mt-1 text-sm font-semibold text-ink/60">{t(PRICING.camp.when)}</p>
           <p className="mt-4 text-sm font-semibold text-cedar-600">{offer ? t(offer.dates) : t(PRICING.datesPending)}</p>
           <p className="font-display mt-1 text-4xl font-semibold text-pine-900">
             {offer?.fee != null ? fmtTWD(offer.fee) : t(PRICING.feePending)}
@@ -317,65 +308,12 @@ export function Pricing({ onRegister, children }: { onRegister: (option?: CampOp
           </p>
           {offer?.pilot && <p className="mt-1.5 text-[13px] font-semibold text-ink/70">{t(PRICING.pilotLimit(offer.pilot.maxCampers))}</p>}
         </div>
-        <div className={`mt-4 flex flex-1 flex-col ${solo ? 'md:mt-0 md:justify-center' : ''}`}>
+        <div className="mt-4 flex flex-1 flex-col md:mt-0 md:justify-center">
           <p className="text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
-          <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(o.bus)}</p>
-          <button type="button" aria-label={`${s.nav.register}: ${t(o.name)}`} data-register-open={key === 'optionA' ? 'A' : 'B'} onClick={() => onRegister(key === 'optionA' ? 'A' : 'B')} className={`rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800 ${solo ? '' : 'mt-auto'}`}>
+          <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(PRICING.camp.bus)}</p>
+          <button type="button" data-register-open onClick={() => onRegister()} className="rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
             {s.nav.register}
           </button>
-        </div>
-      </article>
-    )
-  }
-  const pilotCap = offered.map((k) => ses[k]?.pilot?.maxCampers).find((n) => n != null) ?? null
-  return (
-    <Section id="pricing" tone="cream">
-      <div className="flex flex-wrap items-end justify-between gap-5">
-        <Heading kicker={s.home.pricingKicker} title={withoutA ? t(PRICING.withoutA.title) : s.home.pricingTitle} intro={withoutA ? t(PRICING.withoutA.intro(pilotCap)) : s.home.pricingIntro} />
-        <SeasonToggle tone="light" />
-      </div>
-      <div className={`mt-10 grid gap-5 ${solo ? '' : 'md:grid-cols-2'}`}>{offered.map(card)}</div>
-      <article id="family-camp" className="mt-5 scroll-mt-20 overflow-hidden rounded-3xl border-2 border-cedar/60 bg-white shadow-sm" data-family-camp>
-        <div className="grid lg:grid-cols-[1fr_1.3fr]">
-          <div className="flex flex-col p-6">
-            <span className="inline-flex w-fit items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
-              <Star size={11} fill="currentColor" aria-hidden />
-              {t(FAMILY.badge)}
-            </span>
-            <h3 className="font-display mt-3 text-2xl font-semibold text-pine">{t(FAMILY.name)}</h3>
-            <p className="mt-1 text-sm font-semibold text-ink/60">{t(FAMILY.who)}</p>
-            <p className="mt-4 text-sm font-semibold text-cedar-600">{fam.dates ? t(fam.dates) : t(FAMILY.datesPending)}</p>
-            {fam.fees?.length ? (
-              <ul className="mt-2 divide-y divide-pine/10 text-[15px]">
-                {fam.fees.map((x) => (
-                  <li key={`${x.adults}-${x.campers}`} className="flex items-baseline justify-between gap-4 py-2">
-                    <span className="font-semibold text-ink/75">{t(FAMILY.feeRow(x.adults, x.campers))}</span>
-                    <span className="font-display text-2xl font-semibold tabular-nums text-pine-900">{fmtTWD(x.fee)}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="font-display mt-1 text-4xl font-semibold text-pine-900">{t(FAMILY.feePending)}</p>
-            )}
-            <p className="mt-1.5 text-[13px] font-medium text-ink/60">{t(FAMILY.feeNote)}</p>
-            <p className="mb-5 mt-4 text-sm leading-relaxed text-ink/75">{t(FAMILY.intro)}</p>
-            <button type="button" aria-label={`${s.nav.register}: ${t(FAMILY.name)}`} data-register-open="C" onClick={() => onRegister('C')} className="mt-auto w-fit rounded-full bg-pine px-6 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
-              {s.nav.register}
-            </button>
-          </div>
-          <ul className="grid content-center gap-3 bg-parchment-200/60 p-6">
-            {FAMILY.facts.map((x) => (
-              <li key={x.title.en} className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cedar-100 text-cedar-600">
-                  <Icon name={x.icon} size={19} />
-                </span>
-                <span>
-                  <span className="block text-[16px] font-bold text-pine-900">{t(x.title)}</span>
-                  <span className="mt-0.5 block text-sm leading-relaxed text-ink/70">{t(x.body)}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
         </div>
       </article>
       <div className="mt-5 grid gap-5 lg:grid-cols-3">
