@@ -58,7 +58,7 @@ including under a sub-path.
   names options: there is nothing to choose between.
 - Campers meet at The Lin Hotel, Taichung, at 08:00 on Wednesday; the charter bus leaves
   at 08:30 and returns there at 10:30 on Saturday (`transport` in `campConfig.ts`). The bus
-  both ways is listed as included. Nobody is dropped off at the camp gate.
+  both ways is included in the fee (confirmed by the organizer). Nobody is dropped off at the camp gate.
 - The first camp is the winter one: Wednesday 27 to Saturday 30 January 2027, a pilot
   camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter`). These are the
   only dates on the site. The summer camp has none yet (`sessions.summer` is `null`): it

@@ -422,7 +422,6 @@ const notes = () => `
 <li><b>Personal data.</b> The notice under Article 8 of the Personal Data Protection Act, how long records are kept, and whether any data is held outside Taiwan: Notice §${N.data}. Also whether a form with health details may be returned by LINE.</li>
 <li><b>Check-in at the meeting point.</b> Campers meet at ${esc(T.meetingPoint.en)} at ${T.meetTime} and the bus leaves at ${T.departTime}, so the health check, the temperature and the hand-over of medicine and devices happen there in half an hour. Whether the nurse is at the meeting point, or receives medicine when the bus reaches camp, is for the camp to decide: Check-in form, opening paragraph and §2.</li>
 <li><b>Saturday.</b> The bus returns to ${esc(T.meetingPoint.en)} at ${T.returnTime}. Still to decide: who may collect a camper, the ID check, what happens if nobody comes, and whether collecting at the camp is offered: Check-in form §5.</li>
-<li><b>The bus fare.</b> The website now lists the charter bus both ways as included in the fee. Please confirm.</li>
 <li><b>Campers from overseas.</b> The forms assume a guardian or backup contact in Taiwan and an NHI card or other medical insurance. Whether overseas campers are accepted, and on what terms, is not yet decided.</li>
 </ul>
 </section>`

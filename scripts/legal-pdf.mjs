@@ -82,7 +82,6 @@ const SECTIONS = [
       !c.snackShop.couponTerms && 'Snack coupons: how the packs are paid for, and what happens to unused coupons, is not stated anywhere yet.',
       c.cohort.minGroupSize != null && `Minimum group: the guarantee names ${c.cohort.minGroupSize} campers (a figure the partners were still to confirm)${pilotCap ? `, while the first camp is a pilot limited to ${pilotCap} campers` : ''}. Please check the two figures work together.`,
       !c.registration.contractPdfUrl && 'The service contract itself is not linked from the site yet. The refund tiers below are meant to mirror the Domestic Travel Standard Contract; please check them against the final contract.',
-      'The charter bus is listed as included in the fee in both directions: from the meeting point in Taichung on the first morning, and back to it on the last day. Please confirm that neither journey is charged separately.',
     ],
     blocks: [
       { title: l('The camp, its dates and its fee', '營隊、日期與費用'), where: 'Dates & Fees › camp card and section intro', rows: campRows() },
