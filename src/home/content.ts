@@ -98,6 +98,32 @@ export const STAY = {
 }
 
 /** Shown until the partners publish the day-by-day schedule. */
+/** Forms & documents: everything a family reads, fills in or signs, in the order it is needed. */
+export const DOCS = {
+  kicker: l('Forms & documents', '表單與文件'),
+  title: l('Everything to read, fill in and sign', '需要閱讀、填寫與簽名的文件'),
+  intro: l('The camp’s papers in one place, in the order you will need them. Each PDF is in English and 繁體中文 and ready to print.', '營隊相關文件都在這裡，依使用順序排列。每份 PDF 皆為中英對照，可直接列印。'),
+  /** Shown while `campConfig.documents.final` is false. */
+  draft: l('These forms are drafts. Our lawyer is still reviewing them, so please do not sign them yet. The final versions will replace them here.', '以下表單目前為草稿，仍由律師審閱中，請暫勿簽署；定稿後將於此處更新。'),
+  draftBadge: l('Draft', '草稿'),
+  openPdf: l('Open the PDF', '開啟 PDF'),
+  items: [
+    { id: 'register', when: l('To start', '第一步'), title: l('Online registration', '線上報名'), body: l('Three short steps: your camper’s details, health and diet, and the consents.', '三個簡短步驟：營員資料、健康與飲食，以及同意事項。') },
+    { id: 'contract', when: l('Before any payment', '收費前'), title: l('Service contract', '服務契約'), body: l('The bilingual service contract is given to you for review before any payment.', '中英雙語服務契約將於收費前交付審閱。') },
+    { id: 'notice', when: l('With your registration', '報名時'), title: l('Camp Notice and Agreement', '營隊須知與同意書'), body: l('How the camp runs and what we ask of families: fee and refunds, health and emergency care, how campers treat each other, phones, photos and personal data. Read it with your camper and sign the last page.', '說明營隊的運作方式與需要家長配合的事項：費用與退費、健康與緊急醫療、營員行為約定、手機、照片與個人資料。請與孩子一起閱讀，並於最後一頁簽名。'), file: 'documents/camp-notice-and-agreement.pdf' },
+    { id: 'health', when: l('Before camp', '營隊開始前'), title: l('Camper Health Form', '營員健康調查表'), body: l('Health history, allergies, diet, medicine and emergency contacts, for the camp nurse.', '健康狀況、過敏、飲食、用藥與緊急聯絡人，供營隊護理師使用。'), file: 'documents/camper-health-form.pdf' },
+    { id: 'checkin', when: l('On the morning of departure', '出發當日早上'), title: l('Check-in Day Form', '報到日確認單'), body: l(`A short health check for that morning, the medicine you hand in, and who will meet your camper on Saturday. Bring it signed to the meeting point at ${BUS.meetingPoint.en}.`, `當日早上的簡短健康確認、交付的藥品，以及週六接孩子的人。請簽名後帶到集合地點（${BUS.meetingPoint.zh}）。`), file: 'documents/check-in-day-form.pdf' },
+  ] as { id: 'register' | 'contract' | 'notice' | 'health' | 'checkin'; when: L; title: L; body: L; file?: string }[],
+  /** Other things on this page that families look for with the paperwork. */
+  alsoTitle: l('Also on this page', '本頁其他資訊'),
+  also: [
+    { href: '#refund', label: l('Refund rules and calculator', '退費標準與試算') },
+    { href: '#safety', label: l('Insurance and safety', '保險與安全') },
+    { href: '#packing', label: l('Packing checklist', '行李清單') },
+    { href: '#faq', label: l('Parent FAQ', '家長常見問題') },
+  ],
+}
+
 export const SCHEDULE_PENDING = {
   title: l('Daily schedule', '每日行程'),
   body: l('The day-by-day schedule for each session will be published here soon.', '各梯次的每日行程即將公布於此。'),

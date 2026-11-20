@@ -6,7 +6,7 @@ Wednesday to Saturday, for ages 10–14.
 
 | Page | Path | What it is |
 | --- | --- | --- |
-| Landing page | `/` | Hero, activities by season, stay & meals, safety & insurance, dates & fees, refund calculator, packing list, FAQ, registration |
+| Landing page | `/` | Hero, activities by season, stay & meals, safety & insurance, dates & fees, refund calculator, packing list, forms & documents, FAQ, registration |
 | Explore the Facilities | `/facilities/` | 3D camp map laid out one-to-one from Bambi's official camp map, with click-through panels (photos, features, menus, safety rules) |
 
 ## Run it
@@ -111,6 +111,15 @@ without a release of liability. Text the website already states is pulled from t
 copy; wording that is new is marked ◆ and is not camp policy until the camp, the nurse and
 the lawyer have agreed it. `npm run all-pdf` joins the forms and the legal notices into one
 file with a contents page (it needs poppler's `pdfunite`).
+
+The landing page's **Forms & documents** section opens the three forms from
+`public/documents/` (written by `npm run forms-pdf`, the same files as `docs/forms/`). While
+`documents.final` is `false` in `campConfig.ts` the section and the PDFs call them drafts that
+are not to be signed. Set it to `true` only after the lawyer has approved them, then run
+`npm run all-pdf` again.
+
+Every tab in the header names a section of the landing page and lands on it, from either
+page (`src/lib/nav.ts`); `npm run e2e` clicks each one and checks where it lands.
 
 Run `npm run launch-check`. In particular:
 

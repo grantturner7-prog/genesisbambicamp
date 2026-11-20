@@ -7,7 +7,7 @@
 import { createServer } from 'vite'
 import { createRequire } from 'node:module'
 import { execSync } from 'node:child_process'
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
+import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 const { chromium } = createRequire(import.meta.url)('playwright')
 
@@ -48,8 +48,14 @@ const TABLE = (heads, n, cls = '', widths = null) =>
   `<table class="grid plain ${cls}">${widths ? `<colgroup>${widths.map((w) => `<col style="width:${w}%">`).join('')}</colgroup>` : ''}<tr>${heads.map(([en, zh]) => `<th>${B(en, zh)}</th>`).join('')}</tr>${Array.from({ length: n }, () => `<tr>${heads.map(() => '<td class="blank"></td>').join('')}</tr>`).join('')}</table>`
 const SIGN = (en, zh) => ROW(F(en, zh, 5), F('Signature', '簽名', 4), F('Date', '日期', 3))
 const BOX = (title, inner) => `<div class="box"><h4>${title}</h4>${inner}</div>`
+/** While the forms are drafts (campConfig.documents.final is false) each one says so, and explains its marks. */
+const DRAFT = () =>
+  c.documents.final
+    ? ''
+    : `<p class="draftnote">${B('Draft: please do not sign this version. Wording marked ◆ is still being reviewed, and anything in [square brackets] is not yet decided.', '草稿，請勿簽署此版本。標示 ◆ 的文字仍在審閱中，〔方括號〕內的事項尚未決定。')}</p>`
 /** The camp's own contact details: printed when they are in campConfig, blank until then. */
 const CONTACT = () =>
+  DRAFT() +
   BOX(
     B('Camp contacts (the camp fills these in before the form goes out)', '營隊聯絡方式（由營隊於發送前填寫）'),
     ROW(F('Camp office phone', '營隊辦公室電話', 3, c.operator.phone), F('LINE', 'LINE', 3, c.operator.lineId), F('Email', '電子信箱', 3), F('During camp, day and night', '營期間 24 小時電話', 3)),
@@ -409,6 +415,7 @@ const notes = () => `
 <h2>Marked ◆: new wording that is not yet camp policy</h2>
 <p>Anything marked ${NEW} is proposed here for the first time and does not appear on the website. Paragraphs without the mark repeat what the website already says. The form fields, questions and tick boxes are new as well. Square brackets “[To decide: …]” and blanks are points the camp has not yet settled. The ones that most need a decision:</p>
 <ul>
+<li><b>The forms are on the website.</b> The Forms &amp; documents section of the landing page opens these same three PDFs, labelled as drafts that are not to be signed. They stay labelled that way until <code>documents.final</code> is set in the site’s configuration, which should follow your approval.</li>
 <li><b>Contact details.</b> The camp’s phone, LINE, email and 24-hour number are blank at the top of each form; the organizer’s and travel agency’s legal names are blank on the signature page and in the data notice.</li>
 <li><b>Payment.</b> Deposit, balance date, and how snack coupons are paid for and unused ones handled: Notice §${N.fee}.</li>
 <li><b>Refunds outside the table.</b> A camper who is ill before camp, is sent home with a fever at check-in, falls ill or is sent home during camp, or camp ending early: Notice §${N.refund}. Also how a cancellation is given and which day counts.</li>
@@ -476,6 +483,7 @@ const CSS = `
   table.consents td.yn { width: 22pt; }
   .box { border: 1px dashed #9aa79f; border-radius: 5pt; padding: 6pt 9pt; margin: 8pt 0 0; background: #fafbfa; break-inside: avoid; }
   .keep { break-inside: avoid; }
+  .draftnote { margin: 0 0 6pt; padding: 5pt 8pt; border: 1px solid #e3b565; border-radius: 4pt; background: #fff8ea; color: #7a4a05; font-size: 8.4pt; font-weight: 600; }
   section + section { break-before: page; }
   .notes { font-size: 9.4pt; } .notes h2 { border: 0; font-size: 11.5pt; margin-top: 13pt; } .notes li { margin: 4pt 0; }
   .draft { position: fixed; top: -9mm; right: 0; font-size: 7.5pt; color: #b45f06; letter-spacing: .08em; }
@@ -501,7 +509,7 @@ async function pdf(name, html, title) {
     format: 'A4',
     printBackground: true,
     displayHeaderFooter: true,
-    headerTemplate: `<div style="font-size:7px;width:100%;padding:0 13mm;color:#b45f06;text-align:right;letter-spacing:.08em">DRAFT FOR LEGAL REVIEW</div>`,
+    headerTemplate: `<div style="font-size:7px;width:100%;padding:0 13mm;color:#b45f06;text-align:right;letter-spacing:.08em">${c.documents.final ? '' : 'DRAFT FOR LEGAL REVIEW'}</div>`,
     footerTemplate: `<div style="font-size:7px;width:100%;padding:0 13mm;color:#777;display:flex;justify-content:space-between"><span>${esc(title)} · draft ${today}${commit ? ' · ' + commit : ''}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
   })
   console.log('wrote', path.relative(root, path.join(out, name + '.pdf')))
@@ -510,6 +518,13 @@ await pdf('0-notes-for-the-reviewer', notes(), 'Genesis × Bambi camp forms: not
 await pdf('1-camp-notice-and-agreement', notice(), 'Camp Notice and Agreement')
 await pdf('2-camper-health-form', health(), 'Camper Health Form')
 await pdf('3-check-in-day-form', checkin(), 'Check-in Day Form')
+// the same three forms are what the website's Forms & documents section opens
+const site = path.join(root, 'public/documents')
+mkdirSync(site, { recursive: true })
+for (const [from, to] of [['1-camp-notice-and-agreement', 'camp-notice-and-agreement'], ['2-camper-health-form', 'camper-health-form'], ['3-check-in-day-form', 'check-in-day-form']]) {
+  copyFileSync(path.join(out, from + '.pdf'), path.join(site, to + '.pdf'))
+  console.log('wrote', path.relative(root, path.join(site, to + '.pdf')))
+}
 await pdf('camp-forms-all', all, 'Genesis × Bambi camp forms')
 await browser.close()
 rmSync(tmp, { force: true })

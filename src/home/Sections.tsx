@@ -1,12 +1,12 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { ArrowRight, Check, ChevronDown, MapPin, Star, X } from 'lucide-react'
+import { ArrowRight, Check, ChevronDown, ClipboardCheck, ExternalLink, FileText, HeartPulse, MapPin, PenLine, ScrollText, Star, X } from 'lucide-react'
 import { Kicker, SeasonToggle } from '../components/ui'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
 import { FACILITIES_URL, ROOT } from '../lib/root'
 import { Icon } from '../map/icons'
 import { PHOTO_CREDIT, photoSrc } from '../media/media'
-import { ACTIVITIES, FAQ, HERO, PACKING, PRICING, SAFETY, SEASON_INTRO, STAY } from './content'
+import { ACTIVITIES, DOCS, FAQ, HERO, PACKING, PRICING, SAFETY, SEASON_INTRO, STAY } from './content'
 
 /** Which option a Register button opens the form on. */
 
@@ -451,6 +451,72 @@ export function Packing() {
           )
         })}
       </ul>
+    </Section>
+  )
+}
+
+/* ───────────────────────────────────────────────────────── Forms & documents */
+const DOC_ICON = { register: PenLine, contract: ScrollText, notice: FileText, health: HeartPulse, checkin: ClipboardCheck }
+
+/** Everything a family reads, fills in or signs, in the order it is needed. */
+export function Documents({ onRegister }: { onRegister: () => void }) {
+  const { s, t } = useCamp()
+  const final = campConfig.documents.final
+  const contract = campConfig.registration.contractPdfUrl
+  const button = 'mt-5 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition'
+  return (
+    <Section id="documents">
+      <Heading kicker={t(DOCS.kicker)} title={t(DOCS.title)} intro={t(DOCS.intro)} />
+      {!final && (
+        <p data-docs-draft className="mt-6 max-w-3xl rounded-2xl border border-amber-300 bg-amber-50 px-5 py-4 text-[15px] font-medium leading-relaxed text-amber-950">
+          {t(DOCS.draft)}
+        </p>
+      )}
+      <ol className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {DOCS.items.map((d, i) => {
+          const DocIcon = DOC_ICON[d.id]
+          return (
+            <li key={d.id} data-doc={d.id} className="flex flex-col rounded-3xl border border-pine/10 bg-white p-6 shadow-sm">
+              <div className="flex items-center justify-between gap-3">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-cedar-100 text-cedar-600">
+                  <DocIcon size={20} aria-hidden />
+                </span>
+                <span className="rounded-full bg-pine/10 px-2.5 py-1 text-right text-[11px] font-bold uppercase tracking-wider text-pine">
+                  {i + 1} · {t(d.when)}
+                </span>
+              </div>
+              <h3 className="font-display mt-4 text-xl font-semibold text-pine">{t(d.title)}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/75">{t(d.body)}</p>
+              {d.id === 'register' && (
+                <button type="button" data-doc-register onClick={() => onRegister()} className={`${button} bg-pine text-white hover:bg-pine-800`}>
+                  {s.nav.register}
+                </button>
+              )}
+              {d.id === 'contract' && contract && (
+                <a href={contract} target="_blank" rel="noopener" data-doc-link className={`${button} border border-pine/25 text-pine hover:bg-pine/5`}>
+                  {s.register.contractPdf}
+                  <ExternalLink size={15} aria-hidden />
+                </a>
+              )}
+              {d.file && (
+                <a href={`${ROOT}${d.file}`} target="_blank" rel="noopener" data-doc-link className={`${button} border border-pine/25 text-pine hover:bg-pine/5`}>
+                  {t(DOCS.openPdf)}
+                  <ExternalLink size={15} aria-hidden />
+                  {!final && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-900">{t(DOCS.draftBadge)}</span>}
+                </a>
+              )}
+            </li>
+          )
+        })}
+      </ol>
+      <p className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm" data-docs-also>
+        <span className="font-bold text-ink/60">{t(DOCS.alsoTitle)}</span>
+        {DOCS.also.map((a) => (
+          <a key={a.href} href={a.href} className="font-semibold text-pine underline decoration-cedar/60 underline-offset-4 hover:decoration-pine">
+            {t(a.label)}
+          </a>
+        ))}
+      </p>
     </Section>
   )
 }

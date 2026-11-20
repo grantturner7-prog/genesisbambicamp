@@ -67,6 +67,13 @@ export const campConfig = {
     allergensProvided: false,
   },
 
+  /**
+   * The papers a family reads, fills in or signs. The PDFs are written to public/documents/
+   * by `npm run forms-pdf`. `final` stays false until a lawyer has approved them: until then
+   * the site and the PDFs call them drafts that are not to be signed, and launch-check lists it.
+   */
+  documents: { final: false },
+
   /** Venue partner — verified in Docs 2–4. */
   venue: {
     name: { en: 'Bambi Glamping', zh: '斑比跳跳露營商行' } satisfies L,

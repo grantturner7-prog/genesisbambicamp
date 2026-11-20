@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Menu, MessageCircle, X } from 'lucide-react'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
+import { remember } from '../lib/nav'
 import { FACILITIES_URL, HOME_URL } from '../lib/root'
 import { LangToggle, SeasonToggle } from './ui'
 
@@ -22,20 +23,27 @@ export function Header({ page, onRegister }: { page: 'home' | 'facilities'; onRe
   const [open, setOpen] = useState(false)
   const home = page === 'home'
   const sec = (id: string) => (home ? `#${id}` : `${HOME_URL}#${id}`)
+  // each tab names a section of the landing page and opens exactly that section
   const links = [
-    { href: sec('seasons'), label: s.nav.activities },
-    { href: sec('stay'), label: s.nav.stay },
-    { href: sec('safety'), label: s.nav.safety },
-    { href: sec('pricing'), label: s.nav.pricing },
-    { href: sec('faq'), label: s.nav.faq },
-  ]
+    { id: 'seasons', label: s.nav.activities },
+    { id: 'stay', label: s.nav.stay },
+    { id: 'safety', label: s.nav.safety },
+    { id: 'pricing', label: s.nav.pricing },
+    { id: 'documents', label: s.nav.documents },
+    { id: 'faq', label: s.nav.faq },
+  ].map((l) => ({ ...l, href: sec(l.id) }))
+  // from the other page: remember the section, for hosts that drop the #hash on the way
+  const leave = (id: string) => () => {
+    if (!home) remember(id)
+    setOpen(false)
+  }
   const lineUrl = campConfig.operator.lineUrl
   const register = onRegister ? (
-    <button type="button" onClick={onRegister} className="rounded-full bg-cedar px-4 py-2 text-sm font-bold text-pine-900 shadow-sm transition hover:brightness-105">
+    <button type="button" onClick={onRegister} className="whitespace-nowrap rounded-full bg-cedar px-4 py-2 text-sm font-bold text-pine-900 shadow-sm transition hover:brightness-105">
       {s.nav.register}
     </button>
   ) : (
-    <a href={`${HOME_URL}#register`} className="rounded-full bg-cedar px-4 py-2 text-sm font-bold text-pine-900 shadow-sm transition hover:brightness-105">
+    <a href={`${HOME_URL}#register`} onClick={() => remember('register')} className="whitespace-nowrap rounded-full bg-cedar px-4 py-2 text-sm font-bold text-pine-900 shadow-sm transition hover:brightness-105">
       {s.nav.register}
     </a>
   )
@@ -45,7 +53,7 @@ export function Header({ page, onRegister }: { page: 'home' | 'facilities'; onRe
         {s.header.skip}
       </a>
       <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 lg:px-6">
-        <a href={HOME_URL} className="flex min-w-0 items-center gap-3">
+        <a href={HOME_URL} className="flex min-w-0 shrink items-center gap-3">
           <Logo />
           <span className="min-w-0 leading-tight">
             <span className="font-display block truncate text-[15px] font-semibold sm:text-[17px]">{s.header.brand}</span>
@@ -54,16 +62,19 @@ export function Header({ page, onRegister }: { page: 'home' | 'facilities'; onRe
         </a>
         <nav aria-label="Primary" className="ml-4 hidden items-center gap-0.5 text-sm font-medium xl:flex">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="rounded-full px-3 py-2 text-white/80 transition hover:bg-white/10 hover:text-white">
+            <a key={l.id} href={l.href} data-nav={l.id} onClick={leave(l.id)} className="whitespace-nowrap rounded-full px-2.5 py-2 text-white/80 transition hover:bg-white/10 hover:text-white 2xl:px-3">
               {l.label}
             </a>
           ))}
           <a
             href={FACILITIES_URL}
             aria-current={home ? undefined : 'page'}
-            className={`ml-1 rounded-full px-3 py-2 font-semibold transition ${home ? 'text-cedar hover:bg-white/10' : 'bg-white/15 text-white'}`}
+            data-nav="facilities"
+            className={`ml-1 whitespace-nowrap rounded-full px-3 py-2 font-semibold transition ${home ? 'text-cedar hover:bg-white/10' : 'bg-white/15 text-white'}`}
           >
-            {s.nav.facilities}
+            {/* the full name where the bar has room for it */}
+            <span className="2xl:hidden">{s.nav.facilitiesShort}</span>
+            <span className="hidden 2xl:inline">{s.nav.facilities}</span>
           </a>
         </nav>
         <div className="ml-auto flex items-center gap-2">
@@ -90,7 +101,7 @@ export function Header({ page, onRegister }: { page: 'home' | 'facilities'; onRe
               {s.nav.facilities}
             </a>
             {links.map((l) => (
-              <a key={l.href} href={l.href} className="rounded-xl px-4 py-3 text-white/90 hover:bg-white/10" onClick={() => setOpen(false)}>
+              <a key={l.id} href={l.href} data-nav={l.id} className="rounded-xl px-4 py-3 text-white/90 hover:bg-white/10" onClick={leave(l.id)}>
                 {l.label}
               </a>
             ))}

@@ -443,6 +443,76 @@ if (section("Map life: the tram never stops and lights up at night; the egrets c
   await ctx.close()
 }
 // ── Photos: every image loads, and each place shows a photo of that place
+// ── Tabs: every tab in the header opens the section it names, from either page; forms & documents
+if (section("Tabs: every tab in the header lands on its section; forms and documents")) {
+  const TABS = [['seasons', 'Activities'], ['stay', 'Vans & Meals'], ['safety', 'Safety'], ['pricing', 'Dates & Fees'], ['documents', 'Forms'], ['faq', 'FAQ']]
+  const rest = async (page) => { let last = -1, same = 0; for (let i = 0; i < 60 && same < 3; i++) { const y = await page.evaluate(() => Math.round(scrollY)); same = y === last ? same + 1 : 0; last = y; await page.waitForTimeout(200) } }
+  // how far the section's top is from the bottom of the sticky header, and whether its heading is in view
+  const landed = (page, id) => page.evaluate((id) => { const hb = document.querySelector('header').getBoundingClientRect().bottom; const el = document.getElementById(id); const h = el?.querySelector('h2'); return el && h ? { top: Math.round(el.getBoundingClientRect().top - hb), heading: Math.round(h.getBoundingClientRect().top - hb), vh: innerHeight } : null }, id)
+  const good = (w) => !!w && Math.abs(w.top) <= 6 && w.heading >= 0 && w.heading < w.vh * 0.6
+  for (const vp of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'phone', width: 390, height: 844 }]) {
+    const ctx = await browser.newContext({ viewport: vp })
+    await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'winter') })
+    const page = await ctx.newPage()
+    page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+    const tab = async (id) => { if (vp.name === 'phone') await page.locator('header button[aria-expanded]').click(); return page.locator(`header nav [data-nav=${id}]`).locator('visible=true').first() }
+    await page.goto(BASE + '/'); await page.waitForTimeout(600)
+    if (vp.name === 'desktop') ok('tabs: no label in the bar wraps onto a second line', await page.evaluate(() => [...document.querySelectorAll('header nav[aria-label=Primary] a, header button, header a.rounded-full')].filter((e) => e.offsetParent).every((e) => e.getBoundingClientRect().height < 48)))
+    if (vp.name === 'desktop') ok('tabs: the header shows each tab once, in page order, named as its section', JSON.stringify(await page.locator('header nav[aria-label=Primary] [data-nav]:not([data-nav=facilities])').allTextContents()) === JSON.stringify(TABS.map((x) => x[1])) && (await page.locator('header nav[aria-label=Primary] [data-nav=facilities]').innerText()).trim() === 'Facilities' && JSON.stringify(await page.evaluate((ids) => ids.map((id) => document.getElementById(id)).sort((a, b) => a.offsetTop - b.offsetTop).map((e) => e.id), TABS.map((x) => x[0]))) === JSON.stringify(TABS.map((x) => x[0])))
+    for (const [id, label] of TABS) {
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }))
+      const link = await tab(id)
+      const text = (await link.textContent()).trim()
+      await link.click(); await page.waitForTimeout(500); await rest(page)
+      const w = await landed(page, id)
+      ok(`tabs/${vp.name}: "${label}" lands on its section`, text === label && good(w), JSON.stringify(w))
+    }
+    // from the Facilities page the same tabs open the landing page at that section
+    for (const [id, label] of vp.name === 'desktop' ? TABS : [TABS[3], TABS[4]]) {
+      await page.goto(BASE + '/facilities/?quality=low'); await page.waitForTimeout(500)
+      const link = await tab(id)
+      await Promise.all([page.waitForNavigation({ waitUntil: 'load' }), link.click()])
+      await page.waitForTimeout(3000); await rest(page)
+      const w = await landed(page, id)
+      ok(`tabs/${vp.name}: from the Facilities page, "${label}" lands on its section`, good(w), JSON.stringify(w))
+    }
+    if (vp.name === 'desktop') {
+      await page.goto(BASE + '/facilities/?quality=low'); await page.waitForTimeout(500)
+      await Promise.all([page.waitForNavigation({ waitUntil: 'load' }), page.locator('header').getByRole('link', { name: 'Register' }).first().click()])
+      await page.waitForSelector('[data-register-modal]', { timeout: 10000 }).catch(() => {})
+      ok('tabs: Register on the Facilities page opens the registration form', (await page.locator('[data-register-modal]').count()) === 1)
+      await page.waitForTimeout(400); await page.keyboard.press('Escape'); await page.waitForTimeout(300)
+      ok('tabs: Escape closes the form again', (await page.locator('[data-register-modal]').count()) === 0)
+      await page.locator('header nav[aria-label=Primary] [data-nav=facilities]').click(); await page.waitForURL(/facilities/)
+      ok('tabs: "Facilities" opens the Explore the Facilities page', page.url().includes('/facilities/') && (await page.locator('[data-nav=facilities]').first().getAttribute('aria-current')) === 'page')
+      await page.goto(BASE + '/#documents'); await page.waitForTimeout(3000); await rest(page)
+      ok('tabs: a link straight to #documents lands on the section', good(await landed(page, 'documents')), JSON.stringify(await landed(page, 'documents')))
+      // forms and documents
+      const docs = await page.textContent('#documents')
+      ok('documents: the five papers, in the order they are needed', JSON.stringify(await page.locator('#documents [data-doc]').evaluateAll((els) => els.map((e) => e.dataset.doc))) === JSON.stringify(['register', 'contract', 'notice', 'health', 'checkin']) && ['Online registration', 'Service contract', 'Camp Notice and Agreement', 'Camper Health Form', 'Check-in Day Form'].every((x) => docs.includes(x)))
+      ok('documents: labelled as drafts that are not to be signed yet', (await page.locator('[data-docs-draft]').count()) === 1 && docs.includes('please do not sign them yet') && (await page.locator('#documents [data-doc-link]').count()) === 3 && (await page.locator('#documents [data-doc-link]').allTextContents()).every((x) => x.includes('Draft')))
+      for (const href of await page.locator('#documents [data-doc-link]').evaluateAll((els) => els.map((a) => a.href))) {
+        const r = await page.request.get(href)
+        ok(`documents: ${href.split('/').pop()} opens as a PDF`, r.status() === 200 && (r.headers()['content-type'] || '').includes('pdf') && (await r.body()).subarray(0, 5).toString() === '%PDF-', `${r.status()} ${r.headers()['content-type']}`)
+      }
+      ok('documents: the service contract has no link until it is ready', (await page.locator('#documents [data-doc=contract] a').count()) === 0 && docs.includes('given to you for review before any payment'))
+      await page.click('[data-doc-register]')
+      ok('documents: "Online registration" opens the form', (await page.locator('[data-register-modal]').count()) === 1)
+      await page.waitForTimeout(400); await page.keyboard.press('Escape'); await page.waitForTimeout(300)
+      for (const [href, id] of [['#refund', 'refund'], ['#packing', 'packing']]) {
+        await page.locator(`[data-docs-also] a[href="${href}"]`).click(); await page.waitForTimeout(500); await rest(page)
+        const top = await page.evaluate((id) => Math.round(document.getElementById(id).getBoundingClientRect().top - document.querySelector('header').getBoundingClientRect().bottom), id)
+        ok(`documents: "Also on this page" ${href} scrolls to it`, top >= -6 && top <= 30, String(top))
+        await page.evaluate(() => document.getElementById('documents').scrollIntoView({ behavior: 'instant' })); await page.waitForTimeout(300)
+      }
+      await page.getByRole('button', { name: '繁中' }).first().click()
+      const zhDocs = await page.textContent('#documents')
+      ok('documents: 繁體中文', ['表單與文件', '營隊須知與同意書', '營員健康調查表', '報到日確認單', '請暫勿簽署'].every((x) => zhDocs.includes(x)) && (await page.locator('header nav[aria-label=Primary] [data-nav=documents]').textContent()).trim() === '表單文件')
+    }
+    await ctx.close()
+  }
+}
+
 if (section("Photos: every image loads, and each place shows a photo of that place")) {
   const page = await newPage('en')
   const bad = []

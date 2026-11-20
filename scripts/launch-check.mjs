@@ -22,6 +22,7 @@ need(c.snackShop.menuConfirmed, 'Bambi Glamping Partner', 'the Airstream snack-s
 need(c.payment.deposit && c.payment.balanceDueDays, 'Joint Partners', 'deposit amount and balance due date')
 need(c.cohort.minGroupSize, 'Joint Partners', 'minimum group size')
 need(c.venuePhotoPermissionOnFile, 'Bambi Glamping Partner', 'written permission to publish Bambi photos (public/media/bambi) and the venue film')
+need(c.documents.final, 'Camp Operations Lead', 'forms: lawyer-approved final versions of the Camp Notice and Agreement, Camper Health Form and Check-in Day Form (the site labels them drafts until documents.final is true)')
 need(c.registration.endpoint, 'Camp Operations Lead', 'registration endpoint (the form sends nothing until this is set)')
 need(c.registration.contractPdfUrl, 'Camp Operations Lead', 'final bilingual contract PDF with all blanks filled')
 if (notes.length) console.log('\nBy design, not blocking:\n' + notes.map((t) => '  · ' + t).join('\n'))

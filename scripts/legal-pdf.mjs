@@ -119,12 +119,14 @@ const SECTIONS = [
     title: l('Registration: consents and personal data', '報名：同意事項與個人資料'),
     where: 'Registration form (opens from every "Register" button)',
     open: [
+      !c.documents.final && 'The website’s Forms & documents section offers the Camp Notice and Agreement, the Camper Health Form and the Check-in Day Form as PDFs, labelled as drafts that are not to be signed. They are the forms in Part 1 of this file.',
       !c.registration.endpoint && 'The form does not send anything yet: no receiving address is set, so it only shows the parent a summary to save.',
       !c.registration.contractPdfUrl && 'Consent 1 refers to Articles 1–5 of the service contract, but the contract PDF is not linked yet. The form says it will be given for review before any payment.',
       'Consent 1 names the District Court of the camper’s place of residence as the court of jurisdiction.',
       'The health-data notice promises who sees the data and destruction within 30 days after camp. Please check it against the Personal Data Protection Act and the organizers’ actual practice.',
     ],
     blocks: [
+      { title: home.DOCS.kicker, where: 'Landing page › Forms & documents', rows: [row('Heading', home.DOCS.title), row('Introduction', home.DOCS.intro), ...(c.documents.final ? [] : [row('Draft notice', home.DOCS.draft)]), ...home.DOCS.items.map((d) => row(`Document: ${d.title.en}`, l(`${d.when.en}. ${d.title.en}: ${d.body.en}`, `${d.when.zh}。${d.title.zh}：${d.body.zh}`)))] },
       { title: l('Before the consents', '同意事項前的說明'), where: 'Form › step 3', rows: [row('Instruction', S('register.consentIntro')), row('Contract link text', S('register.contractPdf')), row('Shown while no contract is linked', S('register.contractPending'))] },
       { title: l('The consents', '同意事項'), where: 'Form › step 3, one checkbox each, all unticked by default', rows: home.CONSENTS.map((x, i) => row(`Consent ${i + 1} (${x.required ? 'required' : 'optional'})`, item({ title: x.title, body: x.body }))) },
       { title: l('Health-data notice', '健康資料告知'), where: 'Form › step 2', rows: [row('Notice', S('register.healthNote'))] },

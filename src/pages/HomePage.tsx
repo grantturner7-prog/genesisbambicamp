@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Header } from '../components/Header'
+import { arrivalTarget, installSectionLinks, settleOn } from '../lib/nav'
 import { setUrl } from '../lib/root'
 import { LegalFooter } from '../components/LegalFooter'
 import { Games } from '../home/Games'
 import { RefundCalculator, RegisterModal } from '../home/Register'
-import { FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay } from '../home/Sections'
+import { Documents, FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay } from '../home/Sections'
 
 /** Landing page (Doc 3, sections 1–10 plus refund calculator and registration). */
 export function HomePage() {
@@ -21,6 +22,13 @@ export function HomePage() {
     window.addEventListener('hashchange', check)
     return () => window.removeEventListener('hashchange', check)
   }, [])
+  // every "#section" link scrolls to its section; a link from the other page lands on it too
+  useEffect(() => installSectionLinks(), [])
+  useEffect(() => {
+    if (!arrivalTarget) return
+    if (arrivalTarget === 'register') return setRegistering(true)
+    return settleOn(arrivalTarget)
+  }, [])
   return (
     <>
       <Header page="home" onRegister={() => open()} />
@@ -35,6 +43,7 @@ export function HomePage() {
           <RefundCalculator />
         </Pricing>
         <Packing />
+        <Documents onRegister={open} />
         <Faq />
       </main>
       <LegalFooter />
