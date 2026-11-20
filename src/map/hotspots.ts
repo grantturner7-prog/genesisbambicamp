@@ -30,7 +30,8 @@ const zoneLabel = (z: Zone) => (poi('zoneLabels') as unknown as Record<string, P
 /** Hotspots follow the labels printed on Bambi's official camp map, in the same places. */
 export const HOTSPOTS: Hotspot[] = [
   { id: 'entrance', name: { en: 'Entrance', zh: '入口' }, pos: at(poi('entrance'), 3.2), kind: 'place', area: 'gate', icon: 'DoorClosed', dist: 26 },
-  { id: 'checkin', name: { en: 'Check-in', zh: '報到處' }, pos: at(poi('checkin'), 2.2), kind: 'place', area: 'gate', icon: 'MapPin', dist: 22 },
+  // the venue's own guest check-in on the official map; campers check in at the meeting point in Taichung
+  { id: 'checkin', name: { en: 'Reception', zh: '接待處' }, pos: at(poi('checkin'), 2.2), kind: 'place', area: 'gate', icon: 'MapPin', dist: 22 },
   { id: 'tram', name: { en: 'Eco-Tram Boarding', zh: '遊園車搭車處' }, pos: at(poi('tramStop'), 2.0), kind: 'place', area: 'tram', icon: 'Bus', dist: 22 },
   { id: 'dining', name: { en: 'Bambi Grand Dining Hall', zh: '斑比大飯店' }, pos: at(poi('dining'), 3.6), kind: 'place', area: 'dining', icon: 'Utensils', dist: 28 },
   { id: 'restroom', name: { en: 'Restrooms · AED', zh: '洗手間・AED' }, pos: at([582, 578], 2.2), kind: 'place', area: 'care', icon: 'HeartPulse', dist: 22 },

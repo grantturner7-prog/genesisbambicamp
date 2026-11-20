@@ -51,6 +51,22 @@ export const campConfig = {
     returnTime: '10:30',
   },
 
+  /**
+   * The winter camp menu, as given by the venue kitchen (Bambi Glamping). The kitchen has
+   * not said which day each dish is served, so the site lists the dishes and names no day.
+   * `allergensProvided` stays false until the kitchen gives the allergen details for each
+   * dish: until then the dishes carry no allergen tags and launch-check lists it.
+   */
+  winterMenu: {
+    breakfast: { en: 'eggs, bacon, bread and sandwiches, with milk and soy milk', zh: '雞蛋、培根、麵包與三明治，搭配牛奶與豆漿' },
+    lunch: { en: 'curry, pizza, rice balls and donburi rice boxes', zh: '咖哩、披薩、飯糰與丼飯餐盒' },
+    dinners: [
+      { en: 'meatball pasta with corn soup and bread', zh: '肉丸義大利麵配玉米濃湯與麵包' },
+      { en: 'fried chicken and braised pork with vegetables and rice', zh: '炸雞與滷肉配青菜與白飯' },
+    ],
+    allergensProvided: false,
+  },
+
   /** Venue partner — verified in Docs 2–4. */
   venue: {
     name: { en: 'Bambi Glamping', zh: '斑比跳跳露營商行' } satisfies L,

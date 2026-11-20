@@ -15,6 +15,8 @@ export function RefundCalculator() {
   const { s, t, season } = useCamp()
   const offer = campConfig.sessions[season]
   const [fee, setFee] = useState<string>(offer?.fee != null ? String(offer.fee) : '')
+  // switching season must not leave the other camp's fee in the box
+  useEffect(() => setFee(offer?.fee != null ? String(offer.fee) : ''), [offer])
   const [days, setDays] = useState<string>('45')
   const [reason, setReason] = useState<Reason>('family')
   const feeN = Math.max(0, Number(fee) || 0)

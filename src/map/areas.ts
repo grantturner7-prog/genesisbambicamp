@@ -2,7 +2,7 @@ import type { AreaId } from '../lib/types'
 import { campConfig } from '../config/campConfig'
 import type { Area } from './types'
 
-const { cohort, pool, transport, venue } = campConfig
+const { cohort, pool, transport, venue, winterMenu } = campConfig
 
 const twd = (n: number) => `NT$${n.toLocaleString('en-US')}`
 const packs = campConfig.snackShop.couponPacks.map(twd)
@@ -23,14 +23,14 @@ export const AREAS: Area[] = [
   // ───────────────────────────────────────────────────────────── GATE
   {
     id: 'gate',
-    name: { en: 'Welcome Gate & Check-in', zh: '歡迎大門與報到處' },
+    name: { en: 'Welcome Gate & Reception', zh: '歡迎大門與接待處' },
     tagline: {
       en: 'Where every camper’s adventure begins.',
       zh: '每位營員的冒險，從這裡開始。',
     },
     summary: {
       en: `Campers arrive by charter bus at the Bambi gate in Sanwan, Miaoli, where counselors welcome them at the reception unit just inside. The bus leaves ${transport.meetingPoint.en}, at ${transport.departTime} on Wednesday and brings campers back there at ${transport.returnTime} on Saturday.`,
-      zh: `營員搭乘遊覽車專車抵達苗栗三灣斑比跳跳大門，隊輔會在入口旁的報到處迎接。專車於週三 ${transport.departTime} 自${transport.meetingPoint.zh}出發，週六 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。`,
+      zh: `營員搭乘遊覽車專車抵達苗栗三灣斑比跳跳大門，隊輔會在入口旁的接待處迎接。專車於週三 ${transport.departTime} 自${transport.meetingPoint.zh}出發，週六 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。`,
     },
     icon: 'DoorClosed',
     accent: '#8a6a43',
@@ -56,8 +56,8 @@ export const AREAS: Area[] = [
         icon: 'Pill',
         title: { en: 'Medication handover', zh: '藥物交接' },
         body: {
-          en: 'Medicines go to the Registered Nurse at check-in, in their original bag with your camper’s name on it.',
-          zh: '報到時，個人藥物請裝於原藥袋並標註姓名，交由駐點護理師統一保管。',
+          en: 'Medicines are handed in at check-in at the meeting point in Taichung, in their original bag with your camper’s name on it. The Registered Nurse keeps them during camp.',
+          zh: '個人藥物請裝於原藥袋並標註姓名，於臺中集合地點報到時交付，營期間由駐點護理師統一保管。',
         },
       },
       {
@@ -84,8 +84,8 @@ export const AREAS: Area[] = [
       { label: { en: 'Address', zh: '地址' }, value: venue.address },
     ],
     parentNote: {
-      en: 'Arrive relaxed. Counselors handle luggage and van assignments while you say your goodbyes.',
-      zh: '輕鬆抵達，行李與露營車分配交給隊輔，您只需要好好跟孩子道別。',
+      en: `Say your goodbyes at ${transport.meetingPoint.en}, on Wednesday morning. When the bus reaches camp, counselors take care of luggage and camper van assignments.`,
+      zh: `週三早上請在${transport.meetingPoint.zh}與孩子道別；專車抵達營地後，行李與露營車分配都交給隊輔。`,
     },
   },
 
@@ -255,8 +255,8 @@ export const AREAS: Area[] = [
         icon: 'ChefHat',
         title: { en: 'Chef-Led Culinary Guild', zh: '主廚美食工坊' },
         body: {
-          en: 'The chef shows campers how to make that day’s lunch, from a menu of curry, pizza, rice balls and donburi rice boxes. Campers eat what they cook.',
-          zh: '由主廚帶著營員親手完成當日午餐，菜色有咖哩、披薩、飯糰與丼飯餐盒。自己做的，就是當天的午餐。',
+          en: `The chef shows campers how to make that day’s lunch, and campers eat what they cook. On the winter camp menu: ${winterMenu.lunch.en}.`,
+          zh: `由主廚帶著營員親手完成當日午餐，自己做的就是當天的午餐。冬季營隊的菜色有${winterMenu.lunch.zh}。`,
         },
       },
       {
@@ -336,10 +336,14 @@ export const AREAS: Area[] = [
           en: 'Non-beef, pork-free, vegetarian and allergy trays are pre-registered on the health form.',
           zh: '不吃牛、不吃豬、蛋奶素與過敏餐盤，請於健康調查表事先登記。',
         },
-        {
-          en: 'The kitchen has not yet given the allergen details for each dish, so the dishes carry no allergen tags.',
-          zh: '廚房尚未提供各菜色的過敏原資訊，因此菜單上暫不標示過敏原。',
-        },
+        ...(winterMenu.allergensProvided
+          ? []
+          : [
+              {
+                en: 'The kitchen has not yet given the allergen details for each dish, so the dishes carry no allergen tags. If your camper has a food allergy, please be sure to write it on the health form.',
+                zh: '廚房尚未提供各菜色的過敏原資訊，因此菜單上暫不標示過敏原。孩子若有食物過敏，請務必於健康調查表中填寫。',
+              },
+            ]),
         {
           en: 'Snacks between meals are not part of the camp fee: campers use snack coupons at the Airstream snack shop beside the pool.',
           zh: '正餐之間的點心不包含在營隊費用內：營員憑點心券到戲水池旁的 Airstream 點心站兌換。',
@@ -806,8 +810,8 @@ export const AREAS: Area[] = [
       zh: '穿越森林、草原與湖畔的導覽小旅行。',
     },
     summary: {
-      en: 'The eco-tram boards beside check-in and circles the grounds while a guide introduces the landscape and its wildlife. Egrets and other waterbirds gather around the lakes, and at dusk flocks return to roost — a sight campers don’t forget.',
-      zh: '遊園車在報到處旁搭車，繞行整座營地，由導覽人員介紹地景與生態。白鷺等水鳥聚集在湖畔，黃昏時成群歸巢，是營員難忘的畫面。',
+      en: 'The eco-tram boards beside the reception unit and circles the grounds while a guide introduces the landscape and its wildlife. Egrets and other waterbirds gather around the lakes, and at dusk flocks return to roost — a sight campers don’t forget.',
+      zh: '遊園車在接待處旁搭車，繞行整座營地，由導覽人員介紹地景與生態。白鷺等水鳥聚集在湖畔，黃昏時成群歸巢，是營員難忘的畫面。',
     },
     icon: 'Bird',
     accent: '#5b7f3a',

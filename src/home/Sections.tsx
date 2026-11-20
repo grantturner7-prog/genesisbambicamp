@@ -234,7 +234,7 @@ export function Stay() {
         </div>
         {/* on wide screens the photos take the height of the coupon card instead of stretching it */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:h-0 lg:min-h-full lg:grid-cols-2 lg:grid-rows-2">
-          {(['buffet-eggs', 'breakfast-plate', 'buffet-fruit-yogurt', 'pizza-fresh'] as const).map((id) => (
+          {(['buffet-eggs', 'hall-buffet', 'pizza-hands', 'pizza-fresh'] as const).map((id) => (
             <img key={id} src={photoSrc(id)} alt="" loading="lazy" className="h-full min-h-32 w-full rounded-2xl object-cover lg:min-h-0" />
           ))}
         </div>

@@ -62,6 +62,10 @@ function areaBlocks(ids) {
     for (const f of a.facts ?? []) rows.push(row(`Fact: ${f.label.en}`, l(`${f.label.en}: ${f.value.en}`, `${f.label.zh}：${f.value.zh}`)))
     for (const [k, v] of Object.entries(a.seasonNote ?? {})) if (isL(v)) rows.push(row(`Season note (${k})`, v))
     if (a.parentNote) rows.push(row('Note to parents', a.parentNote))
+    if (a.menu) {
+      rows.push(row('Menu introduction', a.menu.intro))
+      for (const sec of a.menu.sections) rows.push(row(`Menu: ${sec.title.en}`, l(`${sec.title.en}${sec.tag ? ` (${sec.tag.en})` : ''}: ${sec.items.map((i) => i.name.en + (i.note ? ` (${i.note.en})` : '')).join('; ')}`, `${sec.title.zh}${sec.tag ? `（${sec.tag.zh}）` : ''}：${sec.items.map((i) => i.name.zh + (i.note ? `（${i.note.zh}）` : '')).join('；')}`)))
+    }
     ;(a.menu?.footnotes ?? []).forEach((f, i) => rows.push(row(`Menu footnote ${i + 1}`, f)))
     return { title: a.name, where: 'Explore the Facilities › panel of this place', rows }
   })
@@ -223,7 +227,7 @@ const SECTIONS = [
         where: 'Hero › checklist and figures',
         rows: [...list('Checklist line', home.HERO.points), ...Object.keys(strings.en.hero.metrics).map((k) => row('Figure', l(`${S(`hero.metrics.${k}`).en.value}: ${S(`hero.metrics.${k}`).en.label}`, `${S(`hero.metrics.${k}`).zh.value}：${S(`hero.metrics.${k}`).zh.label}`))), ...(pilotCap ? [row('Figure (season with a pilot camp)', l(`${pilotCap}: ${home.HERO.pilotMetric.en}`, `${pilotCap}：${home.HERO.pilotMetric.zh}`))] : [])],
       },
-      { title: home.STAY.mealsTitle, where: 'Stay & Meals › meals', rows: [...list('Meal', home.STAY.meals), row('Final evening', item({ kicker: home.STAY.signature.kicker, title: home.STAY.signature.title, body: home.STAY.signature.body }))] },
+      { title: home.STAY.mealsTitle, where: 'Stay & Meals › meals', rows: [...list('Meal', home.STAY.meals), row('Note under the meals', home.STAY.mealsNote), row('Final evening', item({ kicker: home.STAY.signature.kicker, title: home.STAY.signature.title, body: home.STAY.signature.body }))] },
       { title: l('Schedule and rainy days', '行程與雨天備案'), where: 'Games & challenges › closing boxes', rows: [row('Daily schedule', item(home.SCHEDULE_PENDING)), row('Rain plan', item(home.RAIN_PLAN))] },
     ],
   },
@@ -232,7 +236,10 @@ const SECTIONS = [
 // ── pages ───────────────────────────────────────────────────────────────────────────────
 const commit = (() => {
   try {
-    return execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim()
+    const head = execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim()
+    // a stamp must never name a version the text does not match: mark a build made from uncommitted sources
+    const dirty = execSync("git status --porcelain -- . ':(exclude)docs'", { cwd: root }).toString().trim()
+    return head + (dirty ? '+uncommitted' : '')
   } catch {
     return ''
   }

@@ -196,7 +196,7 @@ const en = {
     consentMissing: 'Please tick consents 1 to 4 to continue.',
     sendFailed: 'We could not send your registration. Please try again in a moment.',
     sent: 'Thank you. We have received your registration and will contact you with the contract and payment details.',
-    notOpen: 'Online registration opens when session dates and fees are published. Nothing you entered has left this device. You can save the summary below and send it to us when registration opens.',
+    notOpen: 'Online registration is not open yet. Nothing you entered has left this device. You can save the summary below and send it to us when registration opens.',
     download: 'Save my summary',
   },
   footer: {
@@ -415,7 +415,7 @@ const zhTW: Strings = {
     consentMissing: '請勾選第 1 至第 4 項同意事項。',
     sendFailed: '報名資料未能送出，請稍後再試。',
     sent: '感謝您的報名，我們已收到資料，將與您聯繫並提供契約與繳費資訊。',
-    notOpen: '線上報名將於梯次日期與費用公布後開放。您填寫的資料並未離開這台裝置。您可以先儲存下方摘要，待開放報名時提供給我們。',
+    notOpen: '線上報名尚未開放。您填寫的資料並未離開這台裝置。您可以先儲存下方摘要，待開放報名時提供給我們。',
     download: '儲存報名摘要',
   },
   footer: {

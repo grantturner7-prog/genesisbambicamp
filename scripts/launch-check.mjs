@@ -16,6 +16,8 @@ for (const season of ['winter', 'summer']) {
   else need(offer.fee != null, 'Joint Partners', `${season} camp (${offer.dates.en}): TWD fee`)
 }
 need(c.snackShop.couponTerms, 'Joint Partners', 'snack coupons: how packs are paid for, and what happens to unused coupons')
+need(c.winterMenu.allergensProvided, 'Bambi Glamping Partner', 'winter menu: allergen details for each dish (the site promises allergy-safe trays; until then the dining menu carries no allergen tags)')
+notes.push('winter menu: the kitchen has not said which day each dish is served, so the site names no day')
 need(c.snackShop.menuConfirmed, 'Bambi Glamping Partner', 'the Airstream snack-shop menu that coupons can be exchanged for (src/map/areas.ts holds a draft)')
 need(c.payment.deposit && c.payment.balanceDueDays, 'Joint Partners', 'deposit amount and balance due date')
 need(c.cohort.minGroupSize, 'Joint Partners', 'minimum group size')

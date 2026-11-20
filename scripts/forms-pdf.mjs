@@ -128,7 +128,7 @@ ${H(N.health, 'Health and emergency care', '健康與緊急醫療')}
 ${P(`${nurse.title.en}. ${nurse.body.en}`, `${nurse.title.zh}。${nurse.body.zh}`)}
 ${OL([
   ['Please fill in the Camper Health Form completely and truthfully, and tell us before check-in if anything changes.', '請完整、據實填寫「營員健康調查表」；報到前若有任何變動，請主動告知。'],
-  ['Hand every medicine to the nurse at check-in: prescription and over-the-counter medicine, Chinese medicine, vitamins and supplements, medicated creams and drops, each in its original bag or packaging and with your camper’s name on it. Campers do not keep medicine in their camper van, except what the nurse has agreed your camper should carry or keep close: for example a reliever inhaler, an adrenaline auto-injector, insulin with testing supplies and fast-acting sugar, or a daily skin cream. A phone or other device that is needed for medical reasons (for example a glucose monitor) may stay with your camper; please tell the nurse at check-in.', '所有藥品請於報到時交給護理師，包含處方藥、成藥、中藥、維他命與保健食品、藥膏與眼藥水等，並保留原藥袋或原包裝、標示營員姓名。營員不得自行將藥品放在露營車內；經護理師同意由營員隨身攜帶或放在身邊者除外，例如氣喘急救（緩解型）吸入劑、腎上腺素自動注射筆、胰島素與血糖檢測用品及補充糖分的食品，或每日使用的皮膚藥膏。因醫療需要使用的手機或其他裝置（例如血糖監測器）可由營員自行保管，請於報到時告知護理師。'],
+  ['Hand in every medicine at check-in, to be kept by the nurse: prescription and over-the-counter medicine, Chinese medicine, vitamins and supplements, medicated creams and drops, each in its original bag or packaging and with your camper’s name on it. Campers do not keep medicine in their camper van, except what the nurse has agreed your camper should carry or keep close: for example a reliever inhaler, an adrenaline auto-injector, insulin with testing supplies and fast-acting sugar, or a daily skin cream. A phone or other device that is needed for medical reasons (for example a glucose monitor) may stay with your camper; please tell us at check-in.', '所有藥品請於報到時交付，由護理師統一保管，包含處方藥、成藥、中藥、維他命與保健食品、藥膏與眼藥水等，並保留原藥袋或原包裝、標示營員姓名。營員不得自行將藥品放在露營車內；經護理師同意由營員隨身攜帶或放在身邊者除外，例如氣喘急救（緩解型）吸入劑、腎上腺素自動注射筆、胰島素與血糖檢測用品及補充糖分的食品，或每日使用的皮膚藥膏。因醫療需要使用的手機或其他裝置（例如血糖監測器）可由營員自行保管，請於報到時告知我們。'],
   [`Please keep your camper at home, and call us, if they have had ${stayHome.en}. [The nurse to confirm these periods.] What happens to the fee is set out in section ${N.refund}.`, `${stayHome.zh}者，請讓孩子在家休息並與我們聯繫。〔上述期間請護理師確認〕費用之處理方式見第 ${N.refund} 條。`],
   ['During camp, at least one legal guardian, or the backup contact named on the health form, must be reachable by phone at all times and able to come for your camper if they are too unwell to stay.', '營期間，至少須有一位法定代理人或健康調查表所列的緊急聯絡人可隨時以電話聯繫，並能在孩子身體不適無法繼續參加時前來接回。'],
 ], true)}
@@ -139,7 +139,7 @@ ${OL([
   ['Not an emergency (for example a sprain that needs checking, or a fever that does not settle). The nurse phones you first, and we decide together whether camp staff take your camper to a doctor or you come for your camper.', '非緊急情況（例如扭傷需進一步檢查、發燒未退）：護理師會先以電話與您聯繫，再共同決定由營隊陪同就診，或由您前來接回。'],
   ['You agree and authorise the backup contact named on the health form to make these decisions, and to collect your camper, when we cannot reach you.', '您同意並授權健康調查表所列的緊急聯絡人，在我們聯繫不上您時代為作上述決定，並接回營員。'],
 ], true, 'a')}
-${P(`Medical costs that come from a camper’s own illness, or from an accident that the organizers are not responsible for, are paid by the family, as listed under “${S('home.excluded').en}”. If your camper needs a clinic or a hospital during camp: [to decide: camp staff pay first and the family repays against the receipts]. Costs that come from an accident can be claimed under the camp’s accident insurance (section ${N.insurance}, item 4), and we help you with the claim.`, `因個人疾病或非可歸責於主辦單位之意外所生的醫療費用，如「${S('home.excluded').zh}」所列，由家長負擔。營期間如需就醫：〔待決定：由營隊人員先行代墊，事後檢附收據向家長請款〕。因意外所生之醫療費用，可依營隊投保之意外保險（第 ${N.insurance} 條第 4 項）申請理賠，我們會協助辦理。`, true)}
+${P(`Medical costs that come from a camper’s own illness, or from an accident not attributable to the organizers, are paid by the family, as listed under “${S('home.excluded').en}”. If your camper needs a clinic or a hospital during camp: [to decide: camp staff pay first and the family repays against the receipts]. Costs that come from an accident can be claimed under the camp’s accident insurance (section ${N.insurance}, item 4), and we help you with the claim.`, `因個人疾病或非可歸責於主辦單位之意外所生的醫療費用，如「${S('home.excluded').zh}」所列，由家長負擔。營期間如需就醫：〔待決定：由營隊人員先行代墊，事後檢附收據向家長請款〕。因意外所生之醫療費用，可依營隊投保之意外保險（第 ${N.insurance} 條第 4 項）申請理賠，我們會協助辦理。`, true)}
 
 ${H(N.risk, 'Outdoor risk disclosure', '戶外風險說明')}
 ${P('Camp life is active and out of doors: kayaking on the lake in life jackets, the campfire, team games and challenges, the eco-tram and, in summer, the pool with a certified lifeguard on duty. Counselors supervise every activity and show campers how to take part safely. Even so, outdoor play carries some risk: bumps, scrapes, sprains, insect bites and, rarely, a more serious injury. By signing, you confirm that you understand this, that you have talked it through with your camper, and that your camper will follow the counselors’ safety instructions.', '營隊生活以戶外活動為主：穿著救生衣的湖上獨木舟、營火、團隊遊戲與挑戰、生態導覽遊園車，以及夏季由合格救生員值勤的戲水池。每項活動皆有隊輔在場看顧，並先說明安全的參與方式。儘管如此，戶外活動仍有一定風險，例如碰撞、擦傷、扭傷、蚊蟲叮咬，極少數情況下也可能發生較嚴重的傷害。您簽名即表示已了解上述風險、已向孩子說明，並同意孩子會遵守隊輔的安全指示。', true)}
@@ -319,7 +319,8 @@ const checkin = () => `
 <h1>${B('Check-in Day Form', '報到日確認單')}</h1>
 <p class="sub">${B(c.brand.en, c.brand.zh)} · ${B(home.PRICING.camp.bus.en, home.PRICING.camp.bus.zh)}</p>
 ${CONTACT()}
-${P('Please fill in and sign this form at home on the morning of check-in. At the meeting point, hand it to the check-in desk, where a counselor takes every camper’s temperature and collects devices. Campers who bring medicine, or who have a “yes” in section 1, then see the nurse. Please allow time for this.', '請於報到當日早上在家填妥並簽名。抵達集合地點後請將本單交給報到櫃檯，由隊輔為每位營員量測體溫並收取電子裝置；有攜帶藥品或第 1 節任一項回答「是」的營員，再由護理師接續確認。請預留時間。', true)}
+${P(`Please fill in and sign this form at home on the morning of check-in. At the meeting point, hand it to the check-in desk, where a counselor takes every camper’s temperature and collects devices. Campers who bring medicine, or who have a “yes” in section 1, are then seen by the nurse. [To decide: whether the nurse is at the meeting point, or a named member of staff receives medicine there and passes it to the nurse.]`, `請於報到當日早上在家填妥並簽名。抵達集合地點後請將本單交給報到櫃檯，由隊輔為每位營員量測體溫並收取電子裝置；有攜帶藥品或第 1 節任一項回答「是」的營員，再由護理師接續確認。〔待決定：護理師是否在集合地點；或由指定工作人員代收藥品後轉交護理師〕`, true)}
+${P(`Campers meet at ${T.meetTime} and the charter bus leaves at ${T.departTime}. Please arrive by ${T.meetTime} and stay with your camper until the bus has left. [To decide: when the check-in desk opens, and what happens, including to the fee, if a camper misses the bus.]`, `集合時間為 ${T.meetTime}，遊覽車專車 ${T.departTime} 出發。請於 ${T.meetTime} 前抵達，並陪同孩子直到專車出發。〔待決定：報到櫃檯開放時間；營員未趕上專車時之處理方式與費用〕`, true)}
 ${ROW(F('Camper', '營員姓名', 5), F('Camp dates', '營隊日期', 4), F('Camper van / team (staff)', '露營車／小隊（工作人員填寫）', 3))}
 ${ROW(F('Adult bringing the camper today, if not the guardian who signs', '今日送孩子報到的成年人（若非簽名之法定代理人）', 5), F('Relationship', '與營員關係', 2), F('Mobile', '手機', 2), F('Guardian’s phone this morning', '法定代理人今日上午可聯絡電話', 3))}
 
@@ -340,13 +341,13 @@ ${[
   ['A new injury, or anything that changes the health form', '新的受傷，或任何與健康調查表不同之處'],
 ].map((r) => YN(...r)).join('')}</table>
 ${ROW(F('Medicine taken today, and at what time', '今日已服用的藥品與時間', 12))}
-${P(`If any answer is “yes”, the nurse talks with you before your camper joins the group. A camper whose temperature at check-in is ____ °C or above (taken twice, ____ minutes apart) goes home to rest; what happens to the fee is set out in section ${N.refund} of the Camp Notice.`, `若有任一項回答「是」，護理師會先與您討論，再安排孩子入隊。報到時體溫達 ____ °C 以上（間隔 ____ 分鐘測量兩次）者，須請孩子返家休息；費用之處理方式見營隊須知第 ${N.refund} 條。`, true)}
+${P(`If any answer is “yes”, the nurse talks with you, in person or by phone, before your camper boards the bus. A camper whose temperature at check-in is ____ °C or above (taken twice, ____ minutes apart) goes home to rest; what happens to the fee is set out in section ${N.refund} of the Camp Notice.`, `若有任一項回答「是」，護理師會先與您當面或以電話討論，再決定孩子是否上車。報到時體溫達 ____ °C 以上（間隔 ____ 分鐘測量兩次）者，須請孩子返家休息；費用之處理方式見營隊須知第 ${N.refund} 條。`, true)}
 
-${H(2, 'Medicine handed to the nurse', '交付護理師的藥品')}
+${H(2, 'Medicine handed in at check-in', '報到時交付的藥品')}
 <p class="hint">${B('Please bring the health form and all medicine together in one clear zip bag.', '請將健康調查表與所有藥品一起放入一個透明夾鏈袋。')}</p>
 ${CHECKS(C('None', '無'), C('As listed on the health form', '同健康調查表所列'), C('Changes or additions (list below)', '有變動或新增（請列於下方）'))}
 ${TABLE([['Medicine and strength', '藥品名稱與劑量規格'], ['Amount handed over', '交付數量'], ['Dose and times', '劑量與時間'], ['Returned on Saturday (amount)', '週六交還數量']], 3, 'tall', [34, 18, 28, 20])}
-${ROW(F('Received by (nurse)', '收藥人（護理師）', 6))}
+${ROW(F('Received by (name and role)', '收藥人（姓名與職稱）', 6))}
 
 ${H(3, 'Phones and devices', '手機與電子裝置')}
 ${PL(faq(/phone/i))}
@@ -420,7 +421,7 @@ const notes = () => `
 <li><b>Keeping in touch.</b> Whether campers may phone home and how the camp updates families: Notice §${N.visits}. Food from home: Notice §${N.things}.</li>
 <li><b>Photos.</b> Whether a family can keep its child out of the shared album: Notice §${N.photos}.</li>
 <li><b>Personal data.</b> The notice under Article 8 of the Personal Data Protection Act, how long records are kept, and whether any data is held outside Taiwan: Notice §${N.data}. Also whether a form with health details may be returned by LINE.</li>
-<li><b>Check-in at the meeting point.</b> Campers meet at ${esc(T.meetingPoint.en)} at ${T.meetTime} and the bus leaves at ${T.departTime}, so the health check, the temperature and the hand-over of medicine and devices happen there in half an hour. Whether the nurse is at the meeting point, or receives medicine when the bus reaches camp, is for the camp to decide: Check-in form, opening paragraph and §2.</li>
+<li><b>Check-in at the meeting point.</b> Campers meet at ${esc(T.meetingPoint.en)} at ${T.meetTime} and the bus leaves at ${T.departTime}, so the health check, the temperature and the hand-over of medicine and devices happen there in half an hour. Whether the nurse is at the meeting point, or a named member of staff receives medicine there for the nurse, is for the camp to decide; so are the time the check-in desk opens and what happens, including to the fee, if a camper misses the bus: Check-in form, opening paragraphs and §2.</li>
 <li><b>Saturday.</b> The bus returns to ${esc(T.meetingPoint.en)} at ${T.returnTime}. Still to decide: who may collect a camper, the ID check, what happens if nobody comes, and whether collecting at the camp is offered: Check-in form §5.</li>
 <li><b>Campers from overseas.</b> The forms assume a guardian or backup contact in Taiwan and an NHI card or other medical insurance. Whether overseas campers are accepted, and on what terms, is not yet decided.</li>
 </ul>
@@ -429,7 +430,10 @@ const notes = () => `
 // ── pages ───────────────────────────────────────────────────────────────────────────────
 const commit = (() => {
   try {
-    return execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim()
+    const head = execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim()
+    // a stamp must never name a version the text does not match: mark a build made from uncommitted sources
+    const dirty = execSync("git status --porcelain -- . ':(exclude)docs'", { cwd: root }).toString().trim()
+    return head + (dirty ? '+uncommitted' : '')
   } catch {
     return ''
   }
@@ -480,7 +484,7 @@ const doc = (body, title) => `<!doctype html><html lang="en"><head><meta charset
 
 // wording rules of the site apply to the forms too (the consents copied from the site are checked there)
 const all = notes() + notice() + health() + checkin()
-const banned = /hold harmless|indemnif|non-?refundable|概不負責|概不退還|for reference only|僅供參考|\bteachers?\b|老師|\bclass(es)?\b|\blessons?\b|課程|sanyi|三義|wooden cabin|小木屋/i
+const banned = /hold harmless|indemnif|non-?refundable|概不負責|概不退還|for reference only|僅供參考|\bteachers?\b|老師|\bclass(es)?\b|\blessons?\b|課程|sanyi|三義|wooden cabin|小木屋|not responsible|14:00|taichung theater|歌劇院|drop-off at/i
 const own = all.replace(/<section class="notes">[\s\S]*?<\/section>/, '').replace(/<[^>]+>/g, ' ') // the text only, without the markup
 if (banned.test(own)) throw new Error(`Banned wording in a form: “${own.match(banned)[0]}”`)
 

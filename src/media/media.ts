@@ -124,8 +124,8 @@ export const AREA_PHOTOS: Record<AreaId, Photo[]> = {
 
 /** Food photos shown with the menu and on the dining highlights. */
 export const MENU_PHOTOS: Partial<Record<AreaId, Photo[]>> = {
-  // The first six are shown as the highlights strip: breakfast buffet, DIY lunch, signature dinner.
-  dining: (['buffet-eggs', 'breakfast-plate', 'buffet-fruit-yogurt', 'pizza-hands', 'pizza-fresh', 'wagyu-platter', 'breakfast-closeup', 'pizza-counter'] as const).map(
+  // Shown as the highlights strip: only dishes on the kitchen's menu (eggs, pizza, the signature dinner).
+  dining: (['buffet-eggs', 'pizza-hands', 'pizza-oven', 'pizza-fresh', 'pizza-counter', 'wagyu-platter'] as const).map(
     (id) => AREA_PHOTOS.dining.find((p) => p.id === id)!,
   ),
 }

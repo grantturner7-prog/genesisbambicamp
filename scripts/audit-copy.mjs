@@ -19,6 +19,8 @@ const walk = (v, path) => {
 }
 walk(AREAS, 'areas'); walk(strings, 'strings'); walk(home, 'home'); walk(games, 'games'); walk(games.GAMES_COPY.showAll(games.GAMES.length), 'games.GAMES_COPY.showAll()'); walk(home.PRICING.pilotLimit(30), 'home.PRICING.pilotLimit()'); walk(HOTSPOTS.map((h) => h.name), 'hotspots')
 walk({ AREA_PHOTOS: media.AREA_PHOTOS, ZONE_PHOTOS: media.ZONE_PHOTOS, ZONES: media.ZONES }, 'media')
+const { readFileSync } = await import('node:fs')
+for (const f of ['index.html', 'facilities/index.html']) for (const m of readFileSync(f, 'utf8').matchAll(/<title>([^<]*)<\/title>|content="([^"]*)"/g)) walk((m[1] ?? m[2]).replace(/&amp;/g, '&'), `${f} <head>`)
 walk({ sessions: campConfig.sessions, snackShop: { couponTerms: campConfig.snackShop.couponTerms } }, 'config')
 
 const RULES = [
@@ -29,7 +31,7 @@ const RULES = [
   // Rule D — truth in advertising
   ['D wrong township', /sanyi|三義/i],
   // Campers meet at the meeting point in Taichung and ride the bus both ways: no drop-off at the camp gate.
-  ['D stale arrival plan (campers meet at the meeting point in Taichung)', /14:00|parent drop-off|drop off at|家長送達|送達三灣|taichung theater|歌劇院|tour bus zone|臨停區/i],
+  ['D stale arrival plan (campers meet at the meeting point in Taichung; nobody is dropped off at the camp)', /(wednesday|週三)[^.。]{0,40}14:[03]0|drop(ped|s)?[- ]?(off|their|them)[^.。]{0,40}(sanwan|\bgate\b)|(送達|送到|送至|送抵)[^。]{0,12}(三灣|園區|大門|營地)|(大門|園區)[^。]{0,8}報到|arrive relaxed|taichung theater|歌劇院|shizheng|市政北二路|tour bus zone|臨停區/i],
   ['D wooden cabins', /wooden cabin|log cabin|小木屋|木屋/i],
   // Meals: three a day (buffet breakfast, DIY lunch with the chef, evening buffet).
   ['D stale meal plan (the camp serves three meals a day)', /\bfour[- ](daily )?meals?\b|(?<![\d.,])4[- ](daily )?meals?\b|一泊四食|四食|(?<![十\d])四餐|(?<!\d)4 ?餐|宵夜|(campfire|evening) snacks?|營火點心|晚間點心/i],

@@ -13,15 +13,8 @@ const PACKS = l(packs.slice(0, -1).join(', ') + ' or ' + packs[packs.length - 1]
 
 /** Landing-page copy. Every string is scanned by `npm run audit` (Doc 3, Part 6). */
 
-/**
- * The winter camp menu, as given by the venue kitchen (Bambi Glamping). The kitchen has not
- * said which day each dish is served, so the site lists the dishes and names no day.
- */
-export const WINTER_MENU = {
-  breakfast: l('eggs, bacon, bread and sandwiches, with milk and soy milk', '雞蛋、培根、麵包與三明治，搭配牛奶與豆漿'),
-  lunch: l('curry, pizza, rice balls and donburi rice boxes', '咖哩、披薩、飯糰與丼飯餐盒'),
-  dinners: [l('meatball pasta with corn soup and bread', '肉丸義大利麵配玉米濃湯與麵包'), l('fried chicken and braised pork with vegetables and rice', '炸雞與滷肉配青菜與白飯')],
-}
+/** The winter camp menu from the venue kitchen: stated once, in campConfig. */
+export const WINTER_MENU = campConfig.winterMenu
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)
 
 export const HERO = {
@@ -55,7 +48,7 @@ export const ACTIVITIES: Activity[] = [
   { icon: 'Film', name: l('Star Cinema Night', '星空電影院'), body: l('A big screen on the lawn beside the campfire. Films are public-performance licensed (公播版) and chosen to suit the campers’ ages.', '營火旁草地上的大螢幕。影片皆為公播版授權，並依營員年齡挑選。'), seasons: both, photo: 'cinema-night', spot: 'cinema', highlight: true },
   { icon: 'Flame', name: l('Campfire S’mores, Skits & Trivia', '營火棉花糖、短劇與問答'), body: l('The whole camp around the brick fire pit: toast marshmallows, perform team skits and battle at trivia.', '全營隊圍著磚砌營火圈：烤棉花糖、演出小隊短劇、進行問答對決。'), seasons: both, photo: 'campfire-marshmallow', spot: 'campfire' },
   { icon: 'Bird', name: l('Waterbird Eco-Safari Tram', '歡樂遊園車生態導覽'), body: l('A guided tram loop through forest, meadow and lakeshore, timed to see egrets fly home at dusk.', '搭乘遊園車繞行森林、草原與湖岸，由導覽員解說，黃昏時欣賞鷺鳥歸巢。'), seasons: both, photo: 'tram-on-route', spot: 'tram' },
-  { icon: 'ChefHat', name: l('Chef-Led Culinary Guild', '主廚美食工坊'), body: l(`Lunch is hands-on. The chef shows campers how to make that day’s lunch themselves, from a menu of ${WINTER_MENU.lunch.en}. Then everyone eats what they made.`, `午餐自己動手做。由主廚帶著營員親手完成當日午餐，菜色有${WINTER_MENU.lunch.zh}。做完就是大家的午餐。`), seasons: both, photo: 'pizza-hands', spot: 'dining' },
+  { icon: 'ChefHat', name: l('Chef-Led Culinary Guild', '主廚美食工坊'), body: l(`Lunch is hands-on. The chef shows campers how to make that day’s lunch themselves, and everyone eats what they made. On the winter camp menu: ${WINTER_MENU.lunch.en}.`, `午餐自己動手做。由主廚帶著營員親手完成當日午餐，做完就是大家的午餐。冬季營隊的菜色有${WINTER_MENU.lunch.zh}。`), seasons: both, photo: 'pizza-hands', spot: 'dining' },
   { icon: 'Leaf', name: l('Paracord & Moss-Ball Craft Studio', '傘繩與苔球手作工坊'), body: l('Braid a paracord keepsake and shape a living moss ball to take home.', '編織傘繩紀念品，再親手做一顆可以帶回家的苔球。'), seasons: both, photo: 'moss-ball' },
   { icon: 'Moon', name: l('Night Ecology Walk & Camp Trivia', '夜間生態散步與營隊問答'), body: l('A counselor-led walk to listen for the night, then trivia on what you noticed.', '由隊輔帶領夜間散步聆聽自然，再用問答檢驗觀察力。'), seasons: both },
   { icon: 'Camera', name: l('Digital Camp Album & Keepsakes', '數位營隊相簿與紀念品'), body: l('A private digital photo album for families, a camp T-shirt and a Camp Participation Award.', '家長專屬數位相簿、營隊紀念 T-Shirt 與營隊參與證明。'), seasons: both },
@@ -85,7 +78,9 @@ export const STAY = {
     { icon: 'Utensils', name: l('Evening buffet', '自助式晚餐'), note: l(`One evening, ${WINTER_MENU.dinners[0].en}; another, ${WINTER_MENU.dinners[1].en}.`, `一晚是${WINTER_MENU.dinners[0].zh}；另一晚是${WINTER_MENU.dinners[1].zh}。`) },
   ],
   /** Under the three meals: whose menu it is, and that no day is named. */
-  mealsNote: l('These are the dishes on the winter camp menu. Which dish is served on which day is not set yet.', '以上為冬季營隊的菜色，各菜色的供應日尚未排定。'),
+  mealsNote: WINTER_MENU.allergensProvided
+    ? l('These are the dishes on the winter camp menu. Which dish is served on which day is not set yet.', '以上為冬季營隊的菜色，各菜色的供應日尚未排定。')
+    : l('These are the dishes on the winter camp menu. Which dish is served on which day is not set yet, and the kitchen has not yet given the allergen details for each dish.', '以上為冬季營隊的菜色，各菜色的供應日尚未排定；廚房也尚未提供各菜色的過敏原資訊。'),
   /** The final evening of every session. */
   signature: {
     photo: 'wagyu-platter' as Photo['id'],
@@ -216,7 +211,7 @@ export const PACKING: { item: L; season?: Season }[] = [
   { item: l('Rain gear', '雨具') },
   { item: l('Mosquito repellent', '防蚊液') },
   { item: l('National Health Insurance card', '健保卡') },
-  { item: l('Personal medications, labeled, in the original bag (handed to the nurse at check-in)', '個人藥物：裝於原藥袋並標註姓名，報到時交給護理師') },
+  { item: l('Personal medications, labeled, in the original bag (handed in at check-in at the meeting point; the nurse keeps them during camp)', '個人藥物：裝於原藥袋並標註姓名，於集合地點報到時交付，營期間由護理師保管') },
 ]
 
 export const FAQ: { q: L; a: L }[] = [
@@ -230,7 +225,7 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('How do you handle allergies and dietary needs?', '過敏與特殊飲食怎麼處理？'),
-    a: l('Tell us on the health form. Non-beef, pork-free, vegetarian and allergy-safe trays are prepared for every meal, and the nurse and dining safety lead check each tray against the form. Health details are seen only by the camp director, nurse, dining lead and insurer, and are securely destroyed within 30 days after camp.', '請在健康調查表中告訴我們。每餐皆準備不吃牛、不吃豬、素食與過敏專屬餐盤，並由護理師與餐飲安全主管逐盤核對。健康資料僅限營隊主任、護理師、餐飲主管與保險公司查閱，營隊結束後 30 日內安全銷毀。'),
+    a: l(`Tell us on the health form. Non-beef, pork-free, vegetarian and allergy-safe trays are prepared for every meal, and the nurse and dining safety lead check each tray against the form. Health details are seen only by the camp director, nurse, dining lead and insurer, and are securely destroyed within 30 days after camp.${WINTER_MENU.allergensProvided ? '' : ' The kitchen has not yet given the allergen details for each dish on the winter menu.'}`, `請在健康調查表中告訴我們。每餐皆準備不吃牛、不吃豬、素食與過敏專屬餐盤，並由護理師與餐飲安全主管逐盤核對。健康資料僅限營隊主任、護理師、餐飲主管與保險公司查閱，營隊結束後 30 日內安全銷毀。${WINTER_MENU.allergensProvided ? '' : '廚房尚未提供冬季營隊各菜色的過敏原資訊。'}`),
   },
   {
     q: l('Which meals are included, and what about snacks?', '費用包含哪些餐點？點心呢？'),
