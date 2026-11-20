@@ -16,6 +16,7 @@ npm install
 npm run dev          # http://localhost:5173 and /facilities/
 npm run build        # compliance audit + type-check + production build → dist/
 npm run launch-check # what partners still owe before going public
+npm run legal-pdf    # every legal notice as bilingual PDFs for a lawyer → docs/legal-review/
 npm run e2e          # browser tests against a running dev server (port 5199)
 ```
 
@@ -84,6 +85,12 @@ including under a sub-path.
   clean pictures of the map for visual review.
 
 ## Before going public
+
+`docs/legal-review/` holds every legal notice the site publishes (fees and refunds, the
+registration consents and data notice, safety and insurance statements, facility rules,
+footer disclosures, FAQ commitments) as PDFs, English beside 繁體中文, each line numbered.
+They are generated from the site's own copy: run `npm run legal-pdf` again after any
+change to the wording, so the lawyer always reviews what is actually published.
 
 Run `npm run launch-check`. In particular:
 

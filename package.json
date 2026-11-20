@@ -8,6 +8,7 @@
     "dev": "vite",
     "audit": "node scripts/audit-copy.mjs",
     "launch-check": "node scripts/launch-check.mjs",
+    "legal-pdf": "node scripts/legal-pdf.mjs",
     "typecheck": "tsc --noEmit",
     "build": "npm run audit && tsc --noEmit && vite build",
     "preview": "vite preview",
