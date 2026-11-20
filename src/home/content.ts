@@ -3,6 +3,8 @@ import { campConfig } from '../config/campConfig'
 import type { Photo } from '../media/media'
 
 const l = (en: string, zh: string): L => ({ en, zh })
+/** The meeting point and bus times: stated once, in campConfig. */
+const BUS = campConfig.transport
 const c = campConfig.cohort
 const twd = (n: number) => `NT$${n.toLocaleString('en-US')}`
 /** "NT$1,000, NT$2,000 or NT$3,000" */
@@ -10,6 +12,17 @@ const packs = campConfig.snackShop.couponPacks.map(twd)
 const PACKS = l(packs.slice(0, -1).join(', ') + ' or ' + packs[packs.length - 1], packs.slice(0, -1).join('、') + ' 或 ' + packs[packs.length - 1])
 
 /** Landing-page copy. Every string is scanned by `npm run audit` (Doc 3, Part 6). */
+
+/**
+ * The winter camp menu, as given by the venue kitchen (Bambi Glamping). The kitchen has not
+ * said which day each dish is served, so the site lists the dishes and names no day.
+ */
+export const WINTER_MENU = {
+  breakfast: l('eggs, bacon, bread and sandwiches, with milk and soy milk', '雞蛋、培根、麵包與三明治，搭配牛奶與豆漿'),
+  lunch: l('curry, pizza, rice balls and donburi rice boxes', '咖哩、披薩、飯糰與丼飯餐盒'),
+  dinners: [l('meatball pasta with corn soup and bread', '肉丸義大利麵配玉米濃湯與麵包'), l('fried chicken and braised pork with vegetables and rice', '炸雞與滷肉配青菜與白飯')],
+}
+const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)
 
 export const HERO = {
   photo: { winter: 'winter-cypress', summer: 'pool-sunset' } as Record<Season, Photo['id']>,
@@ -20,7 +33,6 @@ export const HERO = {
     l('Luxury camper vans with private bathrooms, three campers each', '頂級豪華露營車，獨立衛浴，三人一車'),
     l('Three meals a day, a 24/7 nurse and four layers of insurance', '每日三餐、24 小時護理師與四重保險'),
   ],
-  datesPending: l('Session dates announced soon', '梯次日期即將公布'),
   /** The hero's camper figure, when the season's first camp is a pilot. */
   pilotMetric: l('campers at most in the pilot camp', '試辦營名額上限'),
 }
@@ -43,7 +55,7 @@ export const ACTIVITIES: Activity[] = [
   { icon: 'Film', name: l('Star Cinema Night', '星空電影院'), body: l('A big screen on the lawn beside the campfire. Films are public-performance licensed (公播版) and chosen to suit the campers’ ages.', '營火旁草地上的大螢幕。影片皆為公播版授權，並依營員年齡挑選。'), seasons: both, photo: 'cinema-night', spot: 'cinema', highlight: true },
   { icon: 'Flame', name: l('Campfire S’mores, Skits & Trivia', '營火棉花糖、短劇與問答'), body: l('The whole camp around the brick fire pit: toast marshmallows, perform team skits and battle at trivia.', '全營隊圍著磚砌營火圈：烤棉花糖、演出小隊短劇、進行問答對決。'), seasons: both, photo: 'campfire-marshmallow', spot: 'campfire' },
   { icon: 'Bird', name: l('Waterbird Eco-Safari Tram', '歡樂遊園車生態導覽'), body: l('A guided tram loop through forest, meadow and lakeshore, timed to see egrets fly home at dusk.', '搭乘遊園車繞行森林、草原與湖岸，由導覽員解說，黃昏時欣賞鷺鳥歸巢。'), seasons: both, photo: 'tram-on-route', spot: 'tram' },
-  { icon: 'ChefHat', name: l('Chef-Led Culinary Guild', '主廚美食工坊'), body: l('Lunch is hands-on. Every day the chef shows campers how to make that day’s lunch themselves: handmade Neapolitan pizza one day, a different dish the next. Then everyone eats what they made.', '午餐自己動手做。每天由主廚帶著營員親手完成當日午餐：一天是手工拿坡里披薩，隔天換另一道菜，每天都不一樣。做完就是大家的午餐。'), seasons: both, photo: 'pizza-hands', spot: 'dining' },
+  { icon: 'ChefHat', name: l('Chef-Led Culinary Guild', '主廚美食工坊'), body: l(`Lunch is hands-on. The chef shows campers how to make that day’s lunch themselves, from a menu of ${WINTER_MENU.lunch.en}. Then everyone eats what they made.`, `午餐自己動手做。由主廚帶著營員親手完成當日午餐，菜色有${WINTER_MENU.lunch.zh}。做完就是大家的午餐。`), seasons: both, photo: 'pizza-hands', spot: 'dining' },
   { icon: 'Leaf', name: l('Paracord & Moss-Ball Craft Studio', '傘繩與苔球手作工坊'), body: l('Braid a paracord keepsake and shape a living moss ball to take home.', '編織傘繩紀念品，再親手做一顆可以帶回家的苔球。'), seasons: both, photo: 'moss-ball' },
   { icon: 'Moon', name: l('Night Ecology Walk & Camp Trivia', '夜間生態散步與營隊問答'), body: l('A counselor-led walk to listen for the night, then trivia on what you noticed.', '由隊輔帶領夜間散步聆聽自然，再用問答檢驗觀察力。'), seasons: both },
   { icon: 'Camera', name: l('Digital Camp Album & Keepsakes', '數位營隊相簿與紀念品'), body: l('A private digital photo album for families, a camp T-shirt and a Camp Participation Award.', '家長專屬數位相簿、營隊紀念 T-Shirt 與營隊參與證明。'), seasons: both },
@@ -68,10 +80,12 @@ export const STAY = {
   ],
   mealsTitle: l('Three meals a day', '每日三餐'),
   meals: [
-    { icon: 'Sunrise', name: l('Buffet breakfast', '自助式早餐'), note: l('Hot and cold dishes, fruit and drinks in the Grand Dining Hall.', '在斑比大飯店享用冷熱餐點、水果與飲品。') },
-    { icon: 'ChefHat', name: l('DIY lunch with the chef', '主廚帶領的 DIY 午餐'), note: l('Campers make their own lunch with the chef. A different dish each day.', '營員跟著主廚親手做午餐，每天不同菜色。') },
-    { icon: 'Utensils', name: l('Evening buffet', '自助式晚餐'), note: l('A buffet dinner together in the Grand Dining Hall.', '全營隊在斑比大飯店一起享用自助式晚餐。') },
+    { icon: 'Sunrise', name: l('Buffet breakfast', '自助式早餐'), note: l(`${cap(WINTER_MENU.breakfast.en)}.`, `${WINTER_MENU.breakfast.zh}。`) },
+    { icon: 'ChefHat', name: l('DIY lunch with the chef', '主廚帶領的 DIY 午餐'), note: l(`Campers make their own lunch with the chef. On the menu: ${WINTER_MENU.lunch.en}.`, `營員跟著主廚親手做午餐，菜色有${WINTER_MENU.lunch.zh}。`) },
+    { icon: 'Utensils', name: l('Evening buffet', '自助式晚餐'), note: l(`One evening, ${WINTER_MENU.dinners[0].en}; another, ${WINTER_MENU.dinners[1].en}.`, `一晚是${WINTER_MENU.dinners[0].zh}；另一晚是${WINTER_MENU.dinners[1].zh}。`) },
   ],
+  /** Under the three meals: whose menu it is, and that no day is named. */
+  mealsNote: l('These are the dishes on the winter camp menu. Which dish is served on which day is not set yet.', '以上為冬季營隊的菜色，各菜色的供應日尚未排定。'),
   /** The final evening of every session. */
   signature: {
     photo: 'wagyu-platter' as Photo['id'],
@@ -121,22 +135,24 @@ export const PRICING = {
   camp: {
     name: l('4 Days / 3 Nights', '四天三夜'),
     when: l('Wednesday to Saturday', '週三 至 週六'),
-    bus: l('Wednesday 14:00–14:30 parent drop-off at Sanwan; Saturday return charter bus included.', '週三 14:00–14:30 由家長送達三灣園區；週六回程遊覽車專車已含。'),
+    bus: l(`Wednesday: meet at ${BUS.meetingPoint.en}, at ${BUS.meetTime}; the charter bus leaves at ${BUS.departTime}. Saturday: the bus returns to ${BUS.meetingPoint.en}, at ${BUS.returnTime}. The charter bus both ways is included.`, `週三 ${BUS.meetTime} 於${BUS.meetingPoint.zh}集合，遊覽車專車 ${BUS.departTime} 出發；週六 ${BUS.returnTime} 返抵${BUS.meetingPoint.zh}。來回遊覽車專車已含。`),
   },
-  feePending: l('Fee announced soon', '費用即將公布'),
-  datesPending: l('Dates announced soon', '日期即將公布'),
+  /** A season whose camp has no dates yet: a placeholder, nothing to register for. */
+  comingSoon: l('Coming soon', '敬請期待'),
+  comingSoonBody: l('Dates and fee for this camp are not set yet. They will be announced here.', '本營隊的日期與費用尚未確定，確定後將公布於此。'),
+  seeCamp: { winter: l('See the Winter Camp', '查看冬季營隊'), summer: l('See the Summer Camp', '查看夏季營隊') },
   /** Beside a fee: it is charged for each camper. */
   perCamper: l('per camper', '每位營員'),
   /** Shown on a session that is a pilot camp. */
   pilotBadge: l('First camp · Pilot', '首梯・試辦營'),
   pilotLimit: (n: number) => l(`Pilot camp, limited to ${n} campers`, `試辦營，限額 ${n} 名營員`),
   shared: l('3 campers per luxury camper van · 3 meals a day · all activities', '三人一輛豪華露營車・每日三餐・全部活動'),
-  busTitle: l('Saturday return charter bus', '週六回程遊覽車專車'),
-  bus: l('Designated Tour Bus Zone near National Taichung Theater (Shizheng N. 2nd Rd.). Licensed charter buses under 10 years old, with a pre-departure emergency-exit briefing.', '臺中國家歌劇院周邊指定遊覽車臨停區（市政北二路）。使用車齡十年內合法遊覽車，出發前進行逃生門安全說明。'),
+  busTitle: l('Charter bus from Taichung, both ways', '臺中來回遊覽車專車'),
+  bus: l(`Meeting point: ${BUS.meetingPoint.en} (${BUS.meetingAddress.en}). Licensed charter buses under 10 years old, with a pre-departure emergency-exit briefing.`, `集合地點：${BUS.meetingPoint.zh}（${BUS.meetingAddress.zh}）。使用車齡十年內合法遊覽車，出發前進行逃生門安全說明。`),
   included: [
     l('Luxury camper van stay', '頂級豪華露營車住宿'),
     l('Three meals a day: buffet breakfast, DIY lunch with the chef and evening buffet, with the signature Wagyu dinner on the final evening', '每日三餐：自助式早餐、主廚帶領的 DIY 午餐與自助式晚餐，最後一晚為和牛招牌家宴'),
-    l('Saturday return charter bus', '週六回程遊覽車專車'),
+    l(`Charter bus from ${BUS.meetingPoint.en}, to camp and back`, `${BUS.meetingPoint.zh}至營地的來回遊覽車專車`),
     l('Activity gear and craft materials', '活動器材與手作材料'),
     l('Counselors at about 1:4 and the 24/7 nurse', '約 1:4 隊輔與 24 小時駐點護理師'),
     l('Camp T-shirt and digital photo album', '營隊紀念 T-Shirt 與數位相簿'),
@@ -144,7 +160,7 @@ export const PRICING = {
   ],
   excluded: [
     l(`Snacks and drinks at the Airstream snack shop (optional coupon packs of ${PACKS.en})`, `Airstream 點心站的點心與飲品（可自由選購 ${PACKS.zh} 的點心券）`),
-    l('Private transport to Sanwan on Wednesday, and home from the Taichung bus stop on Saturday', '週三前往三灣園區，以及週六自臺中下車地點返家的私人交通費'),
+    l(`Travel between home and the meeting point at ${BUS.meetingPoint.en}`, `住家往返集合地點（${BUS.meetingPoint.zh}）的交通費`),
     l('Optional top-up of personal travel insurance', '個人旅遊平安險加保費'),
     l('Medical fees for personal illness, or for accidents not attributable to the organizers', '因個人疾病或非可歸責於主辦單位之意外所生的醫療費用'),
     l('Personal gear', '個人裝備購置'),
@@ -218,7 +234,7 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('Which meals are included, and what about snacks?', '費用包含哪些餐點？點心呢？'),
-    a: l(`Three meals a day are included: a buffet breakfast, a DIY lunch that campers make with the chef, and an evening buffet. The final evening is the signature family dinner with Wagyu beef. Snacks between meals are not included. If you would like your camper to have them, choose a coupon pack of ${PACKS.en}; the coupons are handed to your camper at check-in and exchanged at the Airstream snack shop beside the pool, which serves no alcohol.`, `費用包含每日三餐：自助式早餐、營員與主廚一起動手做的 DIY 午餐，以及自助式晚餐；最後一晚則是和牛招牌家宴。正餐之間的點心不包含在內。若希望孩子可以買點心，家長可選購 ${PACKS.zh} 的點心券，於報到時交給營員，在戲水池旁的 Airstream 點心站兌換；點心站不販售任何含酒精飲品。`),
+    a: l(`Three meals a day are included: a buffet breakfast, a DIY lunch that campers make with the chef, and an evening buffet. The final evening is the signature family dinner with Wagyu beef. On the winter camp menu: at breakfast, ${WINTER_MENU.breakfast.en}; at lunch, ${WINTER_MENU.lunch.en}; at dinner, ${WINTER_MENU.dinners[0].en}, and ${WINTER_MENU.dinners[1].en}. Snacks between meals are not included. If you would like your camper to have them, choose a coupon pack of ${PACKS.en}; the coupons are handed to your camper at check-in and exchanged at the Airstream snack shop beside the pool, which serves no alcohol.`, `費用包含每日三餐：自助式早餐、營員與主廚一起動手做的 DIY 午餐，以及自助式晚餐；最後一晚則是和牛招牌家宴。冬季營隊的菜色：早餐有${WINTER_MENU.breakfast.zh}；午餐有${WINTER_MENU.lunch.zh}；晚餐有${WINTER_MENU.dinners[0].zh}，以及${WINTER_MENU.dinners[1].zh}。正餐之間的點心不包含在內。若希望孩子可以買點心，家長可選購 ${PACKS.zh} 的點心券，於報到時交給營員，在戲水池旁的 Airstream 點心站兌換；點心站不販售任何含酒精飲品。`),
   },
   {
     q: l('Can my child bring a phone or tablet?', '可以帶手機或平板嗎？'),

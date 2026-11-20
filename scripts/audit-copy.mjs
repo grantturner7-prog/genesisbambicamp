@@ -28,6 +28,8 @@ const RULES = [
   ['C banned disclaimer', /for reference only|僅供參考|保有最終修改權|reserves? (the )?(final )?right to (modify|change)|概不負責|not responsible for accidents|概不退還|non-?refundable/i],
   // Rule D — truth in advertising
   ['D wrong township', /sanyi|三義/i],
+  // Campers meet at the meeting point in Taichung and ride the bus both ways: no drop-off at the camp gate.
+  ['D stale arrival plan (campers meet at the meeting point in Taichung)', /14:00|parent drop-off|drop off at|家長送達|送達三灣|taichung theater|歌劇院|tour bus zone|臨停區/i],
   ['D wooden cabins', /wooden cabin|log cabin|小木屋|木屋/i],
   // Meals: three a day (buffet breakfast, DIY lunch with the chef, evening buffet).
   ['D stale meal plan (the camp serves three meals a day)', /\bfour[- ](daily )?meals?\b|(?<![\d.,])4[- ](daily )?meals?\b|一泊四食|四食|(?<![十\d])四餐|(?<!\d)4 ?餐|宵夜|(campfire|evening) snacks?|營火點心|晚間點心/i],
@@ -83,8 +85,13 @@ const need = [
   ['rainy-day plan (斑比大飯店)', '斑比大飯店', text],
   ['minimum-group 7-day 100% guarantee', '100%', home.PRICING.guarantee.en + home.PRICING.guarantee.zh],
   ['Insurance Act Art. 107', '107', home.SAFETY.under15.en + home.SAFETY.under15.zh],
-  ['Wednesday 14:00–14:30 drop-off', 'Wednesday 14:00–14:30', home.PRICING.camp.bus.en],
-  ['Wednesday 14:00–14:30 drop-off (zh)', '週三 14:00–14:30', home.PRICING.camp.bus.zh],
+  ['Wednesday meeting point and time', `meet at ${campConfig.transport.meetingPoint.en}, at ${campConfig.transport.meetTime}`, home.PRICING.camp.bus.en],
+  ['Wednesday bus departure time', `leaves at ${campConfig.transport.departTime}`, home.PRICING.camp.bus.en],
+  ['Saturday return time and place', `returns to ${campConfig.transport.meetingPoint.en}, at ${campConfig.transport.returnTime}`, home.PRICING.camp.bus.en],
+  ['meeting point and times (zh)', `週三 ${campConfig.transport.meetTime} 於${campConfig.transport.meetingPoint.zh}集合`, home.PRICING.camp.bus.zh],
+  ['Saturday return (zh)', `週六 ${campConfig.transport.returnTime} 返抵${campConfig.transport.meetingPoint.zh}`, home.PRICING.camp.bus.zh],
+  ['meeting point address', campConfig.transport.meetingAddress.en, home.PRICING.bus.en],
+  ['both bus journeys under "Included"', 'to camp and back', home.PRICING.included.map((x) => x.en).join(' ')],
   ['the camp is 4 Days / 3 Nights', '4 Days / 3 Nights', home.PRICING.camp.name.en],
   ['the camp runs Wednesday to Saturday', 'Wednesday to Saturday', home.PRICING.camp.when.en],
   ['three meals a day', 'Three meals a day', home.STAY.mealsTitle.en],
@@ -93,6 +100,19 @@ const need = [
   ['snack coupons listed under "Not included"', 'coupon', home.PRICING.excluded.map((x) => x.en).join(' ')],
   ['Venue tax ID 88491889', '88491889', campConfig.venue.taxId],
 ]
+// The winter menu from the venue kitchen: the landing page and the dining hall menu both carry every dish.
+const DISHES = [['egg', '雞蛋'], ['bacon', '培根'], ['bread', '麵包'], ['sandwich', '三明治'], ['milk', '牛奶'], ['soy milk', '豆漿'], ['curry', '咖哩'], ['pizza', '披薩'], ['rice ball', '飯糰'], ['donburi', '丼飯'], ['meatball pasta', '肉丸義大利麵'], ['corn soup', '玉米濃湯'], ['fried chicken', '炸雞'], ['braised pork', '滷肉'], ['vegetables', '青菜'], ['rice', '白飯']]
+const MENUS = {
+  'landing page meals': (lang) => home.STAY.meals.map((m) => m.note[lang]).join(' '),
+  'meals FAQ': (lang) => home.FAQ.find((x) => /which meals/i.test(x.q.en)).a[lang],
+  'dining hall menu': (lang) => AREAS.find((a) => a.id === 'dining').menu.sections.flatMap((x) => x.items.map((i) => i.name[lang])).join(' '),
+}
+for (const [where, text] of Object.entries(MENUS)) for (const [en, zh] of DISHES) {
+  if (!text('en').toLowerCase().includes(en)) errors.push(`Winter menu: “${en}” is missing from the ${where}`)
+  if (!text('zh').includes(zh)) errors.push(`Winter menu: 「${zh}」 is missing from the ${where} (zh)`)
+}
+// A season with no dates is a placeholder: no date, month or year may be printed for it.
+for (const season of ['winter', 'summer']) if (!campConfig.sessions[season]) for (const { path, text } of all) if (new RegExp(`${season}[^.。]{0,60}(20\\d\\d|january|february|march|april|may \\d|june|july|august|september|october|november|december)`, 'i').test(text)) fail(`D a date is printed for the ${season} camp, which has none yet`, path, text)
 for (const [name, needle, hay] of need) if (!String(hay).includes(needle)) errors.push(`Missing required disclosure: ${name}`)
 
 // en / zh parity: no empty side.

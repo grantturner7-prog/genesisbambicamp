@@ -35,6 +35,7 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
   const { s, t, season, time } = useCamp()
   const offer = campConfig.sessions[season]
   const pilot = offer?.pilot
+  const campName = season === 'winter' ? s.seasons.winterLong : s.seasons.summerLong
   const m = s.hero.metrics
   const photo = (time === 'dusk' ? HERO.photoNight : HERO.photo)[season]
   return (
@@ -46,7 +47,7 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
         <div className="max-w-2xl">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-cedar/60 bg-cedar/20 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-cedar-100">{s.hero.badge}</span>
-            <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">{offer ? t(offer.dates) : t(HERO.datesPending)}</span>
+            <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">{offer ? t(offer.dates) : `${campName} · ${t(PRICING.comingSoon)}`}</span>
             {pilot && (
               <a href="#pricing" data-pilot-pill className="rounded-full border border-cedar/60 bg-cedar/20 px-3 py-1 text-xs font-semibold text-cedar-100 backdrop-blur transition hover:bg-cedar/30">
                 {t(PRICING.pilotLimit(pilot.maxCampers))}
@@ -193,6 +194,7 @@ export function Stay() {
               </li>
             ))}
           </ol>
+          <p className="mt-1 text-[13px] leading-relaxed text-ink/60" data-meals-note>{t(STAY.mealsNote)}</p>
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">{t(STAY.diet)}</p>
         </div>
         <article className="relative isolate flex min-h-[27rem] flex-col justify-end overflow-hidden rounded-3xl bg-pine-900 text-white shadow-lg ring-2 ring-cedar/50 lg:min-h-80" data-signature-dinner>
@@ -280,8 +282,10 @@ export function Safety() {
 
 /* ───────────────────────────────────────────────────────── Pricing */
 export function Pricing({ onRegister, children }: { onRegister: () => void; children?: ReactNode }) {
-  const { s, t, season } = useCamp()
+  const { s, t, season, setSeason } = useCamp()
   const offer = campConfig.sessions[season]
+  // a season with no dates yet is a placeholder that points to the camp that has them
+  const dated = (['winter', 'summer'] as const).find((k) => campConfig.sessions[k])
   const ta = campConfig.travelAgency
   const pending = s.footer.pending
   return (
@@ -299,21 +303,42 @@ export function Pricing({ onRegister, children }: { onRegister: () => void; chil
               {t(PRICING.pilotBadge)}
             </span>
           )}
-          <h3 className="font-display text-2xl font-semibold text-pine">{t(PRICING.camp.name)}</h3>
-          <p className="mt-1 text-sm font-semibold text-ink/60">{t(PRICING.camp.when)}</p>
-          <p className="mt-4 text-sm font-semibold text-cedar-600">{offer ? t(offer.dates) : t(PRICING.datesPending)}</p>
-          <p className="font-display mt-1 text-4xl font-semibold text-pine-900">
-            {offer?.fee != null ? fmtTWD(offer.fee) : t(PRICING.feePending)}
-            {offer?.fee != null && <span className="ml-2 font-sans text-sm font-semibold text-ink/60">{t(PRICING.perCamper)}</span>}
-          </p>
-          {offer?.pilot && <p className="mt-1.5 text-[13px] font-semibold text-ink/70">{t(PRICING.pilotLimit(offer.pilot.maxCampers))}</p>}
+          {!offer && (
+            <span data-coming-soon className="mb-3 inline-flex w-fit items-center rounded-full bg-pine/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine">
+              {t(PRICING.comingSoon)}
+            </span>
+          )}
+          <h3 className="font-display text-2xl font-semibold text-pine">{offer ? t(PRICING.camp.name) : season === 'winter' ? s.seasons.winterLong : s.seasons.summerLong}</h3>
+          {offer ? (
+            <>
+              <p className="mt-1 text-sm font-semibold text-ink/60">{t(PRICING.camp.when)}</p>
+              <p className="mt-4 text-sm font-semibold text-cedar-600">{t(offer.dates)}</p>
+              <p className="font-display mt-1 text-4xl font-semibold text-pine-900">
+                {offer.fee != null ? fmtTWD(offer.fee) : t(PRICING.comingSoon)}
+                {offer.fee != null && <span className="ml-2 font-sans text-sm font-semibold text-ink/60">{t(PRICING.perCamper)}</span>}
+              </p>
+              {offer.pilot && <p className="mt-1.5 text-[13px] font-semibold text-ink/70">{t(PRICING.pilotLimit(offer.pilot.maxCampers))}</p>}
+            </>
+          ) : (
+            <p className="mt-3 text-[15px] leading-relaxed text-ink/75">{t(PRICING.comingSoonBody)}</p>
+          )}
         </div>
         <div className="mt-4 flex flex-1 flex-col md:mt-0 md:justify-center">
-          <p className="text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
-          <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(PRICING.camp.bus)}</p>
-          <button type="button" data-register-open onClick={() => onRegister()} className="rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
-            {s.nav.register}
-          </button>
+          {offer ? (
+            <>
+              <p className="text-sm leading-relaxed text-ink/75">{t(PRICING.shared)}</p>
+              <p className="mb-5 mt-2 rounded-xl bg-cedar-100/70 px-4 py-3 text-sm font-medium text-pine-900">{t(PRICING.camp.bus)}</p>
+              <button type="button" data-register-open onClick={() => onRegister()} className="rounded-full bg-pine px-5 py-3 text-[15px] font-bold text-white transition hover:bg-pine-800">
+                {s.nav.register}
+              </button>
+            </>
+          ) : (
+            dated && (
+              <button type="button" data-see-dated-camp onClick={() => setSeason(dated)} className="rounded-full border border-pine/25 bg-white px-5 py-3 text-[15px] font-bold text-pine transition hover:bg-pine/5">
+                {t(PRICING.seeCamp[dated])}
+              </button>
+            )
+          )}
         </div>
       </article>
       <div className="mt-5 grid gap-5 lg:grid-cols-3">

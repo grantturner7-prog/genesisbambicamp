@@ -2,7 +2,7 @@ import type { AreaId } from '../lib/types'
 import { campConfig } from '../config/campConfig'
 import type { Area } from './types'
 
-const { cohort, pool, venue } = campConfig
+const { cohort, pool, transport, venue } = campConfig
 
 const twd = (n: number) => `NT$${n.toLocaleString('en-US')}`
 const packs = campConfig.snackShop.couponPacks.map(twd)
@@ -29,8 +29,8 @@ export const AREAS: Area[] = [
       zh: '每位營員的冒險，從這裡開始。',
     },
     summary: {
-      en: 'Campers arrive at the Bambi gate in Sanwan, Miaoli, and check in at the reception unit just inside, where counselors greet every family. Families drop off on Wednesday between 14:00 and 14:30, and campers ride the charter bus back on Saturday.',
-      zh: '營員抵達苗栗三灣斑比跳跳大門後，在入口旁的報到處報到，隊輔會親切迎接每個家庭。家長於週三 14:00–14:30 送達園區，週六由遊覽車專車返回。',
+      en: `Campers arrive by charter bus at the Bambi gate in Sanwan, Miaoli, where counselors welcome them at the reception unit just inside. The bus leaves ${transport.meetingPoint.en}, at ${transport.departTime} on Wednesday and brings campers back there at ${transport.returnTime} on Saturday.`,
+      zh: `營員搭乘遊覽車專車抵達苗栗三灣斑比跳跳大門，隊輔會在入口旁的報到處迎接。專車於週三 ${transport.departTime} 自${transport.meetingPoint.zh}出發，週六 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。`,
     },
     icon: 'DoorClosed',
     accent: '#8a6a43',
@@ -38,18 +38,18 @@ export const AREAS: Area[] = [
     features: [
       {
         icon: 'Bus',
-        title: { en: 'Saturday return charter bus', zh: '週六回程遊覽車專車' },
+        title: { en: 'Charter bus from Taichung, both ways', zh: '臺中來回遊覽車專車' },
         body: {
-          en: 'On Saturday campers ride the charter bus back to the Designated Tour Bus Zone near National Taichung Theater (Shizheng N. 2nd Rd.). It is included in the fee.',
-          zh: '週六搭乘遊覽車專車返回臺中國家歌劇院周邊指定遊覽車臨停區（市政北二路），費用已含。',
+          en: `Campers meet at ${transport.meetingPoint.en}, at ${transport.meetTime} on Wednesday, and the charter bus leaves at ${transport.departTime}. On Saturday it returns to ${transport.meetingPoint.en}, at ${transport.returnTime}. The bus both ways is included in the fee.`,
+          zh: `週三 ${transport.meetTime} 於${transport.meetingPoint.zh}集合，遊覽車專車 ${transport.departTime} 出發；週六 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。來回專車費用已含。`,
         },
       },
       {
-        icon: 'Car',
-        title: { en: 'Parent drop-off', zh: '家長送達' },
+        icon: 'MapPin',
+        title: { en: 'Meeting point', zh: '集合地點' },
         body: {
-          en: 'Wednesday 14:00–14:30 at the Sanwan gate. The Saturday return charter bus is included.',
-          zh: '週三 14:00–14:30 於三灣園區大門報到；週六搭乘遊覽車專車返回，費用已含。',
+          en: `${transport.meetingPoint.en} (${transport.meetingAddress.en}). Families bring campers there on Wednesday morning and meet them there on Saturday.`,
+          zh: `${transport.meetingPoint.zh}（${transport.meetingAddress.zh}）。週三早上由家長送孩子至此集合，週六也在此接回。`,
         },
       },
       {
@@ -79,7 +79,7 @@ export const AREAS: Area[] = [
     ],
     facts: [
       { label: { en: 'Venue', zh: '營地' }, value: { en: 'Bambi Glamping, Sanwan, Miaoli', zh: '斑比跳跳・苗栗三灣' } },
-      { label: { en: 'Drop-off', zh: '報到' }, value: { en: 'Wednesday 14:00–14:30', zh: '週三 14:00–14:30' } },
+      { label: { en: 'Bus from Taichung', zh: '臺中專車' }, value: { en: `Leaves Wednesday ${transport.departTime} · back Saturday ${transport.returnTime}`, zh: `週三 ${transport.departTime} 出發・週六 ${transport.returnTime} 返抵` } },
       { label: { en: 'Gate curfew', zh: '大門管制' }, value: { en: 'Nightly at 23:00', zh: '每晚 23:00' } },
       { label: { en: 'Address', zh: '地址' }, value: venue.address },
     ],
@@ -255,8 +255,8 @@ export const AREAS: Area[] = [
         icon: 'ChefHat',
         title: { en: 'Chef-Led Culinary Guild', zh: '主廚美食工坊' },
         body: {
-          en: 'Each day the chef shows campers how to make that day’s lunch: handmade Neapolitan pizza one day, a different dish the next. Campers eat what they cook.',
-          zh: '每天由主廚帶著營員親手完成當日午餐：一天是手工拿坡里披薩，隔天換另一道菜。自己做的，就是當天的午餐。',
+          en: 'The chef shows campers how to make that day’s lunch, from a menu of curry, pizza, rice balls and donburi rice boxes. Campers eat what they cook.',
+          zh: '由主廚帶著營員親手完成當日午餐，菜色有咖哩、披薩、飯糰與丼飯餐盒。自己做的，就是當天的午餐。',
         },
       },
       {
@@ -285,31 +285,39 @@ export const AREAS: Area[] = [
     menu: {
       title: { en: 'A day at the table', zh: '一日餐桌' },
       intro: {
-        en: 'Three meals a day, with a signature dinner to finish. Daily dishes change with the chef and the season.',
-        zh: '每日三餐，最後一晚以招牌家宴壓軸。每日菜色會依主廚安排與季節調整。',
+        en: 'Three meals a day, with a signature dinner to finish. These are the dishes on the winter camp menu. Which dish is served on which day is not set yet.',
+        zh: '每日三餐，最後一晚以招牌家宴壓軸。以下為冬季營隊的菜色，各菜色的供應日尚未排定。',
       },
       sections: [
         {
           title: { en: 'Breakfast', zh: '早餐' },
           icon: 'Sunrise',
+          tag: { en: 'Buffet breakfast', zh: '自助式早餐' },
           items: [
-            { name: { en: 'Buffet breakfast', zh: '自助式早餐' }, note: { en: 'Hot and cold choices, fruit and drinks to start the day.', zh: '冷熱餐點、水果與飲品，元氣開場。' } },
+            { name: { en: 'Eggs', zh: '雞蛋' } },
+            { name: { en: 'Bacon', zh: '培根' } },
+            { name: { en: 'Bread and sandwiches', zh: '麵包與三明治' } },
+            { name: { en: 'Milk and soy milk', zh: '牛奶與豆漿' } },
           ],
         },
         {
           title: { en: 'Lunch', zh: '午餐' },
           icon: 'ChefHat',
-          tag: { en: 'DIY with the chef', zh: '跟著主廚動手做' },
+          tag: { en: 'DIY lunch with the chef', zh: '主廚帶領的 DIY 午餐' },
           items: [
-            { name: { en: 'DIY lunch with the chef', zh: '主廚帶領的 DIY 午餐' }, note: { en: 'Made by the campers with the chef in the Culinary Guild. A different dish each day.', zh: '由營員在主廚美食工坊與主廚一起完成，每天不同菜色。' } },
-            { name: { en: 'Handmade Neapolitan pizza', zh: '手工拿坡里披薩' }, note: { en: 'On pizza day, campers make their own.', zh: '披薩日由營員親手製作。' }, allergens: ['gluten', 'milk'] },
+            { name: { en: 'Curry', zh: '咖哩' } },
+            { name: { en: 'Handmade pizza', zh: '手工披薩' }, note: { en: 'On pizza day, campers make their own.', zh: '披薩日由營員親手製作。' } },
+            { name: { en: 'Rice balls', zh: '飯糰' } },
+            { name: { en: 'Donburi rice box', zh: '丼飯餐盒' } },
           ],
         },
         {
           title: { en: 'Dinner', zh: '晚餐' },
           icon: 'Utensils',
+          tag: { en: 'Evening buffet', zh: '自助式晚餐' },
           items: [
-            { name: { en: 'Evening buffet', zh: '自助式晚餐' }, note: { en: 'A buffet dinner together in the Grand Dining Hall.', zh: '全營隊在斑比大飯店一起享用自助式晚餐。' } },
+            { name: { en: 'Meatball pasta, corn soup and bread', zh: '肉丸義大利麵、玉米濃湯與麵包' } },
+            { name: { en: 'Fried chicken and braised pork, with vegetables and rice', zh: '炸雞與滷肉，搭配青菜與白飯' } },
           ],
         },
         {
@@ -327,6 +335,10 @@ export const AREAS: Area[] = [
         {
           en: 'Non-beef, pork-free, vegetarian and allergy trays are pre-registered on the health form.',
           zh: '不吃牛、不吃豬、蛋奶素與過敏餐盤，請於健康調查表事先登記。',
+        },
+        {
+          en: 'The kitchen has not yet given the allergen details for each dish, so the dishes carry no allergen tags.',
+          zh: '廚房尚未提供各菜色的過敏原資訊，因此菜單上暫不標示過敏原。',
         },
         {
           en: 'Snacks between meals are not part of the camp fee: campers use snack coupons at the Airstream snack shop beside the pool.',

@@ -45,15 +45,25 @@ including under a sub-path.
 
 - Three meals a day: buffet breakfast, a DIY lunch with the chef, evening buffet. The
   final evening is the signature family dinner with Wagyu beef. No afternoon tea.
+- The winter camp menu comes from the venue kitchen (`WINTER_MENU` in
+  `src/home/content.ts`, and the dining hall menu in `src/map/areas.ts`). Breakfast: eggs,
+  bacon, bread, sandwiches, milk, soy milk. Lunch: curry, pizza, rice balls, donburi rice
+  boxes. Dinner: meatball pasta with corn soup and bread; fried chicken and braised pork
+  with vegetables and rice. The kitchen has not said which day each dish is served or
+  given allergen details, so the site names no day and the dishes carry no allergen tags.
 - Snacks are not part of the fee. Parents choose a coupon pack (`snackShop.couponPacks`:
   NT$1,000 / 2,000 / 3,000); campers get the coupons at check-in and exchange them at
   the Airstream snack shop beside the pool.
-- There is one kind of camp: 4 Days / 3 Nights, Wednesday to Saturday (parents drop off
-  at Sanwan on Wednesday 14:00–14:30; the Saturday return charter bus is included). The
-  site never names options: there is nothing to choose between.
+- There is one kind of camp: 4 Days / 3 Nights, Wednesday to Saturday. The site never
+  names options: there is nothing to choose between.
+- Campers meet at The Lin Hotel, Taichung, at 08:00 on Wednesday; the charter bus leaves
+  at 08:30 and returns there at 10:30 on Saturday (`transport` in `campConfig.ts`). The bus
+  both ways is listed as included. Nobody is dropped off at the camp gate.
 - The first camp is the winter one: Wednesday 27 to Saturday 30 January 2027, a pilot
-  camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter`). The summer
-  camp's dates and fee are still owed (`sessions.summer` is `null`).
+  camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter`). These are the
+  only dates on the site. The summer camp has none yet (`sessions.summer` is `null`): it
+  is a placeholder that says "Coming soon", prints no date or fee, and cannot be chosen
+  in the registration form. Fill in `sessions.summer` to open it.
 - No daily timetable is published yet. Add it (and the list of activities) to
   `src/home/content.ts` when the partners supply it.
 

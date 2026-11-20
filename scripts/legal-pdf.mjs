@@ -47,8 +47,8 @@ function campRows() {
   const rows = [row('Camp', home.PRICING.camp.name), row('Days', home.PRICING.camp.when), row('Arrival and return', home.PRICING.camp.bus), row('Section intro', S('home.pricingIntro')), row('Every camper gets', home.PRICING.shared)]
   for (const k of ['winter', 'summer']) {
     const o = c.sessions[k]
-    rows.push(row(`${season[k].en}: dates`, o ? o.dates : { ...home.PRICING.datesPending, pending: true }))
-    rows.push(row(`${season[k].en}: fee`, o?.fee != null ? l(`${twd(o.fee)} ${home.PRICING.perCamper.en}`, `${twd(o.fee)} ${home.PRICING.perCamper.zh}`) : { ...home.PRICING.feePending, pending: true }))
+    rows.push(row(`${season[k].en}: dates`, o ? o.dates : { ...home.PRICING.comingSoon, pending: true }))
+    rows.push(row(`${season[k].en}: fee`, o?.fee != null ? l(`${twd(o.fee)} ${home.PRICING.perCamper.en}`, `${twd(o.fee)} ${home.PRICING.perCamper.zh}`) : { ...home.PRICING.comingSoon, pending: true }))
     if (o?.pilot) rows.push(row(`${season[k].en}: limit`, l(`${home.PRICING.pilotBadge.en}. ${home.PRICING.pilotLimit(o.pilot.maxCampers).en}`, `${home.PRICING.pilotBadge.zh}。${home.PRICING.pilotLimit(o.pilot.maxCampers).zh}`)))
   }
   return rows
@@ -77,12 +77,12 @@ const SECTIONS = [
     title: l('Fees, what is included, refunds and guarantees', '費用、費用內容、退費與保障'),
     where: 'Landing page › Dates & Fees, the refund calculator, and Stay & Meals (snack coupons)',
     open: [
-      !c.sessions.summer && 'Summer camp: dates and fee are not set yet; the site shows "announced soon".',
+      !c.sessions.summer && 'Summer camp: dates and fee are not set yet. The site shows "Coming soon" for it and takes no summer registrations.',
       c.payment.deposit == null && 'No deposit amount or balance due date is set, so the site states no payment schedule.',
       !c.snackShop.couponTerms && 'Snack coupons: how the packs are paid for, and what happens to unused coupons, is not stated anywhere yet.',
       c.cohort.minGroupSize != null && `Minimum group: the guarantee names ${c.cohort.minGroupSize} campers (a figure the partners were still to confirm)${pilotCap ? `, while the first camp is a pilot limited to ${pilotCap} campers` : ''}. Please check the two figures work together.`,
       !c.registration.contractPdfUrl && 'The service contract itself is not linked from the site yet. The refund tiers below are meant to mirror the Domestic Travel Standard Contract; please check them against the final contract.',
-      'The Saturday return charter bus is described as arriving at the bus zone near National Taichung Theater. That destination is assumed from the earlier round-trip wording and needs the organizers’ confirmation.',
+      'The charter bus is listed as included in the fee in both directions: from the meeting point in Taichung on the first morning, and back to it on the last day. Please confirm that neither journey is charged separately.',
     ],
     blocks: [
       { title: l('The camp, its dates and its fee', '營隊、日期與費用'), where: 'Dates & Fees › camp card and section intro', rows: campRows() },

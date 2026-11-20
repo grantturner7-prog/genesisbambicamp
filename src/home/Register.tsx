@@ -116,12 +116,16 @@ function Field({ label, children, required }: { label: string; children: ReactNo
   )
 }
 
+const SEASONS: Season[] = ['winter', 'summer']
+
 /** 3-step registration with five separate consent boxes (Doc 3, Part 5). Nothing is transmitted without an endpoint. */
 export function RegisterModal({ onClose }: { onClose: () => void }) {
   const { s, t, season, lang } = useCamp()
   const R = s.register
   const [step, setStep] = useState(1)
-  const [f, setF] = useState<Form>({ season, coupon: '', camper: '', dob: '', gender: '', guardian: '', relation: '', mobile: '', email: '', address: '', backup: '', diet: [], dietOther: '', allergies: '', conditions: '', medications: '', water: '' })
+  // only a camp with dates can be registered for
+  const open = SEASONS.filter((k) => campConfig.sessions[k])
+  const [f, setF] = useState<Form>({ season: campConfig.sessions[season] ? season : (open[0] ?? season), coupon: '', camper: '', dob: '', gender: '', guardian: '', relation: '', mobile: '', email: '', address: '', backup: '', diet: [], dietOther: '', allergies: '', conditions: '', medications: '', water: '' })
   // Consent 5 (media) is optional and unchecked by default.
   const [consent, setConsent] = useState<Record<string, boolean>>({})
   const [err, setErr] = useState('')
@@ -232,12 +236,19 @@ export function RegisterModal({ onClose }: { onClose: () => void }) {
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label={R.session} required>
                 <select className={input} value={f.season} onChange={(e) => set('season', e.target.value as Season)}>
-                  <option value="winter">{s.seasons.winterLong}</option>
-                  <option value="summer">{s.seasons.summerLong}</option>
+                  {SEASONS.map((k) => {
+                    const name = k === 'winter' ? s.seasons.winterLong : s.seasons.summerLong
+                    const soon = t(PRICING.comingSoon)
+                    return (
+                      <option key={k} value={k} disabled={!campConfig.sessions[k]}>
+                        {campConfig.sessions[k] ? name : lang === 'en' ? `${name} (${soon})` : `${name}（${soon}）`}
+                      </option>
+                    )
+                  })}
                 </select>
               </Field>
               <p className="self-end pb-2.5 text-[13px] font-semibold text-pine" data-register-dates>
-                {chosen ? `${t(chosen.dates)}${chosen.pilot ? ` · ${t(PRICING.pilotLimit(chosen.pilot.maxCampers))}` : ''}` : t(PRICING.datesPending)}
+                {chosen ? `${t(chosen.dates)}${chosen.pilot ? ` · ${t(PRICING.pilotLimit(chosen.pilot.maxCampers))}` : ''}` : t(PRICING.comingSoon)}
               </p>
               <p className="rounded-xl bg-cedar-100/70 px-4 py-3 text-[13px] font-medium leading-relaxed text-pine-900 sm:col-span-2" data-register-note>
                 {t(PRICING.camp.bus)}

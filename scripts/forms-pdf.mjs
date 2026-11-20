@@ -63,7 +63,8 @@ const R = home.REFUND
 const consent = (k) => home.CONSENTS.find((x) => x.key === k)
 const vanRules = AREAS.find((a) => a.id === 'vans').safety.rules
 const foodRule = vanRules.find((r) => /food/i.test(r.title.en))
-const busHome = AREAS.find((a) => a.id === 'gate').features.find((f) => /return charter bus/i.test(f.title.en)).body
+const busHome = AREAS.find((a) => a.id === 'gate').features.find((f) => /charter bus/i.test(f.title.en)).body
+const T = c.transport
 const nurse = home.SAFETY.staff.find((x) => /nurse/i.test(x.title.en))
 const faq = (re) => home.FAQ.find((x) => re.test(x.q.en)).a
 /** Sections of the notice, so that cross-references follow when one is added. */
@@ -318,9 +319,9 @@ const checkin = () => `
 <h1>${B('Check-in Day Form', '報到日確認單')}</h1>
 <p class="sub">${B(c.brand.en, c.brand.zh)} · ${B(home.PRICING.camp.bus.en, home.PRICING.camp.bus.zh)}</p>
 ${CONTACT()}
-${P('Please fill in and sign this form at home on the morning of check-in. At the gate, hand it to the check-in desk, where a counselor takes every camper’s temperature and collects devices. Campers who bring medicine, or who have a “yes” in section 1, then see the nurse. Please allow time for this.', '請於報到當日早上在家填妥並簽名。抵達大門後請將本單交給報到櫃檯，由隊輔為每位營員量測體溫並收取電子裝置；有攜帶藥品或第 1 節任一項回答「是」的營員，再由護理師接續確認。請預留時間。', true)}
+${P('Please fill in and sign this form at home on the morning of check-in. At the meeting point, hand it to the check-in desk, where a counselor takes every camper’s temperature and collects devices. Campers who bring medicine, or who have a “yes” in section 1, then see the nurse. Please allow time for this.', '請於報到當日早上在家填妥並簽名。抵達集合地點後請將本單交給報到櫃檯，由隊輔為每位營員量測體溫並收取電子裝置；有攜帶藥品或第 1 節任一項回答「是」的營員，再由護理師接續確認。請預留時間。', true)}
 ${ROW(F('Camper', '營員姓名', 5), F('Camp dates', '營隊日期', 4), F('Camper van / team (staff)', '露營車／小隊（工作人員填寫）', 3))}
-${ROW(F('Adult bringing the camper today, if not the guardian who signs', '今日送孩子報到的成年人（若非簽名之法定代理人）', 5), F('Relationship', '與營員關係', 2), F('Mobile', '手機', 2), F('Guardian’s phone today, 14:00–15:00', '法定代理人今日 14:00–15:00 電話', 3))}
+${ROW(F('Adult bringing the camper today, if not the guardian who signs', '今日送孩子報到的成年人（若非簽名之法定代理人）', 5), F('Relationship', '與營員關係', 2), F('Mobile', '手機', 2), F('Guardian’s phone this morning', '法定代理人今日上午可聯絡電話', 3))}
 
 ${H(1, 'Health check today', '今日健康確認')}
 <table class="grid yntable short"><tr><th>${B('Has your camper had', '孩子是否有')}</th><th>${B('No', '否')}</th><th>${B('Yes', '是')}</th><th>${B('Details', '說明')}</th></tr>
@@ -357,7 +358,7 @@ ${ROW(F('Coupons chosen at registration and handed to your camper today: NT$', '
 
 ${H(5, 'Going home on Saturday', '週六返家')}
 ${PL(busHome)}
-${P('Expected arrival: about ________. Please list every adult who may meet your camper there, yourself included. Our staff on the bus carry this list, check photo ID, and hand your camper, with any phone, NHI card and leftover medicine, only to a person on it. To change the list, the guardian who signs below messages the camp office before the bus leaves camp. If nobody on the list is at the stop, your camper waits with our staff and we phone you. [To decide: where, and for how long.] Staff phone on the bus on Saturday: ________________.', '預計約 ________ 抵達。請列出所有可至下車地點接孩子的成年人，包含您本人。隨車工作人員將攜帶本名單並核對附照片之身分證件；孩子及其手機、健保卡與剩餘藥品，僅交給名單上的人。如需更改名單，請由下方簽名的法定代理人於遊覽車離開營地前以訊息通知營隊辦公室。若下車地點沒有名單上的人，孩子會由工作人員陪同等候，我們並會以電話與您聯繫。〔待決定：等候地點與時間〕週六隨車工作人員手機：________________。', true)}
+${P(`Please be at ${T.meetingPoint.en}, by ${T.returnTime} on Saturday, and list every adult who may meet your camper there, yourself included. Our staff on the bus carry this list, check photo ID, and hand your camper, with any phone, NHI card and leftover medicine, only to a person on it. To change the list, the guardian who signs below messages the camp office before the bus leaves camp. If nobody on the list is at the meeting point, your camper waits with our staff and we phone you. [To decide: where, and for how long.] Staff phone on the bus on Saturday: ________________.`, `請於週六 ${T.returnTime} 前抵達${T.meetingPoint.zh}，並列出所有可至該處接孩子的成年人，包含您本人。隨車工作人員將攜帶本名單並核對附照片之身分證件；孩子及其手機、健保卡與剩餘藥品，僅交給名單上的人。如需更改名單，請由下方簽名的法定代理人於遊覽車離開營地前以訊息通知營隊辦公室。若集合地點沒有名單上的人，孩子會由工作人員陪同等候，我們並會以電話與您聯繫。〔待決定：等候地點與時間〕週六隨車工作人員手機：________________。`, true)}
 ${TABLE([['Name', '姓名'], ['Relationship', '與營員關係'], ['Mobile', '手機'], ['ID checked on Saturday (staff)', '週六已核對證件（工作人員）']], 4)}
 <p class="q">${NEW} ${B('Is there anyone who must not collect or contact your camper (for example under a custody or protection order)?', '是否有不得接走或接觸孩子的人（例如依監護或保護令之裁定）？')}</p>
 ${CHECKS(C('No', '無'), C('Yes (name and details): ________________________________', '有（姓名與說明）：________________________________'))}
@@ -419,7 +420,9 @@ const notes = () => `
 <li><b>Keeping in touch.</b> Whether campers may phone home and how the camp updates families: Notice §${N.visits}. Food from home: Notice §${N.things}.</li>
 <li><b>Photos.</b> Whether a family can keep its child out of the shared album: Notice §${N.photos}.</li>
 <li><b>Personal data.</b> The notice under Article 8 of the Personal Data Protection Act, how long records are kept, and whether any data is held outside Taiwan: Notice §${N.data}. Also whether a form with health details may be returned by LINE.</li>
-<li><b>Saturday.</b> Where and when the return bus arrives (the website names the bus zone near National Taichung Theater; the time is not set), who may collect a camper, the ID check, what happens if nobody comes, and whether collecting at the camp is offered: Check-in form §5.</li>
+<li><b>Check-in at the meeting point.</b> Campers meet at ${esc(T.meetingPoint.en)} at ${T.meetTime} and the bus leaves at ${T.departTime}, so the health check, the temperature and the hand-over of medicine and devices happen there in half an hour. Whether the nurse is at the meeting point, or receives medicine when the bus reaches camp, is for the camp to decide: Check-in form, opening paragraph and §2.</li>
+<li><b>Saturday.</b> The bus returns to ${esc(T.meetingPoint.en)} at ${T.returnTime}. Still to decide: who may collect a camper, the ID check, what happens if nobody comes, and whether collecting at the camp is offered: Check-in form §5.</li>
+<li><b>The bus fare.</b> The website now lists the charter bus both ways as included in the fee. Please confirm.</li>
 <li><b>Campers from overseas.</b> The forms assume a guardian or backup contact in Taiwan and an NHI card or other medical insurance. Whether overseas campers are accepted, and on what terms, is not yet decided.</li>
 </ul>
 </section>`

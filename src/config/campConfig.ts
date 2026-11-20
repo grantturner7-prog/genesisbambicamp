@@ -5,7 +5,7 @@ export interface SessionOffer {
   dates: L
   /** ISO date of the first camp day, used by the refund calculator. */
   startDate: string
-  /** `null` while the partners still owe the fee: the site then shows "announced soon". */
+  /** `null` while the partners still owe the fee: the site then shows "Coming soon". */
   fee: number | null
   /** Set for a pilot camp: its own, smaller limit on campers. */
   pilot?: { maxCampers: number }
@@ -37,6 +37,19 @@ export const campConfig = {
     gateCurfew: '23:00',
   },
 
+
+  /**
+   * Getting to camp. Campers meet at the meeting point on the first morning and ride the
+   * charter bus to Sanwan; on the last day the bus brings them back to the same place.
+   * Times are local, on the first and last day of the camp.
+   */
+  transport: {
+    meetingPoint: { en: 'The Lin Hotel, Taichung', zh: '台中林酒店' },
+    meetingAddress: { en: 'No. 99, Chaofu Rd., Xitun District, Taichung', zh: '臺中市西屯區朝富路 99 號' },
+    meetTime: '08:00',
+    departTime: '08:30',
+    returnTime: '10:30',
+  },
 
   /** Venue partner — verified in Docs 2–4. */
   venue: {

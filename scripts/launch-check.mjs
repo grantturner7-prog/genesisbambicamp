@@ -8,9 +8,11 @@ const need = (ok, owner, what) => { if (!ok) todo.push(`[${owner}] ${what}`) }
 need(c.operator.legalName && c.operator.taxId && c.operator.phone && c.operator.address, 'Camp Operations Lead', 'operator legal name, Tax ID (統編), phone, address')
 need(c.operator.lineId && c.operator.lineUrl, 'Camp Operations Lead', 'Official LINE ID and link')
 need(c.travelAgency.legalName && c.travelAgency.category && c.travelAgency.tourismRegNo && c.travelAgency.tqaaNo && c.travelAgency.phone, 'Travel Agency Partner', 'legal name, licence tier (甲種/乙種), 交觀 number, 品保 number, phone')
+const notes = []
+need(Object.values(c.sessions).some(Boolean), 'Joint Partners', 'at least one camp with exact dates, start date and TWD fee')
 for (const season of ['winter', 'summer']) {
   const offer = c.sessions[season]
-  if (!offer) need(false, 'Joint Partners', `${season} camp: exact dates, start date and TWD fee`)
+  if (!offer) notes.push(`${season} camp: no dates yet, so the site shows "Coming soon" for it and takes no registrations`)
   else need(offer.fee != null, 'Joint Partners', `${season} camp (${offer.dates.en}): TWD fee`)
 }
 need(c.snackShop.couponTerms, 'Joint Partners', 'snack coupons: how packs are paid for, and what happens to unused coupons')
@@ -20,6 +22,7 @@ need(c.cohort.minGroupSize, 'Joint Partners', 'minimum group size')
 need(c.venuePhotoPermissionOnFile, 'Bambi Glamping Partner', 'written permission to publish Bambi photos (public/media/bambi) and the venue film')
 need(c.registration.endpoint, 'Camp Operations Lead', 'registration endpoint (the form sends nothing until this is set)')
 need(c.registration.contractPdfUrl, 'Camp Operations Lead', 'final bilingual contract PDF with all blanks filled')
+if (notes.length) console.log('\nBy design, not blocking:\n' + notes.map((t) => '  · ' + t).join('\n'))
 if (todo.length) {
   console.log(`\nNot ready to launch — ${todo.length} item(s) outstanding:\n` + todo.map((t) => '  ☐ ' + t).join('\n') + '\n\nFill these in src/config/campConfig.ts.\n')
   process.exit(1)
