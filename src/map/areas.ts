@@ -64,7 +64,7 @@ export const AREAS: Area[] = [
         icon: 'Users',
         title: { en: 'Walked to the vans', zh: '隊輔陪同入住' },
         body: {
-          en: 'Counselors walk every camper to their camper van and age-based cabin team.',
+          en: 'Counselors walk every camper to their camper van and age-based team.',
           zh: '隊輔會陪同每位營員前往露營車，並依年齡小隊分組。',
         },
       },
@@ -109,7 +109,7 @@ export const AREAS: Area[] = [
         icon: 'Users',
         title: { en: '3 campers per van', zh: '每車三名營員' },
         body: {
-          en: 'Three same-gender campers share each van, grouped in age-based cabin teams.',
+          en: 'Three same-gender campers share each van, grouped in age-based teams.',
           zh: '每車三名同性別營員，並依年齡小隊分組。',
         },
       },
@@ -203,7 +203,7 @@ export const AREAS: Area[] = [
           icon: 'Clock',
           title: { en: 'Lights out after the evening check', zh: '晚間檢查後熄燈' },
           body: {
-            en: 'An evening cabin check wraps up the day before lights out.',
+            en: 'An evening van check wraps up the day before lights out.',
             zh: '隊輔進行晚間內務檢查後熄燈就寢。',
           },
         },
@@ -557,7 +557,7 @@ export const AREAS: Area[] = [
       { icon: 'Film', title: { en: 'Big screen on the lawn', zh: '草地上的大螢幕' }, body: { en: 'An outdoor screen with camp chairs set out in rows on the grass.', zh: '戶外大螢幕，草地上整齊排好露營椅。' } },
       { icon: 'BadgeCheck', title: { en: 'Licensed films only', zh: '只播公播版影片' }, body: { en: 'Films are public-performance licensed (公播版) and age-appropriate for the campers.', zh: '影片皆為公播版授權，內容適合營員年齡。' } },
       { icon: 'Flame', title: { en: 'Campfire alongside', zh: '營火相伴' }, body: { en: 'The campfire circle is only a few steps away.', zh: '營火區就在旁邊，幾步路就到。' } },
-      { icon: 'Users', title: { en: 'Seated with your team', zh: '與小隊同坐' }, body: { en: 'Cabin teams sit together with their counselors.', zh: '各小隊與隊輔坐在一起。' } },
+      { icon: 'Users', title: { en: 'Seated with your team', zh: '與小隊同坐' }, body: { en: 'Teams sit together with their counselors.', zh: '各小隊與隊輔坐在一起。' } },
     ],
     facts: [
       { label: { en: 'Show time', zh: '放映時間' }, value: { en: 'After dark', zh: '天黑之後' } },
@@ -597,7 +597,7 @@ export const AREAS: Area[] = [
       { icon: 'Flame', title: { en: 'Campfire S’mores', zh: '營火棉花糖夾心餅' }, body: { en: 'Toast, sandwich, repeat — with long sticks and a counselor close by.', zh: '用長長的烤叉烤棉花糖，隊輔就在身邊。' } },
       { icon: 'Sparkles', title: { en: 'Skits & Trivia Night', zh: '短劇與問答之夜' }, body: { en: 'Teams write, rehearse and perform their own skits, then go head to head in camp trivia.', zh: '小隊自己編劇、排練、演出，接著進行營隊知識問答對決。' } },
       { icon: 'Moon', title: { en: 'Night ecology walk', zh: '夜間生態散步' }, body: { en: 'A short, counselor-led walk to listen for night sounds.', zh: '由隊輔帶領的夜間散步，一起聆聽夜晚的聲音。' } },
-      { icon: 'Clock', title: { en: 'Evening check, then lights out', zh: '晚間檢查後熄燈' }, body: { en: 'An evening cabin check wraps up the day.', zh: '晚間內務檢查後熄燈就寢。' } },
+      { icon: 'Clock', title: { en: 'Evening check, then lights out', zh: '晚間檢查後熄燈' }, body: { en: 'An evening van check wraps up the day.', zh: '晚間內務檢查後熄燈就寢。' } },
     ],
     facts: [
       { label: { en: 'Evening', zh: '時段' }, value: { en: 'Campfire S’mores, Skits & Trivia', zh: '營火棉花糖、短劇與問答' } },

@@ -62,9 +62,9 @@ export const SEASON_INTRO: Record<Season, { title: L; body: L }> = {
 
 export const STAY = {
   cards: [
-    { photo: 'van-bunk' as Photo['id'], title: l('Three campers per van', '三人一車'), body: l('One double bed and one bunk bed with 100% latex mattresses. Three same-gender campers share a van, grouped in age-based cabin teams.', '一張雙人床與一組上下舖，100% 乳膠床墊。每車三名同性別營員，並依年齡小隊分組。') },
+    { photo: 'van-bunk' as Photo['id'], title: l('Three campers per van', '三人一車'), body: l('One double bed and one bunk bed with 100% latex mattresses. Three same-gender campers share a van, grouped in age-based teams.', '一張雙人床與一組上下舖，100% 乳膠床墊。每車三名同性別營員，並依年齡小隊分組。') },
     { photo: 'van-bath' as Photo['id'], title: l('Private wet/dry bathroom', '獨立乾濕分離衛浴'), body: l('Every van has its own bathroom with a separate shower, plus Hitachi heating and air-conditioning.', '每輛露營車皆有獨立衛浴、乾濕分離，並配備日立冷暖空調。') },
-    { photo: 'zone-d-1' as Photo['id'], title: l('Twice-daily cabin inspections', '每日早晚兩次檢查'), body: l('Counselors check tidiness, heating/cooling and bathroom safety every morning and evening. Shoes off indoors, no food in the vans.', '隊輔每日早晚檢查內務、空調與衛浴安全。進車脫鞋、車內不飲食。') },
+    { photo: 'zone-d-1' as Photo['id'], title: l('Twice-daily van inspections', '每日早晚兩次檢查'), body: l('Counselors check tidiness, heating/cooling and bathroom safety every morning and evening. Shoes off indoors, no food in the vans.', '隊輔每日早晚檢查內務、空調與衛浴安全。進車脫鞋、車內不飲食。') },
   ],
   mealsTitle: l('Three meals a day', '每日三餐'),
   meals: [
@@ -101,7 +101,7 @@ export const RAIN_PLAN = {
 export const SAFETY = {
   staff: [
     { icon: 'ShieldCheck', title: l('Background-checked team', '背景查核的團隊'), body: l('Every counselor, coach, nurse and support worker provides a police criminal-record certificate (良民證) and is screened before camp.', '每位隊輔、活動教練、護理師與支援人員皆提供良民證，並於營隊前完成查核。') },
-    { icon: 'Users', title: l(`About ${c.counselorRatio} counselors to campers`, `隊輔與營員約 ${c.counselorRatio}`), body: l('Small cabin teams mean every camper is known by name.', '小隊編制，讓每位營員都被叫得出名字。') },
+    { icon: 'Users', title: l(`About ${c.counselorRatio} counselors to campers`, `隊輔與營員約 ${c.counselorRatio}`), body: l('Small teams mean every camper is known by name.', '小隊編制，讓每位營員都被叫得出名字。') },
     { icon: 'Stethoscope', title: l('24/7 on-site Registered Nurse', '24 小時駐點專任護理師'), body: l('A camp nurse (營隊專任護理師) manages medications and first aid day and night, backed by CPR + AED trained counselors.', '營隊專任護理師日夜負責給藥與急救，並有具 CPR + AED 訓練的隊輔支援。') },
     { icon: 'Lock', title: l(`${c.gateCurfew} gate curfew`, `${c.gateCurfew} 大門管制`), body: l('The gate is secured every night and outside visitors are not admitted during camp.', '園區大門每晚管制，營期間謝絕外部訪客。') },
   ],
@@ -210,7 +210,7 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('How are roommates arranged?', '室友怎麼安排？'),
-    a: l('Three same-gender campers share each camper van, grouped into age-based cabin teams. If two families both ask for their children to room together, we do our best to arrange it within the same gender and age group.', '每輛露營車安排三名同性別營員，並依年齡小隊分組。若兩個家庭都提出希望同住，我們會在同性別、相近年齡的前提下盡力安排。'),
+    a: l('Three same-gender campers share each camper van, grouped into age-based teams. If two families both ask for their children to room together, we do our best to arrange it within the same gender and age group.', '每輛露營車安排三名同性別營員，並依年齡小隊分組。若兩個家庭都提出希望同住，我們會在同性別、相近年齡的前提下盡力安排。'),
   },
   {
     q: l('How do you handle allergies and dietary needs?', '過敏與特殊飲食怎麼處理？'),
@@ -239,9 +239,9 @@ export const FAQ: { q: L; a: L }[] = [
 ]
 
 export const CONSENTS: { key: string; required: boolean; title: L; body: L }[] = [
-  { key: 'contract', required: true, title: l('Service contract, refunds and court jurisdiction', '服務契約、退費標準與管轄法院'), body: l('I have reviewed and agree to Articles 1–5, including session fees, statutory refund tiers, insurance disclosures, and jurisdiction of the District Court of the Camper’s place of residence.', '本人與學員已完整審閱並同意契約第一條至第五條之活動內容、收退費比例、保險說明，及以學員住居所地方法院為管轄法院之約定。') },
-  { key: 'pdpa', required: true, title: l('PDPA Article 6 health and dietary data', '個資法第 6 條健康與飲食特種個資'), body: l('I give explicit written consent under PDPA Article 6 for the collection and use of the Camper’s health, allergy and medication data for camp nursing and dietary safety.', '本人書面同意主辦單位、承辦旅行社與駐點護理師，依告知範圍蒐集、處理及利用學員之過敏、病史與用藥資料。') },
-  { key: 'risk', required: true, title: l('Outdoor risk disclosure and emergency medical authorization', '戶外活動風險知情與緊急醫療授權'), body: l('I acknowledge the Informed Outdoor Risk Disclosure and authorize emergency hospital transport and physician-directed emergency care if I cannot be reached immediately.', '本人與學員已詳閱戶外風險說明，並授權危急且無法聯繫時由營隊護送就醫及接受醫師必要緊急醫療處置。') },
-  { key: 'van', required: true, title: l('Camper van inspections and intentional damage', '露營車檢查公約與故意毀損賠償'), body: l('Camper and Guardian agree to twice-daily cabin inspections, the indoor camper van rules, and reimbursement for intentional property damage.', '本人與學員同意遵守每日兩次露營車檢查、車內禁食脫鞋規範，並對故意破壞公物負維修賠償責任。') },
-  { key: 'media', required: false, title: l('Media and portrait release (optional)', '肖像權與活動影像授權（選填）'), body: l('I agree that camp photos and videos including the Camper may be used in future camp promotion. Leaving this unticked never affects enrollment: photos then stay in the parent album only.', '本人同意營期間含學員肖像之照片與影片可用於未來營隊宣傳。不勾選完全不影響報名資格，照片將僅限家長相簿閱覽。') },
+  { key: 'contract', required: true, title: l('Service contract, refunds and court jurisdiction', '服務契約、退費標準與管轄法院'), body: l('I have reviewed and agree to Articles 1–5, including session fees, statutory refund tiers, insurance disclosures, and jurisdiction of the District Court of the Camper’s place of residence.', '本人與營員已完整審閱並同意契約第一條至第五條之活動內容、收退費比例、保險說明，及以營員住居所地方法院為管轄法院之約定。') },
+  { key: 'pdpa', required: true, title: l('PDPA Article 6 health and dietary data', '個資法第 6 條健康與飲食特種個資'), body: l('I give explicit written consent under PDPA Article 6 for the collection and use of the Camper’s health, allergy and medication data for camp nursing and dietary safety.', '本人書面同意主辦單位、承辦旅行社與駐點護理師，依告知範圍蒐集、處理及利用營員之過敏、病史與用藥資料。') },
+  { key: 'risk', required: true, title: l('Outdoor risk disclosure and emergency medical authorization', '戶外活動風險知情與緊急醫療授權'), body: l('I acknowledge the Informed Outdoor Risk Disclosure and authorize emergency hospital transport and physician-directed emergency care if I cannot be reached immediately.', '本人與營員已詳閱戶外風險說明，並授權危急且無法聯繫時由營隊護送就醫及接受醫師必要緊急醫療處置。') },
+  { key: 'van', required: true, title: l('Camper van inspections and intentional damage', '露營車檢查公約與故意毀損賠償'), body: l('Camper and Guardian agree to twice-daily camper van inspections, the indoor camper van rules, and reimbursement for intentional property damage.', '本人與營員同意遵守每日兩次露營車檢查、車內禁食脫鞋規範，並對故意破壞公物負維修賠償責任。') },
+  { key: 'media', required: false, title: l('Media and portrait release (optional)', '肖像權與活動影像授權（選填）'), body: l('I agree that camp photos and videos including the Camper may be used in future camp promotion. Leaving this unticked never affects enrollment: photos then stay in the parent album only.', '本人同意營期間含營員肖像之照片與影片可用於未來營隊宣傳。不勾選完全不影響報名資格，照片將僅限家長相簿閱覽。') },
 ]

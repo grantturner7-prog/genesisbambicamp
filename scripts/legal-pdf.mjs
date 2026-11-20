@@ -120,7 +120,6 @@ const SECTIONS = [
       !c.registration.contractPdfUrl && 'Consent 1 refers to Articles 1–5 of the service contract, but the contract PDF is not linked yet. The form says it will be given for review before any payment.',
       'Consent 1 names the District Court of the camper’s place of residence as the court of jurisdiction.',
       'The health-data notice promises who sees the data and destruction within 30 days after camp. Please check it against the Personal Data Protection Act and the organizers’ actual practice.',
-      'The Chinese consent text uses 學員 where the rest of the site uses 營員.',
     ],
     blocks: [
       { title: l('Before the consents', '同意事項前的說明'), where: 'Form › step 3', rows: [row('Instruction', S('register.consentIntro')), row('Contract link text', S('register.contractPdf')), row('Shown while no contract is linked', S('register.contractPending'))] },

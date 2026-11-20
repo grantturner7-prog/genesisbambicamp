@@ -17,6 +17,8 @@ npm run dev          # http://localhost:5173 and /facilities/
 npm run build        # compliance audit + type-check + production build → dist/
 npm run launch-check # what partners still owe before going public
 npm run legal-pdf    # every legal notice as bilingual PDFs for a lawyer → docs/legal-review/
+npm run forms-pdf    # camp notice and agreement, health form, check-in form (drafts) → docs/forms/
+npm run all-pdf      # both of the above, joined into docs/genesis-bambi-camp-documents.pdf
 npm run e2e          # browser tests against a running dev server (port 5199)
 ```
 
@@ -91,6 +93,14 @@ registration consents and data notice, safety and insurance statements, facility
 footer disclosures, FAQ commitments) as PDFs, English beside 繁體中文, each line numbered.
 They are generated from the site's own copy: run `npm run legal-pdf` again after any
 change to the wording, so the lawyer always reviews what is actually published.
+
+`docs/forms/` holds the three paper forms as drafts: the Camp Notice and Agreement, the
+Camper Health Form and the Check-in Day Form, with a note for the reviewer. They cover the
+same ground as the documents Camp Taiwan publishes for its camps, in our own words and
+without a release of liability. Text the website already states is pulled from the site's
+copy; wording that is new is marked ◆ and is not camp policy until the camp, the nurse and
+the lawyer have agreed it. `npm run all-pdf` joins the forms and the legal notices into one
+file with a contents page (it needs poppler's `pdfunite`).
 
 Run `npm run launch-check`. In particular:
 
