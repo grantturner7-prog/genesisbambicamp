@@ -1,4 +1,5 @@
 // Lists what partners still owe before the site can go public (Doc 3, Section 1).
+import { existsSync } from 'node:fs'
 import { createServer } from 'vite'
 const vite = await createServer({ configFile: false, root: process.cwd(), server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent', optimizeDeps: { noDiscovery: true, include: [] } })
 const { campConfig: c } = await vite.ssrLoadModule('/src/config/campConfig.ts')
@@ -22,7 +23,8 @@ need(c.snackShop.menuConfirmed, 'Bambi Glamping Partner', 'the Airstream snack-s
 need(c.payment.deposit && c.payment.balanceDueDays, 'Joint Partners', 'deposit amount and balance due date')
 need(c.cohort.minGroupSize, 'Joint Partners', 'minimum group size')
 need(c.venuePhotoPermissionOnFile, 'Bambi Glamping Partner', 'written permission to publish Bambi photos (public/media/bambi) and the venue film')
-need(c.documents.final, 'Camp Operations Lead', 'forms: lawyer-approved final versions of the Camp Notice and Agreement, Camper Health Form and Check-in Day Form (the site labels them drafts until documents.final is true)')
+need(c.documents.final, 'Camp Operations Lead', 'forms: final versions of the Camp Notice and Agreement, Camper Health Form and Check-in Day Form. Before documents.final is set: the camp’s open decisions filled in, the nurse’s confirmations, the lawyer’s approval, and the ◆ marks and bracketed notes removed in scripts/forms-pdf.mjs (the site lists the forms but does not post them until then)')
+if (c.documents.final) need(['camp-notice-and-agreement', 'camper-health-form', 'check-in-day-form'].every((f) => existsSync(`public/documents/${f}.pdf`)), 'Camp Operations Lead', 'forms: run `npm run forms-pdf` so the final PDFs are in public/documents/')
 need(c.registration.endpoint, 'Camp Operations Lead', 'registration endpoint (the form sends nothing until this is set)')
 need(c.registration.contractPdfUrl, 'Camp Operations Lead', 'final bilingual contract PDF with all blanks filled')
 if (notes.length) console.log('\nBy design, not blocking:\n' + notes.map((t) => '  · ' + t).join('\n'))

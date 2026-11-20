@@ -63,6 +63,12 @@ html[lang='zh-TW'] .tracking-tighter {
   border-radius: 6px;
 }
 
+/* a section a tab has just landed on takes the keyboard position, without a ring around all of it */
+[data-goto-target]:focus,
+[data-goto-target]:focus-visible {
+  outline: none;
+}
+
 .font-display {
   font-family: var(--font-display);
   font-optical-sizing: auto;

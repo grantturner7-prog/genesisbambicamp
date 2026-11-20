@@ -102,11 +102,19 @@ export const STAY = {
 export const DOCS = {
   kicker: l('Forms & documents', '表單與文件'),
   title: l('Everything to read, fill in and sign', '需要閱讀、填寫與簽名的文件'),
-  intro: l('The camp’s papers in one place, in the order you will need them. Each PDF is in English and 繁體中文 and ready to print.', '營隊相關文件都在這裡，依使用順序排列。每份 PDF 皆為中英對照，可直接列印。'),
-  /** Shown while `campConfig.documents.final` is false. */
-  draft: l('These forms are drafts. Our lawyer is still reviewing them, so please do not sign them yet. The final versions will replace them here.', '以下表單目前為草稿，仍由律師審閱中，請暫勿簽署；定稿後將於此處更新。'),
-  draftBadge: l('Draft', '草稿'),
+  intro: l('The camp’s papers in one place, in the order you will need them.', '營隊相關文件都在這裡，依使用順序排列。'),
+  /** Added to the introduction once the forms are final and posted. */
+  introFinal: l('Each PDF is in English and 繁體中文 and ready to print.', '每份 PDF 皆為中英對照，可直接列印。'),
+  /** Shown while `campConfig.documents.final` is false: the three forms are listed but not posted. */
+  pending: l('The Camp Notice and Agreement, the Camper Health Form and the Check-in Day Form are still being finalized and are not posted yet. They will appear here when they are final.', '《營隊須知與同意書》、《營員健康調查表》與《報到日確認單》仍在定稿中，暫未提供下載；定稿後將於此處公布。'),
+  whenFinal: l('Posted here when final.', '定稿後於此提供。'),
   openPdf: l('Open the PDF', '開啟 PDF'),
+  /** Card 1 while `campConfig.registration.endpoint` is null: the form can be tried, and sends nothing. */
+  registerClosed: {
+    when: l('Not open yet', '尚未開放'),
+    body: l('Online registration is not open yet. You can already try the three steps (your camper’s details, health and diet, and the consents) and save a summary; nothing is sent.', '線上報名尚未開放。您可以先試填三個步驟（營員資料、健康與飲食、同意事項）並儲存摘要；填寫的內容不會送出。'),
+    button: l('Preview the form', '預覽報名表'),
+  },
   items: [
     { id: 'register', when: l('To start', '第一步'), title: l('Online registration', '線上報名'), body: l('Three short steps: your camper’s details, health and diet, and the consents.', '三個簡短步驟：營員資料、健康與飲食，以及同意事項。') },
     { id: 'contract', when: l('Before any payment', '收費前'), title: l('Service contract', '服務契約'), body: l('The bilingual service contract is given to you for review before any payment.', '中英雙語服務契約將於收費前交付審閱。') },
@@ -121,6 +129,7 @@ export const DOCS = {
     { href: '#safety', label: l('Insurance and safety', '保險與安全') },
     { href: '#packing', label: l('Packing checklist', '行李清單') },
     { href: '#faq', label: l('Parent FAQ', '家長常見問題') },
+    { href: '#legal', label: l('Legal & licensing disclosures', '法定揭露與營業資訊') },
   ],
 }
 
@@ -263,7 +272,7 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('What happens in a medical emergency?', '發生緊急醫療狀況時怎麼處理？'),
-    a: l('The Registered Nurse is on site 24 hours a day and gives first aid immediately, and we contact you straight away. If the situation is urgent and neither guardian nor backup contact can be reached, staff take your camper to the nearest accredited hospital, such as Wei-Gong Memorial Hospital in Toufen, as authorized on the signed medical form.', '專任護理師 24 小時駐點，會立即進行急救，並第一時間聯繫家長。若情況危急且一時無法聯繫上家長或緊急聯絡人，將依您簽署的醫療授權書，護送至鄰近合格醫療院所（如頭份為恭紀念醫院）。'),
+    a: l('The Registered Nurse is on site 24 hours a day and gives first aid immediately, and we contact you straight away. If the situation is urgent and neither guardian nor backup contact can be reached, staff take your camper to the nearest accredited hospital, such as Wei-Gong Memorial Hospital in Toufen, as you authorize in consent 3 of the registration form.', '專任護理師 24 小時駐點，會立即進行急救，並第一時間聯繫家長。若情況危急且一時無法聯繫上家長或緊急聯絡人，將依您於報名表同意事項第 3 項的緊急醫療授權，護送至鄰近合格醫療院所（如頭份為恭紀念醫院）。'),
   },
   {
     q: l('What if it rains?', '下雨怎麼辦？'),

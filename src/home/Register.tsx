@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Check, Download, X } from 'lucide-react'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
+import { ROOT } from '../lib/root'
 import type { Season } from '../lib/types'
 import { CONSENTS, COUPONS, PRICING, REFUND } from './content'
 
@@ -224,6 +225,12 @@ export function RegisterModal({ onClose }: { onClose: () => void }) {
 
         <div className="thin-scroll min-h-0 flex-1 overflow-y-auto px-6 py-5">
           {state === 'sent' && <p className="rounded-2xl bg-emerald-50 p-5 text-[15px] font-semibold text-emerald-900">{R.sent}</p>}
+          {/* said before the first field, not only after "Submit": without a receiving address nothing is sent */}
+          {!endpoint && (state === 'form' || state === 'sending') && (
+            <p data-register-preview className="mb-5 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium leading-relaxed text-amber-950">
+              {R.preview}
+            </p>
+          )}
           {state === 'local' && (
             <div>
               <p className="rounded-2xl bg-amber-50 p-5 text-[15px] leading-relaxed text-amber-950">{R.notOpen}</p>
@@ -350,6 +357,15 @@ export function RegisterModal({ onClose }: { onClose: () => void }) {
                   <span className="font-semibold text-ink/60">{R.contractPending}</span>
                 )}
               </p>
+              {/* consent 3 names a disclosure: once the Camp Notice is final and posted, link it here */}
+              {campConfig.documents.final && (
+                <p className="mt-2 text-sm leading-relaxed text-ink/75" data-risk-disclosure>
+                  {R.riskDisclosure}{' '}
+                  <a href={`${ROOT}documents/camp-notice-and-agreement.pdf`} target="_blank" rel="noreferrer" className="font-bold text-cedar-600 underline">
+                    {R.noticePdf}
+                  </a>
+                </p>
+              )}
               <ul className="mt-4 space-y-3">
                 {CONSENTS.map((c, i) => (
                   <li key={c.key}>

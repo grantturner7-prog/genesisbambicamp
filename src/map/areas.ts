@@ -952,8 +952,8 @@ export const AREAS: Area[] = [
           icon: 'Siren',
           title: { en: '4 · Urgent? Straight to hospital', zh: '4 · 情況危急，立即送醫' },
           body: {
-            en: 'If it is urgent and no guardian can be reached, staff take your camper to the nearest accredited hospital, as authorized on the signed form.',
-            zh: '若情況危急且一時無法聯繫上家長，依您簽署的授權書，由營隊人員護送至鄰近合格醫療院所。',
+            en: 'If it is urgent and no guardian can be reached, staff take your camper to the nearest accredited hospital, as you authorize when you register.',
+            zh: '若情況危急且一時無法聯繫上家長，依您報名時的緊急醫療授權，由營隊人員護送至鄰近合格醫療院所。',
           },
         },
       ],

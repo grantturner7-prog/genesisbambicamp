@@ -460,21 +460,25 @@ const DOC_ICON = { register: PenLine, contract: ScrollText, notice: FileText, he
 
 /** Everything a family reads, fills in or signs, in the order it is needed. */
 export function Documents({ onRegister }: { onRegister: () => void }) {
-  const { s, t } = useCamp()
+  const { s, t, lang } = useCamp()
+  // the three forms are posted only once they are final; until then the cards say so
   const final = campConfig.documents.final
   const contract = campConfig.registration.contractPdfUrl
+  // without a receiving address the form sends nothing, and the first card says so
+  const closed = !campConfig.registration.endpoint
   const button = 'mt-5 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition'
   return (
     <Section id="documents">
-      <Heading kicker={t(DOCS.kicker)} title={t(DOCS.title)} intro={t(DOCS.intro)} />
+      <Heading kicker={t(DOCS.kicker)} title={t(DOCS.title)} intro={final ? `${t(DOCS.intro)}${lang === 'en' ? ' ' : ''}${t(DOCS.introFinal)}` : t(DOCS.intro)} />
       {!final && (
-        <p data-docs-draft className="mt-6 max-w-3xl rounded-2xl border border-amber-300 bg-amber-50 px-5 py-4 text-[15px] font-medium leading-relaxed text-amber-950">
-          {t(DOCS.draft)}
+        <p data-docs-pending className="mt-6 max-w-3xl rounded-2xl border border-amber-300 bg-amber-50 px-5 py-4 text-[15px] font-medium leading-relaxed text-amber-950">
+          {t(DOCS.pending)}
         </p>
       )}
       <ol className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {DOCS.items.map((d, i) => {
           const DocIcon = DOC_ICON[d.id]
+          const notOpen = d.id === 'register' && closed
           return (
             <li key={d.id} data-doc={d.id} className="flex flex-col rounded-3xl border border-pine/10 bg-white p-6 shadow-sm">
               <div className="flex items-center justify-between gap-3">
@@ -482,14 +486,14 @@ export function Documents({ onRegister }: { onRegister: () => void }) {
                   <DocIcon size={20} aria-hidden />
                 </span>
                 <span className="rounded-full bg-pine/10 px-2.5 py-1 text-right text-[11px] font-bold uppercase tracking-wider text-pine">
-                  {i + 1} · {t(d.when)}
+                  {i + 1} · {t(notOpen ? DOCS.registerClosed.when : d.when)}
                 </span>
               </div>
               <h3 className="font-display mt-4 text-xl font-semibold text-pine">{t(d.title)}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/75">{t(d.body)}</p>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/75">{t(notOpen ? DOCS.registerClosed.body : d.body)}</p>
               {d.id === 'register' && (
-                <button type="button" data-doc-register onClick={() => onRegister()} className={`${button} bg-pine text-white hover:bg-pine-800`}>
-                  {s.nav.register}
+                <button type="button" data-doc-register onClick={() => onRegister()} className={`${button} ${notOpen ? 'border border-pine/25 text-pine hover:bg-pine/5' : 'bg-pine text-white hover:bg-pine-800'}`}>
+                  {notOpen ? t(DOCS.registerClosed.button) : s.nav.register}
                 </button>
               )}
               {d.id === 'contract' && contract && (
@@ -498,12 +502,16 @@ export function Documents({ onRegister }: { onRegister: () => void }) {
                   <ExternalLink size={15} aria-hidden />
                 </a>
               )}
-              {d.file && (
-                <a href={`${ROOT}${d.file}`} target="_blank" rel="noopener" data-doc-link className={`${button} border border-pine/25 text-pine hover:bg-pine/5`}>
+              {d.file && final && (
+                <a href={`${ROOT}${d.file}`} target="_blank" rel="noopener" data-doc-link aria-label={`${t(DOCS.openPdf)}${lang === 'en' ? ': ' : '：'}${t(d.title)}`} className={`${button} border border-pine/25 text-pine hover:bg-pine/5`}>
                   {t(DOCS.openPdf)}
                   <ExternalLink size={15} aria-hidden />
-                  {!final && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-900">{t(DOCS.draftBadge)}</span>}
                 </a>
+              )}
+              {d.file && !final && (
+                <p data-doc-pending className="mt-5 text-sm font-semibold text-ink/55">
+                  {t(DOCS.whenFinal)}
+                </p>
               )}
             </li>
           )

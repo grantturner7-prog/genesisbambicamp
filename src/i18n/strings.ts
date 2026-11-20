@@ -131,7 +131,7 @@ const en = {
     openRules: 'Pool safety rules',
   },
   home: {
-    seasonsKicker: 'Winter & Summer',
+    seasonsKicker: 'Activities · Winter & Summer',
     seeOnMap: 'See it on the camp map',
     openMap: 'Open the 3D camp map',
     stayKicker: 'Stay & eat',
@@ -190,6 +190,8 @@ const en = {
     consentIntro: 'Please confirm each item separately. Item 5 is optional and never affects enrollment.',
     contractPdf: 'Read the bilingual service contract (PDF)',
     contractPending: 'The bilingual service contract is given to you for review before any payment.',
+    riskDisclosure: 'The outdoor risk disclosure in item 3 is the section “Outdoor risk disclosure” of the Camp Notice and Agreement.',
+    noticePdf: 'Read the Camp Notice and Agreement (PDF)',
     required: 'Required',
     optional: 'Optional',
     back: 'Back',
@@ -200,6 +202,7 @@ const en = {
     sendFailed: 'We could not send your registration. Please try again in a moment.',
     sent: 'Thank you. We have received your registration and will contact you with the contract and payment details.',
     notOpen: 'Online registration is not open yet. Nothing you entered has left this device. You can save the summary below and send it to us when registration opens.',
+    preview: 'Online registration is not open yet. You can go through the form to see what we ask; nothing you enter is sent. At the end you can save a summary.',
     download: 'Save my summary',
   },
   footer: {
@@ -352,7 +355,7 @@ const zhTW: Strings = {
     openRules: '戲水池安全守則',
   },
   home: {
-    seasonsKicker: '冬季與夏季',
+    seasonsKicker: '活動內容・冬季與夏季',
     seeOnMap: '在營地地圖上查看',
     openMap: '開啟 3D 營地地圖',
     stayKicker: '住宿與餐飲',
@@ -411,6 +414,8 @@ const zhTW: Strings = {
     consentIntro: '請逐項確認並勾選。第 5 項為自由選填，不勾選不影響報名資格。',
     contractPdf: '閱讀中英雙語服務契約（PDF）',
     contractPending: '中英雙語服務契約將於收費前交付審閱。',
+    riskDisclosure: '第 3 項所稱戶外風險說明，即《營隊須知與同意書》中「戶外風險說明」一節。',
+    noticePdf: '閱讀《營隊須知與同意書》（PDF）',
     required: '必選',
     optional: '選填',
     back: '上一步',
@@ -421,6 +426,7 @@ const zhTW: Strings = {
     sendFailed: '報名資料未能送出，請稍後再試。',
     sent: '感謝您的報名，我們已收到資料，將與您聯繫並提供契約與繳費資訊。',
     notOpen: '線上報名尚未開放。您填寫的資料並未離開這台裝置。您可以先儲存下方摘要，待開放報名時提供給我們。',
+    preview: '線上報名尚未開放。您可以先填寫看看，了解需要提供的資料；您填寫的內容不會送出，最後可儲存一份摘要。',
     download: '儲存報名摘要',
   },
   footer: {

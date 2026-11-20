@@ -415,7 +415,7 @@ const notes = () => `
 <h2>Marked ◆: new wording that is not yet camp policy</h2>
 <p>Anything marked ${NEW} is proposed here for the first time and does not appear on the website. Paragraphs without the mark repeat what the website already says. The form fields, questions and tick boxes are new as well. Square brackets “[To decide: …]” and blanks are points the camp has not yet settled. The ones that most need a decision:</p>
 <ul>
-<li><b>The forms are on the website.</b> The Forms &amp; documents section of the landing page opens these same three PDFs, labelled as drafts that are not to be signed. They stay labelled that way until <code>documents.final</code> is set in the site’s configuration, which should follow your approval.</li>
+<li><b>The forms are not on the website yet.</b> The Forms &amp; documents section of the landing page lists these three forms and says they are still being finalized; it does not offer them for download. They are posted there only when <code>documents.final</code> is set in the site’s configuration. Before that: the camp’s decisions filled in, the nurse’s confirmations, your approval, and every ◆ mark and bracketed note removed.</li>
 <li><b>Contact details.</b> The camp’s phone, LINE, email and 24-hour number are blank at the top of each form; the organizer’s and travel agency’s legal names are blank on the signature page and in the data notice.</li>
 <li><b>Payment.</b> Deposit, balance date, and how snack coupons are paid for and unused ones handled: Notice §${N.fee}.</li>
 <li><b>Refunds outside the table.</b> A camper who is ill before camp, is sent home with a fever at check-in, falls ill or is sent home during camp, or camp ending early: Notice §${N.refund}. Also how a cancellation is given and which day counts.</li>
@@ -496,6 +496,15 @@ const banned = /hold harmless|indemnif|non-?refundable|概不負責|概不退還
 const own = all.replace(/<section class="notes">[\s\S]*?<\/section>/, '').replace(/<[^>]+>/g, ' ') // the text only, without the markup
 if (banned.test(own)) throw new Error(`Banned wording in a form: “${own.match(banned)[0]}”`)
 
+// Final forms carry no working marks: the ◆ flags and the bracketed notes to the camp, nurse and lawyer must be gone.
+if (c.documents.final) {
+  for (const [name, html] of [['Camp Notice and Agreement', notice()], ['Camper Health Form', health()], ['Check-in Day Form', checkin()]]) {
+    const text = html.replace(/<[^>]+>/g, ' ')
+    const left = [html.includes('class="new"') && '◆ marks', /[[〔]/.test(text) && `bracketed notes (“${text.match(/[[〔][^\]〕]{0,60}/)[0]}…”)`].filter(Boolean)
+    if (left.length) throw new Error(`documents.final is true, but the ${name} still has ${left.join(' and ')}. Settle them in scripts/forms-pdf.mjs first.`)
+  }
+}
+
 mkdirSync(out, { recursive: true })
 const tmp = path.join(out, '.tmp.html')
 const browser = await chromium.launch()
@@ -510,7 +519,7 @@ async function pdf(name, html, title) {
     printBackground: true,
     displayHeaderFooter: true,
     headerTemplate: `<div style="font-size:7px;width:100%;padding:0 13mm;color:#b45f06;text-align:right;letter-spacing:.08em">${c.documents.final ? '' : 'DRAFT FOR LEGAL REVIEW'}</div>`,
-    footerTemplate: `<div style="font-size:7px;width:100%;padding:0 13mm;color:#777;display:flex;justify-content:space-between"><span>${esc(title)} · draft ${today}${commit ? ' · ' + commit : ''}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
+    footerTemplate: `<div style="font-size:7px;width:100%;padding:0 13mm;color:#777;display:flex;justify-content:space-between"><span>${esc(title)} · ${c.documents.final ? '' : 'draft '}${today}${commit ? ' · ' + commit : ''}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
   })
   console.log('wrote', path.relative(root, path.join(out, name + '.pdf')))
 }
@@ -518,12 +527,16 @@ await pdf('0-notes-for-the-reviewer', notes(), 'Genesis × Bambi camp forms: not
 await pdf('1-camp-notice-and-agreement', notice(), 'Camp Notice and Agreement')
 await pdf('2-camper-health-form', health(), 'Camper Health Form')
 await pdf('3-check-in-day-form', checkin(), 'Check-in Day Form')
-// the same three forms are what the website's Forms & documents section opens
+// The website's Forms & documents section opens these three forms, and only once they are final:
+// drafts carry notes to the camp, the nurse and the lawyer, and are not for families.
 const site = path.join(root, 'public/documents')
-mkdirSync(site, { recursive: true })
 for (const [from, to] of [['1-camp-notice-and-agreement', 'camp-notice-and-agreement'], ['2-camper-health-form', 'camper-health-form'], ['3-check-in-day-form', 'check-in-day-form']]) {
-  copyFileSync(path.join(out, from + '.pdf'), path.join(site, to + '.pdf'))
-  console.log('wrote', path.relative(root, path.join(site, to + '.pdf')))
+  const file = path.join(site, to + '.pdf')
+  if (c.documents.final) {
+    mkdirSync(site, { recursive: true })
+    copyFileSync(path.join(out, from + '.pdf'), file)
+    console.log('wrote', path.relative(root, file))
+  } else rmSync(file, { force: true })
 }
 await pdf('camp-forms-all', all, 'Genesis × Bambi camp forms')
 await browser.close()

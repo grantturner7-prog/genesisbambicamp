@@ -466,6 +466,38 @@ if (section("Tabs: every tab in the header lands on its section; forms and docum
       await link.click(); await page.waitForTimeout(500); await rest(page)
       const w = await landed(page, id)
       ok(`tabs/${vp.name}: "${label}" lands on its section`, text === label && good(w), JSON.stringify(w))
+      // the keyboard and screen-reader position goes with it, without a ring around the whole section
+      const at = await page.evaluate(() => ({ id: document.activeElement?.id, outline: getComputedStyle(document.activeElement).outlineStyle }))
+      ok(`tabs/${vp.name}: "${label}" moves the keyboard position to its section`, at.id === id && at.outline === 'none', JSON.stringify(at))
+    }
+    if (vp.name === 'desktop') {
+      ok('tabs: "Activities" lands under a heading that says so', (await page.locator('#seasons').innerText()).slice(0, 200).toLowerCase().includes('activities'))
+      // keyboard: Enter on a tab, then Tab goes into that section, not on along the header
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }))
+      await page.locator('header nav[aria-label=Primary] [data-nav=documents]').focus(); await page.keyboard.press('Enter'); await page.waitForTimeout(500); await rest(page)
+      await page.keyboard.press('Tab'); await page.waitForTimeout(200)
+      ok('tabs: after Enter on "Forms", the next Tab key is inside that section', await page.evaluate(() => !!document.activeElement?.closest('#documents') && document.activeElement.id !== 'documents'), await page.evaluate(() => document.activeElement?.outerHTML.slice(0, 80)))
+      // Back returns to the section read before, and does not leave the site
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }))
+      await page.locator('header nav[aria-label=Primary] [data-nav=pricing]').click(); await page.waitForTimeout(500); await rest(page)
+      await page.locator('header nav[aria-label=Primary] [data-nav=documents]').click(); await page.waitForTimeout(500); await rest(page)
+      await page.goBack(); await page.waitForTimeout(800); await rest(page)
+      const back = { hash: await page.evaluate(() => location.hash), w: await landed(page, 'pricing') }
+      ok('tabs: Back after "Dates & Fees" then "Forms" returns to Dates & Fees', back.hash === '#pricing' && !!back.w && Math.abs(back.w.top) <= 40, JSON.stringify(back))
+      // the camp's name in the bar is never cut off, whatever the width and language
+      const cut = []
+      for (const lang of ['en', 'zh-TW']) for (const width of [1280, 1366, 1440, 1536, 1920]) {
+        const c2 = await browser.newContext({ viewport: { width, height: 800 } })
+        await c2.addInitScript((l) => localStorage.setItem('gya.lang', l), lang)
+        const p2 = await c2.newPage()
+        for (const url of ['/', '/facilities/?quality=low']) {
+          await p2.goto(BASE + url); await p2.waitForTimeout(500); await p2.evaluate(() => document.fonts.ready)
+          const b = await p2.evaluate(() => { const e = document.querySelector('header a .font-display'); return { need: e.scrollWidth, has: e.clientWidth, wraps: [...document.querySelectorAll('header nav[aria-label=Primary] a')].some((a) => a.getBoundingClientRect().height >= 48) } })
+          if (b.need > b.has || b.wraps) cut.push(`${lang} ${width} ${url} ${b.has}/${b.need}${b.wraps ? ' wraps' : ''}`)
+        }
+        await c2.close()
+      }
+      ok('tabs: the camp name in the bar is whole and no tab wraps, 1280 to 1920 wide, both languages, both pages', cut.length === 0, cut.join(' | '))
     }
     // from the Facilities page the same tabs open the landing page at that section
     for (const [id, label] of vp.name === 'desktop' ? TABS : [TABS[3], TABS[4]]) {
@@ -477,6 +509,13 @@ if (section("Tabs: every tab in the header lands on its section; forms and docum
       ok(`tabs/${vp.name}: from the Facilities page, "${label}" lands on its section`, good(w), JSON.stringify(w))
     }
     if (vp.name === 'desktop') {
+      // "open in a new tab" on the Facilities page must not steer the next visit to the landing page
+      await page.goto(BASE + '/facilities/?quality=low'); await page.waitForTimeout(500)
+      const [popup] = await Promise.all([page.context().waitForEvent('page'), page.locator('header nav[aria-label=Primary] [data-nav=documents]').click({ modifiers: ['Control'] })])
+      await popup.close()
+      await Promise.all([page.waitForNavigation({ waitUntil: 'load' }), page.locator('header a:has(.font-display)').first().click()])
+      await page.waitForTimeout(3000)
+      ok('tabs: after Ctrl+click on a tab, the logo still opens the landing page at the top', (await page.evaluate(() => Math.round(scrollY))) === 0 && (await page.locator('[data-register-modal]').count()) === 0, String(await page.evaluate(() => Math.round(scrollY))))
       await page.goto(BASE + '/facilities/?quality=low'); await page.waitForTimeout(500)
       await Promise.all([page.waitForNavigation({ waitUntil: 'load' }), page.locator('header').getByRole('link', { name: 'Register' }).first().click()])
       await page.waitForSelector('[data-register-modal]', { timeout: 10000 }).catch(() => {})
@@ -490,24 +529,38 @@ if (section("Tabs: every tab in the header lands on its section; forms and docum
       // forms and documents
       const docs = await page.textContent('#documents')
       ok('documents: the five papers, in the order they are needed', JSON.stringify(await page.locator('#documents [data-doc]').evaluateAll((els) => els.map((e) => e.dataset.doc))) === JSON.stringify(['register', 'contract', 'notice', 'health', 'checkin']) && ['Online registration', 'Service contract', 'Camp Notice and Agreement', 'Camper Health Form', 'Check-in Day Form'].every((x) => docs.includes(x)))
-      ok('documents: labelled as drafts that are not to be signed yet', (await page.locator('[data-docs-draft]').count()) === 1 && docs.includes('please do not sign them yet') && (await page.locator('#documents [data-doc-link]').count()) === 3 && (await page.locator('#documents [data-doc-link]').allTextContents()).every((x) => x.includes('Draft')))
-      for (const href of await page.locator('#documents [data-doc-link]').evaluateAll((els) => els.map((a) => a.href))) {
-        const r = await page.request.get(href)
-        ok(`documents: ${href.split('/').pop()} opens as a PDF`, r.status() === 200 && (r.headers()['content-type'] || '').includes('pdf') && (await r.body()).subarray(0, 5).toString() === '%PDF-', `${r.status()} ${r.headers()['content-type']}`)
+      // the three forms are listed, and posted only once they are final
+      const final = (await page.locator('[data-docs-pending]').count()) === 0
+      if (final) {
+        ok('documents: final forms each open as a PDF, named for the screen reader', (await page.locator('#documents [data-doc-link]').count()) >= 3 && (await page.locator('#documents [data-doc-link]').evaluateAll((els) => els.map((a) => a.getAttribute('aria-label')))).filter((x) => /Camp Notice|Health Form|Check-in Day/.test(x || '')).length === 3)
+        for (const href of await page.locator('#documents [data-doc]:not([data-doc=contract]) [data-doc-link]').evaluateAll((els) => els.map((a) => a.href))) {
+          const r = await page.request.get(href)
+          ok(`documents: ${href.split('/').pop()} opens as a PDF`, r.status() === 200 && (r.headers()['content-type'] || '').includes('pdf') && (await r.body()).subarray(0, 5).toString() === '%PDF-', `${r.status()} ${r.headers()['content-type']}`)
+        }
+      } else {
+        ok('documents: while the forms are not final, the section says so and offers no draft', docs.includes('are still being finalized and are not posted yet') && (await page.locator('#documents [data-doc-link]').count()) === 0 && (await page.locator('#documents [data-doc-pending]').count()) === 3 && !/ready to print|sign them|draft/i.test(docs), docs.slice(0, 300))
+        for (const f of ['camp-notice-and-agreement', 'camper-health-form', 'check-in-day-form']) {
+          const r = await page.request.get(`${BASE}/documents/${f}.pdf`)
+          ok(`documents: no draft of ${f} is served`, !(r.headers()['content-type'] || '').includes('pdf') && (await r.body()).subarray(0, 5).toString() !== '%PDF-', `${r.status()} ${r.headers()['content-type']}`)
+        }
       }
       ok('documents: the service contract has no link until it is ready', (await page.locator('#documents [data-doc=contract] a').count()) === 0 && docs.includes('given to you for review before any payment'))
+      // registration is not open: the first card and the form say so before anything is typed
+      const card1 = await page.locator('#documents [data-doc=register]').innerText()
+      ok('documents: card 1 says online registration is not open yet', /not open yet/i.test(card1) && card1.includes('nothing is sent') && (await page.locator('[data-doc-register]').innerText()).trim() === 'Preview the form', card1.replace(/\n/g, ' | '))
       await page.click('[data-doc-register]')
-      ok('documents: "Online registration" opens the form', (await page.locator('[data-register-modal]').count()) === 1)
+      ok('documents: "Preview the form" opens the form, which says at the top that nothing is sent', (await page.locator('[data-register-modal]').count()) === 1 && (await page.locator('[data-register-modal] [data-register-preview]').innerText()).includes('nothing you enter is sent'))
       await page.waitForTimeout(400); await page.keyboard.press('Escape'); await page.waitForTimeout(300)
-      for (const [href, id] of [['#refund', 'refund'], ['#packing', 'packing']]) {
+      for (const [href, id] of [['#refund', 'refund'], ['#packing', 'packing'], ['#legal', 'legal']]) {
         await page.locator(`[data-docs-also] a[href="${href}"]`).click(); await page.waitForTimeout(500); await rest(page)
         const top = await page.evaluate((id) => Math.round(document.getElementById(id).getBoundingClientRect().top - document.querySelector('header').getBoundingClientRect().bottom), id)
-        ok(`documents: "Also on this page" ${href} scrolls to it`, top >= -6 && top <= 30, String(top))
+        // (the legal disclosures are at the foot of the page, which cannot scroll any further up)
+        ok(`documents: "Also on this page" ${href} scrolls to it`, id === 'legal' ? top >= -6 && top < 700 : top >= -6 && top <= 30, String(top))
         await page.evaluate(() => document.getElementById('documents').scrollIntoView({ behavior: 'instant' })); await page.waitForTimeout(300)
       }
       await page.getByRole('button', { name: '繁中' }).first().click()
       const zhDocs = await page.textContent('#documents')
-      ok('documents: 繁體中文', ['表單與文件', '營隊須知與同意書', '營員健康調查表', '報到日確認單', '請暫勿簽署'].every((x) => zhDocs.includes(x)) && (await page.locator('header nav[aria-label=Primary] [data-nav=documents]').textContent()).trim() === '表單文件')
+      ok('documents: 繁體中文', ['表單與文件', '營隊須知與同意書', '營員健康調查表', '報到日確認單', '暫未提供下載', '定稿後於此提供', '尚未開放', '預覽報名表'].every((x) => zhDocs.includes(x)) && (await page.locator('header nav[aria-label=Primary] [data-nav=documents]').textContent()).trim() === '表單文件')
     }
     await ctx.close()
   }

@@ -68,9 +68,10 @@ export const campConfig = {
   },
 
   /**
-   * The papers a family reads, fills in or signs. The PDFs are written to public/documents/
-   * by `npm run forms-pdf`. `final` stays false until a lawyer has approved them: until then
-   * the site and the PDFs call them drafts that are not to be signed, and launch-check lists it.
+   * The papers a family reads, fills in or signs. `final` stays false until the camp's open
+   * decisions are filled in, the nurse has confirmed her parts and a lawyer has approved the
+   * forms. Until then the site lists the three forms without posting them, and launch-check
+   * names it. Once true, `npm run forms-pdf` writes the PDFs to public/documents/ (README).
    */
   documents: { final: false },
 

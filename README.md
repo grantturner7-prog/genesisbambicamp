@@ -112,14 +112,24 @@ copy; wording that is new is marked ◆ and is not camp policy until the camp, t
 the lawyer have agreed it. `npm run all-pdf` joins the forms and the legal notices into one
 file with a contents page (it needs poppler's `pdfunite`).
 
-The landing page's **Forms & documents** section opens the three forms from
-`public/documents/` (written by `npm run forms-pdf`, the same files as `docs/forms/`). While
-`documents.final` is `false` in `campConfig.ts` the section and the PDFs call them drafts that
-are not to be signed. Set it to `true` only after the lawyer has approved them, then run
-`npm run all-pdf` again.
+The landing page's **Forms & documents** section lists the paperwork in the order a family
+needs it. While `documents.final` is `false` in `campConfig.ts` the three forms are listed
+but not posted: the drafts in `docs/forms/` carry notes to the camp, the nurse and the
+lawyer, and are not for families. Before setting it to `true`:
+
+1. fill in the camp's open decisions and contact details in `scripts/forms-pdf.mjs`,
+2. get the nurse's confirmations and the lawyer's approval,
+3. remove every ◆ mark and bracketed note from `scripts/forms-pdf.mjs` (the script refuses
+   to build final forms that still have one),
+4. run `npm run all-pdf`, which then also writes the three forms to `public/documents/`
+   for the section to open.
+
+The forms quote the fee, dates and bus times from `campConfig.ts`, so run
+`npm run forms-pdf` again after any change there and before deploying.
 
 Every tab in the header names a section of the landing page and lands on it, from either
-page (`src/lib/nav.ts`); `npm run e2e` clicks each one and checks where it lands.
+page (`src/lib/nav.ts`), moves the keyboard position there, and is a step the Back button
+returns from; `npm run e2e` clicks each one and checks where it lands.
 
 Run `npm run launch-check`. In particular:
 

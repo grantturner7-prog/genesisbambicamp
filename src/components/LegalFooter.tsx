@@ -30,7 +30,7 @@ export function LegalFooter() {
             <p className="text-xs text-white/60">{t(venue.address)}</p>
           </div>
         </div>
-        <h2 className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-cedar">{s.footer.legalTitle}</h2>
+        <h2 id="legal" className="mt-8 scroll-mt-24 text-xs font-bold uppercase tracking-[0.2em] text-cedar">{s.footer.legalTitle}</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <section className="rounded-2xl border border-white/10 bg-white/5 p-5">
             <h3 className="mb-2 text-sm font-bold text-cedar">{s.footer.coOrganizer}</h3>
