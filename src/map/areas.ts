@@ -72,8 +72,8 @@ export const AREAS: Area[] = [
         icon: 'Lock',
         title: { en: `${cohort.gateCurfew} gate curfew`, zh: `${cohort.gateCurfew} 大門管制` },
         body: {
-          en: 'The gate is closed every night at 23:00. On Friday and Saturday nights Bambi Glamping’s own overnight guests are also on site; parents and other visitors are not admitted during camp.',
-          zh: '園區大門每晚 23:00 管制。週五、週六兩晚，園區另有斑比跳跳的一般住宿旅客；營隊期間謝絕家長與其他訪客探視。',
+          en: 'The camp has the whole of Bambi Glamping to itself for all four days: no other guests stay on site. The gate is closed every night at 23:00, and parents and other visitors are not admitted during camp.',
+          zh: '四天三夜由營隊包場，園區內沒有其他住宿旅客。園區大門每晚 23:00 管制；營隊期間謝絕家長與其他訪客探視。',
         },
       },
     ],

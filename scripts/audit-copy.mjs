@@ -81,7 +81,7 @@ const need = [
   ['meeting point and times (zh)', `${campConfig.days.first.zh} ${campConfig.transport.meetTime} 於${campConfig.transport.meetingPoint.zh}集合`, home.PRICING.camp.bus.zh],
   ['last-day return (zh)', `約 ${campConfig.transport.returnTime} 返抵${campConfig.transport.meetingPoint.zh}`, home.PRICING.camp.bus.zh],
   ['the camp name', campConfig.brand.camp, home.SCHEDULE.title.en + strings.en.header.brand],
-  ['other guests of the venue are disclosed', 'overnight guests', home.SAFETY.staff.map((x) => x.body.en).join(' ')],
+  ['the camp has the venue to itself', 'no other guests stay on site', home.SAFETY.staff.map((x) => x.body.en).join(' ')],
   ['the day-by-day plan starts at the meeting point', campConfig.transport.meetingPoint.en, home.SCHEDULE.days[0].rows[0].what.en],
   ['meeting point address', campConfig.transport.meetingAddress.en, home.PRICING.bus.en],
   ['both bus journeys under "Included"', 'to camp and back', home.PRICING.included.map((x) => x.en).join(' ')],

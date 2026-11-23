@@ -71,7 +71,7 @@ const AD = {
   snacksPlain: { en: 'Snacks between meals are not part of the camp fee.', zh: '正餐之間的點心不包含在營隊費用內。' },
   placeKick: { en: 'The place', zh: '營地環境' },
   placeTitle: { en: 'The camp, from above', zh: '從空中看營地' },
-  placeLead: { en: `${c.brand.camp} takes place at Bambi Glamping in Sanwan, Miaoli: two lakes, open lawns and camper vans under the trees. This is the camp map from our website, with photographs of the real places.`, zh: `${c.brand.camp} 在苗栗三灣的斑比跳跳舉辦：兩座湖、大片草地，還有樹下的露營車。這是營隊官網上的營地地圖，搭配各區的實景照片。` },
+  placeLead: { en: `${c.brand.camp} takes place at Bambi Glamping in Sanwan, Miaoli: two lakes, open lawns and camper vans under the trees. For these four days the camp has the whole place to itself. This is the camp map from our website, with photographs of the real places.`, zh: `${c.brand.camp} 在苗栗三灣的斑比跳跳舉辦：兩座湖、大片草地，還有樹下的露營車。四天三夜由營隊包場。這是營隊官網上的營地地圖，搭配各區的實景照片。` },
   placeNote: { en: 'The map is an illustration of the site and is not to scale.', zh: '地圖為示意圖，非實際比例。' },
   airstream: { en: 'Airstream Snack Shop', zh: 'Airstream 點心站' },
   foodKick: { en: 'The food', zh: '餐點' },
@@ -122,7 +122,7 @@ if (!agencyLine('en')) MISSING.push('the travel agency’s name, class, registra
 if (!(op.legalName && op.taxId && op.phone)) MISSING.push('the activity co-organizer’s legal name, tax ID and phone')
 if (!contactLine()) MISSING.push('the website address (and LINE or phone) where parents reach the camp')
 if (!c.registration.endpoint) MISSING.push('online registration is not open yet, so the adverts say “registration is not open yet”')
-if (!c.schedule.confirmedByVenue) MISSING.push('Bambi Glamping’s confirmation of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn')
+if (!c.schedule.confirmedByVenue) MISSING.push('Bambi Glamping’s written confirmation that the camp has the venue to itself, and of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn')
 if (!couponsSet) MISSING.push('the snack coupon terms and the snack shop menu (until then the adverts do not print coupon prices)')
 MISSING.push('a print-size original of the cover photograph from Bambi Glamping (2,480 pixels wide or more), so the cover photo can fill the page')
 if (!c.venuePhotoPermissionOnFile) MISSING.push('Bambi Glamping’s written permission to publish its photographs, including the tram and film-night photos, which show Bambi’s guests')
@@ -155,7 +155,7 @@ const doc = (body, extra = '') => `<!doctype html><html><head><meta charset="utf
 /** Everything is written through `t`, so each run also collects the text it printed for the wording check. */
 function build(lang, fit = {}) {
   // how much each page carries; the render loop steps these down until every page fits
-  const { strip = true, tight = false, rows = 3, small = false, srows = 3 } = fit
+  const { strip = true, tight = false, dense = false, rows = 3, small = false, srows = 3 } = fit
   const seen = []
   const t = (l) => { const v = typeof l === 'string' ? l : l[lang === 'en' ? 'en' : 'zh']; seen.push(v); return esc(v) }
   const dates = t(offer.dates)
@@ -209,7 +209,7 @@ function build(lang, fit = {}) {
     <p class="chips">${ALSO.map((g) => `<span>${t(g)}</span>`).join('')}</p>
   </section>`
   const days = `
-  <section class="page">
+  <section class="page${dense ? ' dense' : ''}">
     <p class="kick">${t(home.SCHEDULE.kicker)}</p><h2 class="d">${t(home.SCHEDULE.title)}</h2>
     <p class="lead">${t(home.SCHEDULE.intro)}</p>
     <div class="days">${home.SCHEDULE.days.map((d, i) => `<div class="day"><p class="n">${i + 1} · ${t(d.day)}</p><h3 class="d">${t(d.theme)}</h3><table>${d.rows.map((r) => `<tr><th>${esc(r.time)}</th><td>${t(r.what)}</td></tr>`).join('')}</table></div>`).join('')}</div>
@@ -400,6 +400,7 @@ const BROCHURE_CSS = `
   .legal { font-size: 8.5pt; font-weight: 600; } .contact { font-size: 12pt; font-weight: 700; color: var(--pine); } .duty { margin-top: 8pt; } .credit { position: absolute; left: 16mm; bottom: 9mm; font-size: 7.5pt; color: #7c887f; }
   .strip { display: grid; grid-template-columns: 1.3fr 1fr 1.3fr; gap: 6pt; height: 40mm; margin-top: 10pt; } .strip .ph { border-radius: 9pt; overflow: hidden; }
   .place { font-size: 8.4pt; margin: 6pt 0 10pt; } .pnote { margin-top: 6pt; } .more { font-size: 8.6pt; }
+  .dense .day table { font-size: 8.2pt; line-height: 1.3; } .dense .lead { font-size: 10.8pt; } .dense .day { padding: 8pt 11pt; }
   .row3.vans { height: 58mm; grid-template-columns: 1.25fr 1fr 1fr; } .tight .row3.vans { height: 44mm; }
   .feast { position: relative; height: 98mm; border-radius: 12pt; overflow: hidden; color: #fff; margin: 2pt 0 4pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.62) 38%, rgba(15,25,20,0) 66%); } .feast .txt { position: absolute; left: 16pt; bottom: 16pt; width: 46%; } .feast .kick { color: var(--cedar); } .feast h3 { color: #fff; font-size: 19pt; line-height: 1.15; margin: 3pt 0 6pt; } .feast p { font-size: 9.6pt; line-height: 1.5; margin: 0; }
   .mealcards .ph { height: 40mm; border-radius: 9pt; overflow: hidden; margin-bottom: 6pt; } .mealcards b { display: block; font-size: 11pt; margin-bottom: 2pt; } .mealcards p { font-size: 9pt; }
@@ -517,7 +518,7 @@ const CHOSEN = []
 for (const [lang, b] of Object.entries(built)) {
   const L = lang === 'en' ? 'en' : 'zh-TW'
   await page.setViewportSize({ width: 1000, height: 1400 })
-  const bf = await fitted(`brochure-${lang}`, lang, [{}, { tight: true }, { strip: false }, { strip: false, tight: true }], (x) => x.brochure)
+  const bf = await fitted(`brochure-${lang}`, lang, [{}, { tight: true }, { strip: false }, { strip: false, tight: true }, { strip: false, dense: true }, { strip: false, tight: true, dense: true }], (x) => x.brochure)
   await page.pdf({ path: path.join(out, `brochure-${lang}.pdf`), format: 'A4', printBackground: true }); console.log('wrote', path.relative(root, path.join(out, `brochure-${lang}.pdf`)))
   const pf = await fitted(`pamphlet-${lang}`, lang, [{ rows: 6 }, { rows: 5 }, { rows: 5, small: true }, { rows: 4 }, { rows: 4, small: true }, { rows: 3, small: true }, { rows: 2, small: true }], (x) => x.pamphlet)
   await page.pdf({ path: path.join(out, `pamphlet-${lang}.pdf`), format: 'A5', printBackground: true }); console.log('wrote', path.relative(root, path.join(out, `pamphlet-${lang}.pdf`)))

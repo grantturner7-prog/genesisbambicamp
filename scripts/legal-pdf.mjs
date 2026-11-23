@@ -235,7 +235,7 @@ const SECTIONS = [
     open: [
       'The camp is now named “Camp WOW · World of Outdoor Wonders”. The site describes English only as the language of daily camp life (全美語生活環境); it makes no claim about instruction. Please confirm the name and that wording keep the camp outside the rules for short-term tutorial schools (補習班).',
       'The site now publishes a day-by-day plan with times. Please advise whether published times become contract terms, and whether the wording “on a wet day the outdoor activities are replaced by team challenges and crafts under cover” is enough for changes caused by weather.',
-      'The site now says that Bambi Glamping’s own overnight guests are on site on Friday and Saturday nights, and that parents and other visitors are not admitted during camp.',
+      'The site now says that the camp has the whole of Bambi Glamping to itself for all four days, with no other guests on site, and that parents and other visitors are not admitted during camp. Please make sure the booking with Bambi Glamping says the same in writing.',
       'These are not notices as such, but they are promises a parent may rely on. They are included so that nothing a parent reads is left out of the review.',
       'Activity descriptions and the 32 named games are not reproduced here. They can be exported the same way on request.',
     ],

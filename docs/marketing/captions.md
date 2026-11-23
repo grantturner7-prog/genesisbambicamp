@@ -40,7 +40,7 @@ Camp WOW · World of Outdoor Wonders
 在苗栗的全美語生活環境裡，過四天美式戶外營隊生活。
 2027 年 1 月 28 日至 31 日（週四至週日）・四天三夜・10–14 歲・苗栗三灣斑比跳跳
 
-冬季營隊為週四至週日。每天 06:30 起床，早餐後展開活動，21:15 熄燈。遇雨時，戶外活動改為室內的團隊挑戰與手作；下雨、打雷或強風時不進行獨木舟。
+冬季營隊為週四至週日，全程由營隊包場。每天 07:00 起床，08:00 早餐，22:00 熄燈。遇雨時，戶外活動改到斑比大飯店室內，進行團隊挑戰與手作；下雨、打雷或強風時不進行獨木舟。
 第一天：抵達營地、湖上獨木舟與開營營火。第二天：探索日。第三天：競賽、動手做與結營之夜。第四天：總決賽與返家。
 
 週四 08:00 於台中林酒店集合，遊覽車專車 08:30 出發；週日 10:00 自營地出發，約 11:30 返抵台中林酒店。費用已含來回遊覽車專車。
@@ -59,7 +59,7 @@ Camp WOW · World of Outdoor Wonders
 An American-style outdoor camp in Miaoli, with English as the language of camp life.
 28–31 January 2027 (Thursday to Sunday) · 4 days / 3 nights · ages 10–14 · Bambi Glamping, Sanwan, Miaoli
 
-The winter camp runs Thursday to Sunday. Campers wake at 06:30, the day starts after breakfast, and lights go out at 21:15. On a wet day the outdoor activities are replaced by team challenges and crafts under cover; kayaking does not run in rain, thunder or strong wind.
+The winter camp runs Thursday to Sunday, and the camp has the whole of Bambi Glamping to itself. Campers wake at 07:00, breakfast is at 08:00, and lights go out at 22:00. On a wet day the outdoor activities move into the Bambi Grand Dining Hall for team challenges and crafts; kayaking does not run in rain, thunder or strong wind.
 Day 1: Arrival, the lake and the opening fire. Day 2: Explorers’ day. Day 3: Games and makers’ day, and the final night. Day 4: Finale and home.
 
 Thursday: meet at The Lin Hotel, Taichung, at 08:00; the charter bus leaves at 08:30. Sunday: the bus leaves camp at 10:00 and returns to The Lin Hotel, Taichung, at about 11:30. The charter bus both ways is included.
@@ -94,7 +94,7 @@ Photographs: Bambi Glamping
 - Still needed: the activity co-organizer’s legal name, tax ID and phone.
 - Still needed: the website address (and LINE or phone) where parents reach the camp.
 - Still needed: online registration is not open yet, so the adverts say “registration is not open yet”.
-- Still needed: Bambi Glamping’s confirmation of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn.
+- Still needed: Bambi Glamping’s written confirmation that the camp has the venue to itself, and of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn.
 - Still needed: the snack coupon terms and the snack shop menu (until then the adverts do not print coupon prices).
 - Still needed: a print-size original of the cover photograph from Bambi Glamping (2,480 pixels wide or more), so the cover photo can fill the page.
 - Still needed: Bambi Glamping’s written permission to publish its photographs, including the tram and film-night photos, which show Bambi’s guests.
