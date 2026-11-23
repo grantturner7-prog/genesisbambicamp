@@ -87,25 +87,27 @@ const english = home.FAQ.find((f) => /English/.test(f.q.en))
 const act = (re) => home.ACTIVITIES.find((a) => re.test(a.name.en))
 const HIGHLIGHTS = [
   { ...act(/Kayak/), photo: 'kayak-jetty' },
-  { ...act(/Tram/), photo: 'birds-roost-lake' }, // the roost the tram goes to see; the tram photo shows the venue's guests
+  { ...act(/Tram/), photo: 'tram-on-route' }, // the only tram photo; its passengers are Bambi's guests, so it needs Bambi's permission like the rest
   { ...act(/Campfire/), photo: 'campfire-burning' },
   { ...act(/Cinema/), photo: 'cinema-night' }, // the venue's best cinema photo; guests are seen from behind, so it needs Bambi's permission like the rest
 ]
 const area = (id) => AREA_BY_ID[id].name
 /** A photograph's own caption, as the website prints it. */
 const caption = (id) => Object.values(media.AREA_PHOTOS).flat().find((ph) => ph.id === id).caption
-const MORE = ['zone-b-2', 'winter-cypress', 'grounds-palm-road'].map((id) => [id, caption(id)])
+const MORE = ['zone-b-2', 'winter-cypress', 'kayak-calm'].map((id) => [id, caption(id)])
 const PLACES_TOP = [
   [area('birds'), 'birds-roost-lake', spot('birds')],
   [area('cinema'), 'cinema-screen', spot('cinema')],
   [area('vans'), 'zone-a-2', spot('zone-B')],
   [caption('van-bunk'), 'van-bunk', spot('zone-A')],
+  [area('kayak'), 'kayak-jetty', spot('kayak')],
 ]
 const PLACES_BOTTOM = [
   [area('dining'), 'hall-windows', spot('dining')],
-  [AD.airstream, 'pool-airstream', spot('snack')],
   [area('campfire'), 'campfire-burning', spot('campfire')],
-  [area('kayak'), 'kayak-jetty', spot('kayak')],
+  [AD.airstream, 'pool-airstream', spot('snack')],
+  [area('tram'), 'tram-on-route', spot('tram')],
+  [caption('grounds-palm-road'), 'grounds-palm-road', [0.8, 0.62]],
 ]
 const ALSO = [1, 2, 4, 3, 12, 11, 27, 10, 32].map(game)
 // The organizers, as the website's legal footer prints them. null = a partner still owes it.
@@ -122,7 +124,7 @@ if (!contactLine()) MISSING.push('the website address (and LINE or phone) where 
 if (!c.registration.endpoint) MISSING.push('online registration is not open yet, so the adverts say “registration is not open yet”')
 if (!c.schedule.confirmedByVenue) MISSING.push('Bambi Glamping’s confirmation of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn')
 if (!couponsSet) MISSING.push('the snack coupon terms and the snack shop menu (until then the adverts do not print coupon prices)')
-if (!c.venuePhotoPermissionOnFile) MISSING.push('Bambi Glamping’s written permission to publish its photographs, including the film-night photo, which shows guests from behind')
+if (!c.venuePhotoPermissionOnFile) MISSING.push('Bambi Glamping’s written permission to publish its photographs, including the tram and film-night photos, which show Bambi’s guests')
 const PENDING = {
   agency: { en: 'Travel agency name, class, registration number, phone and insurance sums: to be added before this is printed or posted.', zh: '承辦旅行社名稱、種類、註冊編號、電話與保險金額：印製或發布前補上。' },
   contact: { en: 'Website, LINE and phone: to be added.', zh: '官網、LINE 與電話：待補。' },
@@ -165,17 +167,18 @@ function build(lang, fit = {}) {
   // Everything is placed in a 1000-wide grid, so the same block serves the brochure, the pamphlet and a post.
   const placeBlock = () => {
     const crop = { x: 0.03, y: 0.2, w: 0.95, h: 0.62 }
-    const cardW = 235, gap = 20, cardH = 196, lines = 54
+    const gap = 16, cardH = 190, lines = 56
+    const cardW = (n) => (1000 - (n - 1) * gap) / n
     const mapH = Math.round(1000 * (crop.h * MAP.height) / (crop.w * MAP.width))
     const m0 = cardH + lines, b0 = m0 + mapH + lines, total = b0 + cardH
     const px = ([x, y]) => [((x - crop.x) / crop.w) * 1000, m0 + ((y - crop.y) / crop.h) * mapH]
     const pc = (v) => `${(v / 10).toFixed(3)}%`, pcy = (v) => `${((v / total) * 100).toFixed(3)}%`
-    const card = ([label, ph], i, top) => `<div class="pc" style="left:${pc(i * (cardW + gap))};top:${pcy(top)};width:${pc(cardW)};height:${pcy(cardH)}"><img src="${photo(ph)}" alt=""><b>${t(label)}</b></div>`
-    const line = ([, , at], i, y) => { const [x2, y2] = px(at), x1 = i * (cardW + gap) + cardW / 2; return `<path d="M${x1.toFixed(1)} ${y} L${x2.toFixed(1)} ${y2.toFixed(1)}" class="halo"/><path d="M${x1.toFixed(1)} ${y} L${x2.toFixed(1)} ${y2.toFixed(1)}"/><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="8"/>` }
+    const card = ([label, ph], i, top, n) => `<div class="pc" style="left:${pc(i * (cardW(n) + gap))};top:${pcy(top)};width:${pc(cardW(n))};height:${pcy(cardH)}"><img src="${photo(ph)}" alt=""><b>${t(label)}</b></div>`
+    const line = ([, , at], i, y, n) => { const [x2, y2] = px(at), x1 = i * (cardW(n) + gap) + cardW(n) / 2; return `<path d="M${x1.toFixed(1)} ${y} L${x2.toFixed(1)} ${y2.toFixed(1)}" class="halo"/><path d="M${x1.toFixed(1)} ${y} L${x2.toFixed(1)} ${y2.toFixed(1)}"/><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="8"/>` }
     return `<div class="place" style="aspect-ratio:1000/${total}">
       <div class="pmap" style="top:${pcy(m0)};height:${pcy(mapH)}"><img src="${MAP_IMG}" alt="" style="width:${(100 / crop.w).toFixed(3)}%;left:${(-crop.x / crop.w * 100).toFixed(3)}%;top:${(-crop.y / crop.h * 100).toFixed(3)}%"></div>
-      <svg viewBox="0 0 1000 ${total}" preserveAspectRatio="none">${PLACES_TOP.map((p, i) => line(p, i, cardH)).join('')}${PLACES_BOTTOM.map((p, i) => line(p, i, b0)).join('')}</svg>
-      ${PLACES_TOP.map((p, i) => card(p, i, 0)).join('')}${PLACES_BOTTOM.map((p, i) => card(p, i, b0)).join('')}
+      <svg viewBox="0 0 1000 ${total}" preserveAspectRatio="none">${PLACES_TOP.map((p, i, all) => line(p, i, cardH, all.length)).join('')}${PLACES_BOTTOM.map((p, i, all) => line(p, i, b0, all.length)).join('')}</svg>
+      ${PLACES_TOP.map((p, i, all) => card(p, i, 0, all.length)).join('')}${PLACES_BOTTOM.map((p, i, all) => card(p, i, b0, all.length)).join('')}
     </div>`
   }
 

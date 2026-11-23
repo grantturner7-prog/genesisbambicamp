@@ -96,4 +96,4 @@ Photographs: Bambi Glamping
 - Still needed: online registration is not open yet, so the adverts say “registration is not open yet”.
 - Still needed: Bambi Glamping’s confirmation of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn.
 - Still needed: the snack coupon terms and the snack shop menu (until then the adverts do not print coupon prices).
-- Still needed: Bambi Glamping’s written permission to publish its photographs, including the film-night photo, which shows guests from behind.
+- Still needed: Bambi Glamping’s written permission to publish its photographs, including the tram and film-night photos, which show Bambi’s guests.
