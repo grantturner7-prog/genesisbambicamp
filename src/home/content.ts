@@ -192,7 +192,7 @@ export const SCHEDULE = {
         { time: '16:00', what: l('Games arcade and the cornhole final.', '遊戲闖關與 Cornhole 決賽。') },
         { time: '17:00', what: l('Final campfire: the Skit & Talent Showdown.', '惜別營火：短劇與才藝秀。') },
         { time: '18:00', what: l('Signature family dinner with Wagyu beef.', '和牛招牌家宴。') },
-        { time: '19:30', what: l('Closing night: a letter to my future self.', '結營之夜：寫一封信給未來的自己。') },
+        { time: '19:30', what: l('Treasure hunt: the counselors hide treasures around the camp for the last game of the evening.', '尋寶之夜：隊輔把寶物藏在營地各處，全營出動尋寶，作為最後一晚的壓軸遊戲。') },
       ],
     },
     {
