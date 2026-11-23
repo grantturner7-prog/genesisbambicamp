@@ -124,6 +124,7 @@ if (!contactLine()) MISSING.push('the website address (and LINE or phone) where 
 if (!c.registration.endpoint) MISSING.push('online registration is not open yet, so the adverts say “registration is not open yet”')
 if (!c.schedule.confirmedByVenue) MISSING.push('Bambi Glamping’s confirmation of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn')
 if (!couponsSet) MISSING.push('the snack coupon terms and the snack shop menu (until then the adverts do not print coupon prices)')
+MISSING.push('a print-size original of the cover photograph from Bambi Glamping (2,480 pixels wide or more), so the cover photo can fill the page')
 if (!c.venuePhotoPermissionOnFile) MISSING.push('Bambi Glamping’s written permission to publish its photographs, including the tram and film-night photos, which show Bambi’s guests')
 const PENDING = {
   agency: { en: 'Travel agency name, class, registration number, phone and insurance sums: to be added before this is printed or posted.', zh: '承辦旅行社名稱、種類、註冊編號、電話與保險金額：印製或發布前補上。' },
@@ -333,7 +334,7 @@ function build(lang, fit = {}) {
       <ul>${home.STAY.cards.slice(0, 2).map((x) => `<li>${t(x.title)}</li>`).join('')}<li>${t(home.STAY.signature.title)}</li></ul>
       <h2 class="d second">${t(AD.social.care)}</h2></div>${foot}</section>`,
     `<section class="s photo food"><img class="bg" src="${photo('wagyu-platter')}" alt=""><div class="shade"></div><div class="in bottom"><p class="kick">${t(home.STAY.signature.kicker)}</p><h2 class="d">${t(home.STAY.signature.title)}</h2>
-      <ul>${home.STAY.meals.map((m) => `<li>${t(m.name)}</li>`).join('')}</ul><p class="lead2">${t(home.STAY.mealsCount)}</p></div>${foot}</section>`,
+      <p class="lead2">${t(home.STAY.mealsTitle)}${lang === 'en' ? ': ' : '：'}${home.STAY.meals.map((m) => t(m.name)).join(lang === 'en' ? ' · ' : '・')}</p></div>${foot}</section>`,
     `<section class="s dark"><div class="in"><p class="kick">${t(AD.feesTitle)}</p><h2 class="d">${dateMain}</h2>${dateWeek ? `<p class="big wk">${dateWeek}</p>` : ''}
       <p class="d fee">${esc(twd(offer.fee))} <small>${t(AD.perCamper)}</small></p>
       <p class="big">${t(AD.social.book)}</p>
@@ -401,7 +402,8 @@ const BROCHURE_CSS = `
   .row3.vans { height: 58mm; grid-template-columns: 1.25fr 1fr 1fr; } .tight .row3.vans { height: 44mm; }
   .feast { position: relative; height: 98mm; border-radius: 12pt; overflow: hidden; color: #fff; margin: 2pt 0 4pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.62) 38%, rgba(15,25,20,0) 66%); } .feast .txt { position: absolute; left: 16pt; bottom: 16pt; width: 46%; } .feast .kick { color: var(--cedar); } .feast h3 { color: #fff; font-size: 19pt; line-height: 1.15; margin: 3pt 0 6pt; } .feast p { font-size: 9.6pt; line-height: 1.5; margin: 0; }
   .mealcards .ph { height: 40mm; border-radius: 9pt; overflow: hidden; margin-bottom: 6pt; } .mealcards b { display: block; font-size: 11pt; margin-bottom: 2pt; } .mealcards p { font-size: 9pt; }
-  .closing { position: absolute; left: 16mm; right: 16mm; bottom: 17mm; height: 62mm; border-radius: 12pt; overflow: hidden; color: #fff; } .closing img { position: absolute; inset: 0; } .closing .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,39,29,.85), rgba(15,39,29,.15)); } .closing p { position: absolute; left: 14pt; bottom: 26pt; font-size: 30pt; line-height: 1; margin: 0; } .closing span { position: absolute; left: 14pt; bottom: 11pt; font-size: 10pt; font-weight: 600; }
+  .cover .bg { inset: 0 0 auto 0; height: 158mm; } .cover .shade { background: linear-gradient(180deg, rgba(15,39,29,.55) 0, rgba(15,39,29,.08) 40mm, rgba(15,39,29,.08) 105mm, #0f271d 158mm); } .cover h1 { margin: 4pt 0 10pt; }
+  .closing { position: absolute; left: 16mm; right: 16mm; bottom: 17mm; height: 62mm; border-radius: 12pt; overflow: hidden; color: #fff; } .closing img { position: absolute; inset: 0; } .closing .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,39,29,.85), rgba(15,39,29,.15)); } .closing p { position: absolute; left: 14pt; bottom: 32pt; font-size: 30pt; line-height: 1; margin: 0; } .closing span { position: absolute; left: 14pt; bottom: 12pt; font-size: 10pt; font-weight: 600; line-height: 1.2; }
 `
 const PAMPHLET_CSS = `
   @page { size: A5; margin: 0; }
@@ -417,6 +419,7 @@ const PAMPHLET_CSS = `
   .small { font-size: 7.2pt; color: #56655c; } .legal { font-size: 7.2pt; font-weight: 600; } .contact { font-size: 9.5pt; font-weight: 700; color: var(--pine); } .pending { font-size: 6.8pt; margin-bottom: 3pt; } .credit { position: absolute; left: 10mm; bottom: 5mm; font-size: 6.2pt; color: #7c887f; }
   .place { font-size: 6.9pt; margin: 4pt 0 7pt; } .more { font-size: 6.9pt; } .back .feebox .when { font-size: 10pt; } .plead { font-size: 8.6pt; line-height: 1.45; color: #33423a; margin-bottom: 6pt; } .mini.one { grid-template-columns: 1fr; gap: 5pt; } .mini.one ul { font-size: 8pt; columns: 1; } .care, .duty { margin-top: 3pt; }
   .feast { position: relative; height: 30mm; border-radius: 8pt; overflow: hidden; color: #fff; margin: 5pt 0 6pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.55) 45%, rgba(15,25,20,0) 75%); } .feast .txt { position: absolute; left: 10pt; bottom: 9pt; width: 60%; } .feast .kick { color: var(--cedar); font-size: 6.4pt; margin: 0; } .feast b.d { display: block; color: #fff; font-size: 12pt; line-height: 1.15; }
+  .cover .bg { inset: 0 0 auto 0; height: 104mm; } .cover .shade { background: linear-gradient(180deg, rgba(15,39,29,.55) 0, rgba(15,39,29,.08) 26mm, rgba(15,39,29,.08) 66mm, #0f271d 104mm); } .cover h1 { margin: 3pt 0 8pt; }
   .small-type .mini ul { font-size: 7pt; line-height: 1.28; } .small-type .mini b.d { font-size: 9pt; } .small-type .feebox .when { font-size: 9.6pt; } .small-type > p { font-size: 7.8pt; } .small-type > p.small { font-size: 6.9pt; }
 `
 const SOCIAL_CSS = (w, h) => `
@@ -437,7 +440,13 @@ const SOCIAL_CSS = (w, h) => `
   .foot { position: absolute; left: 7%; right: 7%; bottom: 2.6%; font-size: .66em; font-weight: 600; letter-spacing: .03em; color: rgba(255,255,255,.85); } .foot p { display: flex; justify-content: space-between; gap: 1em; margin: 0; } .foot .fine { font-size: .8em; font-weight: 500; opacity: .92; margin-top: .25em; } .foot .need { color: #ffc2b8; font-weight: 700; } .s.light .foot { color: #6d7a71; } .s.light .foot .need { color: #b23a2a; } .dep { font-size: 1em; font-weight: 600; opacity: .95; }
   .place { font-size: .56em; margin: .2em 0 .5em; } .s .pnote { font-size: .62em; color: #6d7a71; }
   .lead2 { font-size: .86em; opacity: .92; margin-top: .5em; }
-  .s.story .in { bottom: 12%; } .s.story h1 { font-size: 5.6em; } .s.story .pts { margin: .9em 0 1em; font-size: 1.02em; }
+  h1 { white-space: nowrap; } .head { margin-top: .42em; } .head, h2.second, .s.photo h2 { text-wrap: balance; } .s ul li { padding-left: 1.25em; text-indent: -1.25em; }
+  .s .in { z-index: 1; } .s .foot { z-index: 2; } .s .bg ~ .in::before { content: ''; position: absolute; z-index: -1; left: -8%; right: -8%; top: -3em; bottom: -60em; background: linear-gradient(180deg, rgba(15,39,29,0) 0, rgba(15,39,29,.5) 4em, rgba(15,39,29,.72) 12em); }
+  .s.photo .shade, .s.square .shade, .s.cover .shade { background: linear-gradient(180deg, rgba(15,39,29,.38) 0%, rgba(15,39,29,.04) 22%, rgba(15,39,29,.12) 55%, rgba(15,39,29,.6) 100%); }
+  .mean, .s.photo .kick { color: var(--cedar1); text-shadow: 0 1px 8px rgba(15,39,29,.6); }
+  .s.wide .in::before, .s.story .in::before { display: none; } .s.wide .shade { background: linear-gradient(180deg, rgba(15,39,29,.62) 0%, rgba(15,39,29,.5) 40%, rgba(15,39,29,.82) 66%, rgba(15,39,29,.96) 100%); } .s.wide .head { margin-top: .5em; }
+  .s.story { background: var(--pine9); } .s.story .bg { inset: 0 0 auto 0; height: 47%; } .s.story .shade { background: linear-gradient(180deg, rgba(15,39,29,.6) 0%, rgba(15,39,29,.5) 16%, rgba(15,39,29,.08) 27%, rgba(15,39,29,.08) 30%, #0f271d 47%); } .s.story .foot { top: 13%; bottom: auto; }
+  .s.story .in { bottom: 21%; } .s.story h1 { font-size: 5.1em; } .s.story .pts { margin: .9em 0 1em; font-size: 1.02em; }
   .s.wide .in { bottom: 14%; } .s.wide h1 { font-size: 3.3em; } .s.wide .head { font-size: 1.1em; } .s.wide .tag { font-size: .8em; } .s.wide .mean { font-size: .52em; } .s.wide .pill { font-size: .56em; } .s.wide .foot { font-size: .46em; } .s.wide { font-size: ${Math.round(w / 26)}px; }
 `
 
@@ -484,8 +493,10 @@ const fits = async (name) => {
     }
     const inn = el.querySelector('.in').getBoundingClientRect(), foot = el.querySelector('.foot').getBoundingClientRect(), box = el.getBoundingClientRect()
     const kids = [...el.querySelector('.in').children].map((k) => k.getBoundingClientRect())
-    const topOver = Math.round(box.top - Math.min(...kids.map((k) => k.top))), bottomOver = Math.round(Math.max(...kids.map((k) => k.bottom)) - foot.top)
-    return Math.max(topOver, bottomOver, Math.round(foot.bottom - box.bottom))
+    const minTop = Math.min(...kids.map((k) => k.top)), maxBottom = Math.max(...kids.map((k) => k.bottom))
+    // the text must stay inside the image and must not run into the footer, wherever the footer sits
+    const overlap = Math.round(Math.min(maxBottom, foot.bottom) - Math.max(minTop, foot.top))
+    return Math.max(Math.round(box.top - minTop), Math.round(maxBottom - box.bottom), overlap, Math.round(foot.bottom - box.bottom))
   }))
   return over.map((px, i) => (px > 0 ? `${name} part ${i + 1}: ${px}px too much` : null)).filter(Boolean)
 }
