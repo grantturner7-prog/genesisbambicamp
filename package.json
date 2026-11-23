@@ -10,6 +10,7 @@
     "launch-check": "node scripts/launch-check.mjs",
     "legal-pdf": "node scripts/legal-pdf.mjs",
     "forms-pdf": "node scripts/forms-pdf.mjs",
+    "promo": "node scripts/promo.mjs",
     "all-pdf": "node scripts/legal-pdf.mjs && node scripts/forms-pdf.mjs && node scripts/all-pdf.mjs",
     "typecheck": "tsc --noEmit",
     "build": "npm run audit && tsc --noEmit && vite build",
