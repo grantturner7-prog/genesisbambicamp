@@ -1,6 +1,6 @@
 # Camp WOW: captions for the posts
 
-Images are in `social/`. Instagram: the five `instagram-*` images as one carousel. Stories, Reels cover and TikTok: `story-tiktok-*`. Facebook link or cover image: `facebook-*`. Any square slot: `square-*`.
+Images are in `social/`. Instagram: the `instagram-*` images, in order, as one carousel. Stories, Reels cover and TikTok: `story-tiktok-*`. Facebook link or cover image: `facebook-*`. Any square slot: `square-*`.
 
 ## Instagram (繁體中文)
 
