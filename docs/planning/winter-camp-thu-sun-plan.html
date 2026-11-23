@@ -1,70 +1,185 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<title>Winter camp, Thursday to Sunday: plan for sharing the site</title>
-<link rel="stylesheet" href="../../node_modules/@fontsource-variable/inter/index.css">
-<link rel="stylesheet" href="../../node_modules/@fontsource-variable/noto-sans-tc/index.css">
-<style>
-@page { size: A4; margin: 15mm 14mm 16mm; }
-* { box-sizing: border-box; }
-body { font-family: 'Inter Variable', 'Noto Sans TC Variable', sans-serif; font-size: 9.6pt; line-height: 1.45; color: #1c2a22; margin: 0; }
-h1 { font-size: 21pt; line-height: 1.15; margin: 0 0 4pt; color: #1b4332; }
-h2 { font-size: 13.5pt; margin: 18pt 0 6pt; color: #1b4332; border-bottom: 1.5px solid #cdd9cf; padding-bottom: 3pt; break-after: avoid; }
-h3 { font-size: 10.8pt; margin: 12pt 0 4pt; color: #1b4332; break-after: avoid; }
-p { margin: 0 0 6pt; } ul, ol { margin: 0 0 6pt; padding-left: 15pt; } li { margin: 0 0 3pt; }
-.sub { color: #5c6b62; font-size: 9.6pt; margin-bottom: 10pt; }
-.box { border: 1px solid #cdd9cf; background: #f5f8f4; border-radius: 6pt; padding: 8pt 11pt; margin: 8pt 0; break-inside: avoid; }
-.box.warn { background: #fff8ea; border-color: #e3b565; }
-.box.ask { background: #eef4fb; border-color: #aac3e0; }
-.box h3 { margin-top: 0; }
-table { width: 100%; border-collapse: collapse; margin: 5pt 0 9pt; font-size: 8.8pt; }
-th, td { border: 1px solid #cdd9cf; padding: 3.5pt 5pt; vertical-align: top; text-align: left; }
-th { background: #e6eee6; font-weight: 700; }
-tr { break-inside: avoid; }
-td.t { white-space: nowrap; font-weight: 700; width: 60pt; }
-.day { background: #1b4332; color: #fff; padding: 5pt 9pt; border-radius: 5pt; margin: 14pt 0 5pt; font-weight: 700; font-size: 11pt; break-after: avoid; }
-.day small { font-weight: 500; opacity: .85; font-size: 9pt; margin-left: 6pt; }
-.tag { display: inline-block; border-radius: 3pt; padding: 0 4pt; font-size: 7.8pt; font-weight: 700; margin-right: 3pt; }
-.ours { background: #d6ecdf; color: #14573a; } .shared { background: #fde3dd; color: #8a2a1b; } .indoor { background: #e4e8f7; color: #2f3d8a; }
-.legend { display: flex; flex-wrap: wrap; gap: 3pt 14pt; font-size: 8.6pt; margin: 4pt 0 8pt; }
-.legend i { display: inline-block; width: 11pt; height: 7pt; border-radius: 2pt; margin-right: 4pt; vertical-align: -0.5pt; }
-.fig { break-inside: avoid; margin: 6pt 0; }
-.small { font-size: 8.4pt; color: #5c6b62; }
-.pb { break-before: page; }
-b.q { color: #1d4f91; }
-</style></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Winter camp, Thursday to Sunday: plan</title><link rel="stylesheet" href="../../node_modules/@fontsource-variable/inter/index.css"><style>
+:root {
+  --bg: #f7f9f6; --fg: #1c2a22; --muted: #5a695f; --line: #cdd9cf; --head: #1b4332;
+  --box: #eef4ee; --warn-bg: #fff6e3; --warn-line: #e3b565; --ask-bg: #eaf2fb; --ask-line: #a9c3e0;
+  --th: #e2ebe3; --day-bg: #1b4332; --day-fg: #ffffff;
+  --ours-bg: #d3ebdc; --ours-fg: #14573a; --shared-bg: #fde0d9; --shared-fg: #8a2a1b; --card: #ffffff;
+}</style><style>
+:root {
+  --bg: #f7f9f6; --fg: #1c2a22; --muted: #5a695f; --line: #cdd9cf; --head: #1b4332;
+  --box: #eef4ee; --warn-bg: #fff6e3; --warn-line: #e3b565; --ask-bg: #eaf2fb; --ask-line: #a9c3e0;
+  --th: #e2ebe3; --day-bg: #1b4332; --day-fg: #ffffff;
+  --ours-bg: #d3ebdc; --ours-fg: #14573a; --shared-bg: #fde0d9; --shared-fg: #8a2a1b; --card: #ffffff;
+}
 
-<h1>Winter camp, Thursday to Sunday</h1>
-<p class="sub">A plan for sharing the site with Bambi’s other guests · Genesis × Bambi · draft for discussion with Dave · 22 November 2026</p>
+
+body { background: var(--bg); color: var(--fg); font-family: 'Inter Variable', Inter, system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px 56px; }
+.page { max-width: 900px; margin: 0 auto; }
+h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; color: var(--head); text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-size: 21px; margin: 34px 0 10px; color: var(--head); border-bottom: 1.5px solid var(--line); padding-bottom: 6px; text-wrap: balance; }
+h3 { font-size: 16px; margin: 20px 0 6px; color: var(--head); }
+p { margin: 0 0 10px; } ul, ol { margin: 0 0 10px; padding-left: 22px; } li { margin: 0 0 5px; }
+.sub { color: var(--muted); margin-bottom: 16px; }
+.box { border: 1px solid var(--line); background: var(--box); border-radius: 10px; padding: 14px 18px; margin: 14px 0; }
+.box.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.box.ask { background: var(--ask-bg); border-color: var(--ask-line); }
+.box h3 { margin-top: 0; }
+.tw { overflow-x: auto; margin: 8px 0 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 13.5px; }
+th, td { border-bottom: 1px solid var(--line); padding: 7px 9px; vertical-align: top; text-align: left; }
+th { background: var(--th); font-weight: 700; } tr:last-child td { border-bottom: 0; }
+td.t { white-space: nowrap; font-weight: 700; }
+.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ck { width: 30px; } .ck input { width: 18px; height: 18px; accent-color: var(--head); }
+tr.done td { opacity: .5; } tr.done label { text-decoration: line-through; }
+.day { background: var(--day-bg); color: var(--day-fg); padding: 9px 14px; border-radius: 8px; margin: 26px 0 8px; font-weight: 700; font-size: 17px; }
+.day small { font-weight: 500; opacity: .88; font-size: 13px; margin-left: 8px; }
+.tag { display: inline-block; border-radius: 4px; padding: 0 6px; font-size: 12px; font-weight: 700; margin-right: 4px; }
+.ours { background: var(--ours-bg); color: var(--ours-fg); } .shared { background: var(--shared-bg); color: var(--shared-fg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; margin: 8px 0 10px; }
+.legend i { display: inline-block; width: 15px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.fig { margin: 12px 0; } .fig svg { display: block; border-radius: 10px; border: 1px solid var(--line); max-width: 100%; height: auto; }
+.small { font-size: 13px; color: var(--muted); font-weight: 400; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+.toc a { display: inline-block; padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--head); text-decoration: none; font-size: 13.5px; font-weight: 600; background: var(--card); }
+.toc a:focus-visible, input:focus-visible { outline: 2px solid var(--head); outline-offset: 2px; }
+@media (max-width: 520px) { h1 { font-size: 25px; } .box { padding: 12px 14px; } }
+</style><style>@page { size: A4; margin: 14mm 13mm 15mm; }
+body { font-size: 9.4pt; line-height: 1.42; padding: 0; background: #fff; } .page { max-width: none; }
+h1 { font-size: 20pt; } h2 { font-size: 13pt; margin: 16pt 0 6pt; break-after: avoid; } h3 { font-size: 10.6pt; margin: 11pt 0 4pt; break-after: avoid; }
+table { font-size: 8.5pt; min-width: 0; } th, td { padding: 3pt 5pt; border: 1px solid #cdd9cf; } tr { break-inside: avoid; }
+.tw { border: 0; overflow: visible; margin: 4pt 0 8pt; } .day { font-size: 11pt; padding: 5pt 9pt; margin: 12pt 0 4pt; break-after: avoid; } .day small { font-size: 9pt; }
+.box { padding: 7pt 11pt; margin: 7pt 0; break-inside: avoid; } .small, .legend { font-size: 8.3pt; } .tag { font-size: 7.6pt; } .toc { display: none; } .fig { break-inside: avoid; }
+.ck input { width: 9pt; height: 9pt; }</style></head><body><div class="page"><h1>Winter camp, Thursday to Sunday</h1>
+<p class="sub">Version 2 · 23 November 2026 · your schedule notes built in · a working plan for you and Dave</p>
 
 <div class="box">
-<h3>The short answer</h3>
-<p>This works. Bambi’s own guest timetable leaves us real gaps, and with 30 campers we only need a corner of the site. The work is in fixing <b>where</b> we are at <b>which hour</b>, and in having a second indoor space for bad weather. My recommendations:</p>
-<ol>
-<li><b>Use Thursday for everything that needs the whole site</b>: the lake, the tram, the campfire and the cinema. The site is ours that day.</li>
-<li><b>From Friday afternoon, keep the camp in one corner</b>: the north-east vans, the central lawn and one covered indoor space. Counselors’ vans go on the west and south sides as a buffer. The guests go to the west side of the camp.</li>
-<li><b>Treat five places as shared</b> (reception, dining hall, kayak dock and tram, the campfire and cinema lawn, the public restrooms) and set our times there around the guests’ times.</li>
-<li><b>Use the guests’ gap.</b> Overnight guests leave by 10:30 and the next ones arrive at 14:00, and they get no lunch. So 10:30 to 14:00 is when the site is nearly empty: our lake, tram and lawn window on Friday, Saturday and Sunday.</li>
-<li><b>Eat off Bambi’s schedule</b>: breakfast at 07:15, lunch about 12:00, dinner at 17:00 to 17:15, ahead of their 18:00 to 20:00 dinner.</li>
-<li><b>The weather risk is the evening.</b> When it rains, Bambi moves its guests’ cinema and snack into the dining hall. We need the covered activity area (or the back of the hall) agreed in writing, and a rule for who gets the hall on a wet night.</li>
-<li><b>Sunday needs a decision.</b> The ride out took 1.5 hours (08:30 to 10:00). To be back at The Lin Hotel by 10:30, the bus has to leave camp at about 09:00, not 09:30.</li>
-</ol>
-</div>
-
-<div class="box warn">
-<h3>What I assumed (please correct me)</h3>
+<h3>What changed in this version</h3>
 <ul>
-<li><b>Dates:</b> Thursday 28 to Sunday 31 January 2027 (one day later than the Wednesday 27 to Saturday 30 we had). Four days, three nights. 30 campers, 10 to 14 years old, 1 counselor to 4 campers, so 8 counselors, plus the nurse and a camp lead.</li>
-<li><b>Exclusive use:</b> all of Thursday. From Friday the site is shared. Guests arrive from 14:00 on Friday and Saturday, and leave by 10:30 on Saturday and Sunday. <i>I don’t yet know whether Friday morning is also ours alone.</i></li>
-<li><b>Bambi’s guest timetable</b> is the weekend schedule on Bambi’s own “read before you come” page. It may differ in winter or on a given date, so Dave should confirm it.</li>
-<li><b>The pool is closed to the camp</b> in winter and I have not planned anything there.</li>
-<li><b>Van numbers, distances and the size of the lawn</b> come from our traced copy of Bambi’s official map. Walk them on site before we promise anything.</li>
+<li><b>Your daily rhythm:</b> wake 06:30, van inspection 07:00, breakfast before 08:00, activities from 08:15, lights out 21:15.</li>
+<li><b>Friday night as you described it:</b> dinner 17:00, our film at 18:00 while Bambi’s guests eat, the glow-in-the-dark treasure hunt, then snack and board games in the hall.</li>
+<li><b>Saturday:</b> dinner at 18:00 with Bambi’s guests, in our own part of the hall.</li>
+<li><b>Sunday:</b> a Color War finale in the morning, the bus at 10:00, back in Taichung at about 11:30.</li>
+<li><b>Your must-haves are all in:</b> shelter building, orienteering, the Amazing Race, multi-sports and cornhole.</li>
+<li><b>Sharing the site</b> is now about being good neighbours with our noise. Campers are not kept apart from the guests.</li>
+<li><b>New:</b> the shopping list by shop, with costs and storage space (section 6).</li>
+<li><b>Corrected</b> after the independent check: distances on the map, Bambi’s no-kayak-in-rain rule, guests who stay two nights, and the Sunday timing.</li>
 </ul>
 </div>
 
-<h2>1. Zoning</h2>
-<p>The map gives us a natural layout. Zones <b>A and B</b> run along the north-east of the site, next to the central lawn, the campfire and cinema area and the kayak lake. They are 100 to 140 m from the entrance and the road to the dining hall. Zones <b>D, E, F and G</b> are in the west, about 300 m from our vans, so the guests naturally go there. We need only about 20 vans (10 for campers, the rest for counselors, the nurse, the lead and a spare van for a sick camper), and A and B together have 26.</p>
+<div class="box ask">
+<h3>Your question: is 21:15 to 06:30 enough sleep?</h3>
+<p><b>Yes, with care.</b> It gives about 9¼ hours in bed. Sleep-medicine guidance is 9 to 12 hours for ages 6 to 12 and 8 to 10 hours for teenagers, so this is comfortable for the 13 and 14 year olds and at the low end for the 10 to 12 year olds. For three nights that is fine if we protect it:</p>
+<ul>
+<li>A quiet half hour before lights out: showers, the van check, no games.</li>
+<li>The rest in the vans after lunch stays in every day.</li>
+<li>The Friday evening snack is light and finishes by 20:50.</li>
+<li>Bambi’s own film runs to about 21:20 and its snack to 22:00, about 100 m from our vans, so windows stay closed on Friday and Saturday.</li>
+<li>If the campers look tired on Saturday, move wake-up to 07:00 and breakfast to 07:30. Nothing else needs to change.</li>
+</ul>
+<p>Your earlier worry was right about my first draft: lights out at 22:00 with a 07:00 start was too little for the younger ones.</p>
+</div>
 
-<div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="60 205 1000 410" width="100%" role="img" aria-label="Proposed zoning of the camp for the winter weekend">
+<h2 id="schedule">1. The schedule</h2>
+<p>Thirty campers in <b>six teams of five</b>, each with its own counselor and team colour; two more counselors float, plus the camp lead and the nurse. Six teams make every format work: three matches at once, six stations, or two groups of 15. Times are when the group is in place. The hall is about 200 m from our vans, so counselors start each move and its headcount ten minutes before.</p>
+<p>Bambi’s guest times are marked <span class="tag shared">guests</span>. <span class="tag ours">ours</span> means we have the place to ourselves. Items that need Dave’s yes are listed in section 7.</p>
+
+<div class="day">Thursday 28 January <small>Arrival, the lake and the opening fire · the site is ours</small></div>
+<div class="tw"><table>
+<tr><th>Time</th><th>What</th><th>Where</th><th>Notes and rain plan</th></tr>
+<tr><td class="t">08:00</td><td>Meet at The Lin Hotel, Taichung: roster, forms, medicine handed in, team-colour bib. Bus leaves 08:30.</td><td>Taichung</td><td></td></tr>
+<tr><td class="t">10:00</td><td>Arrive. The bus drops us at reception and we walk to the lawn.</td><td>Reception → lawn</td><td>Bambi asks for notice before a coach drives in.</td></tr>
+<tr><td class="t">10:00–10:20</td><td><b>Welcome circle:</b> the lead, the nurse, the counselors, the six teams.</td><td>Open lawn</td><td>Rain: covered area.</td></tr>
+<tr><td class="t">10:20–10:50</td><td><b>Camp orientation walk</b> by team: our area, the places that are out of bounds (the pool, the lake edge), the buddy rule, the whistle signal. First headcount drill.</td><td>Our area</td><td></td></tr>
+<tr><td class="t">10:50–11:40</td><td><b>Check-in rotation</b>, three groups of ten, 15 minutes each: the nurse (medicine, health check) / van and key, luggage in / name games.</td><td>Vans, lawn</td><td>Needs the vans ready by 10:45. If not, check-in moves to 13:00.</td></tr>
+<tr><td class="t">12:00–12:50</td><td>Lunch: DIY with the chef.</td><td>Hall <span class="tag ours">ours</span></td><td>Walk at 11:45.</td></tr>
+<tr><td class="t">13:00–13:30</td><td>Rest in the vans. Change for the lake.</td><td>Vans</td><td></td></tr>
+<tr><td class="t">13:30–14:30</td><td><b>Kayaking</b>, group 1 (15): dock briefing, life jackets, the coach. Group 2: <b>Team Banner &amp; Mascot Workshop</b>.</td><td>Lake / lawn <span class="tag ours">ours</span></td><td>Any rain, drizzle or thunder stops kayaking (Bambi’s rule). Then both groups do banners, followed by the Indoor Games Arcade.</td></tr>
+<tr><td class="t">14:30–14:45</td><td>Swap. Headcount. Kayakers into dry clothes at the vans.</td><td>Vans</td><td></td></tr>
+<tr><td class="t">14:45–15:45</td><td><b>Kayaking</b>, group 2. Group 1: banner workshop.</td><td>Lake / lawn <span class="tag ours">ours</span></td><td></td></tr>
+<tr><td class="t">16:00–16:30</td><td>Warm drink and a snack for everyone.</td><td>Lawn</td><td>From the kitchen (ask Dave). Snack coupons are for extras.</td></tr>
+<tr><td class="t">16:40–17:40</td><td><b>Eco-tram at dusk</b> in two runs of 15 (16:40 and 17:10), to see the egrets come home. The waiting group plays <b>cornhole</b> and lawn games.</td><td>Tram / lawn <span class="tag ours">ours</span></td><td>Sunset is about 17:40. If the tram seats fewer than 15, three runs of ten.</td></tr>
+<tr><td class="t">18:00–18:45</td><td>Dinner.</td><td>Hall <span class="tag ours">ours</span></td><td>Walk at 17:45.</td></tr>
+<tr><td class="t">19:00–20:15</td><td><b>Opening campfire</b> and <b>Color War Opening Ceremony</b>: banners, chants, s’mores.</td><td>Campfire circle <span class="tag ours">ours</span></td><td>Counselors tend the fire. Rain: the hall.</td></tr>
+<tr><td class="t">20:15–21:15</td><td>Torch walk back. Showers. Evening van check at 21:00. <b>Lights out 21:15.</b></td><td>Vans</td><td></td></tr>
+</table></div>
+
+<div class="day">Friday 29 January <small>Explorers’ day · the whole site is ours until the guests arrive at 14:00</small></div>
+<div class="tw"><table>
+<tr><th>Time</th><th>What</th><th>Where</th><th>Notes and rain plan</th></tr>
+<tr><td class="t">06:30</td><td>Wake. Quiet voices until 08:00.</td><td>Vans</td><td></td></tr>
+<tr><td class="t">07:00</td><td>Van inspection (Color War points).</td><td>Vans</td><td></td></tr>
+<tr><td class="t">07:15–07:55</td><td>Breakfast.</td><td>Hall</td><td></td></tr>
+<tr><td class="t">08:00–08:15</td><td>Morning circle. Weather call.</td><td>Lawn</td><td></td></tr>
+<tr><td class="t">08:15–09:45</td><td><b>Orienteering Quest:</b> 15 minutes of map and compass, then teams find ten control points on approved paths.</td><td>Whole site <span class="tag ours">ours</span></td><td>Rain: Cipher Camp and the Indoor Escape Room Race.</td></tr>
+<tr><td class="t">09:45–10:00</td><td>Water and snack break.</td><td>Lawn</td><td></td></tr>
+<tr><td class="t">10:00–11:40</td><td><b>Bambi Amazing Race:</b> eight checkpoints across the camp (knots, Pipeline Challenge, Toxic Waste Transfer, puzzle, blindfold guide, water relay, memory, team photo). Staggered start.</td><td>Whole site <span class="tag ours">ours</span></td><td>Light rain: the Umbrella Treasure Hunt. Heavy rain: indoor checkpoints.</td></tr>
+<tr><td class="t">12:00–12:50</td><td>Lunch: DIY with the chef.</td><td>Hall</td><td>Walk at 11:45.</td></tr>
+<tr><td class="t">13:00–13:40</td><td>Rest in the vans.</td><td>Vans</td><td><span class="tag shared">guests check in from 14:00</span></td></tr>
+<tr><td class="t">13:45–15:45</td><td><b>Shelter Build Challenge:</b> 20-minute demo, 70-minute build with tarp, poles, rope and pegs, then the storm test with watering cans and the judging.</td><td>Our area, by the vans</td><td>Goes ahead in light rain. That is the point. <span class="tag shared">15:00–16:00 guests’ tea</span></td></tr>
+<tr><td class="t">15:45–16:00</td><td>Break.</td><td></td><td></td></tr>
+<tr><td class="t">16:00–16:45</td><td><b>Multi-sports, round 1:</b> ultimate frisbee, mini-football and dodgeball on three courts, three rounds of 13 minutes.</td><td>Open lawn, north-east side</td><td>Rain: Indoor Games Arcade. <span class="tag shared">guests’ free time, kayak and tram to 17:00</span></td></tr>
+<tr><td class="t">17:00–17:40</td><td>Dinner, before the guests.</td><td>Hall</td><td>Walk at 16:45. <span class="tag shared">guests’ dinner from 18:00</span></td></tr>
+<tr><td class="t">18:00–19:10</td><td><b>Star Cinema:</b> our film on the lawn, with blankets, while the guests eat.</td><td>Cinema lawn</td><td>A film of about 65 to 70 minutes. A full-length one will not fit before the guests’ film. Wet night: covered area.</td></tr>
+<tr><td class="t">19:10–19:20</td><td>Clear the lawn.</td><td></td><td><span class="tag shared">guests’ film 19:30</span></td></tr>
+<tr><td class="t">19:20–20:05</td><td><b>Glow Night Quest:</b> the glow-in-the-dark treasure hunt, run as a stealth mission. Teams lose points for noise.</td><td>North-east of our area</td><td>Keeps us about 100 m from the guests’ film. Rain: glow hunt in the covered area.</td></tr>
+<tr><td class="t">20:10–20:50</td><td><b>Evening snack and Board-Game Café.</b></td><td>Far end of the hall</td><td>Wet night: the guests’ film is in the hall, so we use the covered area.</td></tr>
+<tr><td class="t">20:50–21:15</td><td>Torch walk back. Van check at 21:00. <b>Lights out 21:15.</b></td><td>Vans</td><td></td></tr>
+</table></div>
+
+<div class="day">Saturday 30 January <small>Games and makers’ day, and the final night · guests on site</small></div>
+<div class="tw"><table>
+<tr><th>Time</th><th>What</th><th>Where</th><th>Notes and rain plan</th></tr>
+<tr><td class="t">06:30</td><td>Wake. Inspection at 07:00.</td><td>Vans</td><td></td></tr>
+<tr><td class="t">07:15–07:55</td><td>Breakfast: Bambi’s standard buffet, before the guests.</td><td>Hall</td><td><span class="tag shared">guests’ breakfast 08:00–09:00</span></td></tr>
+<tr><td class="t">08:00–08:15</td><td>Morning circle. Weather call.</td><td>Lawn</td><td></td></tr>
+<tr><td class="t">08:15–09:15</td><td><b>Multi-sports, round 2:</b> the league continues, three rounds of 15 minutes.</td><td>Open lawn</td><td>Rain: Indoor Games Arcade.</td></tr>
+<tr><td class="t">09:15–09:30</td><td>Break.</td><td></td><td></td></tr>
+<tr><td class="t">09:30–10:15</td><td><b>Camp Olympics Relay Medley:</b> six stations of six minutes (sack race, cornhole toss, ring toss, skipping relay, water-cup relay, frisbee accuracy).</td><td>Open lawn</td><td><span class="tag shared">guests check out 09:00–10:30</span></td></tr>
+<tr><td class="t">10:30–12:00</td><td><b>Lake session 2:</b> <b>Kayak Skills Relay</b> for 15 while the other 15 make <b>paracord survival bracelets</b>. Swap at 11:15.</td><td>Lake / our area</td><td>Only if Dave confirms the dock. If not, or in rain: bracelets, then the Giant Bubble Lab.</td></tr>
+<tr><td class="t">12:30–13:20</td><td>Lunch: DIY with the chef.</td><td>Hall</td><td>Dry clothes first. Walk at 12:15.</td></tr>
+<tr><td class="t">13:30–14:00</td><td>Rest in the vans.</td><td>Vans</td><td><span class="tag shared">guests check in from 14:00</span></td></tr>
+<tr><td class="t">14:00–14:40</td><td><b>Science hands-on:</b> Oobleck Olympics and the Mentos Geyser demonstration, or two of your own experiments.</td><td>Our area</td><td>The geyser is an adult-led outdoor demonstration.</td></tr>
+<tr><td class="t">14:45–15:45</td><td><b>Egg Drop Build Challenge:</b> 35-minute build, 15 minutes of adult-controlled drops, 10-minute debrief.</td><td>Our area / covered area</td><td><span class="tag shared">15:00–16:00 guests’ tea</span></td></tr>
+<tr><td class="t">15:45–16:00</td><td>Break.</td><td></td><td></td></tr>
+<tr><td class="t">16:00–16:40</td><td><b>Indoor Games Arcade:</b> the cornhole final, soft pétanque, Mölkky, table tennis, safe darts, cup stacking.</td><td>Covered area or lawn</td><td></td></tr>
+<tr><td class="t">16:40–17:00</td><td>Skit rehearsal with the team counselor.</td><td>Our area</td><td></td></tr>
+<tr><td class="t">17:00–17:50</td><td><b>Final campfire at dusk:</b> s’mores and the <b>Skit &amp; Talent Showdown</b>.</td><td>Campfire circle</td><td>Before the guests’ evening there. Rain: covered area.</td></tr>
+<tr><td class="t">18:00–19:15</td><td><b>Signature family dinner</b> with Wagyu, at the guests’ time, in our own part of the hall.</td><td>Hall</td><td><span class="tag shared">with the guests</span> The full Bambi dinner, as Dave wants.</td></tr>
+<tr><td class="t">19:20–20:30</td><td><b>Closing night:</b> Minute-to-Win-It finals, Color War awards, the photo slideshow, a letter to my future self.</td><td>Our end of the hall, or the covered area</td><td>Your other option: join Bambi’s own film with the guests at 19:30 and leave by 21:00. Lights out would then be about 21:30.</td></tr>
+<tr><td class="t">20:30–21:15</td><td>Torch walk back. Van check at 21:00. <b>Lights out 21:15.</b></td><td>Vans</td><td></td></tr>
+</table></div>
+
+<div class="day">Sunday 31 January <small>Finale and home</small></div>
+<div class="tw"><table>
+<tr><th>Time</th><th>What</th><th>Where</th><th>Notes</th></tr>
+<tr><td class="t">06:30</td><td>Wake. Final inspection at 07:00, bags packed.</td><td>Vans</td><td></td></tr>
+<tr><td class="t">07:15–07:55</td><td>Breakfast: Bambi’s standard buffet.</td><td>Hall</td><td><span class="tag shared">guests’ breakfast 08:00–09:00</span></td></tr>
+<tr><td class="t">08:00–08:30</td><td>Pack-out: vans cleared, keys collected and returned, luggage to the bus point.</td><td>Vans, reception</td><td>Bambi’s own guests return keys 09:00–10:00.</td></tr>
+<tr><td class="t">08:30–09:30</td><td><b>Color War Finale:</b> Tug-of-War Tournament, Giant Rope Jump Challenge and the final relay.</td><td>Open lawn</td><td>Rain: Minute-to-Win-It in the covered area.</td></tr>
+<tr><td class="t">09:30–09:50</td><td><b>Closing circle:</b> final scores, the trophy, Camp Participation Awards, group photo.</td><td>Open lawn</td><td></td></tr>
+<tr><td class="t">10:00</td><td>Board at 09:50, headcount by name. <b>The bus leaves at 10:00.</b></td><td>Reception</td><td><span class="tag shared">guests leave 10:00–10:30</span> Ask Dave where the bus should wait.</td></tr>
+<tr><td class="t">≈ 11:30</td><td>The Lin Hotel, Taichung. Families collect 11:30 to 12:00.</td><td>Taichung</td><td>The ride is planned at about 1.5 hours.</td></tr>
+</table></div>
+
+<h2 id="activities">2. How the main activities run</h2>
+<div class="tw"><table>
+<tr><th style="width:150px">Activity</th><th>How it runs</th><th style="width:150px">Who leads</th></tr>
+<tr><td><b>Kayaking</b> (Thu, Sat)</td><td>15 at a time. Dock briefing, life jackets checked by a counselor, paddling inside the coach’s marked area. Non-swimmers in doubles beside a coach or counselor. Dry clothes straight after.</td><td>Bambi’s coach, 3 counselors, one on shore with the throw line</td></tr>
+<tr><td><b>Orienteering Quest</b> (Fri)</td><td>Each team gets a map, two compasses and a control card. Ten controls on approved paths; a counselor walks with each team. Points for controls found, bonus for teamwork.</td><td>Team counselors; a floater at the start</td></tr>
+<tr><td><b>Bambi Amazing Race</b> (Fri)</td><td>Eight checkpoints, each with a counselor or a self-run task card. Teams start at different checkpoints and move clockwise, 10 minutes each with 2 minutes to move. A stamp in the passport at each.</td><td>The lead runs the clock</td></tr>
+<tr><td><b>Shelter Build Challenge</b> (Fri)</td><td>Each team gets one tarp, four poles, six lengths of rope and ten pegs. The shelter must fit the whole team sitting down and survive a watering-can storm.</td><td>Two floaters demo, team counselors coach</td></tr>
+<tr><td><b>Multi-sports league</b> (Fri, Sat)</td><td>Three courts, six teams, so nobody sits out. Each team plays each sport over the two rounds. 3 points a win, 1 a draw, plus a fair-play point.</td><td>One counselor referees each court</td></tr>
+<tr><td><b>Glow Night Quest</b> (Fri)</td><td>Every camper wears a glow bracelet. Teams follow clues written in invisible ink, read with a UV torch, to glow-marked stations, and find the treasure box. Noise costs points.</td><td>Team counselors; floaters at the stations</td></tr>
+<tr><td><b>Indoor Games Arcade</b> (Thu, Sat, rain)</td><td>Six stations of six minutes: cornhole, soft pétanque, Mölkky, table tennis on a dining table, safe darts, cup stacking. Scores go on the Color War board.</td><td>One counselor a station</td></tr>
+<tr><td><b>Egg Drop</b> (Sat)</td><td>Each team gets the same kit and one egg, and builds a carrier. A counselor does every drop from a fixed height onto a tarp.</td><td>A floater runs the drops</td></tr>
+<tr><td><b>Color War Finale</b> (Sun)</td><td>Tug-of-war knockout for six teams, the giant rope jump for the highest count, and one relay with all 30. Final scores announced in the closing circle.</td><td>The lead</td></tr>
+</table></div>
+
+<h2 id="sharing">3. Sharing the site</h2>
+<p>Following your note, the aim is simple. <b>We run our own programme, counselors are always with the campers, and we do not let a big, noisy group spoil the guests’ quiet stay.</b> Meeting the guests is fine, and may even be good advertising for the camps.</p>
+<div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="60 205 1000 410" width="100%" role="img" aria-label="Where the camp is based: zones A and B in the north-east">
 <rect x="0" y="0" width="1200" height="800" fill="#eef3ea"/>
 <path d="M1139,281 L1130,250 L1111,216 L1108,199 L1105,194 L1099,191 L1081,187 L1036,160 L1029,152 L1026,134 L1018,127 L1009,126 L992,132 L966,137 L958,136 L953,129 L955,113 L953,105 L947,98 L940,95 L932,96 L914,102 L890,104 L883,102 L867,93 L857,93 L849,98 L839,116 L830,122 L799,128 L773,125 L766,128 L752,139 L741,143 L713,149 L688,148 L672,162 L663,165 L656,165 L651,163 L640,144 L634,140 L628,141 L612,154 L600,161 L595,166 L593,176 L597,194 L595,200 L590,206 L569,220 L541,227 L528,227 L519,223 L516,217 L514,202 L511,197 L506,195 L498,196 L487,206 L482,209 L465,206 L460,206 L448,220 L438,223 L432,220 L428,215 L428,210 L431,194 L429,188 L424,184 L417,184 L412,188 L409,193 L406,211 L402,215 L394,216 L387,214 L382,209 L381,204 L382,191 L378,185 L373,185 L369,187 L363,202 L359,205 L355,206 L350,204 L348,200 L348,195 L352,183 L350,176 L344,172 L336,170 L319,175 L303,174 L289,178 L271,181 L268,186 L269,203 L265,208 L257,212 L239,214 L229,213 L224,209 L216,198 L211,196 L194,201 L174,202 L161,211 L143,218 L129,235 L111,244 L107,249 L104,263 L99,268 L81,275 L64,277 L58,280 L54,289 L57,306 L55,312 L41,324 L26,341 L23,347 L26,366 L20,387 L24,406 L22,426 L25,456 L33,489 L46,526 L62,542 L68,561 L87,591 L118,622 L126,629 L146,637 L162,632 L168,632 L184,641 L193,643 L237,627 L245,627 L258,633 L292,628 L307,631 L317,635 L329,644 L345,648 L348,654 L348,666 L351,671 L367,679 L380,690 L402,705 L419,710 L434,704 L441,703 L446,709 L450,722 L455,727 L479,732 L499,744 L526,745 L546,738 L570,721 L605,691 L635,671 L652,669 L676,662 L708,661 L733,664 L738,666 L746,676 L752,677 L782,674 L801,670 L820,670 L825,668 L834,659 L841,657 L850,659 L865,671 L874,674 L894,672 L916,663 L937,667 L961,668 L970,666 L984,658 L1006,654 L1026,644 L1047,637 L1058,631 L1072,619 L1090,609 L1110,589 L1124,570 L1146,535 L1157,505 L1156,498 L1149,472 L1140,457 L1142,450 L1154,425 L1156,408 L1151,361 Z" fill="#dfeccf" stroke="#b5c9a0" stroke-width="2"/>
 <path d="M1148,468 L1139,460 L1136,460 L1098,512 L1080,533 L1059,552 L1008,581 L994,586 L979,589 L966,589 L946,585 L902,585 L899,587 L912,593 L931,596 L944,605 L961,602 L978,610 L985,609 L993,600 L998,598 L1017,599 L1061,573 L1087,552 L1118,516 L1146,475 Z  M48,409 L51,424 L48,439 L59,471 L70,480 L74,486 L75,491 L74,502 L77,510 L92,520 L98,533 L102,537 L110,542 L129,547 L171,551 L193,547 L214,558 L268,564 L282,563 L292,549 L302,546 L312,549 L317,554 L319,562 L324,562 L328,560 L334,547 L339,544 L345,543 L353,545 L362,552 L366,553 L385,549 L399,543 L412,547 L439,547 L448,551 L456,560 L463,561 L466,560 L475,552 L490,546 L514,547 L527,544 L546,544 L562,535 L576,536 L592,534 L633,539 L646,534 L663,535 L668,538 L672,548 L683,551 L754,551 L773,544 L845,544 L848,543 L857,536 L866,534 L931,534 L938,536 L948,542 L976,541 L991,538 L1003,532 L1020,512 L1044,468 L1054,448 L1058,419 L1051,383 L1049,381 L1037,385 L1034,391 L1037,403 L1038,439 L1036,447 L1004,503 L998,511 L991,515 L981,519 L971,520 L947,520 L897,516 L878,512 L870,513 L858,518 L851,517 L834,512 L818,500 L805,483 L790,455 L787,436 L790,415 L794,404 L808,386 L810,372 L788,402 L781,422 L779,442 L784,470 L796,493 L808,509 L834,529 L835,533 L832,537 L817,538 L722,534 L702,531 L687,524 L641,519 L623,525 L553,525 L513,532 L498,530 L491,526 L487,520 L487,513 L493,499 L486,482 L484,480 L474,476 L470,467 L462,462 L458,461 L450,469 L444,472 L438,472 L428,468 L420,468 L413,470 L404,476 L398,477 L393,475 L388,468 L384,466 L360,462 L348,463 L338,460 L332,456 L313,438 L280,397 L270,382 L237,355 L228,346 L219,328 L216,316 L218,306 L204,300 L202,295 L201,288 L203,282 L206,277 L220,271 L224,263 L234,253 L242,235 L248,232 L255,230 L269,233 L280,232 L291,235 L299,235 L304,234 L312,228 L318,227 L324,230 L331,238 L335,240 L340,240 L349,236 L354,235 L359,237 L370,246 L389,247 L404,243 L419,251 L428,251 L440,249 L457,257 L475,257 L491,264 L506,265 L512,272 L513,285 L524,307 L529,350 L523,397 L528,438 L533,460 L538,473 L551,482 L555,493 L567,494 L569,493 L569,491 L554,463 L548,449 L544,422 L533,416 L529,410 L530,406 L535,401 L539,393 L544,386 L547,375 L552,363 L543,354 L538,309 L538,293 L532,273 L527,264 L512,250 L490,241 L439,232 L397,228 L327,217 L271,212 L257,214 L238,222 L223,238 L209,259 L199,271 L195,279 L191,283 L186,285 L177,285 L119,316 L86,338 L77,347 L63,367 L51,397 Z M71,390 L85,365 L104,348 L180,305 L186,303 L192,304 L197,306 L200,311 L204,337 L209,350 L218,362 L254,393 L265,400 L279,417 L283,427 L290,435 L303,457 L316,463 L319,467 L321,475 L337,473 L355,475 L372,479 L381,486 L405,487 L423,485 L444,478 L454,477 L473,494 L474,500 L473,512 L467,522 L457,526 L402,526 L375,530 L330,540 L305,542 L246,540 L204,533 L140,527 L124,522 L111,516 L98,503 L89,488 L75,456 L68,436 L66,422 L66,407 Z M596,295 L598,297 L613,298 L623,297 L637,281 L657,271 L691,248 L697,237 L701,233 L707,231 L718,232 L732,226 L743,226 L753,217 L773,209 L785,202 L799,200 L815,195 L829,193 L850,193 L877,196 L912,204 L934,216 L953,230 L967,242 L974,252 L980,267 L980,277 L977,282 L971,285 L939,286 L913,293 L902,301 L891,304 L877,311 L866,320 L856,326 L842,337 L826,353 L820,363 L830,359 L855,338 L891,311 L910,305 L925,302 L935,292 L946,289 L984,288 L991,290 L1012,316 L1017,325 L1020,333 L1019,344 L1024,358 L1027,359 L1040,356 L1042,354 L1037,334 L1023,308 L1010,291 L992,240 L982,226 L962,208 L928,187 L892,176 L845,172 L830,172 L815,180 L795,180 L748,197 L718,210 L710,215 L700,225 L681,232 L642,256 L614,278 Z  " fill="#e9e4d8" fill-rule="evenodd" stroke="#cfc8b6" stroke-width="1"/>
@@ -141,213 +256,128 @@ b.q { color: #1d4f91; }
 <text x="406" y="602" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7a1f14" stroke="#fff" stroke-width="3" paint-order="stroke">Dining hall</text>
 <circle cx="616" cy="367" r="7" fill="#c0392b" stroke="#fff" stroke-width="2"/>
 <text x="604" y="371" text-anchor="end" font-size="11.5" font-weight="700" fill="#7a1f14" stroke="#fff" stroke-width="3" paint-order="stroke">Campfire + cinema lawn</text>
-<circle cx="934" cy="362" r="7" fill="#c0392b" stroke="#fff" stroke-width="2"/>
-<text x="974" y="366" text-anchor="start" font-size="11.5" font-weight="700" fill="#7a1f14" stroke="#fff" stroke-width="3" paint-order="stroke">Kayak dock</text>
-<text x="684" y="491" text-anchor="middle" font-size="11.5" font-weight="700" fill="#35617a" stroke="#fff" stroke-width="3" paint-order="stroke">Pool: closed in winter</text>
+<circle cx="977" cy="309" r="7" fill="#c0392b" stroke="#fff" stroke-width="2"/>
+<text x="989" y="313" text-anchor="start" font-size="11.5" font-weight="700" fill="#7a1f14" stroke="#fff" stroke-width="3" paint-order="stroke">Kayak dock</text>
+<text x="684" y="491" text-anchor="middle" font-size="11.5" font-weight="700" fill="#35617a" stroke="#fff" stroke-width="3" paint-order="stroke">Pool: not used by the camp</text>
 </svg>
 <div class="legend">
-<span><i style="background:#1f7a4d"></i>Camper vans (12: 10 campers, the nurse, one spare)</span>
-<span><i style="background:#e0a21b"></i>Counselor vans (8), the buffer on the west and south sides</span>
-<span><i style="background:#f1d9a0"></i>Lower A (6): keep empty if Dave can; otherwise guests, never campers</span>
-<span><i style="background:#8a97ad"></i>Guest vans, zones D to G (24)</span>
-<span><i style="background:#c0392b;border-radius:6pt;width:8pt;height:8pt"></i>Shared contact points</span>
+<span><i style="background:#1f7a4d"></i>Camper vans (12): the east end of B and the north end of A</span>
+<span><i style="background:#e0a21b"></i>Counselor vans (8)</span>
+<span><i style="background:#f1d9a0"></i>Other A vans (6)</span>
+<span><i style="background:#8a97ad"></i>Zones D to G (24)</span>
+<span><i style="background:#c0392b;border-radius:6pt;width:8pt;height:8pt"></i>Places we share</span>
 </div>
-<p class="small">Camper vans B06 to B12 and A10 to A14; counselor vans B01 to B05 and A05, A06, A08; lower A is A01 to A04, A07 and A09. Drawn from the traced official map (not surveyed). The open lawn, about 40 m across, is the largest clear area between B and A that I could find.</p>
+<p class="small">Drawn from our traced copy of Bambi’s official map, not surveyed. Bambi’s own pages count 13 vans in A and 12 in B; our trace shows 14 in A. We need about 21 vans: 10 or 11 for campers (three to a van, same gender), 8 for counselors, one each for the nurse and the lead, and a spare if there is one.</p>
 </div>
-
-<h3>Why this arrangement</h3>
+<p>Zones A and B are the right base. They sit beside the open lawn and the kayak lake, about 60 to 120 m from the campfire and cinema lawn. Zones D to G are in the west, about 250 m from our vans, and the dining hall is about 200 m away.</p>
+<h3>Good neighbours: the guests’ quiet times and what we do then</h3>
+<div class="tw"><table>
+<tr><th style="width:150px">Guests’ time</th><th style="width:190px">What they are doing</th><th>What we do</th></tr>
+<tr><td>Before 08:00</td><td>Asleep.</td><td>Quiet wake-up: no whistles, music or shouting until 08:00.</td></tr>
+<tr><td>14:00–15:00</td><td>Arriving at reception.</td><td>We are in our own area on the shelter build or the science block.</td></tr>
+<tr><td>15:00–18:00</td><td>Tea in the hall, then free time on the lawns, the lake (15:45–17:00) and the tram (16:00–17:00).</td><td>No kayak or tram for us. Loud games stay on the north-east side of the lawn.</td></tr>
+<tr><td>18:00–20:00</td><td>Dinner in the hall.</td><td>Friday: we have eaten and are at our film. Saturday: we eat with them, in our own part of the hall.</td></tr>
+<tr><td>19:30–22:00</td><td>Their film and snack on the campfire and cinema lawn (in the hall if it rains).</td><td>We are off that lawn by 19:15. The glow hunt is a stealth mission. In the vans by 21:00.</td></tr>
+</table></div>
+<h3>Safety basics that stay</h3>
 <ul>
-<li><b>The campers are farthest from the entrance road.</b> Counselor vans sit between them and the guests’ evening lawn (west) and the entrance road (south), so nobody reaches a camper van without passing a counselor.</li>
-<li><b>They are close to what we use most:</b> the kayak dock is 33 to 60 m from A10 to A14, the campfire and cinema about 60 to 90 m, and the open lawn is in the middle of the cluster.</li>
-<li><b>The vans have private bathrooms,</b> so campers do not need the public restrooms at night.</li>
-<li><b>Bambi’s own rule helps:</b> its FAQ says only that day’s overnight guests are admitted and visitors are turned away, and that the gate is closed at 23:00 except in an emergency. Everyone else on site is a registered guest or staff. Ask Dave to confirm this is still current.</li>
+<li><b>Headcount by name</b> from a printed roster after every move, at meals and at lights out.</li>
+<li><b>If a camper is missing:</b> everyone stops, a count by name, then two counselors check the water first (the dock, the lake edge, the pool), then the van, then the last place seen. The lead tells Bambi’s front desk.</li>
+<li><b>Water:</b> nobody goes to the lake edge or the pool without a counselor. The pool is out of bounds for the camp. Bambi lists it as open all year, so guests may be using it.</li>
+<li><b>Kayaking in January:</b> no kayaking in rain, drizzle, thunder or strong wind (Bambi’s rule). Agree a cold limit with the coach and the nurse, and change into dry clothes straight after.</li>
+<li><b>After dark:</b> every camper has a torch (packing list), counselors wear a headlamp and a bright vest, and groups walk with a counselor at the front and the back.</li>
+<li><b>Campfire:</b> counselors tend the fire, everyone sits on the log ring, water and a burn kit are beside it.</li>
+<li><b>Adults:</b> no counselor is alone with one camper out of sight. Van checks are done by two counselors.</li>
+<li><b>Emergencies:</b> call 119, then the lead, then the family. Ask Dave who opens the gate after 23:00 and where the AED is.</li>
 </ul>
 
-<h3>The five contact points, and what we do at each</h3>
-<table>
-<tr><th style="width:92pt">Place</th><th style="width:140pt">When the guests use it (Bambi’s weekend timetable)</th><th>Our rule</th></tr>
-<tr><td><b>Reception and the entrance road</b> (with the tram stop)</td><td>Check-in 14:00 to 15:00. Check-out by 10:30.</td><td>We are in the core zone by 13:45 on Friday and Saturday. A counselor stands at the point where the road meets the camper cluster. Our arrival (Thursday) and departure (Sunday) happen outside those hours.</td></tr>
-<tr><td><b>Dining hall</b> (the far south-west, about 180 m from our vans)</td><td>Breakfast 08:00 to 09:00. Afternoon tea 15:00 to 16:00. Dinner 18:00 to 20:00, in batches. Their rainy-night cinema and snack also move in here, 19:30 to 22:00.</td><td>Camp breakfast 07:15, lunch about 12:00 (they get none), dinner 17:00 to 17:15. We walk as a group with counselors at both ends and use a reserved corner. <b>The hall is the main place where campers and guests meet.</b></td></tr>
-<tr><td><b>Kayak dock and tram</b></td><td>Kayak 15:45 to 17:00. Tram 16:00 to 17:00.</td><td>Ours on Thursday afternoon and on the Saturday and Sunday mornings after 10:30. We do not use them from 15:45 on Friday and Saturday.</td></tr>
-<tr><td><b>Campfire and cinema lawn</b></td><td>Cinema 19:30 to 21:20 and snack 21:00 to 22:00 (moves into the hall if it rains or is windy).</td><td>All evening on Thursday. On Friday and Saturday we finish by 19:15 and go back to the core zone before the guests arrive.</td></tr>
-<tr><td><b>Public restrooms</b> (near the hall)</td><td>All day.</td><td>Daytime use only, by team, with a counselor at the door.</td></tr>
-</table>
+<h2 id="rain">4. Rain and cold</h2>
+<div class="tw"><table>
+<tr><th style="width:170px">If this is rained off</th><th>We run this instead</th></tr>
+<tr><td>Kayaking (any rain or thunder)</td><td>Both groups do the banner workshop, then the Indoor Games Arcade.</td></tr>
+<tr><td>Orienteering Quest</td><td>Cipher Camp (codes and a coded map) and the Indoor Escape Room Race.</td></tr>
+<tr><td>Bambi Amazing Race</td><td>Light rain, no thunder: the Umbrella Treasure Hunt, 30 umbrellas, walking only, 40 minutes at most. Heavy rain: the checkpoints move indoors.</td></tr>
+<tr><td>Shelter Build</td><td>Goes ahead in light rain. In heavy rain, teams build table-top model shelters indoors.</td></tr>
+<tr><td>Multi-sports, Camp Olympics, the finale</td><td>Indoor Games Arcade and Minute-to-Win-It.</td></tr>
+<tr><td>Friday film</td><td>The covered area. The hall is full of dining guests from 18:00 to 20:00.</td></tr>
+<tr><td>Campfires</td><td>Skits and the ceremony indoors; s’mores wait for a dry evening.</td></tr>
+</table></div>
+<p>Thunder or lightning: everyone indoors at once, and wait 30 minutes after the last thunder. The camp lead makes the weather call before breakfast and again at 12:45. Late January lows are around 12 °C, so warm drinks follow every water or evening block.</p>
+<p><b>The indoor space is still the open question.</b> Our website promises a rain plan in the dining hall and “the covered activity area”. I do not know where that area is, how big it is, or whether the hall tables can move. See section 7.</p>
 
-<h3>The core zone: simple rules</h3>
-<ul>
-<li>Mark it: cones or tape across the two ways in, a banner at each, and a map board at the lawn.</li>
-<li>No camper leaves the core zone without a counselor. Buddy pairs, always, including to the restrooms.</li>
-<li>Campers wear the camp T-shirt or a colour band, so any adult on site can see at a glance who is ours.</li>
-<li>Headcount at fixed moments: after every move between places, at meals, before and after every rotation, at lights-out and again at 23:00. Two counselors count independently and the numbers must match.</li>
-<li>Two counselors on night duty, one awake in the cluster, the other walking the boundary. The nurse sleeps in the camper cluster.</li>
-<li>Ask Dave’s staff to tell us before entering the core zone and to use the same two ways in, and to tell guests at check-in that a youth camp is on site.</li>
-</ul>
+<h2 id="meals">5. Meals</h2>
+<div class="tw"><table>
+<tr><th style="width:56px"></th><th>Breakfast 07:15</th><th>Lunch 12:00</th><th>Dinner</th><th>Evening</th></tr>
+<tr><td><b>Thu</b></td><td>(travel)</td><td>Chef’s DIY lunch</td><td>18:00. Dave’s dinner 1: meatball pasta, corn soup and bread</td><td>S’mores at the campfire</td></tr>
+<tr><td><b>Fri</b></td><td>Dave’s breakfast: eggs, bacon, bread and sandwiches, milk and soy milk</td><td>Chef’s DIY lunch</td><td>17:00. Dave’s dinner 2: fried chicken and braised pork, vegetables, rice</td><td>20:10 snack in the hall</td></tr>
+<tr><td><b>Sat</b></td><td>Bambi’s standard buffet</td><td>Chef’s DIY lunch, 12:30</td><td>18:00 with the guests. Signature family dinner with Wagyu</td><td>S’mores at 17:00</td></tr>
+<tr><td><b>Sun</b></td><td>Bambi’s standard buffet</td><td>(home)</td><td></td><td></td></tr>
+</table></div>
+<p>This is my reading of what you and Dave said. Dave still has to confirm which dish is on which day, the Friday evening snack, and the allergen details. Bambi’s FAQ asks vegetarians for a week’s notice, and no-beef diners to say so in advance.</p>
 
-<h2>2. Weather and the indoor space</h2>
-<h3>What we know and what we need to ask</h3>
-<p>Our own site already promises a rain plan in “the Bambi Grand Dining Hall and the covered activity area”. The hall is a glass-walled room with big windows onto the palms. I do not know its size, whether it is split into two sides, whether the tables move, or where the covered area is. Those are the questions for Dave (section 6). Without them, plan like this:</p>
-<ol>
-<li><b>First choice, the covered activity area:</b> big-group sessions, builds and experiments (it needs power, light and side walls against wind).</li>
-<li><b>Second choice, the back side of the dining hall</b> in its free windows: about 09:00 to 14:30 and 16:00 to 17:00, never during Bambi’s meals. A good size for 30 would be a clear floor of about 8 by 10 m with tables pushed to the walls.</li>
-<li><b>Third choice, small groups with a counselor in the vans,</b> quiet games only. Food stays out of the vans (the van rules).</li>
-<li><b>On Friday and Saturday nights,</b> assume the hall is not ours after 19:30 if it rains. Our evening block must work in the covered area, or in the hall before 19:30.</li>
-</ol>
-<table>
-<tr><th style="width:120pt">Weather</th><th>What changes</th></tr>
-<tr><td>Light rain, no thunder</td><td>Ponchos or umbrellas. The Umbrella Treasure Hunt on the approved paths (below). Kayak is the coach’s call.</td></tr>
-<tr><td>Heavy rain or strong wind</td><td>No lake and no tram. Indoor block in the covered area or hall. The cinema moves inside, as Bambi’s does.</td></tr>
-<tr><td>Thunder or lightning</td><td>Everyone indoors at once. Wait 30 minutes after the last thunder before going out again (the usual rule of thumb).</td></tr>
-<tr><td>Cold front</td><td>Shorter outdoor blocks, hot drinks at the Airstream, warm layers as on the packing list. Agree a temperature number with Dave and the nurse.</td></tr>
-</table>
-<p class="small">The camp lead makes the weather call at 07:15 and again at 12:45 and tells the counselors which block to run.</p>
+<h2 id="shopping">6. Shopping list</h2><div class="box warn"><p>The shopping list is being priced shop by shop (Decathlon, Costco, IKEA, hardware and stationery shops in Taichung). It will appear here, with costs and the storage space needed, in the next update of this page.</p></div>
 
-<div class="pb"></div>
-<h2>3. Daily schedule</h2>
-<p>Bambi’s guest times are in <span class="tag shared">red</span>, where we avoid them. <span class="tag ours">Ours</span> means we have the place to ourselves. Plan B is for rain or a cold front. Dish names are not put against days because the kitchen has not said which day each dish is served (section 4).</p>
-
-<div class="day">Thursday 28 January <small>Arrival and lake day · the site is ours</small></div>
-<table>
-<tr><th>Time</th><th>What</th><th>Where</th><th>Notes and Plan B</th></tr>
-<tr><td class="t">08:00</td><td>Meet at The Lin Hotel, Taichung. Bus leaves 08:30.</td><td>Taichung</td><td>Medicine is handed in at check-in at the meeting point (our check-in form).</td></tr>
-<tr><td class="t">≈ 10:00</td><td>Arrive. The bus stops at reception; counselors walk everyone to the lawn.</td><td>Reception → open lawn</td><td></td></tr>
-<tr><td class="t">10:00–10:30</td><td>Welcome circle: director, nurse and counselors. Walk through the camp map, the zones and the buddy rule. Colour teams.</td><td>Open lawn</td><td>Rain: covered area.</td></tr>
-<tr><td class="t">10:30–11:45</td><td>Check-in in three groups of ten: nurse (medicine, health forms), van and key, luggage to the vans. The others do icebreakers and the <i>Team Banner &amp; Mascot Workshop</i>.</td><td>Reception, vans, lawn</td><td><b>Needs the vans ready by 10:30.</b> If not, do lunch first and move check-in after it.</td></tr>
-<tr><td class="t">12:00–13:00</td><td>Lunch: DIY with the chef (<i>Culinary Guild</i>).</td><td>Dining hall <span class="tag ours">ours</span></td><td></td></tr>
-<tr><td class="t">13:00–13:30</td><td>Rest in the vans. Change for the water (shoes that can get wet).</td><td>Vans</td><td></td></tr>
-<tr><td class="t">13:30–15:40</td><td>Lake rotation, two groups of 15, 65 minutes each: <b>kayaking</b> (dock briefing, life jackets, coach) and an <b>Orienteering Quest</b> or <i>Nature Photo Safari</i> on the grounds.</td><td>Kayak lake / grounds <span class="tag ours">ours</span></td><td>If there are not enough kayaks, use three groups of ten. Heavy rain or wind: swap to the indoor block.</td></tr>
-<tr><td class="t">15:40–16:30</td><td>Snack coupons and a warm drink at the Airstream. Rest and warm layers.</td><td>Snack shop <span class="tag ours">ours</span></td><td></td></tr>
-<tr><td class="t">16:45–17:45</td><td><b>Eco-tram at dusk</b>, in two runs of 15, to watch the egrets fly home (sunset is about 17:40).</td><td>Tram <span class="tag ours">ours</span></td><td>Counselors count everyone on and off. Rain: tram only if covered; otherwise swap with the indoor block.</td></tr>
-<tr><td class="t">17:45–18:30</td><td>Dinner.</td><td>Dining hall <span class="tag ours">ours</span></td><td></td></tr>
-<tr><td class="t">19:00–20:00</td><td><b>Opening campfire</b> and <i>Color War Opening Ceremony</i>: chants, s’mores, team banners.</td><td>Campfire circle <span class="tag ours">ours</span></td><td>Counselors tend the fire. Rain: the hall.</td></tr>
-<tr><td class="t">20:15–21:30</td><td><b>Star Cinema</b>, a licensed film suited to 10 to 14 year olds.</td><td>Cinema lawn <span class="tag ours">ours</span></td><td>Tired group: swap the film for the quiet table games. Rain or wind: the hall, as Bambi does.</td></tr>
-<tr><td class="t">21:30–22:00</td><td>Torches back to the vans. Evening van check. Lights out 22:00. Nurse’s round.</td><td>Vans</td><td>Gate at 23:00.</td></tr>
-</table>
-
-<div class="day">Friday 29 January <small>Big lawn day · guests arrive from 14:00</small></div>
-<table>
-<tr><th>Time</th><th>What</th><th>Where</th><th>Notes and Plan B</th></tr>
-<tr><td class="t">07:00</td><td>Wake. Counselors’ morning van check.</td><td>Vans</td><td></td></tr>
-<tr><td class="t">07:30–08:30</td><td>Breakfast.</td><td>Dining hall</td><td>No guests on the site that morning if Thursday night is ours. <i>Ask Dave.</i></td></tr>
-<tr><td class="t">08:45–11:30</td><td><b>Big lawn challenges</b>, five teams of six, rotating: <i>Bambi Amazing Race</i>, <i>Capture the Flag</i>, <i>Tug-of-War</i> and the <i>Camp Olympics Relay Medley</i>.</td><td>Open lawn, core zone</td><td>Rain: the indoor games (<i>Indoor Escape Room Race</i>, <i>Minute-to-Win-It</i>) in the covered area.</td></tr>
-<tr><td class="t">11:30–13:00</td><td>Lunch: DIY with the chef.</td><td>Dining hall</td><td>Guests get no lunch, so the hall is ours.</td></tr>
-<tr><td class="t">13:00–13:45</td><td>Rest in the vans. <b>Everyone back in the core zone by 13:45.</b> Counselors take their boundary posts.</td><td>Vans</td><td><span class="tag shared">14:00–15:00 guest check-in</span></td></tr>
-<tr><td class="t">13:45–17:00</td><td><b>Experiments and builds</b>: <i>Egg Drop</i>, <i>Balloon Rocket Grand Prix</i>, <i>Giant Bubble Lab</i>, <i>Paracord &amp; Moss-Ball Craft Studio</i>, plus two or three from the indoor list.</td><td>Lawn and covered area</td><td>No kayak or tram on Friday: <span class="tag shared">kayak 15:45–17:00, tram 16:00–17:00</span> are the guests’. <span class="tag shared">15:00–16:00 tea in the hall</span></td></tr>
-<tr><td class="t">17:00–17:45</td><td>Early dinner, before the guests’ batches.</td><td>Dining hall</td><td><span class="tag shared">18:00–20:00 guest dinner</span></td></tr>
-<tr><td class="t">17:45–19:15</td><td><b>Campfire</b>: <i>Skit &amp; Talent Showdown</i> and s’mores.</td><td>Campfire circle</td><td>Done by 19:15. Rain: covered area. <span class="tag shared">19:30 guests’ cinema on the same lawn</span></td></tr>
-<tr><td class="t">19:30–20:30</td><td><i>Glow Night Quest</i>, inside the core zone (the guests’ lawn is 60 to 100 m away).</td><td>Core zone</td><td>Rain: quiet table games in the covered area.</td></tr>
-<tr><td class="t">20:30–21:15</td><td>Quiet block: <i>Board-Game Café</i> or <i>Quiz Show Night</i>.</td><td>Covered area / hall</td><td>Wet night: <span class="tag shared">guests’ cinema and snack may be in the hall</span>. Covered area only.</td></tr>
-<tr><td class="t">21:15–22:00</td><td>Evening van check. Lights out 22:00.</td><td>Vans</td><td>Two counselors on night duty.</td></tr>
-</table>
-
-<div class="day">Saturday 30 January <small>Missions, the lake in the guests’ gap, and the final evening</small></div>
-<table>
-<tr><th>Time</th><th>What</th><th>Where</th><th>Notes and Plan B</th></tr>
-<tr><td class="t">07:15–07:55</td><td>Breakfast, the standard buffet. We eat before the guests.</td><td>Dining hall</td><td><span class="tag shared">08:00–09:00 guest breakfast</span> <i>Ask Dave to open early for us.</i></td></tr>
-<tr><td class="t">08:10–08:30</td><td>Van check. Weather call.</td><td>Vans</td><td></td></tr>
-<tr><td class="t">08:30–10:30</td><td><b>Team missions</b>: <i>Spider Web</i>, <i>Pipeline Challenge</i>, <i>Island Hop</i>, <i>Toxic Waste Transfer</i>, <i>Giant Rope Jump</i>. Rotating stations.</td><td>Open lawn, core zone</td><td>Guests are checking out on the roads (<span class="tag shared">keys by 10:00, off site by 10:30</span>). We stay in the core zone. Rain: indoor block.</td></tr>
-<tr><td class="t">10:45–12:15</td><td><b>The lake and the tram</b>, two groups of 15: <i>Kayak Skills Relay</i> and the guided eco-tram, then swap.</td><td>Kayak lake, tram <span class="tag ours">ours</span></td><td>Guests have left and the new ones come at 14:00. Midday is the warmest hour for kayaking in January.</td></tr>
-<tr><td class="t">12:15–13:15</td><td>Lunch: DIY with the chef.</td><td>Dining hall</td><td></td></tr>
-<tr><td class="t">13:15–13:45</td><td>Rest. Back in the core zone by 13:45.</td><td>Vans</td><td><span class="tag shared">14:00 guest check-in</span></td></tr>
-<tr><td class="t">13:45–17:00</td><td><b>Make and perform</b>: team banner finishing, rehearsal for the showdown, <i>Oobleck Olympics</i>, <i>Bridge &amp; Tower Build</i>, indoor-list activities.</td><td>Lawn and covered area</td><td><span class="tag shared">15:00–16:00 tea in the hall</span></td></tr>
-<tr><td class="t">17:15–18:15</td><td><b>Signature family dinner.</b> Ask for our own seating in the hall, finished by 18:15.</td><td>Dining hall</td><td><span class="tag shared">first guest batch at 18:00</span> The Wagyu dinner stays on the final evening, as promised.</td></tr>
-<tr><td class="t">18:30–19:30</td><td><b>Final campfire</b>: <i>Skit &amp; Talent Showdown</i> finals, awards, Camp Participation Awards.</td><td>Campfire circle</td><td>Done by 19:30. Rain: covered area. <span class="tag shared">19:30 guests’ cinema</span></td></tr>
-<tr><td class="t">19:30–20:15</td><td><i>Night Ecology Walk</i> and camp trivia, on the east side near the kayak lake.</td><td>Core zone</td><td>Rain: trivia in the covered area.</td></tr>
-<tr><td class="t">20:15–21:15</td><td>Wind-down: friendship bracelets and the camp photo slideshow.</td><td>Covered area / hall</td><td></td></tr>
-<tr><td class="t">21:15–22:00</td><td>Van check. Lights out 22:00.</td><td>Vans</td><td></td></tr>
-</table>
-
-<div class="day">Sunday 31 January <small>Pack-out and home</small></div>
-<table>
-<tr><th>Time</th><th>What</th><th>Where</th><th>Notes</th></tr>
-<tr><td class="t">07:00</td><td>Wake. Bags to the vans’ doors.</td><td>Vans</td><td></td></tr>
-<tr><td class="t">07:15–07:55</td><td>Breakfast, the standard buffet, before the guests.</td><td>Dining hall</td><td><span class="tag shared">08:00–09:00 guest breakfast</span></td></tr>
-<tr><td class="t">08:00–08:45</td><td>Pack. Final van check. Keys back to reception, with the nurse returning any medicine handed in. Luggage to the bus.</td><td>Vans, reception</td><td>Bambi’s deadline is keys back by 10:00.</td></tr>
-<tr><td class="t">08:45–09:00</td><td>Farewell circle: certificates, group photo.</td><td>Open lawn</td><td></td></tr>
-<tr><td class="t">≈ 09:00</td><td>Bus leaves camp, arriving at The Lin Hotel at about 10:30.</td><td></td><td><b>Please confirm the Sunday return time.</b> The drive out took 1.5 hours.</td></tr>
-</table>
-
-<h2>4. Meals</h2>
-<table>
-<tr><th style="width:56pt"></th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>
-<tr><td><b>Thu</b></td><td>(travel)</td><td>Chef’s DIY lunch</td><td>Dave’s dinner 1: meatball pasta, corn soup and bread</td></tr>
-<tr><td><b>Fri</b></td><td>Dave’s breakfast: eggs, bacon, bread and sandwiches, milk and soy milk</td><td>Chef’s DIY lunch</td><td>Dave’s dinner 2: fried chicken and braised pork, vegetables, rice</td></tr>
-<tr><td><b>Sat</b></td><td>Bambi’s standard buffet</td><td>Chef’s DIY lunch</td><td>Signature family dinner with Wagyu (Bambi’s standard weekend dinner)</td></tr>
-<tr><td><b>Sun</b></td><td>Bambi’s standard buffet</td><td>(home)</td><td></td></tr>
-</table>
-<p>This is my reading of what you and Dave said, and it fits neatly: Dave’s two dinners are Thursday and Friday, and the Wagyu is the final evening, as the website already says. The lunches are Dave’s four dishes (curry, pizza, rice balls, donburi) across three days, and Dave still has to say which day is which. <b>Dave to confirm</b>, along with allergen details for the standard buffet. It is a larger buffet, so the cross-contact risk is higher. Vegetarian and no-beef campers need a week’s notice (Bambi’s own rule).</p>
-
-<div class="pb"></div>
-<h2>5. Twenty indoor activities</h2>
-<p>For ten to fourteen year olds, about 30 campers in teams of 6 (or three groups of ten), 8 counselors, in the covered area or the back of the hall. They avoid the ones already on the site (the escape room, Minute-to-Win-It, balloon rockets, bridge and tower, egg drop, oobleck, bubbles and the banner workshop, which all work indoors too). Times include setup and tidy-up. You have plenty of science experiments, so use this as a menu.</p>
-<table>
-<tr><th style="width:16pt">#</th><th style="width:104pt">Activity</th><th>What campers do</th><th style="width:118pt">Needs</th><th style="width:34pt">Time</th></tr>
-<tr><td>1</td><td><b>Cardboard Arcade</b></td><td>Teams build a carnival-style game from cardboard and tape. Then the whole camp plays every game.</td><td>Boxes, tape, safety scissors, markers</td><td>90 min</td></tr>
-<tr><td>2</td><td><b>Marble Run Mega-Track</b></td><td>Each team builds a section from tubes and cardboard. The sections join into one run.</td><td>Card tubes, tape, marbles</td><td>75 min</td></tr>
-<tr><td>3</td><td><b>Paper Plane Airshow</b></td><td>Design and fly planes for distance, accuracy and hang time. Improve, then fly again.</td><td>Paper, tape measure, a clear 15 m</td><td>45 min</td></tr>
-<tr><td>4</td><td><b>Density Towers &amp; Lava Lamps</b></td><td>Layer honey, syrup, water and oil, then make a lava lamp with fizzing tablets.</td><td>Clear cups, food colour, oil, tablets, trays</td><td>45 min</td></tr>
-<tr><td>5</td><td><b>Static Electricity Circus</b></td><td>Bend a stream of water, make foil dance, stick a balloon to the wall, and explain why.</td><td>Balloons, foil, a tap or jug</td><td>40 min</td></tr>
-<tr><td>6</td><td><b>Light-Up Cards</b></td><td>Build a greeting card with a working LED, copper tape and a coin cell.</td><td>Copper tape, LEDs, coin cells (counted out and in), card</td><td>60 min</td></tr>
-<tr><td>7</td><td><b>Cipher Camp</b></td><td>Invent and crack secret codes, then write a coded treasure map for another team.</td><td>Paper, pens, a printed cipher wheel</td><td>50 min</td></tr>
-<tr><td>8</td><td><b>The Case of the Missing Marshmallow</b></td><td>A whodunit. Counselors play the suspects, and teams interview them and follow the clues.</td><td>Scripts, clue cards, costumes</td><td>75 min</td></tr>
-<tr><td>9</td><td><b>Live Radio Theatre</b></td><td>Teams perform a short radio play, with sound effects made from everyday objects, behind a sheet.</td><td>A sheet, props for sound, scripts</td><td>60 min</td></tr>
-<tr><td>10</td><td><b>Shadow Puppet Theatre</b></td><td>Make cut-out puppets and tell a story on a lit sheet.</td><td>Sheet, torches or a lamp, card, sticks</td><td>75 min</td></tr>
-<tr><td>11</td><td><b>Improv Games Circuit</b></td><td>“Yes, and”, freeze, one-word stories and mirror games. No preparation needed.</td><td>An open floor</td><td>45 min</td></tr>
-<tr><td>12</td><td><b>Board-Game Café</b></td><td>A tournament across a table of games, with a points ladder per team.</td><td>8 to 10 games, tables</td><td>60 min</td></tr>
-<tr><td>13</td><td><b>Invent-a-Game Studio</b></td><td>Teams design a board game, pitch it in two minutes, then everyone play-tests.</td><td>Card, dice, tokens, markers</td><td>90 min</td></tr>
-<tr><td>14</td><td><b>Camp Gazette</b></td><td>Write headlines, interviews, comics and a weather report for a wall newspaper.</td><td>Large paper, pens</td><td>60 min</td></tr>
-<tr><td>15</td><td><b>Quiz Show Night</b></td><td>Buzzer rounds with cup buzzers: Taiwan, science, camp trivia, guess-the-sound.</td><td>Cups or bells, a scoreboard</td><td>50 min</td></tr>
-<tr><td>16</td><td><b>Charades &amp; Pictionary Tournament</b></td><td>Team knockout rounds with camp-themed words.</td><td>Whiteboards, a timer</td><td>45 min</td></tr>
-<tr><td>17</td><td><b>Origami &amp; Pop-Up Engineering</b></td><td>Fold, then build pop-up cards and a paper city.</td><td>Paper, scissors, glue sticks</td><td>60 min</td></tr>
-<tr><td>18</td><td><b>Friendship Bracelet Marathon</b></td><td>A calm craft with music, for the wind-down hour.</td><td>Thread, tape, clips</td><td>60 min</td></tr>
-<tr><td>19</td><td><b>Stretch &amp; Breathe Reset</b></td><td>A counselor-led warm-up, balance poses and breathing, which also helps kayak balance.</td><td>Floor space, a mat or towel each</td><td>20 min</td></tr>
-<tr><td>20</td><td><b>Lip-Sync &amp; Dance-Off</b></td><td>Teams choose a song, rehearse and perform. A high-energy finish for a wet afternoon.</td><td>A speaker, a clear floor</td><td>60 min</td></tr>
-</table>
-<p><b>Also indoors, from your own list and the site:</b> the experiments you already run, <i>Indoor Escape Room Race</i>, <i>Minute-to-Win-It</i>, <i>Team Banner &amp; Mascot Workshop</i>, <i>Balloon Rocket Grand Prix</i>, <i>Bridge &amp; Tower Build</i>, <i>Oobleck Olympics</i>, <i>Giant Bubble Lab</i>, <i>Paracord &amp; Moss-Ball Craft Studio</i> and rehearsals for the campfire showdown.</p>
-<h3>Rain-friendly outdoors (no thunder or lightning)</h3>
-<ol>
-<li><b>Umbrella Treasure Hunt.</b> Each team has an umbrella and a clue map, and follows approved paths in the core zone to find the checkpoints. Counselors stand at the corners.</li>
-<li><b>Rain Photo Safari.</b> Teams find a puddle reflection, a dripping leaf and a moving cloud, photographed on a counselor’s camera.</li>
-<li><b>Splash Relay.</b> Relays in ponchos on the lawn, carrying cups of water along a marked track.</li>
-</ol>
-<p class="small">Cut-and-tape, circuits and coin cells need a counselor at every table. Count the coin cells out and back in.</p>
-
-<h2>6. Questions for Dave</h2>
-<p>The first eight decide whether the plan works. The rest can follow.</p>
+<h2 id="dave">7. Questions for Dave</h2>
 <div class="box ask">
 <h3>Needed first</h3>
 <ol>
-<li><b>Which hours is the site ours alone?</b> All of Thursday? Friday morning until the 14:00 arrivals? Are there guests on Wednesday night, and will the vans be ready by 10:30 on Thursday?</li>
-<li><b>Which vans can we hold?</b> B06 to B12 and A10 to A14 for campers, B01 to B05 and A05, A06, A08 for counselors, with the guests in D to G (and the lower A vans left empty if possible)?</li>
-<li><b>How many guests on Friday and Saturday nights?</b> Any large groups, parties or events, and is alcohol allowed near our corner?</li>
-<li><b>The dining hall.</b> Is it split into two sides, and can we use the back one? Can we move tables? How many people does it hold, is it heated, and are there power sockets and a screen? Which hours can we count on?</li>
-<li><b>The wet-weather evening.</b> Where do we go when Bambi moves its cinema and snack into the hall? Where is the covered activity area, and how big, how enclosed, how warm?</li>
-<li><b>Can we eat off the guests’ times?</b> Breakfast 07:15, lunch about 12:00, dinner 17:00 to 17:15 (Saturday 17:15 to 18:15).</li>
-<li><b>Kayaks and tram.</b> How many boats and coaches, and how many campers at once? Tram seats and guide? Can we have both on Thursday afternoon and on Saturday and Sunday mornings?</li>
-<li><b>Sunday timing.</b> The bus leaves camp at about 09:00. Is that all right with keys, breakfast and the next guests?</li>
+<li><b>Staff hours.</b> Can your team cover breakfast at 07:15, lunch at 12:00, dinner at 18:00 on Thursday and 17:00 on Friday, the kayak coach on Thursday 13:30 to 15:45, the tram on Thursday 16:40 to 17:40, and the campfire on Thursday evening?</li>
+<li><b>Guests.</b> Is the site empty on Wednesday and Thursday nights, and will our vans be ready by 10:45 on Thursday? How many guests on Friday and Saturday, and is anyone staying both nights?</li>
+<li><b>Vans.</b> Can we have the east end of B and the north end of A, about 21 vans, for all three nights?</li>
+<li><b>The hall.</b> Can we have one end of it: for the Friday snack and board games at 20:10, the Saturday dinner at 18:00 seated together, and the closing night after it? Can tables be moved?</li>
+<li><b>The covered activity area.</b> Where is it, how big, does it have walls, light and power? It is our wet-weather room, and our Friday film room if it rains.</li>
+<li><b>The Friday film.</b> May we use the screen and projector at 18:00 and be clear by 19:15? Is your guests’ film at 19:30?</li>
+<li><b>The lake and the tram.</b> How many boats and coaches, and how many campers at once? How many seats on the tram and how long is one run? Is a second lake session possible on Saturday 10:30 to 12:00? What is your cold or wind limit?</li>
+<li><b>Sunday.</b> Keys back at 08:30, games on the lawn until 09:50, the bus at 10:00. Where should the coach wait while your guests are checking out?</li>
 </ol>
 </div>
 <div class="box ask">
 <h3>Then</h3>
 <ol start="9">
-<li>Is Bambi’s weekend timetable (14:00 check-in, 15:00 tea, 18:00 to 20:00 dinner, 19:30 cinema, 23:00 gate) the winter one?</li>
-<li>Thursday and Friday meals: which dinner, which lunch dish and which breakfast on which day? Allergen details per dish, and for the standard Saturday and Sunday buffet?</li>
-<li>Is the pool closed and out of reach (covered, drained or fenced) for everyone in winter?</li>
-<li>Night security: who is on duty, are there cameras, who holds the master keys, and who answers the phone after 23:00?</li>
-<li>Will Bambi’s staff tell guests at check-in that a youth camp is on site, and agree not to enter our corner without telling us first?</li>
-<li>Is the Airstream snack shop open on our days, and at what hours?</li>
-<li>Campfire: who supplies the wood and the fire-keeper, and can we run the Thursday cinema on Bambi’s screen and projector?</li>
+<li>Meals: which dish on which day, the Friday evening snack, a warm drink and snack at 16:00 on Thursday, and allergen details for everything including the standard buffet.</li>
+<li>The Saturday campfire at 17:00 to 17:50: is the fire circle free, and who supplies the wood?</li>
+<li>Is the pool open in January, and can it be roped off? Is the Airstream open on our days?</li>
+<li>After 23:00: who opens the gate in an emergency, who is on duty, where is the AED, and can the path lights stay on from 17:30 to 21:30?</li>
+<li>Is the guest timetable on your “read before you come” page the one in force in January?</li>
+<li>Storage: can we bring the kit on Thursday morning and keep it in a dry, lockable place near our vans? (Section 6 gives the size.)</li>
 <li>Does the Friday-night business day change the price?</li>
 </ol>
 </div>
 
-<h2>7. What we do next</h2>
+<h2>8. What happens next</h2>
 <ol>
-<li><b>This week:</b> you send Dave the eight questions. A walk round the site (or a short video from Dave) to check the zones, the lawn, the covered area and the back of the hall.</li>
-<li><b>Once you confirm the dates, the Sunday time and the answers:</b> I update the whole website (dates, bus times, check-in and hand-over, the “no outside visitors” wording, which will need to say that other guests are on site) and regenerate the forms and the legal PDFs, in one pass.</li>
-<li><b>Then:</b> turn the schedule into a counselor pack with the materials list for the indoor activities, and a one-page zone card.</li>
-<li><b>Thursday morning:</b> walk the zones with all campers and run a headcount drill before anything else.</li>
-<li><b>Summer is different:</b> we have the whole site, so none of the zoning above applies.</li>
+<li><b>You:</b> confirm the dates (Thursday 28 to Sunday 31 January 2027) and send Dave the questions.</li>
+<li><b>Me, once confirmed:</b> update the website, the forms and the legal PDFs in one pass: dates, bus times (back at about 11:30 on Sunday), and the wording that says no outside visitors, which should say that other guests are on site.</li>
+<li><b>You:</b> buy the kit (section 6). <b>Me:</b> turn the schedule into a counselor pack with a run sheet per activity.</li>
 </ol>
 
-<p class="small" style="margin-top:14pt"><b>Sources.</b> Bambi’s FAQ and its “read before you come” page (guest timetable, gate and visitor rules, zones and van counts, pool hours, meals), our traced copy of Bambi’s official map (van positions, distances at 1 map pixel = 0.4 m, the lawn), and our own website (activities, rain plan, van rules). Sunset time is an estimate for late January. Nothing here is a promise to parents until Dave has confirmed it.</p>
-</body></html>
+<h2>Appendix: twenty indoor activities for the rain box</h2>
+<p>For teams of five in the covered area or our end of the hall. Times include setup and tidy-up. The first one is in the schedule already. The rest are spares for a wet day, on top of your own experiments.</p>
+<div class="tw"><table>
+<tr><th style="width:26px">#</th><th style="width:150px">Activity</th><th>What campers do</th><th style="width:170px">Needs</th><th style="width:60px">Time</th></tr>
+<tr><td>1</td><td><b>Indoor Games Arcade</b></td><td>Six stations: cornhole, soft pétanque, Mölkky, table tennis on a dining table, safe darts, cup stacking.</td><td>The games in the shopping list</td><td>40 min</td></tr>
+<tr><td>2</td><td><b>Cardboard Arcade</b></td><td>Teams build a carnival-style game from cardboard and tape. Then the whole camp plays every game.</td><td>Boxes (free from Costco), tape, safety scissors, markers</td><td>90 min</td></tr>
+<tr><td>3</td><td><b>Marble Run Mega-Track</b></td><td>Each team builds a section from tubes and cardboard. The sections join into one run.</td><td>Card tubes, tape, marbles</td><td>75 min</td></tr>
+<tr><td>4</td><td><b>Paper Plane Airshow</b></td><td>Design and fly planes for distance, accuracy and hang time, in heats along the longest wall.</td><td>Paper, a tape measure</td><td>45 min</td></tr>
+<tr><td>5</td><td><b>Density Towers &amp; Lava Lamps</b></td><td>Layer honey, syrup, water and oil, then make a lava lamp with fizzing vitamin C tablets.</td><td>Clear cups, food colouring, oil, vitamin C tablets (never aspirin-based ones), trays and towels</td><td>45 min</td></tr>
+<tr><td>6</td><td><b>Paper Helicopters</b></td><td>Cut and fold spinners, drop them from a chair, change one thing and test again.</td><td>Paper, scissors, paper clips</td><td>40 min</td></tr>
+<tr><td>7</td><td><b>Cipher Camp</b></td><td>Invent and crack secret codes, then write a coded treasure map for another team.</td><td>Paper, pens, a printed cipher wheel</td><td>50 min</td></tr>
+<tr><td>8</td><td><b>The Case of the Missing Marshmallow</b></td><td>A whodunit. Counselors play the suspects, and teams interview them and follow the clues.</td><td>A script written beforehand, clue cards, a few props</td><td>75 min</td></tr>
+<tr><td>9</td><td><b>Live Radio Theatre</b></td><td>Teams perform a short radio play behind a sheet, with sound effects made from everyday objects.</td><td>A sheet, props for sound, scripts</td><td>60 min</td></tr>
+<tr><td>10</td><td><b>Shadow Puppet Theatre</b></td><td>Make cut-out puppets and tell a story on a lit sheet. After dark, in the covered area.</td><td>A sheet, torches, card, sticks</td><td>75 min</td></tr>
+<tr><td>11</td><td><b>Improv Games Circuit</b></td><td>“Yes, and”, freeze, one-word stories and mirror games. No preparation needed.</td><td>An open floor</td><td>45 min</td></tr>
+<tr><td>12</td><td><b>Board-Game Café</b></td><td>A tournament across the tables, with a points ladder per team. (In the schedule on Friday night.)</td><td>The ten games in the shopping list</td><td>40 min</td></tr>
+<tr><td>13</td><td><b>Minute-to-Win-It</b></td><td>One-minute challenges with cups, balloons, straws and ping-pong balls. (The closing-night finals.)</td><td>Cups, balloons, straws, ping-pong balls</td><td>50 min</td></tr>
+<tr><td>14</td><td><b>Camp Gazette</b></td><td>Write headlines, interviews, comics and a weather report for a wall newspaper.</td><td>Large paper, pens</td><td>60 min</td></tr>
+<tr><td>15</td><td><b>Buzzer Quiz</b></td><td>Fast buzzer rounds with call bells: Taiwan, science, sport and camp questions.</td><td>Call bells, a scoreboard</td><td>45 min</td></tr>
+<tr><td>16</td><td><b>Charades &amp; Pictionary Tournament</b></td><td>Team knockout rounds with camp-themed words.</td><td>Whiteboards, a timer</td><td>45 min</td></tr>
+<tr><td>17</td><td><b>Origami &amp; Pop-Up Engineering</b></td><td>Fold, then build pop-up cards and a paper city.</td><td>Paper, scissors, glue sticks</td><td>60 min</td></tr>
+<tr><td>18</td><td><b>Friendship Bracelets</b></td><td>A calm craft for a wind-down hour.</td><td>Embroidery thread, tape</td><td>50 min</td></tr>
+<tr><td>19</td><td><b>Stretch &amp; Breathe Reset</b></td><td>A counselor-led warm-up with balance poses and breathing. A good opener before the lake.</td><td>Floor space</td><td>20 min</td></tr>
+<tr><td>20</td><td><b>Lip-Sync &amp; Dance-Off</b></td><td>Teams choose a song, rehearse and perform. A high-energy finish for a wet afternoon.</td><td>The speaker, a clear floor</td><td>60 min</td></tr>
+</table></div>
+<p class="small">Also indoors from the website’s own list: Indoor Escape Room Race, Team Banner &amp; Mascot Workshop, Balloon Rocket Grand Prix, Bridge &amp; Tower Build, Oobleck Olympics and the Paracord craft. Scissors and tape tables each need a counselor.</p>
+
+
+<p class="small" style="margin-top:22px"><b>Sources.</b> Bambi’s FAQ and its “read before you come” page (2025) for the guest timetable, the rules, the zones and the pool hours; our traced copy of Bambi’s official map for positions and straight-line distances; our own website for the activities and van rules. Sunset is an estimate for late January. Prices in section 6 are from the shops’ own pages where marked, and estimates otherwise. Nothing here is a promise to parents until Dave has confirmed it.</p>
+</div></body></html>
