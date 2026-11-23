@@ -2,7 +2,7 @@
 
 Bilingual (繁體中文 / English) website for an American-style winter and summer camp
 at Bambi Glamping, Sanwan, Miaoli. There is one kind of camp: 4 days and 3 nights,
-Wednesday to Saturday, for ages 10–14.
+Thursday to Sunday, for ages 10–14. The camp is named **Camp WOW · World of Outdoor Wonders**.
 
 | Page | Path | What it is |
 | --- | --- | --- |
@@ -54,18 +54,25 @@ including under a sub-path.
 - Snacks are not part of the fee. Parents choose a coupon pack (`snackShop.couponPacks`:
   NT$1,000 / 2,000 / 3,000); campers get the coupons at check-in and exchange them at
   the Airstream snack shop beside the pool.
-- There is one kind of camp: 4 Days / 3 Nights, Wednesday to Saturday. The site never
+- There is one kind of camp: 4 Days / 3 Nights, Thursday to Sunday (`days` in `campConfig.ts`). The site never
   names options: there is nothing to choose between.
-- Campers meet at The Lin Hotel, Taichung, at 08:00 on Wednesday; the charter bus leaves
-  at 08:30 and returns there at 10:30 on Saturday (`transport` in `campConfig.ts`). The bus
+- Campers meet at The Lin Hotel, Taichung, at 08:00 on Thursday; the charter bus leaves
+  at 08:30. On Sunday it leaves camp at 10:00 and is back there at about 11:30
+  (`transport` in `campConfig.ts`). The bus
   both ways is included in the fee (confirmed by the organizer). Nobody is dropped off at the camp gate.
-- The first camp is the winter one: Wednesday 27 to Saturday 30 January 2027, a pilot
+- The first camp is the winter one: Thursday 28 to Sunday 31 January 2027, a pilot
   camp limited to 30 campers, at NT$35,000 per camper (`sessions.winter`). These are the
   only dates on the site. The summer camp has none yet (`sessions.summer` is `null`): it
   is a placeholder that says "Coming soon", prints no date or fee, and cannot be chosen
   in the registration form. Fill in `sessions.summer` to open it.
-- No daily timetable is published yet. Add it (and the list of activities) to
-  `src/home/content.ts` when the partners supply it.
+- The winter camp's day-by-day plan is `SCHEDULE` in `src/home/content.ts`: four days, with
+  the anchor times and the named activities, and no dish names. A season with no dates
+  shows a short note in its place.
+- English is described only as the language of daily camp life (全美語生活環境). The wording
+  rules that keep the camp an outdoor recreation camp, and out of cram-school territory,
+  are in `scripts/copy-rules.mjs`; the website audit and the adverts both use them.
+- Bambi Glamping's own overnight guests are on site on the weekend nights, and the site
+  says so (Safety, FAQ and the gate panel).
 
 ## The 3D map
 
@@ -141,5 +148,5 @@ Run `npm run launch-check`. In particular:
   kitchen, lifeguard and insurer to confirm.
 - The handover documents (Docs 2–4, including the contract) still describe four meals
   a day, Options A and B and Monday/Tuesday starts. Update them to match the camp facts
-  above (one 4 Days / 3 Nights camp, Wednesday to Saturday, three meals a day) before the
+  above (one 4 Days / 3 Nights camp, Thursday to Sunday, three meals a day) before the
   contract PDF is linked.

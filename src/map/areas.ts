@@ -2,7 +2,7 @@ import type { AreaId } from '../lib/types'
 import { campConfig } from '../config/campConfig'
 import type { Area } from './types'
 
-const { cohort, pool, transport, venue, winterMenu } = campConfig
+const { cohort, days, pool, transport, venue, winterMenu } = campConfig
 
 const twd = (n: number) => `NT$${n.toLocaleString('en-US')}`
 const packs = campConfig.snackShop.couponPacks.map(twd)
@@ -29,8 +29,8 @@ export const AREAS: Area[] = [
       zh: '每位營員的冒險，從這裡開始。',
     },
     summary: {
-      en: `Campers arrive by charter bus at the Bambi gate in Sanwan, Miaoli, where counselors welcome them at the reception unit just inside. The bus leaves ${transport.meetingPoint.en}, at ${transport.departTime} on Wednesday and brings campers back there at ${transport.returnTime} on Saturday.`,
-      zh: `營員搭乘遊覽車專車抵達苗栗三灣斑比跳跳大門，隊輔會在入口旁的接待處迎接。專車於週三 ${transport.departTime} 自${transport.meetingPoint.zh}出發，週六 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。`,
+      en: `Campers arrive by charter bus at the Bambi gate in Sanwan, Miaoli, where counselors welcome them at the reception unit just inside. The bus leaves ${transport.meetingPoint.en}, at ${transport.departTime} on ${days.first.en} and brings campers back there at about ${transport.returnTime} on ${days.last.en}.`,
+      zh: `營員搭乘遊覽車專車抵達苗栗三灣斑比跳跳大門，隊輔會在入口旁的接待處迎接。專車於${days.first.zh} ${transport.departTime} 自${transport.meetingPoint.zh}出發，${days.last.zh}約 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。`,
     },
     icon: 'DoorClosed',
     accent: '#8a6a43',
@@ -40,16 +40,16 @@ export const AREAS: Area[] = [
         icon: 'Bus',
         title: { en: 'Charter bus from Taichung, both ways', zh: '臺中來回遊覽車專車' },
         body: {
-          en: `Campers meet at ${transport.meetingPoint.en}, at ${transport.meetTime} on Wednesday, and the charter bus leaves at ${transport.departTime}. On Saturday it returns to ${transport.meetingPoint.en}, at ${transport.returnTime}. The bus both ways is included in the fee.`,
-          zh: `週三 ${transport.meetTime} 於${transport.meetingPoint.zh}集合，遊覽車專車 ${transport.departTime} 出發；週六 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。來回專車費用已含。`,
+          en: `Campers meet at ${transport.meetingPoint.en}, at ${transport.meetTime} on ${days.first.en}, and the charter bus leaves at ${transport.departTime}. On ${days.last.en} it leaves camp at ${transport.leaveCampTime} and returns to ${transport.meetingPoint.en}, at about ${transport.returnTime}. The bus both ways is included in the fee.`,
+          zh: `${days.first.zh} ${transport.meetTime} 於${transport.meetingPoint.zh}集合，遊覽車專車 ${transport.departTime} 出發；${days.last.zh} ${transport.leaveCampTime} 自營地出發，約 ${transport.returnTime} 返抵${transport.meetingPoint.zh}。來回專車費用已含。`,
         },
       },
       {
         icon: 'MapPin',
         title: { en: 'Meeting point', zh: '集合地點' },
         body: {
-          en: `${transport.meetingPoint.en} (${transport.meetingAddress.en}). Families bring campers there on Wednesday morning and meet them there on Saturday.`,
-          zh: `${transport.meetingPoint.zh}（${transport.meetingAddress.zh}）。週三早上由家長送孩子至此集合，週六也在此接回。`,
+          en: `${transport.meetingPoint.en} (${transport.meetingAddress.en}). Families bring campers there on ${days.first.en} morning and meet them there on ${days.last.en}.`,
+          zh: `${transport.meetingPoint.zh}（${transport.meetingAddress.zh}）。${days.first.zh}早上由家長送孩子至此集合，${days.last.zh}也在此接回。`,
         },
       },
       {
@@ -72,20 +72,20 @@ export const AREAS: Area[] = [
         icon: 'Lock',
         title: { en: `${cohort.gateCurfew} gate curfew`, zh: `${cohort.gateCurfew} 大門管制` },
         body: {
-          en: 'The gate is secured every night at 23:00, and outside visitors are not admitted during camp.',
-          zh: '園區大門每晚 23:00 管制，營期間謝絕外部訪客探視。',
+          en: 'The gate is closed every night at 23:00. Bambi Glamping’s own overnight guests are also on site on the weekend nights; parents and other visitors are not admitted during camp.',
+          zh: '園區大門每晚 23:00 管制。週末夜晚園區另有斑比跳跳的住宿旅客；營期間謝絕家長與其他訪客探視。',
         },
       },
     ],
     facts: [
       { label: { en: 'Venue', zh: '營地' }, value: { en: 'Bambi Glamping, Sanwan, Miaoli', zh: '斑比跳跳・苗栗三灣' } },
-      { label: { en: 'Bus from Taichung', zh: '臺中專車' }, value: { en: `Leaves Wednesday ${transport.departTime} · back Saturday ${transport.returnTime}`, zh: `週三 ${transport.departTime} 出發・週六 ${transport.returnTime} 返抵` } },
+      { label: { en: 'Bus from Taichung', zh: '臺中專車' }, value: { en: `Leaves ${days.first.en} ${transport.departTime} · back ${days.last.en} about ${transport.returnTime}`, zh: `${days.first.zh} ${transport.departTime} 出發・${days.last.zh}約 ${transport.returnTime} 返抵` } },
       { label: { en: 'Gate curfew', zh: '大門管制' }, value: { en: 'Nightly at 23:00', zh: '每晚 23:00' } },
       { label: { en: 'Address', zh: '地址' }, value: venue.address },
     ],
     parentNote: {
-      en: `Say your goodbyes at ${transport.meetingPoint.en}, on Wednesday morning. When the bus reaches camp, counselors take care of luggage and camper van assignments.`,
-      zh: `週三早上請在${transport.meetingPoint.zh}與孩子道別；專車抵達營地後，行李與露營車分配都交給隊輔。`,
+      en: `Say your goodbyes at ${transport.meetingPoint.en}, on ${days.first.en} morning. When the bus reaches camp, counselors take care of luggage and camper van assignments.`,
+      zh: `${days.first.zh}早上請在${transport.meetingPoint.zh}與孩子道別；專車抵達營地後，行李與露營車分配都交給隊輔。`,
     },
   },
 

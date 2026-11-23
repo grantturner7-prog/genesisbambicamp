@@ -1,6 +1,7 @@
 // Compliance self-check (Doc 3, Part 6). Scans every published string, in both languages,
 // against the Taiwan regulatory guardrails. A violation fails the build.
 import { createServer } from 'vite'
+import { RULES } from './copy-rules.mjs'
 
 const vite = await createServer({ configFile: false, root: process.cwd(), server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent', optimizeDeps: { noDiscovery: true, include: [] } })
 const load = (p) => vite.ssrLoadModule(p)
@@ -23,19 +24,6 @@ const { readFileSync } = await import('node:fs')
 for (const f of ['index.html', 'facilities/index.html']) for (const m of readFileSync(f, 'utf8').matchAll(/<title>([^<]*)<\/title>|content="([^"]*)"/g)) walk((m[1] ?? m[2]).replace(/&amp;/g, '&'), `${f} <head>`)
 walk({ sessions: campConfig.sessions, snackShop: { couponTerms: campConfig.snackShop.couponTerms } }, 'config')
 
-const RULES = [
-  // Rule A — zero cram-school (buxiban) triggers
-  ['A cram-school wording', /education group|教育集團|學院|補習班|\bESL\b|foreign teachers?|外籍教師|外師|美語課程|english class(es)?|english immersion|\bSTEM\b|\bSTEAM\b|placement test|程度分班|結業證書|修業證明|completion certificate|講義|教材|\bteachers?\b|老師|授課|\blessons?\b|curriculum|課程|tutoring|課業輔導/i],
-  // Rule C — banned disclaimers
-  ['C banned disclaimer', /for reference only|僅供參考|保有最終修改權|reserves? (the )?(final )?right to (modify|change)|概不負責|not responsible for accidents|概不退還|non-?refundable/i],
-  // Rule D — truth in advertising
-  ['D wrong township', /sanyi|三義/i],
-  // Campers meet at the meeting point in Taichung and ride the bus both ways: no drop-off at the camp gate.
-  ['D stale arrival plan (campers meet at the meeting point in Taichung; nobody is dropped off at the camp)', /(wednesday|週三)[^.。]{0,40}14:[03]0|drop(ped|s)?[- ]?(off|their|them)[^.。]{0,40}(sanwan|\bgate\b)|(送達|送到|送至|送抵)[^。]{0,12}(三灣|園區|大門|營地)|(大門|園區)[^。]{0,8}報到|arrive relaxed|taichung theater|歌劇院|shizheng|市政北二路|tour bus zone|臨停區/i],
-  ['D wooden cabins', /wooden cabin|log cabin|小木屋|木屋/i],
-  // Meals: three a day (buffet breakfast, DIY lunch with the chef, evening buffet).
-  ['D stale meal plan (the camp serves three meals a day)', /\bfour[- ](daily )?meals?\b|(?<![\d.,])4[- ](daily )?meals?\b|一泊四食|四食|(?<![十\d])四餐|(?<!\d)4 ?餐|宵夜|(campfire|evening) snacks?|營火點心|晚間點心/i],
-]
 const errors = []
 const fail = (name, path, text) => errors.push(`${name}: ${path} → "${text.slice(0, 90)}"`)
 for (const { path, text } of all) for (const [name, re] of RULES) if (re.test(text)) fail(name, path, text)
@@ -56,13 +44,13 @@ for (const { path, text } of all) if (/afternoon tea|午茶/i.test(text) && !/co
   }
 }
 
-// One kind of camp: 4 Days / 3 Nights, Wednesday to Saturday. No option letters, no other
+// One kind of camp: 4 Days / 3 Nights, Thursday to Sunday. No option letters, no other
 // lengths, no family camp, and no other camp days anywhere in the copy.
 {
-  const STALE = /\boptions? [abc]\b|方案 ?[ABC]|family camp|親子梯|5 days|五天四夜|3 days \/ 2 nights|三天兩夜|\b(mon|tues|fri)day\b|(週|星期|禮拜)[一二五]/i
-  for (const { path, text } of all) if (STALE.test(text)) fail('D stale option or camp day (one camp: 4 Days / 3 Nights, Wednesday to Saturday)', path, text)
+  const STALE = /\boptions? [abc]\b|方案 ?[ABC]|family camp|親子梯|5 days|五天四夜|3 days \/ 2 nights|三天兩夜|\b(mon|tues|wednes)day\b|(週|星期|禮拜)[一二三]/i
+  for (const { path, text } of all) if (STALE.test(text)) fail('D stale option or camp day (one camp: 4 Days / 3 Nights, Thursday to Sunday)', path, text)
   for (const [season, o] of Object.entries(campConfig.sessions)) {
-    if (o && new Date(o.startDate + 'T00:00:00Z').getUTCDay() !== 3) errors.push(`The ${season} camp must start on a Wednesday: ${o.startDate}`)
+    if (o && new Date(o.startDate + 'T00:00:00Z').getUTCDay() !== 4) errors.push(`The ${season} camp must start on a Thursday: ${o.startDate}`)
   }
 }
 
@@ -87,15 +75,18 @@ const need = [
   ['rainy-day plan (斑比大飯店)', '斑比大飯店', text],
   ['minimum-group 7-day 100% guarantee', '100%', home.PRICING.guarantee.en + home.PRICING.guarantee.zh],
   ['Insurance Act Art. 107', '107', home.SAFETY.under15.en + home.SAFETY.under15.zh],
-  ['Wednesday meeting point and time', `meet at ${campConfig.transport.meetingPoint.en}, at ${campConfig.transport.meetTime}`, home.PRICING.camp.bus.en],
-  ['Wednesday bus departure time', `leaves at ${campConfig.transport.departTime}`, home.PRICING.camp.bus.en],
-  ['Saturday return time and place', `returns to ${campConfig.transport.meetingPoint.en}, at ${campConfig.transport.returnTime}`, home.PRICING.camp.bus.en],
-  ['meeting point and times (zh)', `週三 ${campConfig.transport.meetTime} 於${campConfig.transport.meetingPoint.zh}集合`, home.PRICING.camp.bus.zh],
-  ['Saturday return (zh)', `週六 ${campConfig.transport.returnTime} 返抵${campConfig.transport.meetingPoint.zh}`, home.PRICING.camp.bus.zh],
+  ['first-day meeting point and time', `${campConfig.days.first.en}: meet at ${campConfig.transport.meetingPoint.en}, at ${campConfig.transport.meetTime}`, home.PRICING.camp.bus.en],
+  ['first-day bus departure time', `leaves at ${campConfig.transport.departTime}`, home.PRICING.camp.bus.en],
+  ['last-day return time and place', `${campConfig.days.last.en}: the bus leaves camp at ${campConfig.transport.leaveCampTime} and returns to ${campConfig.transport.meetingPoint.en}, at about ${campConfig.transport.returnTime}`, home.PRICING.camp.bus.en],
+  ['meeting point and times (zh)', `${campConfig.days.first.zh} ${campConfig.transport.meetTime} 於${campConfig.transport.meetingPoint.zh}集合`, home.PRICING.camp.bus.zh],
+  ['last-day return (zh)', `約 ${campConfig.transport.returnTime} 返抵${campConfig.transport.meetingPoint.zh}`, home.PRICING.camp.bus.zh],
+  ['the camp name', campConfig.brand.camp, home.SCHEDULE.title.en + strings.en.header.brand],
+  ['other guests of the venue are disclosed', 'overnight guests', home.SAFETY.staff.map((x) => x.body.en).join(' ')],
+  ['the day-by-day plan starts at the meeting point', campConfig.transport.meetingPoint.en, home.SCHEDULE.days[0].rows[0].what.en],
   ['meeting point address', campConfig.transport.meetingAddress.en, home.PRICING.bus.en],
   ['both bus journeys under "Included"', 'to camp and back', home.PRICING.included.map((x) => x.en).join(' ')],
   ['the camp is 4 Days / 3 Nights', '4 Days / 3 Nights', home.PRICING.camp.name.en],
-  ['the camp runs Wednesday to Saturday', 'Wednesday to Saturday', home.PRICING.camp.when.en],
+  ['the camp runs Thursday to Sunday', `${campConfig.days.first.en} to ${campConfig.days.last.en}`, home.PRICING.camp.when.en],
   ['three meals a day', 'Three meals a day', home.STAY.mealsTitle.en],
   ['signature Wagyu dinner on the final evening', 'Wagyu', home.STAY.signature.title.en + home.STAY.signature.body.en],
   ...campConfig.snackShop.couponPacks.map((n) => [`snack coupon pack NT$${n.toLocaleString('en-US')}`, `NT$${n.toLocaleString('en-US')}`, home.STAY.snacks.body.en]),

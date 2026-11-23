@@ -233,6 +233,9 @@ const SECTIONS = [
     title: l('FAQ and other commitments', '常見問題與其他承諾'),
     where: 'Landing page › hero, Stay & Meals, activities, FAQ',
     open: [
+      'The camp is now named “Camp WOW · World of Outdoor Wonders”. The site describes English only as the language of daily camp life (全美語生活環境); it makes no claim about instruction. Please confirm the name and that wording keep the camp outside the rules for short-term tutorial schools (補習班).',
+      'The site now publishes a day-by-day plan with times. Please advise whether published times become contract terms, and whether the wording “on a wet day the same day carries on under cover” is enough for changes caused by weather.',
+      'The site now says that Bambi Glamping’s own overnight guests are on site on the weekend nights, and that parents and other visitors are not admitted during camp.',
       'These are not notices as such, but they are promises a parent may rely on. They are included so that nothing a parent reads is left out of the review.',
       'Activity descriptions and the 32 named games are not reproduced here. They can be exported the same way on request.',
     ],
@@ -244,7 +247,7 @@ const SECTIONS = [
         rows: [...list('Checklist line', home.HERO.points), ...Object.keys(strings.en.hero.metrics).map((k) => row('Figure', l(`${S(`hero.metrics.${k}`).en.value}: ${S(`hero.metrics.${k}`).en.label}`, `${S(`hero.metrics.${k}`).zh.value}：${S(`hero.metrics.${k}`).zh.label}`))), ...(pilotCap ? [row('Figure (season with a pilot camp)', l(`${pilotCap}: ${home.HERO.pilotMetric.en}`, `${pilotCap}：${home.HERO.pilotMetric.zh}`))] : [])],
       },
       { title: home.STAY.mealsTitle, where: 'Stay & Meals › meals', rows: [...list('Meal', home.STAY.meals), row('Note under the meals', home.STAY.mealsNote), row('Final evening', item({ kicker: home.STAY.signature.kicker, title: home.STAY.signature.title, body: home.STAY.signature.body }))] },
-      { title: l('Schedule and rainy days', '行程與雨天備案'), where: 'Games & challenges › closing boxes', rows: [row('Daily schedule', item(home.SCHEDULE_PENDING)), row('Rain plan', item(home.RAIN_PLAN))] },
+      { title: l('Schedule and rainy days', '行程與雨天備案'), where: 'Landing page › Day by day, and the rain plan box under Games & challenges', rows: [row('Day-by-day plan: heading and introduction', l(`${home.SCHEDULE.title.en}. ${home.SCHEDULE.intro.en}`, `${home.SCHEDULE.title.zh}。${home.SCHEDULE.intro.zh}`)), ...home.SCHEDULE.days.map((d) => row(`${d.day.en}: ${d.theme.en}`, l(d.rows.map((r) => `${r.time} ${r.what.en}`).join(' / '), d.rows.map((r) => `${r.time} ${r.what.zh}`).join('／')))), row('Shown for a camp with no dates yet', home.SCHEDULE.pending), row('Rain plan', item(home.RAIN_PLAN))] },
     ],
   },
 ]

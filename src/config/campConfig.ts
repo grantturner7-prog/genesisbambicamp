@@ -21,6 +21,10 @@ export interface SessionOffer {
  */
 export const campConfig = {
   brand: {
+    /** The camp's own name, the same in both languages: "WOW" is 哇. */
+    camp: 'Camp WOW',
+    campMeaning: 'World of Outdoor Wonders',
+    campLine: { en: 'The all-English outdoor camp', zh: '全美語生活環境的戶外營隊' },
     en: 'Genesis Youth Adventures × Bambi Glamping',
     zh: '創世紀青少年戶外探索 × 斑比跳跳',
     enShort: 'Genesis × Bambi',
@@ -48,7 +52,15 @@ export const campConfig = {
     meetingAddress: { en: 'No. 99, Chaofu Rd., Xitun District, Taichung', zh: '臺中市西屯區朝富路 99 號' },
     meetTime: '08:00',
     departTime: '08:30',
-    returnTime: '10:30',
+    /** The bus leaves camp on the last morning and is back at the meeting point at about this time. */
+    leaveCampTime: '10:00',
+    returnTime: '11:30',
+  },
+
+  /** The camp's days of the week: every "Thursday" and "Sunday" in the copy comes from here. */
+  days: {
+    first: { en: 'Thursday', zh: '週四' },
+    last: { en: 'Sunday', zh: '週日' },
   },
 
   /**
@@ -156,15 +168,15 @@ export const campConfig = {
   venuePhotoPermissionOnFile: false,
 
   /**
-   * The camp is one kind only: 4 Days / 3 Nights, Wednesday to Saturday, one camp a season.
+   * The camp is one kind only: 4 Days / 3 Nights, Thursday to Sunday, one camp a season.
    * `null`: the partners still owe that season's dates and fee.
-   * The first camp is the winter one: Wednesday 27 to Saturday 30 January 2027, a pilot camp
+   * The first camp is the winter one: Thursday 28 to Sunday 31 January 2027, a pilot camp
    * limited to 30 campers, at NT$35,000 per camper.
    */
   sessions: {
     winter: {
-      dates: { en: '27–30 January 2027 (Wednesday to Saturday)', zh: '2027 年 1 月 27 日至 30 日（週三至週六）' },
-      startDate: '2027-01-27',
+      dates: { en: '28–31 January 2027 (Thursday to Sunday)', zh: '2027 年 1 月 28 日至 31 日（週四至週日）' },
+      startDate: '2027-01-28',
       fee: 35000, // per camper
       pilot: { maxCampers: 30 },
     } as SessionOffer | null,

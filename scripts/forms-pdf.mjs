@@ -169,7 +169,7 @@ ${P(`What happens: a counselor first talks with the camper. If it goes on, or if
 ${H(N.things, 'Phones, food and valuables', '手機、食物與貴重物品')}
 ${PL(faq(/phone/i))}
 ${P(`${foodRule.title.en}: ${foodRule.body.en}`, `${foodRule.title.zh}：${foodRule.body.zh}`)}
-${P('Please do not send food, sweets or drinks from home. [To decide: what happens to food found at check-in, for example kept safely and handed back on Saturday.]', '請勿讓孩子從家中攜帶食物、糖果或飲料。〔待決定：報到時發現之食物如何處理，例如代為保管並於週六交還〕', true)}
+${P('Please do not send food, sweets or drinks from home. [To decide: what happens to food found at check-in, for example kept safely and handed back on Sunday.]', '請勿讓孩子從家中攜帶食物、糖果或飲料。〔待決定：報到時發現之食物如何處理，例如代為保管並於週日交還〕', true)}
 ${P('Please leave jewellery, larger sums of money and other valuables at home.', '請勿讓孩子攜帶首飾、大額現金或其他貴重物品。', true)}
 
 ${H(N.vans, 'Camper vans', '露營車')}
@@ -352,7 +352,7 @@ ${P(`If any answer is “yes”, the nurse talks with you, in person or by phone
 ${H(2, 'Medicine handed in at check-in', '報到時交付的藥品')}
 <p class="hint">${B('Please bring the health form and all medicine together in one clear zip bag.', '請將健康調查表與所有藥品一起放入一個透明夾鏈袋。')}</p>
 ${CHECKS(C('None', '無'), C('As listed on the health form', '同健康調查表所列'), C('Changes or additions (list below)', '有變動或新增（請列於下方）'))}
-${TABLE([['Medicine and strength', '藥品名稱與劑量規格'], ['Amount handed over', '交付數量'], ['Dose and times', '劑量與時間'], ['Returned on Saturday (amount)', '週六交還數量']], 3, 'tall', [34, 18, 28, 20])}
+${TABLE([['Medicine and strength', '藥品名稱與劑量規格'], ['Amount handed over', '交付數量'], ['Dose and times', '劑量與時間'], ['Returned on Sunday (amount)', '週日交還數量']], 3, 'tall', [34, 18, 28, 20])}
 ${ROW(F('Received by (name and role)', '收藥人（姓名與職稱）', 6))}
 
 ${H(3, 'Phones and devices', '手機與電子裝置')}
@@ -363,10 +363,10 @@ ${H(4, 'Snack coupons', '點心券')}
 ${ROW(F('Coupons chosen at registration and handed to your camper today: NT$', '報名時選購並於今日交付營員之點心券：NT$', 8), F('Staff initials', '工作人員簽名', 4))}
 <p class="hint">${B(home.COUPONS.hint.en, home.COUPONS.hint.zh)}</p>
 
-${H(5, 'Going home on Saturday', '週六返家')}
+${H(5, 'Going home on Sunday', '週日返家')}
 ${PL(busHome)}
-${P(`Please be at ${T.meetingPoint.en}, by ${T.returnTime} on Saturday, and list every adult who may meet your camper there, yourself included. Our staff on the bus carry this list, check photo ID, and hand your camper, with any phone, NHI card and leftover medicine, only to a person on it. To change the list, the guardian who signs below messages the camp office before the bus leaves camp. If nobody on the list is at the meeting point, your camper waits with our staff and we phone you. [To decide: where, and for how long.] Staff phone on the bus on Saturday: ________________.`, `請於週六 ${T.returnTime} 前抵達${T.meetingPoint.zh}，並列出所有可至該處接孩子的成年人，包含您本人。隨車工作人員將攜帶本名單並核對附照片之身分證件；孩子及其手機、健保卡與剩餘藥品，僅交給名單上的人。如需更改名單，請由下方簽名的法定代理人於遊覽車離開營地前以訊息通知營隊辦公室。若集合地點沒有名單上的人，孩子會由工作人員陪同等候，我們並會以電話與您聯繫。〔待決定：等候地點與時間〕週六隨車工作人員手機：________________。`, true)}
-${TABLE([['Name', '姓名'], ['Relationship', '與營員關係'], ['Mobile', '手機'], ['ID checked on Saturday (staff)', '週六已核對證件（工作人員）']], 4)}
+${P(`Please be at ${T.meetingPoint.en}, by ${T.returnTime} on Sunday, and list every adult who may meet your camper there, yourself included. Our staff on the bus carry this list, check photo ID, and hand your camper, with any phone, NHI card and leftover medicine, only to a person on it. To change the list, the guardian who signs below messages the camp office before the bus leaves camp. If nobody on the list is at the meeting point, your camper waits with our staff and we phone you. [To decide: where, and for how long.] Staff phone on the bus on Sunday: ________________.`, `請於週日 ${T.returnTime} 前抵達${T.meetingPoint.zh}，並列出所有可至該處接孩子的成年人，包含您本人。隨車工作人員將攜帶本名單並核對附照片之身分證件；孩子及其手機、健保卡與剩餘藥品，僅交給名單上的人。如需更改名單，請由下方簽名的法定代理人於遊覽車離開營地前以訊息通知營隊辦公室。若集合地點沒有名單上的人，孩子會由工作人員陪同等候，我們並會以電話與您聯繫。〔待決定：等候地點與時間〕週日隨車工作人員手機：________________。`, true)}
+${TABLE([['Name', '姓名'], ['Relationship', '與營員關係'], ['Mobile', '手機'], ['ID checked on Sunday (staff)', '週日已核對證件（工作人員）']], 4)}
 <p class="q">${NEW} ${B('Is there anyone who must not collect or contact your camper (for example under a custody or protection order)?', '是否有不得接走或接觸孩子的人（例如依監護或保護令之裁定）？')}</p>
 ${CHECKS(C('No', '無'), C('Yes (name and details): ________________________________', '有（姓名與說明）：________________________________'))}
 ${CHECKS(C('I will collect my camper from the camp myself instead, by arrangement with the camp office. Time: ________ Collected by: ________________', '本人已與營隊辦公室約定，將自行至營地接回孩子。時間：________ 接回人：________________'))}
@@ -429,7 +429,7 @@ const notes = () => `
 <li><b>Photos.</b> Whether a family can keep its child out of the shared album: Notice §${N.photos}.</li>
 <li><b>Personal data.</b> The notice under Article 8 of the Personal Data Protection Act, how long records are kept, and whether any data is held outside Taiwan: Notice §${N.data}. Also whether a form with health details may be returned by LINE.</li>
 <li><b>Check-in at the meeting point.</b> Campers meet at ${esc(T.meetingPoint.en)} at ${T.meetTime} and the bus leaves at ${T.departTime}, so the health check, the temperature and the hand-over of medicine and devices happen there in half an hour. Whether the nurse is at the meeting point, or a named member of staff receives medicine there for the nurse, is for the camp to decide; so are the time the check-in desk opens and what happens, including to the fee, if a camper misses the bus: Check-in form, opening paragraphs and §2.</li>
-<li><b>Saturday.</b> The bus returns to ${esc(T.meetingPoint.en)} at ${T.returnTime}. Still to decide: who may collect a camper, the ID check, what happens if nobody comes, and whether collecting at the camp is offered: Check-in form §5.</li>
+<li><b>Sunday.</b> The bus returns to ${esc(T.meetingPoint.en)} at ${T.returnTime}. Still to decide: who may collect a camper, the ID check, what happens if nobody comes, and whether collecting at the camp is offered: Check-in form §5.</li>
 <li><b>Campers from overseas.</b> The forms assume a guardian or backup contact in Taiwan and an NHI card or other medical insurance. Whether overseas campers are accepted, and on what terms, is not yet decided.</li>
 </ul>
 </section>`
@@ -495,6 +495,13 @@ const all = notes() + notice() + health() + checkin()
 const banned = /hold harmless|indemnif|non-?refundable|概不負責|概不退還|for reference only|僅供參考|\bteachers?\b|老師|\bclass(es)?\b|\blessons?\b|課程|sanyi|三義|wooden cabin|小木屋|not responsible|14:00|taichung theater|歌劇院|drop-off at/i
 const own = all.replace(/<section class="notes">[\s\S]*?<\/section>/, '').replace(/<[^>]+>/g, ' ') // the text only, without the markup
 if (banned.test(own)) throw new Error(`Banned wording in a form: “${own.match(banned)[0]}”`)
+// the forms name only the camp's own first and last day (campConfig.days)
+{
+  const stale = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].filter((d) => d !== c.days.first.en && d !== c.days.last.en)
+  const hit = own.match(new RegExp(`\\b(${stale.join('|')})\\b`))
+  if (hit) throw new Error(`A form names ${hit[0]}, which is not a first or last day of the camp (${c.days.first.en} to ${c.days.last.en})`)
+  if (!own.includes(c.days.last.en)) throw new Error(`The forms do not name the last day (${c.days.last.en})`)
+}
 
 // Final forms carry no working marks: the ◆ flags and the bracketed notes to the camp, nurse and lawyer must be gone.
 if (c.documents.final) {

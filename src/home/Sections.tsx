@@ -6,7 +6,7 @@ import { useCamp } from '../i18n/CampState'
 import { FACILITIES_URL, ROOT } from '../lib/root'
 import { Icon } from '../map/icons'
 import { PHOTO_CREDIT, photoSrc } from '../media/media'
-import { ACTIVITIES, DOCS, FAQ, HERO, PACKING, PRICING, SAFETY, SEASON_INTRO, STAY } from './content'
+import { ACTIVITIES, DOCS, FAQ, HERO, PACKING, PRICING, SAFETY, SCHEDULE, SEASON_INTRO, STAY } from './content'
 
 /** Which option a Register button opens the form on. */
 
@@ -54,9 +54,14 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
               </a>
             )}
           </div>
-          <p className="mt-5 text-xs font-bold uppercase tracking-[0.24em] text-cedar">{s.hero.kicker}</p>
-          <h1 className="font-display mt-2 text-[2.6rem] font-semibold leading-[1.04] tracking-tight sm:text-6xl">{s.hero.headline[season]}</h1>
-          <p className="mt-4 text-lg leading-relaxed text-white/90 sm:text-xl">{s.hero.subtitle}</p>
+          <p className="mt-5 text-xs font-bold uppercase tracking-[0.24em] text-cedar">{campConfig.brand.campMeaning}</p>
+          <h1 className="font-display mt-1 text-[3.4rem] font-semibold leading-[1] tracking-tight sm:text-7xl" data-camp-name>
+            {campConfig.brand.camp}
+          </h1>
+          <p className="font-display mt-3 text-2xl font-semibold leading-tight text-white sm:text-[2rem]" data-hero-headline>
+            {s.hero.headline[season]}
+          </p>
+          <p className="mt-3 text-lg leading-relaxed text-white/90 sm:text-xl">{s.hero.subtitle}</p>
           <p className="mt-3 flex items-center gap-2 text-sm font-semibold text-cedar-100">
             <MapPin size={16} aria-hidden />
             {s.hero.location}
@@ -525,6 +530,38 @@ export function Documents({ onRegister }: { onRegister: () => void }) {
           </a>
         ))}
       </p>
+    </Section>
+  )
+}
+
+/* ───────────────────────────────────────────────────────── Day by day */
+/** The winter camp's four days. A season with no dates shows a short note instead. */
+export function Schedule() {
+  const { t, season } = useCamp()
+  const dated = season === 'winter' && !!campConfig.sessions.winter
+  return (
+    <Section id="schedule" tone="cream">
+      <Heading kicker={t(SCHEDULE.kicker)} title={t(SCHEDULE.title)} intro={dated ? t(SCHEDULE.intro) : t(SCHEDULE.pending)} />
+      {dated && (
+        <ol className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4" data-schedule>
+          {SCHEDULE.days.map((d, i) => (
+            <li key={d.day.en} data-day={d.day.en} className="flex flex-col rounded-3xl border border-pine/10 bg-white p-5 shadow-sm">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-cedar-600">
+                {i + 1} · {t(d.day)}
+              </p>
+              <h3 className="font-display mt-1 text-xl font-semibold leading-snug text-pine">{t(d.theme)}</h3>
+              <ul className="mt-4 space-y-2.5">
+                {d.rows.map((r) => (
+                  <li key={r.time + r.what.en} className="grid grid-cols-[3.1rem_1fr] gap-2 text-sm leading-snug">
+                    <span className="font-bold tabular-nums text-pine">{r.time}</span>
+                    <span className="text-ink/80">{t(r.what)}</span>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      )}
     </Section>
   )
 }

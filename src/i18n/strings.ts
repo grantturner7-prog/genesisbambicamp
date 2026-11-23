@@ -7,11 +7,11 @@
  */
 const en = {
   meta: {
-    title: 'Genesis Youth Adventures × Bambi Glamping',
+    title: 'Camp WOW · Genesis Youth Adventures × Bambi Glamping',
   },
   header: {
-    brand: 'Genesis Youth Adventures',
-    brandSub: '× Bambi Glamping',
+    brand: 'Camp WOW',
+    brandSub: 'Genesis × Bambi Glamping',
     nav: { map: 'Camp Map' },
     line: 'LINE',
     langLabel: 'Language',
@@ -141,7 +141,7 @@ const en = {
     safetyTitle: 'Looked after, day and night',
     pricingKicker: 'Dates & fees',
     pricingTitle: 'Camp dates and fee',
-    pricingIntro: 'The camp is 4 days and 3 nights, Wednesday to Saturday, for campers aged 10–14, up to 60 per camp; the first camp is a pilot limited to 30. What is included, the refund rules and the guarantees below are written into your contract.',
+    pricingIntro: 'The camp is 4 days and 3 nights, Thursday to Sunday, for campers aged 10–14, up to 60 per camp; the first camp is a pilot limited to 30. What is included, the refund rules and the guarantees below are written into your contract.',
     included: 'Included in the fee',
     excluded: 'Not included',
     refundReason: 'Who is cancelling?',
@@ -234,11 +234,11 @@ export type Strings = Widen<typeof en>
 
 const zhTW: Strings = {
   meta: {
-    title: '創世紀青少年戶外探索 × 斑比跳跳',
+    title: 'Camp WOW｜創世紀青少年戶外探索 × 斑比跳跳',
   },
   header: {
-    brand: '創世紀青少年戶外探索',
-    brandSub: '× 斑比跳跳',
+    brand: 'Camp WOW',
+    brandSub: '創世紀 × 斑比跳跳',
     nav: { map: '營地地圖' },
     line: 'LINE',
     langLabel: '語言',
@@ -365,7 +365,7 @@ const zhTW: Strings = {
     safetyTitle: '日夜都有人照顧',
     pricingKicker: '梯次與費用',
     pricingTitle: '營隊日期與費用',
-    pricingIntro: '營隊為四天三夜（週三至週六），適合 10–14 歲營員，每梯最多 60 名；首梯為試辦營，限額 30 名。以下的費用內容、退費標準與各項保障皆明訂於契約中。',
+    pricingIntro: '營隊為四天三夜（週四至週日），適合 10–14 歲營員，每梯最多 60 名；首梯為試辦營，限額 30 名。以下的費用內容、退費標準與各項保障皆明訂於契約中。',
     included: '費用包含',
     excluded: '費用不包含',
     refundReason: '解約原因',

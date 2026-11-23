@@ -3,7 +3,7 @@ import { ChevronDown, CloudRain } from 'lucide-react'
 import { useCamp } from '../i18n/CampState'
 import type { L } from '../lib/types'
 import { Icon } from '../map/icons'
-import { RAIN_PLAN, SCHEDULE_PENDING } from './content'
+import { RAIN_PLAN, SCHEDULE } from './content'
 import { GAMES, GAMES_COPY, GAME_GROUPS, type GameGroupId } from './games'
 import { Heading, Section } from './Sections'
 
@@ -90,10 +90,13 @@ export function Games() {
         </button>
       )}
       <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_1.5fr]">
-        <aside className="rounded-3xl border border-dashed border-pine/25 bg-white/70 p-6" data-schedule-pending>
+        <aside className="rounded-3xl border border-pine/15 bg-white p-6 shadow-sm" data-schedule-teaser>
           <Icon name="Clock" size={26} className="text-cedar-600" />
-          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug text-pine">{t(SCHEDULE_PENDING.title)}</h3>
-          <p className="mt-2 text-[15px] leading-relaxed text-ink/70">{t(SCHEDULE_PENDING.body)}</p>
+          <h3 className="font-display mt-3 text-2xl font-semibold leading-snug text-pine">{t(SCHEDULE.kicker)}</h3>
+          <p className="mt-2 text-[15px] leading-relaxed text-ink/70">{t(SCHEDULE.teaser)}</p>
+          <a href="#schedule" className="mt-4 inline-flex items-center gap-2 rounded-full bg-pine px-4 py-2.5 text-sm font-bold text-white transition hover:bg-pine-800">
+            {t(SCHEDULE.teaserLink)}
+          </a>
         </aside>
         <aside className="rounded-3xl bg-pine p-6 text-white shadow-lg" data-rain-plan>
           <CloudRain size={26} className="text-cedar" aria-hidden />

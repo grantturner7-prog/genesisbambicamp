@@ -5,7 +5,7 @@ import { setUrl } from '../lib/root'
 import { LegalFooter } from '../components/LegalFooter'
 import { Games } from '../home/Games'
 import { RefundCalculator, RegisterModal } from '../home/Register'
-import { Documents, FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, SeasonExplorer, Stay } from '../home/Sections'
+import { Documents, FacilitiesTeaser, Faq, Hero, Packing, Pricing, Safety, Schedule, SeasonExplorer, Stay } from '../home/Sections'
 
 /** Landing page (Doc 3, sections 1–10 plus refund calculator and registration). */
 export function HomePage() {
@@ -36,6 +36,7 @@ export function HomePage() {
         <Hero onRegister={open} />
         <SeasonExplorer />
         <Games />
+        <Schedule />
         <FacilitiesTeaser />
         <Stay />
         <Safety />

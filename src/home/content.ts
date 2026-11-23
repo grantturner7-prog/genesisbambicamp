@@ -5,6 +5,8 @@ import type { Photo } from '../media/media'
 const l = (en: string, zh: string): L => ({ en, zh })
 /** The meeting point and bus times: stated once, in campConfig. */
 const BUS = campConfig.transport
+const DAYS = campConfig.days
+const CAMP = campConfig.brand.camp
 const c = campConfig.cohort
 const twd = (n: number) => `NT$${n.toLocaleString('en-US')}`
 /** "NT$1,000, NT$2,000 or NT$3,000" */
@@ -120,7 +122,7 @@ export const DOCS = {
     { id: 'contract', when: l('Before any payment', '收費前'), title: l('Service contract', '服務契約'), body: l('The bilingual service contract is given to you for review before any payment.', '中英雙語服務契約將於收費前交付審閱。') },
     { id: 'notice', when: l('With your registration', '報名時'), title: l('Camp Notice and Agreement', '營隊須知與同意書'), body: l('How the camp runs and what we ask of families: fee and refunds, health and emergency care, how campers treat each other, phones, photos and personal data. Read it with your camper and sign the last page.', '說明營隊的運作方式與需要家長配合的事項：費用與退費、健康與緊急醫療、營員行為約定、手機、照片與個人資料。請與孩子一起閱讀，並於最後一頁簽名。'), file: 'documents/camp-notice-and-agreement.pdf' },
     { id: 'health', when: l('Before camp', '營隊開始前'), title: l('Camper Health Form', '營員健康調查表'), body: l('Health history, allergies, diet, medicine and emergency contacts, for the camp nurse.', '健康狀況、過敏、飲食、用藥與緊急聯絡人，供營隊護理師使用。'), file: 'documents/camper-health-form.pdf' },
-    { id: 'checkin', when: l('On the morning of departure', '出發當日早上'), title: l('Check-in Day Form', '報到日確認單'), body: l(`A short health check for that morning, the medicine you hand in, and who will meet your camper on Saturday. Bring it signed to the meeting point at ${BUS.meetingPoint.en}.`, `當日早上的簡短健康確認、交付的藥品，以及週六接孩子的人。請簽名後帶到集合地點（${BUS.meetingPoint.zh}）。`), file: 'documents/check-in-day-form.pdf' },
+    { id: 'checkin', when: l('On the morning of departure', '出發當日早上'), title: l('Check-in Day Form', '報到日確認單'), body: l(`A short health check for that morning, the medicine you hand in, and who will meet your camper on ${DAYS.last.en}. Bring it signed to the meeting point at ${BUS.meetingPoint.en}.`, `當日早上的簡短健康確認、交付的藥品，以及${DAYS.last.zh}接孩子的人。請簽名後帶到集合地點（${BUS.meetingPoint.zh}）。`), file: 'documents/check-in-day-form.pdf' },
   ] as { id: 'register' | 'contract' | 'notice' | 'health' | 'checkin'; when: L; title: L; body: L; file?: string }[],
   /** Other things on this page that families look for with the paperwork. */
   alsoTitle: l('Also on this page', '本頁其他資訊'),
@@ -133,9 +135,78 @@ export const DOCS = {
   ],
 }
 
-export const SCHEDULE_PENDING = {
-  title: l('Daily schedule', '每日行程'),
-  body: l('The day-by-day schedule for each session will be published here soon.', '各梯次的每日行程即將公布於此。'),
+/**
+ * The winter camp, day by day. Times are the anchors of each day; the named activities are
+ * the ones in `ACTIVITIES` and `games.ts`. Nothing here depends on a day the kitchen has not
+ * confirmed: meals carry no dish names.
+ */
+export const SCHEDULE = {
+  kicker: l('Day by day', '每日行程'),
+  title: l(`Four days at ${CAMP}`, `${CAMP} 的四天三夜`),
+  intro: l(
+    `The winter camp runs ${DAYS.first.en} to ${DAYS.last.en}. Campers wake at 06:30, the day starts after breakfast, and lights go out at 21:15. On a wet day the same day carries on under cover.`,
+    `冬季營隊為${DAYS.first.zh}至${DAYS.last.zh}。每天 06:30 起床，早餐後展開活動，21:15 熄燈。遇雨時，行程移至室內照常進行。`,
+  ),
+  /** Shown for a season whose camp has no dates yet. */
+  pending: l('The day-by-day plan for this camp will be published here with its dates.', '本營隊的每日行程將與日期一併公布於此。'),
+  teaser: l('See what happens on each of the four days.', '看看四天裡每天做些什麼。'),
+  teaserLink: l('Open the day-by-day plan', '查看每日行程'),
+  days: [
+    {
+      day: l('Thursday', '週四'),
+      theme: l('Arrival, the lake and the opening fire', '抵達、湖畔與開營營火'),
+      rows: [
+        { time: BUS.meetTime, what: l(`Meet at ${BUS.meetingPoint.en}. The charter bus leaves at ${BUS.departTime}.`, `於${BUS.meetingPoint.zh}集合，遊覽車專車 ${BUS.departTime} 出發。`) },
+        { time: '10:00', what: l('Arrive at camp: welcome circle, a walk round the camp, camper van check-in.', '抵達營地：開營圍圈、營地導覽、露營車分配。') },
+        { time: '12:00', what: l('Lunch made with the chef.', '跟著主廚親手做午餐。') },
+        { time: '13:30', what: l('Kayaking on the lake with the coach, the Team Banner & Mascot Workshop, and cornhole.', '教練帶領的湖畔獨木舟、隊旗與吉祥物工作坊，還有沙包投擲（Cornhole）。') },
+        { time: '16:40', what: l('The eco-tram at dusk, to watch the egrets fly home.', '黃昏搭遊園車，看白鷺歸巢。') },
+        { time: '18:00', what: l('Dinner.', '晚餐。') },
+        { time: '19:00', what: l('Opening campfire and the Color War Opening Ceremony, with s’mores.', '開營營火與 Color War 開幕式，一起烤棉花糖夾心餅。') },
+      ],
+    },
+    {
+      day: l('Friday', '週五'),
+      theme: l('Explorers’ day', '探索日'),
+      rows: [
+        { time: '07:15', what: l('Breakfast.', '早餐。') },
+        { time: '08:15', what: l('Orienteering Quest: a map, a compass and ten control points.', '定向越野探索：地圖、指北針與十個檢查點。') },
+        { time: '10:00', what: l('Bambi Amazing Race across the camp.', '斑比探索大挑戰，跑遍全營區。') },
+        { time: '12:00', what: l('Lunch made with the chef.', '跟著主廚親手做午餐。') },
+        { time: '13:45', what: l('Multi-sports: ultimate frisbee, mini-football and dodgeball.', '多項運動：飛盤爭奪、迷你足球與躲避球。') },
+        { time: '14:40', what: l('Shelter Build Challenge.', '野外庇護所挑戰。') },
+        { time: '17:00', what: l('Dinner.', '晚餐。') },
+        { time: '18:00', what: l('Star Cinema on the lawn.', '草地上的星空電影院。') },
+        { time: '19:10', what: l('Glow Night Quest, then board games.', '夜光任務，接著是桌遊時間。') },
+      ],
+    },
+    {
+      day: l('Saturday', '週六'),
+      theme: l('Games and makers’ day, and the final night', '競賽與動手做的一天，以及結營之夜'),
+      rows: [
+        { time: '07:15', what: l('Breakfast.', '早餐。') },
+        { time: '08:15', what: l('Multi-sports league and the Camp Olympics Relay Medley.', '多項運動聯賽與營隊奧運接力。') },
+        { time: '10:30', what: l('Paracord survival bracelets and the Giant Bubble Lab.', '傘繩求生手環與巨型泡泡探索。') },
+        { time: '12:30', what: l('Lunch made with the chef.', '跟著主廚親手做午餐。') },
+        { time: '14:00', what: l('Oobleck Olympics, the Mentos Geyser demonstration and the Egg Drop Build Challenge.', '神奇澱粉泥奧運、曼陀珠噴泉示範與雞蛋防摔建造挑戰。') },
+        { time: '16:00', what: l('Games arcade and the cornhole final.', '遊戲闖關與 Cornhole 決賽。') },
+        { time: '17:00', what: l('Final campfire: the Skit & Talent Showdown.', '惜別營火：短劇與才藝秀。') },
+        { time: '18:00', what: l('Signature family dinner with Wagyu beef.', '和牛招牌家宴。') },
+        { time: '19:30', what: l('Closing night: a letter to my future self.', '結營之夜：寫一封信給未來的自己。') },
+      ],
+    },
+    {
+      day: l('Sunday', '週日'),
+      theme: l('Finale and home', '總決賽與返家'),
+      rows: [
+        { time: '07:15', what: l('Breakfast.', '早餐。') },
+        { time: '08:30', what: l('Color War Finale: the Tug-of-War Tournament and the Giant Rope Jump Challenge.', 'Color War 總決賽：拔河錦標賽與大繩跳躍挑戰。') },
+        { time: '09:20', what: l('Prize-giving and the Camp Participation Awards.', '頒獎與營隊參與證明。') },
+        { time: BUS.leaveCampTime, what: l('The bus leaves camp.', '專車自營地出發。') },
+        { time: BUS.returnTime, what: l(`Back at ${BUS.meetingPoint.en}, at about this time.`, `約此時返抵${BUS.meetingPoint.zh}。`) },
+      ],
+    },
+  ] as { day: L; theme: L; rows: { time: string; what: L }[] }[],
 }
 export const RAIN_PLAN = {
   title: l('Rain or a cold front? The day carries on indoors.', '下雨或寒流？行程移到室內照常進行。'),
@@ -147,7 +218,7 @@ export const SAFETY = {
     { icon: 'ShieldCheck', title: l('Background-checked team', '背景查核的團隊'), body: l('Every counselor, coach, nurse and support worker provides a police criminal-record certificate (良民證) and is screened before camp.', '每位隊輔、活動教練、護理師與支援人員皆提供良民證，並於營隊前完成查核。') },
     { icon: 'Users', title: l(`About ${c.counselorRatio} counselors to campers`, `隊輔與營員約 ${c.counselorRatio}`), body: l('Small teams mean every camper is known by name.', '小隊編制，讓每位營員都被叫得出名字。') },
     { icon: 'Stethoscope', title: l('24/7 on-site Registered Nurse', '24 小時駐點專任護理師'), body: l('A camp nurse (營隊專任護理師) manages medications and first aid day and night, backed by CPR + AED trained counselors.', '營隊專任護理師日夜負責給藥與急救，並有具 CPR + AED 訓練的隊輔支援。') },
-    { icon: 'Lock', title: l(`${c.gateCurfew} gate curfew`, `${c.gateCurfew} 大門管制`), body: l('The gate is secured every night and outside visitors are not admitted during camp.', '園區大門每晚管制，營期間謝絕外部訪客。') },
+    { icon: 'Lock', title: l(`${c.gateCurfew} gate curfew`, `${c.gateCurfew} 大門管制`), body: l('The gate is closed every night. Bambi Glamping’s own overnight guests are also on site on the weekend nights; parents and other visitors are not admitted during camp.', '園區大門每晚管制。週末夜晚園區另有斑比跳跳的住宿旅客；營期間謝絕家長與其他訪客探視。') },
   ],
   insuranceTitle: l('Four layers of insurance', '四重保險保障'),
   insurance: [
@@ -164,8 +235,8 @@ export const PRICING = {
   /** The camp. There is one kind only, so it has no option letter. */
   camp: {
     name: l('4 Days / 3 Nights', '四天三夜'),
-    when: l('Wednesday to Saturday', '週三 至 週六'),
-    bus: l(`Wednesday: meet at ${BUS.meetingPoint.en}, at ${BUS.meetTime}; the charter bus leaves at ${BUS.departTime}. Saturday: the bus returns to ${BUS.meetingPoint.en}, at ${BUS.returnTime}. The charter bus both ways is included.`, `週三 ${BUS.meetTime} 於${BUS.meetingPoint.zh}集合，遊覽車專車 ${BUS.departTime} 出發；週六 ${BUS.returnTime} 返抵${BUS.meetingPoint.zh}。來回遊覽車專車已含。`),
+    when: l(`${DAYS.first.en} to ${DAYS.last.en}`, `${DAYS.first.zh} 至 ${DAYS.last.zh}`),
+    bus: l(`${DAYS.first.en}: meet at ${BUS.meetingPoint.en}, at ${BUS.meetTime}; the charter bus leaves at ${BUS.departTime}. ${DAYS.last.en}: the bus leaves camp at ${BUS.leaveCampTime} and returns to ${BUS.meetingPoint.en}, at about ${BUS.returnTime}. The charter bus both ways is included.`, `${DAYS.first.zh} ${BUS.meetTime} 於${BUS.meetingPoint.zh}集合，遊覽車專車 ${BUS.departTime} 出發；${DAYS.last.zh} ${BUS.leaveCampTime} 自營地出發，約 ${BUS.returnTime} 返抵${BUS.meetingPoint.zh}。來回遊覽車專車已含。`),
   },
   /** A season whose camp has no dates yet: a placeholder, nothing to register for. */
   comingSoon: l('Coming soon', '敬請期待'),
@@ -243,7 +314,9 @@ export const PACKING: { item: L; season?: Season }[] = [
   { item: l('Outdoor clothes for each day, plus sleepwear', '每日戶外活動服裝與睡衣') },
   { item: l('Sneakers', '運動鞋') },
   { item: l('Slip-on sandals', '好穿脫的涼鞋') },
-  { item: l('Rain gear', '雨具') },
+  { item: l('Rain gear and a folding umbrella', '雨具與摺疊傘') },
+  { item: l('Torch or headlamp, with spare batteries', '手電筒或頭燈（含備用電池）') },
+  { item: l('A spare set of dry clothes and shoes for the lake', '湖上活動用的備用乾衣物與鞋子') },
   { item: l('Mosquito repellent', '防蚊液') },
   { item: l('National Health Insurance card', '健保卡') },
   { item: l('Personal medications, labeled, in the original bag (handed in at check-in at the meeting point; the nurse keeps them during camp)', '個人藥物：裝於原藥袋並標註姓名，於集合地點報到時交付，營期間由護理師保管') },
@@ -280,7 +353,11 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('Can I visit during camp?', '營期間可以探視嗎？'),
-    a: l('To keep the grounds secure for every camper, outside visitors are not admitted during camp and the gate is closed at 23:00 each night.', '為了全體營員的安全，營期間謝絕外部訪客探視，園區大門每晚 23:00 管制。'),
+    a: l('To keep camp life settled for every camper, parents and other visitors are not admitted during camp, and the gate is closed at 23:00 each night.', '為了讓全體營員安心投入營隊生活，營期間謝絕家長與其他訪客探視，園區大門每晚 23:00 管制。'),
+  },
+  {
+    q: l('Are there other guests at the venue during camp?', '營期間園區還有其他旅客嗎？'),
+    a: l(`On the first day and night the camp has the venue to itself. On the weekend nights Bambi Glamping’s own overnight guests are on site as well. Campers have their own camper vans and their own programme, and their counselors are with them throughout.`, `營隊第一天與第一晚，園區由營隊專用。週末夜晚園區另有斑比跳跳的住宿旅客；營員有專屬的露營車與活動安排，隊輔全程陪伴。`),
   },
 ]
 
