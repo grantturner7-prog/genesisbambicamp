@@ -164,8 +164,11 @@ export const campConfig = {
   /** Venue film on YouTube (Bambi Glamping's official video). Watch once before launch. */
   venueFilmYoutubeId: 'c_8f6E4MU_k' as string | null,
 
-  /** Written permission from Bambi to publish their photos (public/media/bambi). */
-  venuePhotoPermissionOnFile: false,
+  /**
+   * Permission to publish Bambi's photos (public/media/bambi) and the venue film. Bambi Glamping's owner is a
+   * partner in the camp and has agreed to their use (confirmed by the organizer, November 2026).
+   */
+  venuePhotoPermissionOnFile: true,
 
   /** The public address of this website. Adverts print it once it is live; null until then. */
   site: { url: null as string | null },
