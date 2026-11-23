@@ -43,7 +43,7 @@ including under a sub-path.
 
 ## Camp facts the copy must match
 
-- Three meals a day: buffet breakfast, a DIY lunch with the chef, evening buffet. The
+- Three meals a day: breakfast, a DIY lunch with the chef, dinner. None is a buffet, and the audit rejects the word. The
   final evening is the signature family dinner with Wagyu beef. No afternoon tea.
 - The winter camp menu comes from the venue kitchen (`WINTER_MENU` in
   `src/home/content.ts`, and the dining hall menu in `src/map/areas.ts`). Breakfast: eggs,

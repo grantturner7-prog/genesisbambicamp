@@ -228,8 +228,8 @@ export const AREAS: Area[] = [
       zh: '每日三餐的美味基地，也是雨天備案大本營。',
     },
     summary: {
-      en: 'The Grand Dining Hall (斑比大飯店) is a glass-walled hall with floor-to-ceiling windows onto the palms. Three meals a day are served here: a buffet breakfast, a lunch that campers make themselves with the chef, and an evening buffet. The final evening is the signature family dinner with Wagyu beef. When rain or a cold front arrives, the hall and the covered activity area host team challenges and craft workshops, so the day carries on.',
-      zh: '每日三餐都在斑比大飯店享用：自助式早餐、營員跟著主廚親手做的午餐，以及自助式晚餐；最後一晚則是和牛招牌家宴。餐廳的大面落地窗外就是棕櫚樹景。遇到下雨或寒流時，大廳與遮雨棚活動區會化身團隊挑戰與手作工坊，讓一天的行程照常進行。',
+      en: 'The Grand Dining Hall (斑比大飯店) is a glass-walled hall with floor-to-ceiling windows onto the palms. Three meals a day are served here: breakfast, a lunch that campers make themselves with the chef, and dinner. The final evening is the signature family dinner with Wagyu beef. When rain or a cold front arrives, the hall and the covered activity area host team challenges and craft workshops, so the day carries on.',
+      zh: '每日三餐都在斑比大飯店享用：早餐、營員跟著主廚親手做的午餐，以及晚餐；最後一晚則是和牛招牌家宴。餐廳的大面落地窗外就是棕櫚樹景。遇到下雨或寒流時，大廳與遮雨棚活動區會化身團隊挑戰與手作工坊，讓一天的行程照常進行。',
     },
     icon: 'Utensils',
     accent: '#a8652f',
@@ -239,8 +239,8 @@ export const AREAS: Area[] = [
         icon: 'Utensils',
         title: { en: 'Three meals a day', zh: '每日三餐' },
         body: {
-          en: 'A buffet breakfast, a DIY lunch that campers make with the chef, and an evening buffet. Snacks are separate: campers use snack coupons at the Airstream snack shop.',
-          zh: '自助式早餐、營員跟著主廚親手做的 DIY 午餐，以及自助式晚餐。點心另計：營員憑點心券到 Airstream 點心站兌換。',
+          en: 'Breakfast, a DIY lunch that campers make with the chef, and dinner. Snacks are separate: campers use snack coupons at the Airstream snack shop.',
+          zh: '早餐、營員跟著主廚親手做的 DIY 午餐，以及晚餐。點心另計：營員憑點心券到 Airstream 點心站兌換。',
         },
       },
       {
@@ -277,7 +277,7 @@ export const AREAS: Area[] = [
       },
     ],
     facts: [
-      { label: { en: 'Meals', zh: '餐點' }, value: { en: 'Breakfast buffet · DIY lunch · Evening buffet', zh: '自助式早餐・DIY 午餐・自助式晚餐' } },
+      { label: { en: 'Meals', zh: '餐點' }, value: { en: 'Breakfast · DIY lunch · Dinner', zh: '早餐・DIY 午餐・晚餐' } },
       { label: { en: 'Final evening', zh: '最後一晚' }, value: { en: 'Signature family dinner with Wagyu beef', zh: '和牛招牌家宴' } },
       { label: { en: 'Dietary trays', zh: '特殊餐盤' }, value: { en: 'Non-beef · Pork-free · Vegetarian · Allergy-safe', zh: '不吃牛・不吃豬・蛋奶素・過敏專盤' } },
       { label: { en: 'Rain plan', zh: '雨天備案' }, value: { en: 'Dining hall + covered pavilion', zh: '斑比大飯店＋遮雨棚' } },
@@ -292,7 +292,7 @@ export const AREAS: Area[] = [
         {
           title: { en: 'Breakfast', zh: '早餐' },
           icon: 'Sunrise',
-          tag: { en: 'Buffet breakfast', zh: '自助式早餐' },
+          tag: { en: 'Breakfast', zh: '早餐' },
           items: [
             { name: { en: 'Eggs', zh: '雞蛋' } },
             { name: { en: 'Bacon', zh: '培根' } },
@@ -314,7 +314,7 @@ export const AREAS: Area[] = [
         {
           title: { en: 'Dinner', zh: '晚餐' },
           icon: 'Utensils',
-          tag: { en: 'Evening buffet', zh: '自助式晚餐' },
+          tag: { en: 'Dinner', zh: '晚餐' },
           items: [
             { name: { en: 'Meatball pasta, corn soup and bread', zh: '肉丸義大利麵、玉米濃湯與麵包' } },
             { name: { en: 'Fried chicken and braised pork, with vegetables and rice', zh: '炸雞與滷肉，搭配青菜與白飯' } },

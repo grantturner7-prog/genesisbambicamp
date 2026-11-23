@@ -75,9 +75,9 @@ export const STAY = {
   ],
   mealsTitle: l('Three meals a day', '每日三餐'),
   meals: [
-    { icon: 'Sunrise', name: l('Buffet breakfast', '自助式早餐'), note: l(`${cap(WINTER_MENU.breakfast.en)}.`, `${WINTER_MENU.breakfast.zh}。`) },
+    { icon: 'Sunrise', name: l('Breakfast', '早餐'), note: l(`${cap(WINTER_MENU.breakfast.en)}.`, `${WINTER_MENU.breakfast.zh}。`) },
     { icon: 'ChefHat', name: l('DIY lunch with the chef', '主廚帶領的 DIY 午餐'), note: l(`Campers make their own lunch with the chef. On the menu: ${WINTER_MENU.lunch.en}.`, `營員跟著主廚親手做午餐，菜色有${WINTER_MENU.lunch.zh}。`) },
-    { icon: 'Utensils', name: l('Evening buffet', '自助式晚餐'), note: l(`One evening, ${WINTER_MENU.dinners[0].en}; another, ${WINTER_MENU.dinners[1].en}.`, `一晚是${WINTER_MENU.dinners[0].zh}；另一晚是${WINTER_MENU.dinners[1].zh}。`) },
+    { icon: 'Utensils', name: l('Dinner', '晚餐'), note: l(`One evening, ${WINTER_MENU.dinners[0].en}; another, ${WINTER_MENU.dinners[1].en}.`, `一晚是${WINTER_MENU.dinners[0].zh}；另一晚是${WINTER_MENU.dinners[1].zh}。`) },
   ],
   /** Under the three meals: whose menu it is, and that no day is named. */
   mealsNote: WINTER_MENU.allergensProvided
@@ -88,7 +88,7 @@ export const STAY = {
     photo: 'wagyu-platter' as Photo['id'],
     kicker: l('The final evening', '最後一晚'),
     title: l('Signature family dinner with Wagyu beef', '招牌家宴：和牛登場'),
-    body: l('Camp ends on a high note: on the last evening the buffet gives way to Bambi Glamping’s signature family dinner, with Wagyu beef at the centre of the table. Campers registered as non-beef or vegetarian have their own alternative.', '營隊的壓軸之夜：最後一晚，自助式晚餐換成斑比跳跳的招牌家宴，主角是和牛。事先登記不吃牛或素食的營員，另有專屬餐點。'),
+    body: l('Camp ends on a high note: the last evening’s dinner is Bambi Glamping’s signature family dinner, with Wagyu beef at the centre of the table. Campers registered as non-beef or vegetarian have their own alternative.', '營隊的壓軸之夜：最後一晚的晚餐，是斑比跳跳的招牌家宴，主角是和牛。事先登記不吃牛或素食的營員，另有專屬餐點。'),
   },
   /** Snacks are not part of the fee: coupons at the Airstream snack shop. */
   snacks: {
@@ -252,7 +252,7 @@ export const PRICING = {
   bus: l(`Meeting point: ${BUS.meetingPoint.en} (${BUS.meetingAddress.en}). Licensed charter buses under 10 years old, with a pre-departure emergency-exit briefing.`, `集合地點：${BUS.meetingPoint.zh}（${BUS.meetingAddress.zh}）。使用車齡十年內合法遊覽車，出發前進行逃生門安全說明。`),
   included: [
     l('Luxury camper van stay', '頂級豪華露營車住宿'),
-    l('Three meals a day: buffet breakfast, DIY lunch with the chef and evening buffet, with the signature Wagyu dinner on the final evening', '每日三餐：自助式早餐、主廚帶領的 DIY 午餐與自助式晚餐，最後一晚為和牛招牌家宴'),
+    l('Three meals a day: breakfast, DIY lunch with the chef and dinner, with the signature Wagyu dinner on the final evening', '每日三餐：早餐、主廚帶領的 DIY 午餐與晚餐，最後一晚為和牛招牌家宴'),
     l(`Charter bus from ${BUS.meetingPoint.en}, to camp and back`, `${BUS.meetingPoint.zh}至營地的來回遊覽車專車`),
     l('Activity gear and craft materials', '活動器材與手作材料'),
     l('Counselors at about 1:4 and the 24/7 nurse', '約 1:4 隊輔與 24 小時駐點護理師'),
@@ -337,7 +337,7 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('Which meals are included, and what about snacks?', '費用包含哪些餐點？點心呢？'),
-    a: l(`Three meals a day are included: a buffet breakfast, a DIY lunch that campers make with the chef, and an evening buffet. The final evening is the signature family dinner with Wagyu beef. On the winter camp menu: at breakfast, ${WINTER_MENU.breakfast.en}; at lunch, ${WINTER_MENU.lunch.en}; at dinner, ${WINTER_MENU.dinners[0].en}, and ${WINTER_MENU.dinners[1].en}. Snacks between meals are not included. If you would like your camper to have them, choose a coupon pack of ${PACKS.en}; the coupons are handed to your camper at check-in and exchanged at the Airstream snack shop beside the pool, which serves no alcohol.`, `費用包含每日三餐：自助式早餐、營員與主廚一起動手做的 DIY 午餐，以及自助式晚餐；最後一晚則是和牛招牌家宴。冬季營隊的菜色：早餐有${WINTER_MENU.breakfast.zh}；午餐有${WINTER_MENU.lunch.zh}；晚餐有${WINTER_MENU.dinners[0].zh}，以及${WINTER_MENU.dinners[1].zh}。正餐之間的點心不包含在內。若希望孩子可以買點心，家長可選購 ${PACKS.zh} 的點心券，於報到時交給營員，在戲水池旁的 Airstream 點心站兌換；點心站不販售任何含酒精飲品。`),
+    a: l(`Three meals a day are included: breakfast, a DIY lunch that campers make with the chef, and dinner. The final evening is the signature family dinner with Wagyu beef. On the winter camp menu: at breakfast, ${WINTER_MENU.breakfast.en}; at lunch, ${WINTER_MENU.lunch.en}; at dinner, ${WINTER_MENU.dinners[0].en}, and ${WINTER_MENU.dinners[1].en}. Snacks between meals are not included. If you would like your camper to have them, choose a coupon pack of ${PACKS.en}; the coupons are handed to your camper at check-in and exchanged at the Airstream snack shop beside the pool, which serves no alcohol.`, `費用包含每日三餐：早餐、營員與主廚一起動手做的 DIY 午餐，以及晚餐；最後一晚則是和牛招牌家宴。冬季營隊的菜色：早餐有${WINTER_MENU.breakfast.zh}；午餐有${WINTER_MENU.lunch.zh}；晚餐有${WINTER_MENU.dinners[0].zh}，以及${WINTER_MENU.dinners[1].zh}。正餐之間的點心不包含在內。若希望孩子可以買點心，家長可選購 ${PACKS.zh} 的點心券，於報到時交給營員，在戲水池旁的 Airstream 點心站兌換；點心站不販售任何含酒精飲品。`),
   },
   {
     q: l('Can my child bring a phone or tablet?', '可以帶手機或平板嗎？'),

@@ -67,7 +67,7 @@ if (section("Home: language + registration + refund calculator")) {
   // meals, snack coupons, camp days
   ok('home: three meals a day, no fourth meal or afternoon tea', body.includes('Three meals a day') && !/four meals|4 daily|afternoon tea|campfire snacks/i.test(body))
   const meals = await page.textContent('[data-meals]')
-  ok('home: buffet breakfast, DIY lunch with the chef, evening buffet', ['Buffet breakfast', 'DIY lunch with the chef', 'Evening buffet'].every((x) => meals.includes(x)))
+  ok('home: breakfast, DIY lunch with the chef and dinner, and no buffet wording', ['Breakfast', 'DIY lunch with the chef', 'Dinner'].every((x) => meals.includes(x)) && !/buffet/i.test(meals))
   ok('home: the winter menu from the venue kitchen, with no day named', ['Eggs, bacon, bread and sandwiches, with milk and soy milk', 'curry, pizza, rice balls and donburi rice boxes', 'meatball pasta with corn soup and bread', 'fried chicken and braised pork with vegetables and rice', 'not set yet'].every((x) => meals.includes(x)) && !/monday|tuesday|wednesday|thursday|friday|saturday|sunday/i.test(meals), meals)
   ok('home: no clock times on the meals (no schedule published yet)', !/\d\d:\d\d/.test(meals), meals.match(/\d\d:\d\d/)?.[0])
   ok('home: final-evening Wagyu dinner highlighted with its photo', (await page.textContent('[data-signature-dinner]')).includes('Wagyu') && (await page.locator('[data-signature-dinner] img').getAttribute('src')).includes('wagyu-platter'))
@@ -589,7 +589,7 @@ if (section("Photos: every image loads, and each place shows a photo of that pla
   ok('photos: cinema card shows a screening', (await cardImg('Star Cinema Night')) === 'cinema-night.webp')
   const seasonsText = await page.textContent('#seasons')
   ok('photos: cards with no exact photo stay photo-free', ['Night Ecology Walk', 'Digital Camp Album'].every((x) => seasonsText.includes(x)) && (await cardImg('Night Ecology Walk')) === null && (await cardImg('Digital Camp Album')) === null)
-  ok('photos: dining grid shows buffet food', (await page.evaluate(() => [...document.querySelectorAll('#stay img')].map((i) => i.src.split('/').pop()))).includes('buffet-eggs.webp'))
+  ok('photos: dining grid shows the breakfast eggs', (await page.evaluate(() => [...document.querySelectorAll('#stay img')].map((i) => i.src.split('/').pop()))).includes('buffet-eggs.webp'))
 
   await page.goto(BASE + '/facilities/'); await page.waitForSelector('html[data-map-ready="1"]', { timeout: 90000 })
   const open = async (id) => { await page.evaluate((i) => document.querySelector(`[data-hotspot="${i}"]`).click(), id); await page.waitForSelector(`[data-panel="${id}"]`) }
@@ -600,11 +600,11 @@ if (section("Photos: every image loads, and each place shows a photo of that pla
   await open('restroom'); ok('photos: restrooms have no photo, so no Photos tab', (await lead('restroom')) === null && !(await tabs('restroom')).includes('Photos & Video'), JSON.stringify(await tabs('restroom')))
   await open('dining')
   const food = await page.evaluate(() => [...document.querySelectorAll('[data-panel="dining"] ul img')].map((i) => i.src.split('/').pop()))
-  ok('photos: dining hall highlights the buffet food', food.includes('buffet-eggs.webp') && food.includes('pizza-hands.webp') && food.includes('wagyu-platter.webp') && food.length >= 6 && !food.some((x) => /fruit|closeup|breakfast-plate/.test(x)), JSON.stringify(food))
+  ok('photos: dining hall highlights the food on the menu', food.includes('buffet-eggs.webp') && food.includes('pizza-hands.webp') && food.includes('wagyu-platter.webp') && food.length >= 6 && !food.some((x) => /fruit|closeup|breakfast-plate/.test(x)), JSON.stringify(food))
   await page.getByRole('tab', { name: 'Menu' }).click()
   ok('photos: dining menu opens with food photos', (await lead('dining')) === 'buffet-eggs.webp')
   const menu = await page.textContent('[data-panel="dining"]')
-  ok('menu: three meals and the final-evening signature dinner, no afternoon tea', ['Buffet breakfast', 'DIY lunch with the chef', 'Evening buffet', 'Signature family dinner', 'Final evening', 'Wagyu beef', 'Eggs', 'Bacon', 'Bread and sandwiches', 'Milk and soy milk', 'Curry', 'Handmade pizza', 'Rice balls', 'Donburi rice box', 'Meatball pasta, corn soup and bread', 'Fried chicken and braised pork, with vegetables and rice'].every((x) => menu.includes(x)) && !/afternoon tea|campfire snacks|\d\d:\d\d/i.test(menu))
+  ok('menu: three meals and the final-evening signature dinner, no afternoon tea', ['Breakfast', 'DIY lunch with the chef', 'Dinner', 'Signature family dinner', 'Final evening', 'Wagyu beef', 'Eggs', 'Bacon', 'Bread and sandwiches', 'Milk and soy milk', 'Curry', 'Handmade pizza', 'Rice balls', 'Donburi rice box', 'Meatball pasta, corn soup and bread', 'Fried chicken and braised pork, with vegetables and rice'].every((x) => menu.includes(x)) && !/afternoon tea|campfire snacks|\d\d:\d\d/i.test(menu))
   const hl = page.locator('[data-panel="dining"] [data-menu-section="highlight"]')
   ok('menu: the signature dinner is the highlighted section, with its photo among the highlights', (await hl.count()) === 1 && (await hl.textContent()).includes('Signature family dinner') && (await hl.textContent()).includes('Final evening') && food.includes('wagyu-platter.webp'), JSON.stringify(food))
   await open('snack')
