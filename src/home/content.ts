@@ -271,7 +271,7 @@ export const PRICING = {
   ],
   noExtra: l('Beyond the items listed, no other charge is collected under any name.', '除上列項目外，主辦與承辦單位不以任何名目另行收費。'),
   guaranteeTitle: l('Minimum-group guarantee', '最低成團人數保障'),
-  guarantee: l(`Each session runs with at least ${c.minGroupSize} campers. If a session does not reach that number, we notify you at least 7 days before departure and refund 100% of what you paid. If we notify you late, we also pay a penalty of 10% of the camp fee.`, `每梯次最低成團人數為 ${c.minGroupSize} 人。未達人數時，將於出發 7 日前通知並全額退費（100%）；若未於 7 日前通知，另賠償營隊費用總額 10% 之違約金。`),
+  guarantee: l(`Each session runs with at least ${c.minGroupSize} campers. If a session does not reach that number, we tell you at least 7 days before departure and refund everything you paid (100%).`, `每梯次最低成團人數為 ${c.minGroupSize} 人。未達人數時，將於出發 7 日前通知，並全額退還已繳費用（100%）。`),
   agencyTitle: l('Licensed travel agency', '合法旅行社承辦'),
   agency: l('Charter transport, lodging packages and travel liability cover are contracted and receipted through our licensed partner travel agency, under Article 27 of the Act for the Development of Tourism.', '遊覽車接駁、住宿套裝與旅行業責任保險，皆依發展觀光條例第 27 條由合作之合法旅行社簽約並開立代收轉付收據。'),
 }
@@ -286,7 +286,7 @@ export const COUPONS = {
 
 export const REFUND = {
   title: l('Cancellation & refund calculator', '解約退費試算'),
-  intro: l('Refunds follow Taiwan’s Standardized Domestic Group Travel Contract. Receipted administrative fees already paid on your behalf are deducted first.', '退費依交通部《國內旅遊定型化契約》辦理；已代繳並具收據之行政規費先行扣除。'),
+  intro: l('If you cancel, the refund follows Taiwan’s Standardized Domestic Group Travel Contract: receipted administrative fees already paid on your behalf are deducted first, then the table applies. If the camp itself is cancelled, you get everything back.', '家長提出解約時，退費依交通部《國內旅遊定型化契約》辦理：已代繳並具收據之行政規費先行扣除，再依下表比例退費。營隊若取消，已繳費用全額退還。'),
   tiers: [
     { min: 41, max: Infinity, refund: 95, label: l('41 or more days before', '活動開始前第 41 日以前') },
     { min: 31, max: 40, refund: 90, label: l('31 to 40 days before', '活動開始前第 31 至 40 日') },
@@ -297,12 +297,12 @@ export const REFUND = {
   ],
   reasons: {
     family: l('We need to cancel', '家長提出解約'),
-    lowEnrollment: l('Session below minimum group', '未達最低成團人數'),
-    forceMajeure: l('Typhoon / earthquake / epidemic order', '颱風、地震或防疫命令'),
+    lowEnrollment: l('The camp is cancelled', '營隊取消'),
+    forceMajeure: l('Typhoon, earthquake or other natural disaster', '颱風、地震或其他天災'),
   },
-  lowEnrollment: l('100% refund. If we notify you less than 7 days before departure, we also pay a 10% penalty.', '全額退費（100%）。若未於出發 7 日前通知，另賠償 10% 違約金。'),
-  forceMajeure: l('100% refund, less necessary expenses already paid and supported by receipts. Neither side owes damages.', '全額退費，僅核實扣除已支付且具憑證之必要費用，雙方均不負損害賠償責任。'),
-  reverse: l('If the camp cannot run for a reason attributable to the organizers, the same percentages are paid to you as compensation.', '若因可歸責於主辦單位或旅行社之事由致活動無法成行，亦按同比例賠償家長。'),
+  /** The camp does not go ahead, for any reason on our side: too few campers is the usual one. */
+  lowEnrollment: l('Full refund. If the camp cannot go ahead for any reason, for example too few campers, everything you paid is returned.', '全額退費。營隊若因任何原因無法舉辦（例如未達最低成團人數），已繳費用全數退還。'),
+  forceMajeure: l('Full refund. If a typhoon, an earthquake, another natural disaster or a government order means the camp cannot be held, everything you paid is returned.', '全額退費。若因颱風、地震、其他天災或政府命令致營隊無法舉辦，已繳費用全數退還。'),
 }
 
 export const PACKING: { item: L; season?: Season }[] = [
@@ -355,7 +355,7 @@ export const FAQ: { q: L; a: L }[] = [
   },
   {
     q: l('What if it rains?', '下雨怎麼辦？'),
-    a: l('Activities move into the Bambi Grand Dining Hall and the covered activity area. Any extra cost of the change is ours, and any saving is refunded.', '活動會移至斑比大飯店與遮雨棚活動區進行。因變更增加的費用由主辦單位負擔，減省的費用核實退還。'),
+    a: l('Activities move into the Bambi Grand Dining Hall. Any extra cost of the change is ours, and any saving is refunded.', '活動會移至斑比大飯店進行。因變更增加的費用由主辦單位負擔，減省的費用核實退還。'),
   },
   {
     q: l('Can I visit during camp?', '營隊期間可以探視嗎？'),

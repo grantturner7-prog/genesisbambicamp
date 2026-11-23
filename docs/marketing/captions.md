@@ -45,7 +45,7 @@ Camp WOW · World of Outdoor Wonders
 
 週四 08:00 於台中林酒店集合，遊覽車專車 08:30 出發；週日 10:00 自營地出發，約 11:30 返抵台中林酒店。費用已含來回遊覽車專車。
 每位營員 NT$35,000。試辦營，限額 30 名營員。
-每梯次最低成團人數為 24 人。未達人數時，將於出發 7 日前通知並全額退費（100%）；若未於 7 日前通知，另賠償營隊費用總額 10% 之違約金。
+每梯次最低成團人數為 24 人。未達人數時，將於出發 7 日前通知，並全額退還已繳費用（100%）。
 
 台中林酒店集合出發・四天三夜
 〔承辦旅行社名稱、種類、註冊編號、電話與保險金額：印製或發布前補上。〕
@@ -64,7 +64,7 @@ Day 1: Arrival, the lake and the opening fire. Day 2: Explorers’ day. Day 3: G
 
 Thursday: meet at The Lin Hotel, Taichung, at 08:00; the charter bus leaves at 08:30. Sunday: the bus leaves camp at 10:00 and returns to The Lin Hotel, Taichung, at about 11:30. The charter bus both ways is included.
 NT$35,000 per camper. Pilot camp, limited to 30 campers.
-Each session runs with at least 24 campers. If a session does not reach that number, we notify you at least 7 days before departure and refund 100% of what you paid. If we notify you late, we also pay a penalty of 10% of the camp fee.
+Each session runs with at least 24 campers. If a session does not reach that number, we tell you at least 7 days before departure and refund everything you paid (100%).
 
 Departs from The Lin Hotel, Taichung · 4 days / 3 nights
 [Travel agency name, class, registration number, phone and insurance sums: to be added before this is printed or posted.]

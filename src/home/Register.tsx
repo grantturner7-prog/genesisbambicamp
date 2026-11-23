@@ -11,7 +11,7 @@ const fmtTWD = (n: number) => `NT$${Math.round(n).toLocaleString('en-US')}`
 /* ───────────────────────────────────────────────────────── Refund calculator */
 type Reason = 'family' | 'lowEnrollment' | 'forceMajeure'
 
-/** Statutory refund calculator (Domestic Travel Standard Contract, Art. 12/13). */
+/** Refund calculator: the standard contract's table when a family cancels; a full refund when the camp is cancelled. */
 export function RefundCalculator() {
   const { s, t, season } = useCamp()
   const offer = campConfig.sessions[season]
@@ -80,7 +80,6 @@ export function RefundCalculator() {
               ))}
             </tbody>
           </table>
-          <p className="mt-3 text-[13px] leading-relaxed text-ink/65">{t(REFUND.reverse)}</p>
         </div>
       </div>
     </div>

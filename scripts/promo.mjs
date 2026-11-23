@@ -257,6 +257,7 @@ function build(lang, fit = {}) {
     <h3 class="d">${t(AD.refundTitle)}</h3>
     <p class="small">${t(home.REFUND.intro)}</p>
     <table class="refund"><tr><th>${t(AD.refundHead[lang === 'en' ? 'en' : 'zh'][0])}</th><th>${t(AD.refundHead[lang === 'en' ? 'en' : 'zh'][1])}</th></tr>${home.REFUND.tiers.map((r) => `<tr><td>${t(r.label)}</td><td>${r.refund}%</td></tr>`).join('')}</table>
+    <p class="small"><b>${t(home.REFUND.reasons.lowEnrollment)}${lang === 'en' ? ': ' : '：'}</b>${t(home.REFUND.lowEnrollment)} <b>${t(home.REFUND.reasons.forceMajeure)}${lang === 'en' ? ': ' : '：'}</b>${t(home.REFUND.forceMajeure)}</p>
   </section>`
   const pending = t(S('footer.pending'))
   const or = (v) => (v ? esc(typeof v === 'string' ? v : v[lang === 'en' ? 'en' : 'zh']) : `<i>${pending}</i>`)

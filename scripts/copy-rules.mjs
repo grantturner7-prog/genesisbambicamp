@@ -11,6 +11,8 @@ export const RULES = [
   // Campers meet at the meeting point in Taichung and ride the bus both ways: no drop-off at the camp gate.
   ['D stale arrival plan (campers meet at the meeting point in Taichung; nobody is dropped off at the camp)', /(thursday|週四)[^.。]{0,40}14:[03]0|drop(ped|s)?[- ]?(off|their|them)[^.。]{0,40}(sanwan|\bgate\b)|(送達|送到|送至|送抵)[^。]{0,12}(三灣|園區|大門|營地)|(大門|園區)[^。]{0,8}報到|arrive relaxed|taichung theater|歌劇院|shizheng|市政北二路|tour bus zone|臨停區/i],
   ['D wooden cabins', /wooden cabin|log cabin|小木屋|木屋/i],
+  // The organizer's refund promise: a full refund when the camp is cancelled, and no penalty or compensation line.
+  ['D stale refund terms (a cancelled camp is refunded in full; the site promises no penalty or compensation)', /10% penalty|penalty of 10%|10% ?之?違約金|same percentages|同比例賠償|less necessary expenses|扣除已支付且具憑證之必要費用/i],
   // Meals: three a day (breakfast, DIY lunch with the chef, dinner). None of them is a buffet.
   ['D the camp’s meals are not buffets (breakfast, DIY lunch with the chef, dinner)', /(?<![\w-])buffets?(?![\w-])|自助式|自助餐|吃到飽/i],
   ['D stale meal plan (the camp serves three meals a day)', /\bfour[- ](daily )?meals?\b|(?<![\d.,])4[- ](daily )?meals?\b|一泊四食|四食|(?<![十\d])四餐|(?<!\d)4 ?餐|宵夜|(campfire|evening) snacks?|營火點心|晚間點心/i],

@@ -55,6 +55,8 @@ if (section("Home: language + registration + refund calculator")) {
   await page.keyboard.press('Escape')
   ok('refund calculator: no fee is shown under the camp that has none', (await page.locator('#refund input').first().inputValue()) === '', await page.locator('#refund input').first().inputValue())
   await page.click('[data-see-dated-camp]')
+  // the fee follows the season in an effect, so give it a moment rather than reading it in the same tick
+  await page.waitForFunction(() => document.querySelector('#refund input')?.value === '35000', null, { timeout: 3000 }).catch(() => {})
   ok('refund calculator: the dated camp brings its fee back', (await page.locator('#refund input').first().inputValue()) === '35000')
   ok('home: the placeholder leads back to the dated camp', (await page.textContent('[data-camp-card]')).includes('28–31 January 2027') && (await page.textContent('[data-hero-headline]')).includes('Winter'))
   await page.getByRole('button', { name: 'Summer' }).first().click()
@@ -115,8 +117,12 @@ if (section("Home: language + registration + refund calculator")) {
   await fee.fill('20000')
   const expect = { 45: 'NT$19,000', 35: 'NT$18,000', 25: 'NT$16,000', 10: 'NT$14,000', 1: 'NT$10,000', 0: 'NT$0' }
   for (const [d, amt] of Object.entries(expect)) { await days.fill(d); const t = await page.textContent('[data-refund-amount]'); ok(`refund: ${d} days → ${amt}`, t.startsWith(amt), t) }
-  await page.getByRole('button', { name: 'Session below minimum group' }).click()
-  ok('refund: low enrollment → 100%', (await page.textContent('[data-refund-amount]')).startsWith('NT$20,000'))
+  await page.getByRole('button', { name: 'The camp is cancelled' }).click()
+  ok('refund: the camp is cancelled → everything back', (await page.textContent('[data-refund-amount]')).startsWith('NT$20,000') && (await page.textContent('#refund')).includes('everything you paid is returned'))
+  await page.getByRole('button', { name: 'Typhoon, earthquake or other natural disaster' }).click()
+  ok('refund: natural disaster → everything back, nothing deducted', (await page.textContent('[data-refund-amount]')).startsWith('NT$20,000') && !/necessary expenses/i.test(await page.textContent('#refund')))
+  ok('refund: no penalty or compensation line anywhere in the calculator', !/penalty|compensation|same percentages/i.test(await page.textContent('#refund')))
+  ok('home: the minimum-group guarantee is a full refund with no penalty', /refund everything you paid \(100%\)/.test(await page.textContent('#pricing')) && !/penalty/i.test(await page.textContent('#pricing')))
 
   // registration
   await page.locator('header').getByRole('button', { name: 'Register' }).click()
