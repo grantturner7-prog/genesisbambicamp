@@ -70,7 +70,7 @@ for (const act of home.ACTIVITIES) if (/pool|戲水池/i.test(act.name.en + act.
 // Required disclosures.
 const text = all.map((x) => x.text).join('\n')
 const need = [
-  ['venue address (zh)', '苗栗縣三灣鄉北埔村小北埔27號', campConfig.venue.address.zh],
+  ['venue address (zh)', '苗栗縣三灣鄉北埔村小北埔 27 號', campConfig.venue.address.zh],
   ['venue address (en)', 'Sanwan Township, Miaoli County', campConfig.venue.address.en],
   ['rainy-day plan (斑比大飯店)', '斑比大飯店', text],
   ['minimum-group 7-day 100% guarantee', '100%', home.PRICING.guarantee.en + home.PRICING.guarantee.zh],

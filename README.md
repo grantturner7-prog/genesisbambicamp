@@ -19,6 +19,8 @@ npm run launch-check # what partners still owe before going public
 npm run legal-pdf    # every legal notice as bilingual PDFs for a lawyer → docs/legal-review/
 npm run forms-pdf    # camp notice and agreement, health form, check-in form (drafts) → docs/forms/
 npm run all-pdf      # both of the above, joined into docs/genesis-bambi-camp-documents.pdf
+npm run promo        # adverts for parents: brochure, pamphlet, social images, captions → docs/marketing/
+node scripts/map-shot.mjs <url>   # re-capture the 3D map for the adverts after the map changes → scripts/promo-assets/
 npm run e2e          # browser tests against a running dev server (port 5199)
 ```
 

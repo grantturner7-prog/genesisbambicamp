@@ -1,0 +1,125 @@
+{
+ "width": 1800,
+ "height": 1136,
+ "spots": [
+  {
+   "id": "entrance",
+   "name": "Entrance",
+   "x": 0.7626,
+   "y": 0.5871,
+   "shown": true
+  },
+  {
+   "id": "checkin",
+   "name": "Reception",
+   "x": 0.606,
+   "y": 0.6063,
+   "shown": true
+  },
+  {
+   "id": "tram",
+   "name": "Eco-Tram Boarding",
+   "x": 0.6859,
+   "y": 0.6046,
+   "shown": true
+  },
+  {
+   "id": "dining",
+   "name": "Bambi Grand Dining Hall",
+   "x": 0.3413,
+   "y": 0.6035,
+   "shown": true
+  },
+  {
+   "id": "restroom",
+   "name": "Restrooms · AED",
+   "x": 0.4945,
+   "y": 0.6157,
+   "shown": true
+  },
+  {
+   "id": "pool",
+   "name": "Aurora Pool",
+   "x": 0.5236,
+   "y": 0.535,
+   "shown": true
+  },
+  {
+   "id": "snack",
+   "name": "Airstream Snack Shop",
+   "x": 0.5262,
+   "y": 0.486,
+   "shown": true
+  },
+  {
+   "id": "campfire",
+   "name": "Campfire Circle",
+   "x": 0.5313,
+   "y": 0.4525,
+   "shown": true
+  },
+  {
+   "id": "cinema",
+   "name": "Star Cinema",
+   "x": 0.5111,
+   "y": 0.421,
+   "shown": true
+  },
+  {
+   "id": "birds",
+   "name": "Wild Waterbird Lake",
+   "x": 0.3859,
+   "y": 0.4429,
+   "shown": true
+  },
+  {
+   "id": "kayak",
+   "name": "Kayak Lake",
+   "x": 0.7731,
+   "y": 0.474,
+   "shown": true
+  },
+  {
+   "id": "zone-A",
+   "name": "Zone A",
+   "x": 0.7334,
+   "y": 0.368,
+   "shown": true
+  },
+  {
+   "id": "zone-B",
+   "name": "Zone B",
+   "x": 0.6272,
+   "y": 0.3548,
+   "shown": true
+  },
+  {
+   "id": "zone-D",
+   "name": "Zone D",
+   "x": 0.1469,
+   "y": 0.4777,
+   "shown": true
+  },
+  {
+   "id": "zone-E",
+   "name": "Zone E",
+   "x": 0.2591,
+   "y": 0.5254,
+   "shown": true
+  },
+  {
+   "id": "zone-F",
+   "name": "Zone F",
+   "x": 0.2446,
+   "y": 0.4754,
+   "shown": true
+  },
+  {
+   "id": "zone-G",
+   "name": "Zone G",
+   "x": 0.2378,
+   "y": 0.3863,
+   "shown": true
+  }
+ ]
+}

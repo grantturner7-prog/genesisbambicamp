@@ -67,8 +67,10 @@ if (section("Home: language + registration + refund calculator")) {
   // meals, snack coupons, camp days
   ok('home: three meals a day, no fourth meal or afternoon tea', body.includes('Three meals a day') && !/four meals|4 daily|afternoon tea|campfire snacks/i.test(body))
   const meals = await page.textContent('[data-meals]')
+  const mealsCount = await page.textContent('[data-meals-count]')
   ok('home: breakfast, DIY lunch with the chef and dinner, and no buffet wording', ['Breakfast', 'DIY lunch with the chef', 'Dinner'].every((x) => meals.includes(x)) && !/buffet/i.test(meals))
-  ok('home: the winter menu from the venue kitchen, with no day named', ['Eggs, bacon, bread and sandwiches, with milk and soy milk', 'curry, pizza, rice balls and donburi rice boxes', 'meatball pasta with corn soup and bread', 'fried chicken and braised pork with vegetables and rice', 'not set yet'].every((x) => meals.includes(x)) && !/monday|tuesday|wednesday|thursday|friday|saturday|sunday/i.test(meals), meals)
+  ok('home: the winter menu from the venue kitchen, with no day named', ['Eggs, bacon, bread and sandwiches, with milk and soy milk', 'curry, pizza, rice balls and donburi rice boxes', 'meatball pasta with corn soup and bread', 'fried chicken and braised pork with vegetables and rice', 'not set yet'].every((x) => meals.includes(x)) && !/monday|tuesday|wednesday|thursday|friday|saturday|sunday/i.test(meals.replace(mealsCount, '')), meals)
+  ok('home: the nine meals are counted, so three meals a day is not read as twelve', mealsCount.startsWith('Nine meals in all') && mealsCount.includes('Thursday') && mealsCount.includes('Sunday'), mealsCount)
   ok('home: no clock times on the meals (no schedule published yet)', !/\d\d:\d\d/.test(meals), meals.match(/\d\d:\d\d/)?.[0])
   ok('home: final-evening Wagyu dinner highlighted with its photo', (await page.textContent('[data-signature-dinner]')).includes('Wagyu') && (await page.locator('[data-signature-dinner] img').getAttribute('src')).includes('wagyu-platter'))
   const coupons = await page.textContent('[data-snack-coupons]')
@@ -84,7 +86,7 @@ if (section("Home: language + registration + refund calculator")) {
     const days = await page.locator('#schedule [data-day]').evaluateAll((els) => els.map((e) => e.dataset.day))
     ok('home: the day-by-day plan shows the four camp days, from the meeting point to the bus home', JSON.stringify(days) === JSON.stringify(['Thursday', 'Friday', 'Saturday', 'Sunday']) && ['Four days at Camp WOW', 'Meet at The Lin Hotel, Taichung. The charter bus leaves at 08:30', 'Kayaking on the lake', 'Orienteering Quest', 'Bambi Amazing Race', 'Shelter Build Challenge', 'Multi-sports', 'Star Cinema', 'Glow Night Quest', 'Signature family dinner with Wagyu beef', 'Tug-of-War Tournament', 'Prize-giving', 'The bus leaves camp', 'Back at The Lin Hotel, Taichung', 'lights go out at 21:15'].every((x) => sched.includes(x)) && (await page.textContent('[data-rain-plan]')).includes('Grand Dining Hall'), JSON.stringify(days))
     ok('home: the camp is named in the hero and the header', (await page.textContent('h1')).trim() === 'Camp WOW' && (await page.locator('header a .font-display').first().textContent()).trim() === 'Camp WOW' && (await page.title()).includes('Camp WOW'))
-    ok('home: other guests of the venue are disclosed, and visitors are not admitted', (await page.textContent('#safety')).includes('overnight guests are also on site on the weekend nights') && (await page.textContent('#faq')).includes('Are there other guests at the venue during camp?'))
+    ok('home: other guests of the venue are disclosed, and visitors are not admitted', (await page.textContent('#safety')).includes('On Friday and Saturday nights Bambi Glamping’s own overnight guests are also on site') && (await page.textContent('#faq')).includes('Are there other guests at the venue during camp?'))
   }
 
   // camp games: the partners' 32 named activities, names kept as given

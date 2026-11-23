@@ -57,7 +57,7 @@ export const AREAS: Area[] = [
         title: { en: 'Medication handover', zh: '藥物交接' },
         body: {
           en: 'Medicines are handed in at check-in at the meeting point in Taichung, in their original bag with your camper’s name on it. The Registered Nurse keeps them during camp.',
-          zh: '個人藥物請裝於原藥袋並標註姓名，於臺中集合地點報到時交付，營期間由駐點護理師統一保管。',
+          zh: '個人藥物請裝於原藥袋並標註姓名，於臺中集合地點報到時交付，營隊期間由駐點護理師統一保管。',
         },
       },
       {
@@ -72,8 +72,8 @@ export const AREAS: Area[] = [
         icon: 'Lock',
         title: { en: `${cohort.gateCurfew} gate curfew`, zh: `${cohort.gateCurfew} 大門管制` },
         body: {
-          en: 'The gate is closed every night at 23:00. Bambi Glamping’s own overnight guests are also on site on the weekend nights; parents and other visitors are not admitted during camp.',
-          zh: '園區大門每晚 23:00 管制。週末夜晚園區另有斑比跳跳的住宿旅客；營期間謝絕家長與其他訪客探視。',
+          en: 'The gate is closed every night at 23:00. On Friday and Saturday nights Bambi Glamping’s own overnight guests are also on site; parents and other visitors are not admitted during camp.',
+          zh: '園區大門每晚 23:00 管制。週五、週六兩晚，園區另有斑比跳跳的一般住宿旅客；營隊期間謝絕家長與其他訪客探視。',
         },
       },
     ],
@@ -406,7 +406,7 @@ export const AREAS: Area[] = [
         title: { en: 'Airstream snack shop', zh: 'Airstream 點心站' },
         body: {
           en: 'The classic silver Airstream right at the pool’s edge is the camp snack shop. Campers exchange their snack coupons here for soft drinks and snacks. No alcohol is served during camp.',
-          zh: '池畔邊那輛經典銀色 Airstream 就是營隊點心站，營員憑點心券在這裡兌換無酒精飲品與點心。營期間不供應任何含酒精飲品。',
+          zh: '池畔邊那輛經典銀色 Airstream 就是營隊點心站，營員憑點心券在這裡兌換無酒精飲品與點心。營隊期間不供應任何含酒精飲品。',
         },
       },
       {
@@ -893,7 +893,7 @@ export const AREAS: Area[] = [
       },
       {
         icon: 'ShieldCheck',
-        title: { en: 'Background-checked team', zh: '背景查核的團隊' },
+        title: { en: 'Background-checked team', zh: '全員通過背景查核' },
         body: {
           en: 'Counselors, nurse and support workers are screened, with a clean 良民證 on file for each.',
           zh: '隊輔、護理師與支援人員皆經查核，並備有良民證。',
@@ -917,7 +917,7 @@ export const AREAS: Area[] = [
       },
     ],
     facts: [
-      { label: { en: 'Nurse on site', zh: '駐點護理師' }, value: { en: '24 hours, every day of camp', zh: '營期間每日 24 小時' } },
+      { label: { en: 'Nurse on site', zh: '駐點護理師' }, value: { en: '24 hours, every day of camp', zh: '營隊期間每日 24 小時' } },
       { label: { en: 'Nearest hospital', zh: '就近醫院' }, value: venue.hospital },
       { label: { en: 'Counselor ratio', zh: '隊輔比例' }, value: { en: `About ${cohort.counselorRatio}`, zh: `約 ${cohort.counselorRatio}` } },
     ],

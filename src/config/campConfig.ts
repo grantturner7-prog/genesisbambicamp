@@ -93,7 +93,7 @@ export const campConfig = {
     taxId: '88491889',
     address: {
       en: 'No. 27, Xiaobeipu, Beipu Village, Sanwan Township, Miaoli County',
-      zh: '苗栗縣三灣鄉北埔村小北埔27號',
+      zh: '苗栗縣三灣鄉北埔村小北埔 27 號',
     } satisfies L,
     /** Address-based maps link — no coordinates are guessed. */
     mapsUrl:
@@ -166,6 +166,12 @@ export const campConfig = {
 
   /** Written permission from Bambi to publish their photos (public/media/bambi). */
   venuePhotoPermissionOnFile: false,
+
+  /** The public address of this website. Adverts print it once it is live; null until then. */
+  site: { url: null as string | null },
+
+  /** The day-by-day plan is a promise to parents only once Bambi has confirmed it in writing (kayak coach, tram runs, campfire, meal times, lawn games). */
+  schedule: { confirmedByVenue: false },
 
   /**
    * The camp is one kind only: 4 Days / 3 Nights, Thursday to Sunday, one camp a season.

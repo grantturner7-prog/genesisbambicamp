@@ -15,7 +15,7 @@ const root = process.cwd()
 const out = path.resolve(process.argv[2] || 'docs/marketing')
 const vite = await createServer({ configFile: false, root, server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent', optimizeDeps: { noDiscovery: true, include: [] } })
 const load = (p) => vite.ssrLoadModule(p)
-const [{ strings }, home, games, { campConfig: c }] = await Promise.all([load('/src/i18n/strings.ts'), load('/src/home/content.ts'), load('/src/home/games.ts'), load('/src/config/campConfig.ts')])
+const [{ strings }, home, games, { campConfig: c }, { AREA_BY_ID }, media] = await Promise.all([load('/src/i18n/strings.ts'), load('/src/home/content.ts'), load('/src/home/games.ts'), load('/src/config/campConfig.ts'), load('/src/map/areas.ts'), load('/src/media/media.ts')])
 await vite.close()
 
 const offer = c.sessions.winter
@@ -23,6 +23,10 @@ if (!offer) throw new Error('The winter camp has no dates: nothing to advertise.
 const zhKey = Object.keys(strings).find((k) => k !== 'en')
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 const twd = (n) => `NT$${n.toLocaleString('en-US')}`
+// The 3D camp map from the website, captured by scripts/map-shot.mjs, and where each area sits on it.
+const MAP = JSON.parse(readFileSync(path.join(root, 'scripts/promo-assets/map-winter.json'), 'utf8'))
+const MAP_IMG = `file://${path.join(root, 'scripts/promo-assets/map-winter.jpg')}`
+const spot = (id) => { const m = MAP.spots.find((x) => x.id === id); if (!m) throw new Error(`The map has no marker “${id}”: run scripts/map-shot.mjs again.`); return [m.x, m.y] }
 // Photographs go into the PDFs as JPEGs of a sensible size, or each brochure weighs over 20 MB.
 const PHOTOS = new Set()
 const photo = (id) => { PHOTOS.add(id); return `file://${path.join(out, '.photos', id + '.jpg')}` }
@@ -30,41 +34,49 @@ const font = (pkg) => `file://${path.join(root, 'node_modules/@fontsource-variab
 const game = (n) => games.GAMES.find((g) => g.n === n).name
 
 // ── Copy that exists only in the adverts (everything else comes from the site) ─────────────
+const PLACES = offer.pilot?.maxCampers ?? c.cohort.maxCampersPerSession
 const AD = {
-  tagline: { en: 'All in English. All outdoors.', zh: '全美語生活環境・戶外探索營隊' },
-  ages: { en: 'Ages 10–14', zh: '10–14 歲' },
+  tagline: { en: c.brand.campLine.en, zh: '全美語生活環境・四天三夜' },
+  ages: { en: `Ages ${c.cohort.ageMin}–${c.cohort.ageMax}`, zh: `${c.cohort.ageMin}–${c.cohort.ageMax} 歲` },
   nights: { en: '4 days / 3 nights', zh: '四天三夜' },
   whyTitle: { en: `Why ${c.brand.camp}`, zh: `為什麼選 ${c.brand.camp}` },
   highlights: { en: 'Camp highlights', zh: '營隊亮點' },
   alsoTitle: { en: 'And across the four days', zh: '四天裡還有' },
-  stayTitle: { en: 'Camper vans and three meals a day', zh: '豪華露營車與每日三餐' },
   safetyTitle: { en: 'Looked after, day and night', zh: '日夜都有人照顧' },
   insuranceTitle: { en: 'Four layers of insurance', zh: '四重保險' },
-  feesTitle: { en: 'Dates and fees', zh: '梯次與費用' },
+  feesTitle: { en: 'Dates and fees', zh: '營隊日期與費用' },
   travelTitle: { en: 'Meeting point and bus', zh: '集合地點與專車' },
   included: { en: 'Included', zh: '費用包含' },
   excluded: { en: 'Not included', zh: '費用不含' },
   refundTitle: { en: 'If you need to cancel', zh: '如需解約' },
   refundHead: { en: ['When you cancel', 'Refund'], zh: ['解約時間', '退費比例'] },
   joinTitle: { en: 'How to join', zh: '如何報名' },
-  join: {
-    en: `Registration opens on the camp website. The first ${c.brand.camp} is a pilot camp with ${offer.pilot?.maxCampers ?? c.cohort.maxCampersPerSession} places.`,
-    zh: `報名將於營隊官網開放。首梯 ${c.brand.camp} 為試辦營，限額 ${offer.pilot?.maxCampers ?? c.cohort.maxCampersPerSession} 名營員。`,
-  },
+  join: c.registration.endpoint && c.site.url
+    ? { en: `Register at ${c.site.url}. The first ${c.brand.camp} is a pilot camp with ${PLACES} places.`, zh: `報名請至 ${c.site.url}。首梯 ${c.brand.camp} 為試辦營，限額 ${PLACES} 名營員。` }
+    : { en: `Registration is not open yet. The first ${c.brand.camp} is a pilot camp with ${PLACES} places.`, zh: `報名尚未開放。首梯 ${c.brand.camp} 為試辦營，限額 ${PLACES} 名營員。` },
   packTitle: { en: 'What to pack', zh: '行李清單' },
   whoTitle: { en: 'Who runs the camp', zh: '主辦與承辦單位' },
-  roles: { organizer: { en: 'Activity co-organizer', zh: '活動協辦' }, venue: { en: 'Venue', zh: '場地' }, agency: { en: 'Licensed travel agency', zh: '承辦旅行社' } },
   perCamper: { en: 'per camper', zh: '每位營員' },
   where: { en: 'Bambi Glamping, Sanwan, Miaoli', zh: '斑比跳跳・苗栗三灣' },
-  swipe: { en: 'Four days at camp', zh: '營隊四天' },
+  swipe: { en: 'Four days at camp', zh: '營隊亮點' },
   social: {
-    lead: { en: 'An American-style outdoor camp, all in English, in Miaoli.', zh: '在苗栗，過四天美式戶外營隊生活，全程美語。' },
-    days: { en: 'Four days, one lake, one campfire', zh: '四天・一座湖・一堆營火' },
+    lead: { en: 'An American-style outdoor camp in Miaoli, with English as the language of camp life.', zh: '在苗栗的全美語生活環境裡，過四天美式戶外營隊生活。' },
+    days: { en: 'Four days by the lake and the campfire', zh: '四天三夜・湖畔・營火' },
     stay: { en: 'Luxury camper vans. Three meals a day.', zh: '頂級豪華露營車・每日三餐' },
     care: { en: 'Counselors at about 1:4. A nurse on site 24/7.', zh: '隊輔與營員約 1:4・24 小時駐點護理師' },
-    book: { en: 'Pilot camp: 30 places', zh: '試辦營：限額 30 名營員' },
+    book: { en: `Pilot camp: ${PLACES} places`, zh: `試辦營：限額 ${PLACES} 名營員` },
+    departs: { en: `Departs from ${c.transport.meetingPoint.en}`, zh: `${c.transport.meetingPoint.zh}集合出發` },
   },
   photoCredit: { en: 'Photographs: Bambi Glamping', zh: '照片：斑比跳跳' },
+  snacksPlain: { en: 'Snacks between meals are not part of the camp fee.', zh: '正餐之間的點心不包含在營隊費用內。' },
+  placeKick: { en: 'The place', zh: '營地環境' },
+  placeTitle: { en: 'The camp, from above', zh: '從空中看營地' },
+  placeLead: { en: `${c.brand.camp} takes place at Bambi Glamping in Sanwan, Miaoli: two lakes, open lawns and camper vans under the trees. This is the camp map from our website, with photographs of the real places.`, zh: `${c.brand.camp} 在苗栗三灣的斑比跳跳舉辦：兩座湖、大片草地，還有樹下的露營車。這是營隊官網上的營地地圖，搭配各區的實景照片。` },
+  placeNote: { en: 'The map is an illustration of the site and is not to scale.', zh: '地圖為示意圖，非實際比例。' },
+  airstream: { en: 'Airstream Snack Shop', zh: 'Airstream 點心站' },
+  foodKick: { en: 'The food', zh: '餐點' },
+  sleepKick: { en: 'Where campers sleep', zh: '住宿' },
+  foodTitle: { en: 'Great food at Bambi Glamping', zh: '斑比跳跳的美味餐點' },
 }
 
 // ── Facts from the site ─────────────────────────────────────────────────────────────────────
@@ -75,23 +87,46 @@ const english = home.FAQ.find((f) => /English/.test(f.q.en))
 const act = (re) => home.ACTIVITIES.find((a) => re.test(a.name.en))
 const HIGHLIGHTS = [
   { ...act(/Kayak/), photo: 'kayak-jetty' },
-  { ...act(/Tram/), photo: 'tram-on-route' },
+  { ...act(/Tram/), photo: 'birds-roost-lake' }, // the roost the tram goes to see; the tram photo shows the venue's guests
   { ...act(/Campfire/), photo: 'campfire-burning' },
-  { ...act(/Cinema/), photo: 'cinema-night' },
+  { ...act(/Cinema/), photo: 'cinema-night' }, // the venue's best cinema photo; guests are seen from behind, so it needs Bambi's permission like the rest
 ]
-const ALSO = [1, 2, 4, 3, 8, 11, 27, 10, 32].map(game)
+const area = (id) => AREA_BY_ID[id].name
+/** A photograph's own caption, as the website prints it. */
+const caption = (id) => Object.values(media.AREA_PHOTOS).flat().find((ph) => ph.id === id).caption
+const MORE = ['zone-b-2', 'winter-cypress', 'grounds-palm-road'].map((id) => [id, caption(id)])
+const PLACES_TOP = [
+  [area('birds'), 'birds-roost-lake', spot('birds')],
+  [area('cinema'), 'cinema-screen', spot('cinema')],
+  [area('vans'), 'zone-a-2', spot('zone-B')],
+  [caption('van-bunk'), 'van-bunk', spot('zone-A')],
+]
+const PLACES_BOTTOM = [
+  [area('dining'), 'hall-windows', spot('dining')],
+  [AD.airstream, 'pool-airstream', spot('snack')],
+  [area('campfire'), 'campfire-burning', spot('campfire')],
+  [area('kayak'), 'kayak-jetty', spot('kayak')],
+]
+const ALSO = [1, 2, 4, 3, 12, 11, 27, 10, 32].map(game)
 // The organizers, as the website's legal footer prints them. null = a partner still owes it.
 const op = c.operator, ta = c.travelAgency
-const agencyLine = (lang) => (ta.legalName && ta.category && ta.tourismRegNo && ta.phone ? [typeof ta.legalName === 'string' ? ta.legalName : ta.legalName[lang === 'en' ? 'en' : 'zh'], typeof ta.category === 'string' ? ta.category : ta.category[lang === 'en' ? 'en' : 'zh'], ta.tourismRegNo, ta.tqaaNo, ta.phone, ta.insuranceNote && (typeof ta.insuranceNote === 'string' ? ta.insuranceNote : ta.insuranceNote[lang === 'en' ? 'en' : 'zh'])].filter(Boolean).join(' · ') : null)
-const contactLine = () => [op.lineId && `LINE ${op.lineId}`, op.phone, c.site?.url].filter(Boolean).join(' · ') || null
+const agencyLine = (lang) => (ta.legalName && ta.category && ta.tourismRegNo && ta.phone && ta.insuranceNote ? [typeof ta.legalName === 'string' ? ta.legalName : ta.legalName[lang === 'en' ? 'en' : 'zh'], typeof ta.category === 'string' ? ta.category : ta.category[lang === 'en' ? 'en' : 'zh'], ta.tourismRegNo, ta.tqaaNo, ta.phone, ta.insuranceNote && (typeof ta.insuranceNote === 'string' ? ta.insuranceNote : ta.insuranceNote[lang === 'en' ? 'en' : 'zh'])].filter(Boolean).join(' · ') : null)
+const contactLine = () => (c.site.url ? [c.site.url, op.lineId && `LINE ${op.lineId}`, op.phone].filter(Boolean).join(' · ') : null)
+const couponsSet = Boolean(c.snackShop.couponTerms && c.snackShop.menuConfirmed)
+/** Until the coupon terms and the snack menu are set, adverts name the snack shop without the pack prices. */
+const noPacks = (l) => (couponsSet ? l : { en: l.en.replace(/\s*\(optional coupon packs[^)]*\)/, ''), zh: l.zh.replace(/（可自由選購[^）]*）/, '') })
 const MISSING = []
 if (!agencyLine('en')) MISSING.push('the travel agency’s name, class, registration number, phone and insurance sums (a travel advertisement must print them)')
-if (!contactLine()) MISSING.push('a way to reach the camp: website address, LINE or phone')
-if (!c.registration.endpoint) MISSING.push('online registration is not open yet, so the adverts say “opens on the camp website”')
-if (!c.venuePhotoPermissionOnFile) MISSING.push('Bambi Glamping’s written permission to publish its photographs')
+if (!(op.legalName && op.taxId && op.phone)) MISSING.push('the activity co-organizer’s legal name, tax ID and phone')
+if (!contactLine()) MISSING.push('the website address (and LINE or phone) where parents reach the camp')
+if (!c.registration.endpoint) MISSING.push('online registration is not open yet, so the adverts say “registration is not open yet”')
+if (!c.schedule.confirmedByVenue) MISSING.push('Bambi Glamping’s confirmation of the day-by-day plan: kayak coach, tram runs, campfires, meal times and games on the lawn')
+if (!couponsSet) MISSING.push('the snack coupon terms and the snack shop menu (until then the adverts do not print coupon prices)')
+if (!c.venuePhotoPermissionOnFile) MISSING.push('Bambi Glamping’s written permission to publish its photographs, including the film-night photo, which shows guests from behind')
 const PENDING = {
   agency: { en: 'Travel agency name, class, registration number, phone and insurance sums: to be added before this is printed or posted.', zh: '承辦旅行社名稱、種類、註冊編號、電話與保險金額：印製或發布前補上。' },
   contact: { en: 'Website, LINE and phone: to be added.', zh: '官網、LINE 與電話：待補。' },
+  agencyShort: { en: 'Travel agency details and insurance sums: to be added before posting.', zh: '承辦旅行社資料與保險金額：發布前補上。' },
 }
 
 // ── Building blocks ─────────────────────────────────────────────────────────────────────────
@@ -104,18 +139,45 @@ const CSS = `
   .pill { display: inline-block; border: 1px solid rgba(255,255,255,.45); background: rgba(255,255,255,.12); border-radius: 999px; padding: .28em .9em; font-weight: 600; font-size: .8em; }
   .pending { border: 1.5px dashed #c0392b; color: #8a2a1b; background: #fff4f1; border-radius: 6px; padding: .5em .8em; font-size: .78em; font-weight: 600; }
   img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .place { position: relative; width: 100%; } .place .pmap { position: absolute; left: 0; width: 100%; border-radius: .7em; overflow: hidden; background: #2f5d3a; }
+  .place .pmap img { position: absolute; max-width: none; height: auto; object-fit: fill; }
+  .place svg { position: absolute; inset: 0; width: 100%; height: 100%; } .place path { stroke: var(--pine); stroke-width: 2.4; fill: none; stroke-linecap: round; } .place path.halo { stroke: rgba(255,255,255,.92); stroke-width: 6.5; } .place circle { fill: var(--cedar); stroke: #fff; stroke-width: 3; }
+  .more { display: grid; grid-template-columns: repeat(3, 1fr); gap: .9em; } .more .ph { border-radius: .6em; overflow: hidden; aspect-ratio: 1.55; } .more p { font-size: .92em; font-weight: 600; color: var(--pine); margin: .35em 0 0; line-height: 1.25; }
+  .place .pc { position: absolute; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: .6em; overflow: hidden; box-shadow: 0 1px 5px rgba(15,39,29,.16); }
+  .place .pc img { flex: 1 1 0; min-height: 0; height: auto; } .place .pc b { display: block; padding: .34em .55em .42em; font-size: .9em; line-height: 1.2; font-weight: 700; color: var(--pine); }
   ul { padding-left: 1.1em; } li { margin: 0 0 .28em; }
 `
 const doc = (body, extra = '') => `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="${font('inter')}"><link rel="stylesheet" href="${font('noto-sans-tc')}"><link rel="stylesheet" href="${font('fraunces')}"><link rel="stylesheet" href="${font('noto-serif-tc')}"><style>${CSS}${extra}</style></head><body>${body}</body></html>`
 
 /** Everything is written through `t`, so each run also collects the text it printed for the wording check. */
-function build(lang) {
+function build(lang, fit = {}) {
+  // how much each page carries; the render loop steps these down until every page fits
+  const { strip = true, tight = false, rows = 3, small = false, srows = 3 } = fit
   const seen = []
   const t = (l) => { const v = typeof l === 'string' ? l : l[lang === 'en' ? 'en' : 'zh']; seen.push(v); return esc(v) }
   const dates = t(offer.dates)
+  const [, dateMain, dateWeek] = dates.match(/^(.*?)\s*[(（](.*)[)）]$/) ?? [null, dates, '']
+  const insLine = { en: `Four layers of insurance (${home.SAFETY.insurance.map((i) => i.title.en).join(', ')})`, zh: `四重保險（${home.SAFETY.insurance.map((i) => i.title.zh.replace(/（.*?）/, '')).join('、')}）` }
   const legal = () => (agencyLine(lang) ? `<p class="legal">${esc(agencyLine(lang))}</p>` : `<p class="pending">${t(PENDING.agency)}</p>`)
   const contact = () => (contactLine() ? `<p class="contact">${esc(contactLine())}</p>` : `<p class="pending">${t(PENDING.contact)}</p>`)
   const brandLine = t({ en: c.brand.en, zh: c.brand.zh })
+  // The labelled map: four photographs above and four below, each joined by a line to its place.
+  // Everything is placed in a 1000-wide grid, so the same block serves the brochure, the pamphlet and a post.
+  const placeBlock = () => {
+    const crop = { x: 0.03, y: 0.2, w: 0.95, h: 0.62 }
+    const cardW = 235, gap = 20, cardH = 196, lines = 54
+    const mapH = Math.round(1000 * (crop.h * MAP.height) / (crop.w * MAP.width))
+    const m0 = cardH + lines, b0 = m0 + mapH + lines, total = b0 + cardH
+    const px = ([x, y]) => [((x - crop.x) / crop.w) * 1000, m0 + ((y - crop.y) / crop.h) * mapH]
+    const pc = (v) => `${(v / 10).toFixed(3)}%`, pcy = (v) => `${((v / total) * 100).toFixed(3)}%`
+    const card = ([label, ph], i, top) => `<div class="pc" style="left:${pc(i * (cardW + gap))};top:${pcy(top)};width:${pc(cardW)};height:${pcy(cardH)}"><img src="${photo(ph)}" alt=""><b>${t(label)}</b></div>`
+    const line = ([, , at], i, y) => { const [x2, y2] = px(at), x1 = i * (cardW + gap) + cardW / 2; return `<path d="M${x1.toFixed(1)} ${y} L${x2.toFixed(1)} ${y2.toFixed(1)}" class="halo"/><path d="M${x1.toFixed(1)} ${y} L${x2.toFixed(1)} ${y2.toFixed(1)}"/><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="8"/>` }
+    return `<div class="place" style="aspect-ratio:1000/${total}">
+      <div class="pmap" style="top:${pcy(m0)};height:${pcy(mapH)}"><img src="${MAP_IMG}" alt="" style="width:${(100 / crop.w).toFixed(3)}%;left:${(-crop.x / crop.w * 100).toFixed(3)}%;top:${(-crop.y / crop.h * 100).toFixed(3)}%"></div>
+      <svg viewBox="0 0 1000 ${total}" preserveAspectRatio="none">${PLACES_TOP.map((p, i) => line(p, i, cardH)).join('')}${PLACES_BOTTOM.map((p, i) => line(p, i, b0)).join('')}</svg>
+      ${PLACES_TOP.map((p, i) => card(p, i, 0)).join('')}${PLACES_BOTTOM.map((p, i) => card(p, i, b0)).join('')}
+    </div>`
+  }
 
   // ── brochure, A4 ──
   const cover = `
@@ -147,28 +209,46 @@ function build(lang) {
     <p class="kick">${t(home.SCHEDULE.kicker)}</p><h2 class="d">${t(home.SCHEDULE.title)}</h2>
     <p class="lead">${t(home.SCHEDULE.intro)}</p>
     <div class="days">${home.SCHEDULE.days.map((d, i) => `<div class="day"><p class="n">${i + 1} · ${t(d.day)}</p><h3 class="d">${t(d.theme)}</h3><table>${d.rows.map((r) => `<tr><th>${esc(r.time)}</th><td>${t(r.what)}</td></tr>`).join('')}</table></div>`).join('')}</div>
-    <p class="note">${t(home.RAIN_PLAN.title)} ${t(home.RAIN_PLAN.body)}</p>
-    <div class="strip"><div class="ph"><img src="${photo('kayak-lake')}" alt=""></div><div class="ph"><img src="${photo('campfire-marshmallow')}" alt=""></div><div class="ph"><img src="${photo('cinema-lawn')}" alt=""></div></div>
+    <p class="note"><b>${t(home.RAIN_PLAN.title)}</b>${lang === 'en' ? ' ' : ''}${t(home.RAIN_PLAN.body)}</p>
+    ${strip ? `<div class="strip"><div class="ph"><img src="${photo('kayak-shore')}" alt=""></div><div class="ph"><img src="${photo('campfire-marshmallow')}" alt=""></div><div class="ph"><img src="${photo('cinema-lawn')}" alt=""></div></div>` : ''}
   </section>`
   const stay = `
-  <section class="page">
-    <p class="kick">${t(S('nav.stay'))}</p><h2 class="d">${t(AD.stayTitle)}</h2>
-    <div class="row3"><div class="ph"><img src="${photo('lake-cypress')}" alt=""></div><div class="ph"><img src="${photo('van-bunk')}" alt=""></div><div class="ph"><img src="${photo('wagyu-platter')}" alt=""></div></div>
+  <section class="page${tight ? ' tight' : ''}">
+    <p class="kick">${t(AD.sleepKick)}</p><h2 class="d">${t(area('vans'))}</h2>
+    <div class="row3 vans"><div class="ph"><img src="${photo('zone-a-2')}" alt=""></div><div class="ph"><img src="${photo('van-bunk')}" alt=""></div><div class="ph"><img src="${photo('van-bed-ac')}" alt=""></div></div>
     <div class="cols3">${home.STAY.cards.map((x) => `<div><b>${t(x.title)}</b><p>${t(x.body)}</p></div>`).join('')}</div>
-    <div class="cols2 meals"><div><b>${t(home.STAY.mealsTitle)}</b><ul>${home.STAY.meals.map((m) => `<li><b>${t(m.name)}</b> ${t(m.note)}</li>`).join('')}</ul></div><div><b>${t(home.STAY.signature.title)}</b><p>${t(home.STAY.signature.body)}</p><p class="small">${t(home.STAY.snacks.body)}</p></div></div>
     <h2 class="d second">${t(AD.safetyTitle)}</h2>
     <div class="cols2">${home.SAFETY.staff.map((x) => `<div><b>${t(x.title)}</b><p>${t(x.body)}</p></div>`).join('')}</div>
     <h3 class="d">${t(AD.insuranceTitle)}</h3>
     <div class="cols2 ins">${home.SAFETY.insurance.map((x) => `<div><b>${esc(x.n)}. ${t(x.title)}</b> <span class="by">${t(x.by)}</span><p>${t(x.body)}</p></div>`).join('')}</div>
     <p class="small">${t(home.SAFETY.under15)}</p>
   </section>`
+  const MEAL_PHOTOS = ['buffet-eggs', 'pizza-fresh', 'hall-tables']
+  const food = `
+  <section class="page">
+    <p class="kick">${t(AD.foodKick)}</p><h2 class="d">${t(AD.foodTitle)}</h2>
+    <div class="feast"><img src="${photo('wagyu-platter')}" alt=""><div class="shade"></div><div class="txt"><p class="kick">${t(home.STAY.signature.kicker)}</p><h3 class="d">${t(home.STAY.signature.title)}</h3><p>${t(home.STAY.signature.body)}</p></div></div>
+    <h3 class="d">${t(home.STAY.mealsTitle)}</h3>
+    <div class="cols3 mealcards">${home.STAY.meals.map((m, i) => `<div><div class="ph"><img src="${photo(MEAL_PHOTOS[i])}" alt=""></div><b>${t(m.name)}</b><p>${t(m.note)}</p></div>`).join('')}</div>
+    <p class="note"><b>${t(home.STAY.mealsCount)}</b> ${t(home.STAY.diet)}</p>
+    <p class="small">${t(home.STAY.mealsNote)} ${t(couponsSet ? home.STAY.snacks.body : AD.snacksPlain)}</p>
+  </section>`
+  const more = () => `<div class="more">${MORE.map(([id, cap]) => `<div><div class="ph"><img src="${photo(id)}" alt=""></div><p>${t(cap)}</p></div>`).join('')}</div>`
+  const place = `
+  <section class="page">
+    <p class="kick">${t(AD.placeKick)}</p><h2 class="d">${t(AD.placeTitle)}</h2>
+    <p class="lead">${t(AD.placeLead)}</p>
+    ${placeBlock()}
+    ${more()}
+    <p class="small pnote">${t(AD.placeNote)} ${t(AD.photoCredit)}</p>
+  </section>`
   const fees = `
   <section class="page">
     <p class="kick">${t(S('nav.pricing'))}</p><h2 class="d">${t(AD.feesTitle)}</h2>
-    <div class="feebox"><div><p class="d fee">${esc(twd(offer.fee))}</p><p>${t(AD.perCamper)}</p></div><div><p class="d when">${dates}</p><p>${t(home.PRICING.camp.name)} · ${t(home.PRICING.camp.when)} · ${t(AD.ages)}${offer.pilot ? ' · ' + t(home.PRICING.pilotLimit(offer.pilot.maxCampers)) : ''}</p></div></div>
+    <div class="feebox"><div><p class="d fee">${esc(twd(offer.fee))}</p><p>${t(AD.perCamper)}</p></div><div><p class="d when">${dates}</p><p>${[t(AD.nights), t(AD.ages), offer.pilot ? t(home.PRICING.pilotLimit(offer.pilot.maxCampers)) : null].filter(Boolean).join(lang === 'en' ? ' · ' : '・')}</p></div></div>
     <h3 class="d">${t(AD.travelTitle)}</h3>
     <p>${t(home.PRICING.camp.bus)}</p><p class="small">${t(home.PRICING.bus)}</p>
-    <div class="cols2 lists"><div><h3 class="d">${t(AD.included)}</h3><ul>${home.PRICING.included.map((x) => `<li>${t(x)}</li>`).join('')}</ul></div><div><h3 class="d">${t(AD.excluded)}</h3><ul>${home.PRICING.excluded.map((x) => `<li>${t(x)}</li>`).join('')}</ul></div></div>
+    <div class="cols2 lists"><div><h3 class="d">${t(AD.included)}</h3><ul>${home.PRICING.included.map((x) => `<li>${t(x)}</li>`).join('')}</ul></div><div><h3 class="d">${t(AD.excluded)}</h3><ul>${home.PRICING.excluded.map((x) => `<li>${t(noPacks(x))}</li>`).join('')}</ul></div></div>
     <p class="note">${t(home.PRICING.guarantee)}</p>
     <h3 class="d">${t(AD.refundTitle)}</h3>
     <p class="small">${t(home.REFUND.intro)}</p>
@@ -185,16 +265,16 @@ function build(lang) {
     <ul class="pack">${home.PACKING.filter((p) => !p.season || p.season === 'winter').map((p) => `<li>${t(p.item)}</li>`).join('')}</ul>
     <h3 class="d">${t(AD.whoTitle)}</h3>
     <div class="cols3 who">
-      <div><b>${t(AD.roles.organizer)}</b><p>${or(op.legalName)}</p><p class="small">${t(S('footer.taxId'))}：${or(op.taxId)}<br>${t(S('footer.tel'))}：${or(op.phone)}</p></div>
-      <div><b>${t(AD.roles.venue)}</b><p>${t(c.venue.name)}</p><p class="small">${t(S('footer.taxId'))}：${esc(c.venue.taxId)}<br>${t(c.venue.address)}</p></div>
-      <div><b>${t(AD.roles.agency)}</b><p>${or(ta.legalName)}</p><p class="small">${or(ta.category)} · ${or(ta.tourismRegNo)} · ${or(ta.tqaaNo)}<br>${t(S('footer.tel'))}：${or(ta.phone)}</p></div>
+      <div><b>${t(S('footer.coOrganizer'))}</b><p>${or(op.legalName)}</p><p class="small">${t(S('footer.taxId'))}：${or(op.taxId)}<br>${t(S('footer.tel'))}：${or(op.phone)}</p></div>
+      <div><b>${t(S('footer.venuePartner'))}</b><p>${t(c.venue.name)}</p><p class="small">${t(S('footer.taxId'))}：${esc(c.venue.taxId)}<br>${t(c.venue.address)}</p></div>
+      <div><b>${t(S('footer.travelOrganizer'))}</b><p>${or(ta.legalName)}</p><p class="small">${or(ta.category)} · ${or(ta.tourismRegNo)} · ${or(ta.tqaaNo)}<br>${t(S('footer.tel'))}：${or(ta.phone)}</p></div>
     </div>
     ${legal()}
     <p class="small duty">${t(home.SAFETY.duty)}</p>
     <div class="closing"><img src="${photo('grounds-palm-road')}" alt=""><div class="shade"></div><p class="d">${esc(c.brand.camp)}</p><span>${t(AD.tagline)}</span></div>
     <p class="credit">${t(AD.photoCredit)}</p>
   </section>`
-  const brochure = doc(cover + why + days + stay + fees + join, BROCHURE_CSS)
+  const brochure = doc(cover + why + place + days + stay + food + fees + join, BROCHURE_CSS)
 
   // ── pamphlet, A5, two sides ──
   const pamphlet = doc(`
@@ -205,35 +285,53 @@ function build(lang) {
     <p class="pills"><span class="pill">${t(AD.ages)}</span><span class="pill">${dates}</span></p></div>
     <ul class="points">${home.HERO.points.map((p) => `<li>${t(p)}</li>`).join('')}<li>${t(AD.where)}</li></ul>
   </section>
-  <section class="page back">
+  <section class="page">
+    <p class="kick">${t(AD.placeKick)}</p><h2 class="d">${t(AD.placeTitle)}</h2>
+    <p class="plead">${t(AD.placeLead)}</p>
+    ${placeBlock()}
+    ${more()}
+    <p class="small pnote">${t(AD.placeNote)}</p>
+  </section>
+  <section class="page${small ? ' small-type' : ''}">
     <p class="kick">${t(home.SCHEDULE.kicker)}</p><h2 class="d">${t(home.SCHEDULE.title)}</h2>
-    <div class="mini">${home.SCHEDULE.days.map((d, i) => `<div><p class="n">${i + 1} · ${t(d.day)}</p><b class="d">${t(d.theme)}</b><ul>${d.rows.filter((r) => !/^(Breakfast|Dinner|Lunch)/.test(r.what.en)).slice(0, 5).map((r) => `<li>${t(r.what)}</li>`).join('')}</ul></div>`).join('')}</div>
-    <div class="feebox"><div><p class="d fee">${esc(twd(offer.fee))}</p><p>${t(AD.perCamper)}</p></div><div><p class="d when">${dates}</p><p>${t(home.PRICING.camp.name)} · ${t(AD.ages)}${offer.pilot ? ' · ' + t(home.PRICING.pilotLimit(offer.pilot.maxCampers)) : ''}</p></div></div>
+    <p class="plead">${t(home.SCHEDULE.intro)}</p>
+    <div class="mini one">${home.SCHEDULE.days.map((d, i) => `<div><p class="n">${i + 1} · ${t(d.day)}</p><b class="d">${t(d.theme)}</b><ul>${d.rows.filter((r) => !/^(Breakfast|Dinner|Lunch|Meet|Arrive|The bus|Back at)/.test(r.what.en)).slice(0, rows).map((r) => `<li>${t(r.what)}</li>`).join('')}</ul></div>`).join('')}</div>
+    <p class="small"><b>${t(home.RAIN_PLAN.title)}</b>${lang === 'en' ? ' ' : ''}${t(home.RAIN_PLAN.body)}</p>
+  </section>
+  <section class="page back">
+    <p class="kick">${t(S('nav.pricing'))}</p><h2 class="d">${t(AD.feesTitle)}</h2>
+    <div class="feebox"><div><p class="d fee">${esc(twd(offer.fee))}</p><p>${t(AD.perCamper)}</p></div><div><p class="d when">${dates}</p><p>${[t(AD.nights), t(AD.ages), offer.pilot ? t(home.PRICING.pilotLimit(offer.pilot.maxCampers)) : null].filter(Boolean).join(lang === 'en' ? ' · ' : '・')}</p></div></div>
     <p class="bus"><b>${t(AD.travelTitle)}</b> ${t(home.PRICING.camp.bus)}</p>
-    <p class="inc"><b>${t(AD.included)}</b> ${home.PRICING.included.map((x) => t(x)).join(lang === 'en' ? '; ' : '；')}${lang === 'en' ? '.' : '。'}</p>
-    <p class="small">${t(home.STAY.snacks.title)}${lang === 'en' ? '. ' : '。'}${t(home.PRICING.guarantee)}</p>
+    <p class="inc"><b>${t(AD.included)}</b> ${home.PRICING.included.filter((x) => !/charter bus/i.test(x.en)).map((x) => t(/^All statutory insurance/.test(x.en) ? insLine : x)).join(lang === 'en' ? '; ' : '；')}${lang === 'en' ? '. ' : '。'}${t(home.STAY.mealsCount)}</p>
+    <p class="small"><b>${t(AD.excluded)}</b>${lang === 'en' ? ': ' : '：'}${home.PRICING.excluded.map((x) => t(noPacks(x))).join(lang === 'en' ? '; ' : '；')}${lang === 'en' ? '. ' : '。'}${t(home.PRICING.guarantee)}</p>
+    <div class="feast"><img src="${photo('wagyu-platter')}" alt=""><div class="shade"></div><div class="txt"><p class="kick">${t(home.STAY.signature.kicker)}</p><b class="d">${t(home.STAY.signature.title)}</b></div></div>
+    <p class="care"><b>${t(AD.safetyTitle)}</b> ${home.SAFETY.staff.map((x) => t(x.title)).join(lang === 'en' ? ' · ' : '・')}</p>
     <p class="join"><b>${t(AD.joinTitle)}</b> ${t(AD.join)}</p>
     ${contact()}${legal()}
+    <p class="small duty">${t(home.SAFETY.duty)}</p>
     <p class="credit">${t(AD.photoCredit)}</p>
   </section>`, PAMPHLET_CSS)
 
   // ── social images ──
-  const foot = `<div class="foot"><span>${brandLine}</span><span>${t(AD.where)}</span></div>`
+  const foot = `<div class="foot"><p><span>${brandLine}</span><span>${t(AD.where)}</span></p><p class="fine">${agencyLine(lang) ? `<span>${esc(agencyLine(lang))}</span>` : `<span class="need">${t(PENDING.agencyShort)}</span>`}<span>${t(AD.photoCredit)}</span></p></div>`
   const hero = (cls, ph) => `<section class="s ${cls}"><img class="bg" src="${photo(ph)}" alt=""><div class="shade"></div>
     <div class="in"><p class="mean">${esc(c.brand.campMeaning)}</p><h1 class="d">${esc(c.brand.camp)}</h1><p class="d head">${t(headline)}</p><p class="tag">${t(AD.tagline)}</p>
     <p class="pills"><span class="pill">${t(AD.ages)}</span><span class="pill">${dates}</span></p></div>${foot}</section>`
   const slides = [
     hero('cover', 'winter-cypress'),
+    `<section class="s light"><div class="in"><p class="kick">${t(AD.placeKick)}</p><h2 class="d">${t(AD.placeTitle)}</h2>${placeBlock()}<p class="pnote">${t(AD.placeNote)}</p></div>${foot}</section>`,
     `<section class="s light"><div class="in"><p class="kick">${t(AD.swipe)}</p><h2 class="d">${t(AD.social.days)}</h2>
       <div class="tiles">${HIGHLIGHTS.map((h) => `<figure><img src="${photo(h.photo)}" alt=""><figcaption>${t(h.name)}</figcaption></figure>`).join('')}</div>
       <p class="chips">${ALSO.slice(0, 6).map((g) => `<span>${t(g)}</span>`).join('')}</p></div>${foot}</section>`,
     `<section class="s light"><div class="in"><p class="kick">${t(home.SCHEDULE.kicker)}</p><h2 class="d">${t(home.SCHEDULE.title)}</h2>
-      <div class="sdays">${home.SCHEDULE.days.map((d, i) => `<div><p class="n">${i + 1} · ${t(d.day)}</p><b class="d">${t(d.theme)}</b><span>${d.rows.filter((r) => !/^(Breakfast|Dinner|Lunch|Meet|Arrive|The bus|Back at)/.test(r.what.en)).slice(0, 3).map((r) => t(r.what)).join(' ')}</span></div>`).join('')}</div>
+      <div class="sdays">${home.SCHEDULE.days.map((d, i) => `<div><p class="n">${i + 1} · ${t(d.day)}</p><b class="d">${t(d.theme)}</b><span>${d.rows.filter((r) => !/^(Breakfast|Dinner|Lunch|Meet|Arrive|The bus|Back at)/.test(r.what.en)).slice(0, srows).map((r) => t(r.what)).join(lang === 'en' ? ' ' : '')}</span></div>`).join('')}</div>
       <p class="lead">${t(home.SCHEDULE.intro)}</p></div>${foot}</section>`,
     `<section class="s photo"><img class="bg" src="${photo('lake-cypress')}" alt=""><div class="shade"></div><div class="in bottom"><p class="kick">${t(S('nav.stay'))}</p><h2 class="d">${t(AD.social.stay)}</h2>
       <ul>${home.STAY.cards.slice(0, 2).map((x) => `<li>${t(x.title)}</li>`).join('')}<li>${t(home.STAY.signature.title)}</li></ul>
       <h2 class="d second">${t(AD.social.care)}</h2></div>${foot}</section>`,
-    `<section class="s dark"><div class="in"><p class="kick">${t(AD.feesTitle)}</p><h2 class="d">${dates}</h2>
+    `<section class="s photo food"><img class="bg" src="${photo('wagyu-platter')}" alt=""><div class="shade"></div><div class="in bottom"><p class="kick">${t(home.STAY.signature.kicker)}</p><h2 class="d">${t(home.STAY.signature.title)}</h2>
+      <ul>${home.STAY.meals.map((m) => `<li>${t(m.name)}</li>`).join('')}</ul><p class="lead2">${t(home.STAY.mealsCount)}</p></div>${foot}</section>`,
+    `<section class="s dark"><div class="in"><p class="kick">${t(AD.feesTitle)}</p><h2 class="d">${dateMain}</h2>${dateWeek ? `<p class="big wk">${dateWeek}</p>` : ''}
       <p class="d fee">${esc(twd(offer.fee))} <small>${t(AD.perCamper)}</small></p>
       <p class="big">${t(AD.social.book)}</p>
       <p class="kick">${t(AD.included)}</p>
@@ -243,19 +341,24 @@ function build(lang) {
   ]
   const story = `<section class="s story"><img class="bg" src="${photo('winter-cypress')}" alt=""><div class="shade"></div>
     <div class="in"><p class="mean">${esc(c.brand.campMeaning)}</p><h1 class="d">${esc(c.brand.camp)}</h1><p class="d head">${t(headline)}</p><p class="tag">${t(AD.tagline)}</p>
-    <p class="pills"><span class="pill">${t(AD.ages)}</span><span class="pill">${dates}</span></p>
+    <p class="pills"><span class="pill">${t(AD.ages)}</span><span class="pill">${dates}</span><span class="pill">${t(AD.nights)}</span></p>
     <ul class="pts">${home.HERO.points.map((p) => `<li>${t(p)}</li>`).join('')}</ul>
-    <p class="d fee">${esc(twd(offer.fee))} <small>${t(AD.perCamper)}</small></p><p class="big">${t(AD.social.book)}</p></div>${foot}</section>`
+    <p class="d fee">${esc(twd(offer.fee))} <small>${t(AD.perCamper)}</small></p><p class="big">${t(AD.social.book)}</p><p class="dep">${t(AD.social.departs)}</p></div>${foot}</section>`
   const wide = hero('wide', 'winter-cypress')
   const square = hero('square', 'lake-cypress')
 
   // captions for the posts
   const tagList = lang === 'en' ? '#CampWOW #WorldOfOutdoorWonders #OutdoorCamp #WinterCamp #Miaoli #Glamping #KidsCampTaiwan' : '#CampWOW #戶外營隊 #冬令營 #寒假營隊 #苗栗三灣 #斑比跳跳 #全美語生活環境 #豪華露營'
   const cap = (lines) => lines.map((l) => (typeof l === 'string' ? l : l[lang === 'en' ? 'en' : 'zh'])).join('\n')
+  const AGES = `${c.cohort.ageMin}–${c.cohort.ageMax}`
+  const facts = { en: `${offer.dates.en} · ${AD.nights.en} · ages ${AGES} · Bambi Glamping, Sanwan, Miaoli`, zh: `${offer.dates.zh}・${AD.nights.zh}・${AGES} 歲・苗栗三灣斑比跳跳` }
+  const price = { en: `${twd(offer.fee)} per camper, charter bus from Taichung included. Pilot camp: ${PLACES} places.`, zh: `每位營員 ${twd(offer.fee)}，含臺中來回遊覽車專車。試辦營限額 ${PLACES} 名營員。` }
+  // what a travel advertisement has to carry, at the end of every caption
+  const legalCap = { en: `${AD.social.departs.en} · ${AD.nights.en}\n${agencyLine('en') ? `Travel agency: ${agencyLine('en')}` : `[${PENDING.agency.en}]`}\n${AD.photoCredit.en}`, zh: `${AD.social.departs.zh}・${AD.nights.zh}\n${agencyLine('zh') ? `承辦旅行社：${agencyLine('zh')}` : `〔${PENDING.agency.zh}〕`}\n${AD.photoCredit.zh}` }
   const captions = {
-    instagram: cap([`${c.brand.camp} · ${c.brand.campMeaning}`, AD.social.lead, '', { en: `${offer.dates.en} · ages 10–14 · Bambi Glamping, Sanwan, Miaoli`, zh: `${offer.dates.zh}・10–14 歲・苗栗三灣斑比跳跳` }, { en: 'Kayaking on the lake, the eco-tram at dusk, the Bambi Amazing Race, a shelter build, campfires and Star Cinema.', zh: '湖畔獨木舟、黃昏遊園車、斑比探索大挑戰、野外庇護所挑戰、營火與星空電影院。' }, { en: 'Luxury camper vans, three meals a day, counselors at about 1:4 and a nurse on site 24/7.', zh: '頂級豪華露營車、每日三餐、隊輔與營員約 1:4、24 小時駐點護理師。' }, { en: `${twd(offer.fee)} per camper, charter bus from Taichung included. Pilot camp: 30 places.`, zh: `每位營員 ${twd(offer.fee)}，含臺中來回遊覽車專車。試辦營限額 30 名營員。` }, '', tagList]),
-    facebook: cap([`${c.brand.camp} · ${c.brand.campMeaning}`, AD.social.lead, '', home.SCHEDULE.intro, { en: `Day 1: ${home.SCHEDULE.days[0].theme.en}. Day 2: ${home.SCHEDULE.days[1].theme.en}. Day 3: ${home.SCHEDULE.days[2].theme.en}. Day 4: ${home.SCHEDULE.days[3].theme.en}.`, zh: `第一天：${home.SCHEDULE.days[0].theme.zh}。第二天：${home.SCHEDULE.days[1].theme.zh}。第三天：${home.SCHEDULE.days[2].theme.zh}。第四天：${home.SCHEDULE.days[3].theme.zh}。` }, '', home.PRICING.camp.bus, { en: `${twd(offer.fee)} per camper. ${home.PRICING.pilotLimit(30).en}.`, zh: `每位營員 ${twd(offer.fee)}。${home.PRICING.pilotLimit(30).zh}。` }, home.PRICING.guarantee, '', tagList]),
-    tiktok: cap([{ en: `${c.brand.camp}: four days outdoors, all in English. ${offer.dates.en}, ages 10–14, Miaoli.`, zh: `${c.brand.camp}：四天戶外營隊生活，全程美語。${offer.dates.zh}，10–14 歲，苗栗三灣。` }, tagList]),
+    instagram: cap([`${c.brand.camp} · ${c.brand.campMeaning}`, AD.social.lead, '', facts, { en: 'Kayaking on the lake, the eco-tram at dusk, the Bambi Amazing Race, a shelter build, campfires and Star Cinema.', zh: '湖畔獨木舟、黃昏遊園車、斑比探索大挑戰、野外庇護所挑戰、營火與星空電影院。' }, { en: 'Luxury camper vans, three meals a day, counselors at about 1:4 and a nurse on site 24/7.', zh: '頂級豪華露營車、每日三餐、隊輔與營員約 1:4、24 小時駐點護理師。' }, price, '', legalCap, '', tagList]),
+    facebook: cap([`${c.brand.camp} · ${c.brand.campMeaning}`, AD.social.lead, facts, '', home.SCHEDULE.intro, { en: `Day 1: ${home.SCHEDULE.days[0].theme.en}. Day 2: ${home.SCHEDULE.days[1].theme.en}. Day 3: ${home.SCHEDULE.days[2].theme.en}. Day 4: ${home.SCHEDULE.days[3].theme.en}.`, zh: `第一天：${home.SCHEDULE.days[0].theme.zh}。第二天：${home.SCHEDULE.days[1].theme.zh}。第三天：${home.SCHEDULE.days[2].theme.zh}。第四天：${home.SCHEDULE.days[3].theme.zh}。` }, '', home.PRICING.camp.bus, { en: `${twd(offer.fee)} per camper. ${home.PRICING.pilotLimit(PLACES).en}.`, zh: `每位營員 ${twd(offer.fee)}。${home.PRICING.pilotLimit(PLACES).zh}。` }, home.PRICING.guarantee, '', legalCap, '', tagList]),
+    tiktok: cap([{ en: `${c.brand.camp}: four days of outdoor camp life in English. ${offer.dates.en}, ages ${AGES}, Sanwan, Miaoli. ${twd(offer.fee)} per camper.`, zh: `${c.brand.camp}：全美語生活環境的四天戶外營隊。${offer.dates.zh}，${AGES} 歲，苗栗三灣。每位營員 ${twd(offer.fee)}。` }, legalCap, tagList]),
   }
   captions.all = Object.values(captions).join('\n')
   seen.push(captions.all)
@@ -282,7 +385,7 @@ const BROCHURE_CSS = `
   .chips span { display: inline-block; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 3pt 10pt; margin: 0 4pt 5pt 0; font-size: 8.8pt; font-weight: 600; color: var(--pine); }
   .days { display: grid; grid-template-columns: 1fr 1fr; gap: 9pt; } .day { background: #fff; border: 1px solid var(--line); border-radius: 10pt; padding: 10pt 12pt; } .day .n, .mini .n, .sdays .n { font-size: 7.8pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cedar6); margin: 0; } .day h3 { margin: 1pt 0 6pt; font-size: 12.5pt; }
   .day table { border-collapse: collapse; width: 100%; font-size: 8.7pt; line-height: 1.35; } .day th { text-align: left; vertical-align: top; width: 30pt; padding: 2pt 6pt 2pt 0; color: var(--pine); font-variant-numeric: tabular-nums; } .day td { padding: 2pt 0; vertical-align: top; }
-  .row3 { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 6pt; height: 38mm; margin-bottom: 9pt; } .row3 .ph { border-radius: 8pt; overflow: hidden; }
+  .row3 { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 6pt; height: 38mm; margin-bottom: 9pt; } .tight .row3 { height: 21mm; } .row3 .ph { border-radius: 8pt; overflow: hidden; }
   .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 11pt; } .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt 14pt; } .cols3 b, .cols2 b { color: var(--pine); } .cols3 p, .cols2 p { font-size: 8.9pt; line-height: 1.42; }
   .meals { margin-top: 8pt; } .meals ul { font-size: 8.9pt; } .ins .by { font-size: 8pt; color: var(--cedar6); font-weight: 600; }
   .feebox { display: grid; grid-template-columns: auto 1fr; gap: 16pt; align-items: center; background: var(--pine); color: #fff; border-radius: 12pt; padding: 13pt 17pt; margin: 4pt 0 6pt; } .feebox .fee { font-size: 30pt; line-height: 1; margin: 0; } .feebox .when { font-size: 15pt; margin: 0 0 3pt; } .feebox p { margin: 0; font-size: 9pt; }
@@ -291,6 +394,10 @@ const BROCHURE_CSS = `
   .pack { columns: 2; font-size: 9pt; } .who { margin: 4pt 0 9pt; } .who > div { background: #fff; border: 1px solid var(--line); border-radius: 9pt; padding: 8pt 10pt; } .who i { color: #8a2a1b; font-style: normal; }
   .legal { font-size: 8.5pt; font-weight: 600; } .contact { font-size: 12pt; font-weight: 700; color: var(--pine); } .duty { margin-top: 8pt; } .credit { position: absolute; left: 16mm; bottom: 9mm; font-size: 7.5pt; color: #7c887f; }
   .strip { display: grid; grid-template-columns: 1.3fr 1fr 1.3fr; gap: 6pt; height: 40mm; margin-top: 10pt; } .strip .ph { border-radius: 9pt; overflow: hidden; }
+  .place { font-size: 8.4pt; margin: 6pt 0 10pt; } .pnote { margin-top: 6pt; } .more { font-size: 8.6pt; }
+  .row3.vans { height: 58mm; grid-template-columns: 1.25fr 1fr 1fr; } .tight .row3.vans { height: 44mm; }
+  .feast { position: relative; height: 98mm; border-radius: 12pt; overflow: hidden; color: #fff; margin: 2pt 0 4pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.62) 38%, rgba(15,25,20,0) 66%); } .feast .txt { position: absolute; left: 16pt; bottom: 16pt; width: 46%; } .feast .kick { color: var(--cedar); } .feast h3 { color: #fff; font-size: 19pt; line-height: 1.15; margin: 3pt 0 6pt; } .feast p { font-size: 9.6pt; line-height: 1.5; margin: 0; }
+  .mealcards .ph { height: 40mm; border-radius: 9pt; overflow: hidden; margin-bottom: 6pt; } .mealcards b { display: block; font-size: 11pt; margin-bottom: 2pt; } .mealcards p { font-size: 9pt; }
   .closing { position: absolute; left: 16mm; right: 16mm; bottom: 17mm; height: 62mm; border-radius: 12pt; overflow: hidden; color: #fff; } .closing img { position: absolute; inset: 0; } .closing .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,39,29,.85), rgba(15,39,29,.15)); } .closing p { position: absolute; left: 14pt; bottom: 26pt; font-size: 30pt; line-height: 1; margin: 0; } .closing span { position: absolute; left: 14pt; bottom: 11pt; font-size: 10pt; font-weight: 600; }
 `
 const PAMPHLET_CSS = `
@@ -305,6 +412,9 @@ const PAMPHLET_CSS = `
   .mini { display: grid; grid-template-columns: 1fr 1fr; gap: 5pt 9pt; margin-bottom: 7pt; } .mini > div { background: #fff; border: 1px solid var(--line); border-radius: 7pt; padding: 6pt 8pt; } .mini .n { font-size: 6.6pt; } .mini b.d { display: block; font-size: 9.6pt; line-height: 1.2; margin: 1pt 0 3pt; } .mini ul { font-size: 7.5pt; line-height: 1.32; padding-left: 1em; } .mini li { margin-bottom: 1pt; }
   .feebox { display: grid; grid-template-columns: auto 1fr; gap: 11pt; align-items: center; background: var(--pine); color: #fff; border-radius: 9pt; padding: 8pt 11pt; margin: 0 0 6pt; } .feebox .fee { font-size: 21pt; line-height: 1; margin: 0; } .feebox .when { font-size: 11pt; margin: 0 0 2pt; } .feebox p { margin: 0; font-size: 7.6pt; } .feebox b { color: #fff; }
   .small { font-size: 7.2pt; color: #56655c; } .legal { font-size: 7.2pt; font-weight: 600; } .contact { font-size: 9.5pt; font-weight: 700; color: var(--pine); } .pending { font-size: 6.8pt; margin-bottom: 3pt; } .credit { position: absolute; left: 10mm; bottom: 5mm; font-size: 6.2pt; color: #7c887f; }
+  .place { font-size: 6.9pt; margin: 4pt 0 7pt; } .more { font-size: 6.9pt; } .back .feebox .when { font-size: 10pt; } .plead { font-size: 8.6pt; line-height: 1.45; color: #33423a; margin-bottom: 6pt; } .mini.one { grid-template-columns: 1fr; gap: 5pt; } .mini.one ul { font-size: 8pt; columns: 1; } .care, .duty { margin-top: 3pt; }
+  .feast { position: relative; height: 30mm; border-radius: 8pt; overflow: hidden; color: #fff; margin: 5pt 0 6pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.55) 45%, rgba(15,25,20,0) 75%); } .feast .txt { position: absolute; left: 10pt; bottom: 9pt; width: 60%; } .feast .kick { color: var(--cedar); font-size: 6.4pt; margin: 0; } .feast b.d { display: block; color: #fff; font-size: 12pt; line-height: 1.15; }
+  .small-type .mini ul { font-size: 7pt; line-height: 1.28; } .small-type .mini b.d { font-size: 9pt; } .small-type .feebox .when { font-size: 9.6pt; } .small-type > p { font-size: 7.8pt; } .small-type > p.small { font-size: 6.9pt; }
 `
 const SOCIAL_CSS = (w, h) => `
   html, body { width: ${w}px; height: ${h}px; overflow: hidden; }
@@ -321,7 +431,9 @@ const SOCIAL_CSS = (w, h) => `
   .lead { font-size: .98em; color: #33423a; } .s ul { list-style: none; padding: 0; font-size: 1.12em; } .s ul li { margin-bottom: .3em; } .s ul li::before { content: '✓ '; color: var(--cedar); font-weight: 700; }
   .fee { font-size: 3.1em; line-height: 1; margin: .15em 0 .2em; color: var(--cedar); } .fee small { font-family: 'Inter Variable', 'Noto Sans TC Variable', sans-serif; font-size: .3em; font-weight: 600; color: #fff; letter-spacing: 0; } .big { font-size: 1.3em; font-weight: 700; margin-bottom: .7em; } .bus { font-size: .9em; opacity: .92; margin-bottom: .8em; }
   .pending { font-size: .66em; margin-top: .4em; } .legal { font-size: .7em; font-weight: 600; margin-top: .4em; } .contact { font-size: 1.15em; font-weight: 700; color: var(--cedar); }
-  .foot { position: absolute; left: 7%; right: 7%; bottom: 4.2%; display: flex; justify-content: space-between; font-size: .66em; font-weight: 600; letter-spacing: .03em; color: rgba(255,255,255,.85); } .s.light .foot { color: #6d7a71; }
+  .foot { position: absolute; left: 7%; right: 7%; bottom: 2.6%; font-size: .66em; font-weight: 600; letter-spacing: .03em; color: rgba(255,255,255,.85); } .foot p { display: flex; justify-content: space-between; gap: 1em; margin: 0; } .foot .fine { font-size: .8em; font-weight: 500; opacity: .92; margin-top: .25em; } .foot .need { color: #ffc2b8; font-weight: 700; } .s.light .foot { color: #6d7a71; } .s.light .foot .need { color: #b23a2a; } .dep { font-size: 1em; font-weight: 600; opacity: .95; }
+  .place { font-size: .56em; margin: .2em 0 .5em; } .s .pnote { font-size: .62em; color: #6d7a71; }
+  .lead2 { font-size: .86em; opacity: .92; margin-top: .5em; }
   .s.story .in { bottom: 12%; } .s.story h1 { font-size: 5.6em; } .s.story .pts { margin: .9em 0 1em; font-size: 1.02em; }
   .s.wide .in { bottom: 14%; } .s.wide h1 { font-size: 3.3em; } .s.wide .head { font-size: 1.1em; } .s.wide .tag { font-size: .8em; } .s.wide .mean { font-size: .52em; } .s.wide .pill { font-size: .56em; } .s.wide .foot { font-size: .46em; } .s.wide { font-size: ${Math.round(w / 26)}px; }
 `
@@ -354,17 +466,59 @@ for (const id of PHOTOS) {
   writeFileSync(path.join(out, '.photos', id + '.jpg'), Buffer.from(jpeg, 'base64'))
 }
 const show = async (html) => { writeFileSync(tmp, html); await page.goto('file://' + tmp); await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250) }
-const shot = async (name, html, w, h) => { await page.setViewportSize({ width: w, height: h }); await show(doc(html, SOCIAL_CSS(w, h))); await page.screenshot({ path: path.join(out, 'social', name + '.jpg'), type: 'jpeg', quality: 92 }); console.log('wrote', path.relative(root, path.join(out, 'social', name + '.jpg'))) }
-for (const [lang, b] of Object.entries(built)) {
-  await page.setViewportSize({ width: 1000, height: 1400 })
-  await show(b.brochure); await page.pdf({ path: path.join(out, `brochure-${lang}.pdf`), format: 'A4', printBackground: true }); console.log('wrote', path.relative(root, path.join(out, `brochure-${lang}.pdf`)))
-  await show(b.pamphlet); await page.pdf({ path: path.join(out, `pamphlet-${lang}.pdf`), format: 'A5', printBackground: true }); console.log('wrote', path.relative(root, path.join(out, `pamphlet-${lang}.pdf`)))
-  for (const [i, s] of b.slides.entries()) await shot(`instagram-${lang}-${i + 1}`, s, 1080, 1350)
-  await shot(`story-tiktok-${lang}`, b.story, 1080, 1920)
-  await shot(`facebook-${lang}`, b.wide, 1200, 630)
-  await shot(`square-${lang}`, b.square, 1080, 1080)
+const OVER = []
+/** A page that is too full is clipped silently by overflow: hidden, so measure every page and fail the run. */
+const fits = async (name) => {
+  const over = await page.evaluate(() => [...document.querySelectorAll('.page, .s')].map((el, i) => {
+    if (el.matches('.page')) {
+      // children laid out in the flow must end above the bottom padding; absolutely placed blocks are measured by overlap
+      const box = el.getBoundingClientRect(), pad = parseFloat(getComputedStyle(el).paddingBottom)
+      const flow = [...el.children].filter((k) => getComputedStyle(k).position !== 'absolute')
+      const abs = [...el.children].filter((k) => getComputedStyle(k).position === 'absolute' && !k.matches('.bg, .shade'))
+      const bottom = Math.max(0, ...flow.map((k) => k.getBoundingClientRect().bottom))
+      const top = Math.min(box.bottom - pad, ...abs.filter((k) => !el.matches('.cover')).map((k) => k.getBoundingClientRect().top))
+      return el.matches('.cover') ? 0 : Math.round(bottom - top)
+    }
+    const inn = el.querySelector('.in').getBoundingClientRect(), foot = el.querySelector('.foot').getBoundingClientRect(), box = el.getBoundingClientRect()
+    const kids = [...el.querySelector('.in').children].map((k) => k.getBoundingClientRect())
+    const topOver = Math.round(box.top - Math.min(...kids.map((k) => k.top))), bottomOver = Math.round(Math.max(...kids.map((k) => k.bottom)) - foot.top)
+    return Math.max(topOver, bottomOver, Math.round(foot.bottom - box.bottom))
+  }))
+  return over.map((px, i) => (px > 0 ? `${name} part ${i + 1}: ${px}px too much` : null)).filter(Boolean)
 }
+const shot = async (name, html, w, h) => { await page.setViewportSize({ width: w, height: h }); await show(doc(html, SOCIAL_CSS(w, h))); const over = await fits(name); await page.screenshot({ path: path.join(out, 'social', name + '.jpg'), type: 'jpeg', quality: 92 }); return over }
+/** Lay the document out with each setting in turn and keep the first one where every page fits. */
+const fitted = async (name, lang, ladder, part) => {
+  let over = []
+  for (const fit of ladder) {
+    await show(part(build(lang === 'en' ? 'en' : 'zh-TW', fit)))
+    over = await fits(name)
+    if (!over.length) return fit
+  }
+  OVER.push(...over)
+  return ladder.at(-1)
+}
+const CHOSEN = []
+for (const [lang, b] of Object.entries(built)) {
+  const L = lang === 'en' ? 'en' : 'zh-TW'
+  await page.setViewportSize({ width: 1000, height: 1400 })
+  const bf = await fitted(`brochure-${lang}`, lang, [{}, { tight: true }, { strip: false }, { strip: false, tight: true }], (x) => x.brochure)
+  await page.pdf({ path: path.join(out, `brochure-${lang}.pdf`), format: 'A4', printBackground: true }); console.log('wrote', path.relative(root, path.join(out, `brochure-${lang}.pdf`)))
+  const pf = await fitted(`pamphlet-${lang}`, lang, [{ rows: 6 }, { rows: 5 }, { rows: 5, small: true }, { rows: 4 }, { rows: 4, small: true }, { rows: 3, small: true }, { rows: 2, small: true }], (x) => x.pamphlet)
+  await page.pdf({ path: path.join(out, `pamphlet-${lang}.pdf`), format: 'A5', printBackground: true }); console.log('wrote', path.relative(root, path.join(out, `pamphlet-${lang}.pdf`)))
+  CHOSEN.push(`${lang}: brochure ${JSON.stringify(bf)}, pamphlet ${JSON.stringify(pf)}`)
+  for (const i of b.slides.keys()) {
+    let over = []
+    for (const srows of [3, 2, 1]) { over = await shot(`instagram-${lang}-${i + 1}`, build(L, { srows }).slides[i], 1080, 1350); if (!over.length) break }
+    OVER.push(...over)
+  }
+  OVER.push(...await shot(`story-tiktok-${lang}`, b.story, 1080, 1920))
+  OVER.push(...await shot(`facebook-${lang}`, b.wide, 1200, 630))
+  OVER.push(...await shot(`square-${lang}`, b.square, 1080, 1080))
+}
+console.log('layout chosen:', CHOSEN.join(' | '))
 await browser.close()
+if (OVER.length) { console.error('\nTOO FULL, text would be cut off:\n  ' + OVER.join('\n  ')); process.exitCode = 1 }
 rmSync(tmp, { force: true })
 rmSync(path.join(out, '.photos'), { recursive: true, force: true })
 

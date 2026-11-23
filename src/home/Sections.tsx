@@ -199,6 +199,7 @@ export function Stay() {
               </li>
             ))}
           </ol>
+          <p className="mt-1 text-[13px] font-semibold leading-relaxed text-ink/75" data-meals-count>{t(STAY.mealsCount)}</p>
           <p className="mt-1 text-[13px] leading-relaxed text-ink/60" data-meals-note>{t(STAY.mealsNote)}</p>
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">{t(STAY.diet)}</p>
         </div>

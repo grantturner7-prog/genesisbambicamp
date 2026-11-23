@@ -134,6 +134,7 @@ ${H(N.health, 'Health and emergency care', '健康與緊急醫療')}
 ${P(`${nurse.title.en}. ${nurse.body.en}`, `${nurse.title.zh}。${nurse.body.zh}`)}
 ${OL([
   ['Please fill in the Camper Health Form completely and truthfully, and tell us before check-in if anything changes.', '請完整、據實填寫「營員健康調查表」；報到前若有任何變動，請主動告知。'],
+  ['Camp life is active and out of doors, and the venue is in the countryside. For their own safety, campers with severe asthma or another serious medical condition cannot join this camp. The nurse reads every health form; where the camp cannot look after a camper safely, we tell you before camp. [To decide: what is refunded in that case, and who makes the decision.]', '營隊生活以戶外活動為主，場地位於郊外。為了孩子的安全，患有嚴重氣喘或其他重大疾病的孩子無法參加本營隊。護理師會審閱每一份健康調查表；若營隊無法安全照顧，將於營隊開始前通知您。〔待決定：此情形之退費方式及由誰決定〕'],
   ['Hand in every medicine at check-in, to be kept by the nurse: prescription and over-the-counter medicine, Chinese medicine, vitamins and supplements, medicated creams and drops, each in its original bag or packaging and with your camper’s name on it. Campers do not keep medicine in their camper van, except what the nurse has agreed your camper should carry or keep close: for example a reliever inhaler, an adrenaline auto-injector, insulin with testing supplies and fast-acting sugar, or a daily skin cream. A phone or other device that is needed for medical reasons (for example a glucose monitor) may stay with your camper; please tell us at check-in.', '所有藥品請於報到時交付，由護理師統一保管，包含處方藥、成藥、中藥、維他命與保健食品、藥膏與眼藥水等，並保留原藥袋或原包裝、標示營員姓名。營員不得自行將藥品放在露營車內；經護理師同意由營員隨身攜帶或放在身邊者除外，例如氣喘急救（緩解型）吸入劑、腎上腺素自動注射筆、胰島素與血糖檢測用品及補充糖分的食品，或每日使用的皮膚藥膏。因醫療需要使用的手機或其他裝置（例如血糖監測器）可由營員自行保管，請於報到時告知我們。'],
   [`Please keep your camper at home, and call us, if they have had ${stayHome.en}. [The nurse to confirm these periods.] What happens to the fee is set out in section ${N.refund}.`, `${stayHome.zh}者，請讓孩子在家休息並與我們聯繫。〔上述期間請護理師確認〕費用之處理方式見第 ${N.refund} 條。`],
   ['During camp, at least one legal guardian, or the backup contact named on the health form, must be reachable by phone at all times and able to come for your camper if they are too unwell to stay.', '營期間，至少須有一位法定代理人或健康調查表所列的緊急聯絡人可隨時以電話聯繫，並能在孩子身體不適無法繼續參加時前來接回。'],
@@ -187,7 +188,7 @@ ${H(N.wear, 'What to wear', '服裝')}
 ${P('Please pack clothes for active outdoor play, following the packing list on the website. Clothing with violent, drug, alcohol or offensive pictures or words stays at home.', '請依官網行李清單，準備適合戶外活動的服裝。請勿攜帶印有暴力、毒品、酒類或不雅圖文的衣物。', true)}
 
 ${H(N.photos, 'Photos and video', '照片與影片')}
-${P(`Photos and videos are taken during camp for the private digital photo album shared with the families of this camp. They are used in future camp promotion only if you tick item 5 on the signature page. Leaving it unticked never affects enrollment.`, '營期間將拍攝照片與影片，放在專屬數位相簿，供本梯次家長閱覽。只有在您於簽名頁勾選第 5 項時，才會用於未來的營隊宣傳；不勾選完全不影響報名資格。', true)}
+${P(`Photos and videos are taken during camp for the private digital photo album shared with the families of this camp. They are used in future camp promotion only if you tick item 5 on the signature page. Leaving it unticked never affects registration.`, '營期間將拍攝照片與影片，放在專屬數位相簿，供本梯次家長閱覽。只有在您於簽名頁勾選第 5 項時，才會用於未來的營隊宣傳；不勾選完全不影響報名資格。', true)}
 ${CHECKS(C('Please keep my camper out of the shared album as well', '請勿將我的孩子放入共享相簿'))}
 <p class="hint">${NEW} ${B('[To decide: whether the camp can offer this, for families who need it.]', '〔待決定：營隊能否提供此選項，供有需要的家庭選擇〕')}</p>
 
@@ -419,6 +420,7 @@ const notes = () => `
 <li><b>Contact details.</b> The camp’s phone, LINE, email and 24-hour number are blank at the top of each form; the organizer’s and travel agency’s legal names are blank on the signature page and in the data notice.</li>
 <li><b>Payment.</b> Deposit, balance date, and how snack coupons are paid for and unused ones handled: Notice §${N.fee}.</li>
 <li><b>Refunds outside the table.</b> A camper who is ill before camp, is sent home with a fever at check-in, falls ill or is sent home during camp, or camp ending early: Notice §${N.refund}. Also how a cancellation is given and which day counts.</li>
+<li><b>Who the camp can take.</b> The organizer has decided that campers with severe asthma or another serious medical condition cannot join this camp: Notice §${N.health} and the website FAQ. Please advise on the wording, on the refund when a registered camper is turned down after the health form, and on the disability-rights rules.</li>
 <li><b>Staying home when unwell.</b> The 24-hour, 48-hour and 7-day periods and the fever threshold are for the nurse to set: Notice §${N.health}, Health form J, Check-in form §1.</li>
 <li><b>Emergency care.</b> The steps in Notice §${N.health} (go first and phone at the same time; who decides; the backup contact’s authority) and who pays first for a clinic visit.</li>
 <li><b>Common remedies.</b> Whether the nurse may give them with a parent’s tick alone: Health form G. This needs the nurse’s and the lawyer’s view.</li>
