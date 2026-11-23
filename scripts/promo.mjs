@@ -27,6 +27,9 @@ const twd = (n) => `NT$${n.toLocaleString('en-US')}`
 const MAP = JSON.parse(readFileSync(path.join(root, 'scripts/promo-assets/map-winter.json'), 'utf8'))
 const MAP_IMG = `file://${path.join(root, 'scripts/promo-assets/map-winter.jpg')}`
 const spot = (id) => { const m = MAP.spots.find((x) => x.id === id); if (!m) throw new Error(`The map has no marker “${id}”: run scripts/map-shot.mjs again.`); return [m.x, m.y] }
+// To try another cover photograph without adding it to the site: PROMO_COVER=/path/to/large-photo.jpg node scripts/promo.mjs <outDir>
+// A photograph given this way is assumed large enough to fill the page, so the cover uses it edge to edge.
+const COVER_FILE = process.env.PROMO_COVER ? path.resolve(process.env.PROMO_COVER) : null
 // Photographs go into the PDFs as JPEGs of a sensible size, or each brochure weighs over 20 MB.
 const PHOTOS = new Set()
 const photo = (id) => { PHOTOS.add(id); return `file://${path.join(out, '.photos', id + '.jpg')}` }
@@ -185,8 +188,8 @@ function build(lang, fit = {}) {
 
   // ── brochure, A4 ──
   const cover = `
-  <section class="page cover">
-    <img class="bg" src="${photo('winter-cypress')}" alt="">
+  <section class="page cover${COVER_FILE ? ' full' : ''}">
+    <img class="bg" src="${COVER_FILE ? 'file://' + COVER_FILE : photo('winter-cypress')}" alt="">
     <div class="shade"></div>
     <div class="top">${brandLine}</div>
     <div class="mid">
@@ -283,8 +286,8 @@ function build(lang, fit = {}) {
 
   // ── pamphlet, A5, two sides ──
   const pamphlet = doc(`
-  <section class="page cover">
-    <img class="bg" src="${photo('winter-cypress')}" alt=""><div class="shade"></div>
+  <section class="page cover${COVER_FILE ? ' full' : ''}">
+    <img class="bg" src="${COVER_FILE ? 'file://' + COVER_FILE : photo('winter-cypress')}" alt=""><div class="shade"></div>
     <div class="top">${brandLine}</div>
     <div class="mid"><p class="mean">${esc(c.brand.campMeaning)}</p><h1 class="d">${esc(c.brand.camp)}</h1><p class="d head">${t(headline)}</p><p class="tag">${t(AD.tagline)}</p>
     <p class="pills"><span class="pill">${t(AD.ages)}</span><span class="pill">${dates}</span></p></div>
@@ -405,6 +408,7 @@ const BROCHURE_CSS = `
   .feast { position: relative; height: 98mm; border-radius: 12pt; overflow: hidden; color: #fff; margin: 2pt 0 4pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.62) 38%, rgba(15,25,20,0) 66%); } .feast .txt { position: absolute; left: 16pt; bottom: 16pt; width: 46%; } .feast .kick { color: var(--cedar); } .feast h3 { color: #fff; font-size: 19pt; line-height: 1.15; margin: 3pt 0 6pt; } .feast p { font-size: 9.6pt; line-height: 1.5; margin: 0; }
   .mealcards .ph { height: 40mm; border-radius: 9pt; overflow: hidden; margin-bottom: 6pt; } .mealcards b { display: block; font-size: 11pt; margin-bottom: 2pt; } .mealcards p { font-size: 9pt; }
   .cover .bg { inset: 0 0 auto 0; height: 158mm; } .cover .shade { background: linear-gradient(180deg, rgba(15,39,29,.55) 0, rgba(15,39,29,.08) 40mm, rgba(15,39,29,.08) 105mm, #0f271d 158mm); } .cover h1 { margin: 4pt 0 10pt; }
+  .cover.full .bg { inset: 0; height: 100%; } .cover.full .shade { background: linear-gradient(180deg, rgba(15,39,29,.5) 0%, rgba(15,39,29,.05) 26%, rgba(15,39,29,.12) 46%, rgba(15,39,29,.8) 68%, rgba(15,39,29,.96) 100%); }
   .closing { position: absolute; left: 16mm; right: 16mm; bottom: 17mm; height: 62mm; border-radius: 12pt; overflow: hidden; color: #fff; } .closing img { position: absolute; inset: 0; } .closing .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,39,29,.85), rgba(15,39,29,.15)); } .closing p { position: absolute; left: 14pt; bottom: 32pt; font-size: 30pt; line-height: 1; margin: 0; } .closing span { position: absolute; left: 14pt; bottom: 12pt; font-size: 10pt; font-weight: 600; line-height: 1.2; }
 `
 const PAMPHLET_CSS = `
@@ -422,6 +426,7 @@ const PAMPHLET_CSS = `
   .place { font-size: 6.9pt; margin: 4pt 0 7pt; } .more { font-size: 6.9pt; } .back .feebox .when { font-size: 10pt; } .plead { font-size: 8.6pt; line-height: 1.45; color: #33423a; margin-bottom: 6pt; } .mini.one { grid-template-columns: 1fr; gap: 5pt; } .mini.one ul { font-size: 8pt; columns: 1; } .care, .duty { margin-top: 3pt; }
   .feast { position: relative; height: 30mm; border-radius: 8pt; overflow: hidden; color: #fff; margin: 5pt 0 6pt; } .feast img { position: absolute; inset: 0; } .feast .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,25,20,.9) 0%, rgba(15,25,20,.55) 45%, rgba(15,25,20,0) 75%); } .feast .txt { position: absolute; left: 10pt; bottom: 9pt; width: 60%; } .feast .kick { color: var(--cedar); font-size: 6.4pt; margin: 0; } .feast b.d { display: block; color: #fff; font-size: 12pt; line-height: 1.15; }
   .cover .bg { inset: 0 0 auto 0; height: 104mm; } .cover .shade { background: linear-gradient(180deg, rgba(15,39,29,.55) 0, rgba(15,39,29,.08) 26mm, rgba(15,39,29,.08) 66mm, #0f271d 104mm); } .cover h1 { margin: 3pt 0 8pt; }
+  .cover.full .bg { inset: 0; height: 100%; } .cover.full .shade { background: linear-gradient(180deg, rgba(15,39,29,.5) 0%, rgba(15,39,29,.05) 26%, rgba(15,39,29,.12) 46%, rgba(15,39,29,.8) 66%, rgba(15,39,29,.96) 100%); }
   .small-type .mini ul { font-size: 7pt; line-height: 1.28; } .small-type .mini b.d { font-size: 9pt; } .small-type .feebox .when { font-size: 9.6pt; } .small-type > p { font-size: 7.8pt; } .small-type > p.small { font-size: 6.9pt; }
 `
 const SOCIAL_CSS = (w, h) => `
