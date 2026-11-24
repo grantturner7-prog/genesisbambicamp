@@ -58,8 +58,8 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   5: {
     steps: [
       l('Teams spread out, each starting at a different campcraft station.', '各小隊分散開來，從不同的野外技能站開始。'),
-      l('At one station hands get busy with knots; at another the team packs a day bag.', '有一站動手打繩結，另一站全隊一起打包一日出遊的背包。'),
-      l('Elsewhere, teams read the sky for the weather or talk through how to stay safe outdoors.', '還有的站要看天空判斷天氣，或一起聊聊在戶外怎麼注意安全。'),
+      l('Each station is a short, practical task, such as tying knots or packing a day bag.', '每一站都是一項簡短又實用的任務，像是打繩結，或打包一日出遊的背包。'),
+      l('Teams work through each task together, talking safety through along the way.', '全隊合力完成每項任務，過程中也一起聊聊安全觀念。'),
       l('On the signal, every team moves on to the next station and a new skill.', '口令一下，各隊換到下一站，挑戰另一項技能。'),
     ],
     takes: [l('Nimble fingers', '靈巧的雙手'), l('Thinking ahead', '未雨綢繆'), l('Helping each other', '互相幫忙')],
@@ -97,8 +97,8 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   9: {
     steps: [
       l('The team hears its mission, and the clock starts.', '小隊聽完任務說明，計時開始。'),
-      l('Tasks come one after another, like slipping through a string “laser” maze without touching it.', '關卡一個接一個，像是穿過細繩拉成的「雷射陣」，一條都不能碰。'),
-      l('Some tasks take many hands, like moving an object together. Others take a sharp mind, like cracking a code.', '有的關卡靠大家一起出力，像是合力運送物品；有的靠動腦，像是破解密碼。'),
+      l('Tasks come one after another: obstacle-style tasks and movement challenges.', '關卡一個接一個：有障礙關卡，也有肢體挑戰。'),
+      l('Some tasks take many hands. Others take a sharp mind.', '有的關卡靠大家一起出力，有的靠動腦解題。'),
       l('When the last task is done, the clock stops. That is the team’s time.', '最後一關完成，計時停止，這就是小隊的完成時間。'),
     ],
     takes: [l('Quick thinking', '腦筋動得快'), l('Coordination', '肢體協調'), l('Teamwork', '團隊合作')],
@@ -111,7 +111,6 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
       l('A pull ends when the rope’s center mark crosses one team’s line.', '繩子中央的記號拉過其中一邊的線，這一局就結束。'),
     ],
     takes: [l('A shared rhythm', '節奏一致'), l('Firm footing', '下盤要穩'), l('Team spirit', '團隊士氣')],
-    note: l('Counselors referee every pull.', '每一局都由隊輔擔任裁判。'),
   },
   11: {
     steps: [
@@ -125,28 +124,27 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   12: {
     steps: [
       l('The long rope starts to turn, and the team watches its beat before anyone jumps in.', '大繩甩起來了，小隊先看準節拍，再跳進去。'),
-      l('Teams start with a few jumpers, then add more as they find the rhythm.', '先從幾個人開始跳，抓到節奏後再慢慢加人。'),
-      l('Then the whole team jumps together, counting every jump out loud.', '接著全隊一起跳，大聲數出每一下。'),
+      l('Teams work up through levels of group jumping, finding the rhythm as they go.', '小隊一級一級往上挑戰，邊跳邊抓節奏。'),
+      l('Then the whole team jumps together, and everyone counts the jumps.', '接著全隊一起跳，大家一起數跳了幾下。'),
       l('In the Color War finale, each team goes for its highest count of jumps together.', '到了 Color War（小隊對抗賽）總決賽，每個小隊都要挑戰全隊一起跳的最高次數。'),
     ],
     takes: [l('Good timing', '抓準時機'), l('Jumping as one', '全隊同步'), l('Never giving up', '不輕言放棄')],
-    note: l('Counselors turn the rope.', '甩繩由隊輔負責。'),
   },
   13: {
     steps: [
-      l('A web of rope stands between the team and the far side, with openings of different sizes.', '一張用繩子拉成的網擋在小隊面前，網上有大大小小的洞口。'),
-      l('Before anyone moves, the team looks the web over and plans who takes which opening.', '行動之前，全隊先把整張網看清楚，商量誰走哪一個洞口。'),
-      l('Campers step or duck through one at a time. Teammates watch the rope and call out when it gets close.', '營員一次一個跨過或鑽過洞口，隊友在旁邊盯著繩子，快碰到就出聲提醒。'),
+      l('A web of rope stands between the team and the far side.', '一張用繩子拉成的網擋在小隊面前，對面就是終點。'),
+      l('Before anyone moves, the team looks the web over and plans who goes through where.', '行動之前，全隊先把整張網看清楚，商量誰從哪裡通過。'),
+      l('Campers go through one at a time. Teammates call out and give safe support.', '營員一次一位通過，隊友在旁邊出聲提醒，並給予安全的協助。'),
       l('The goal: the whole team on the far side, with nobody touching the rope.', '目標是全隊都到對面，而且沒有人碰到繩子。'),
     ],
     takes: [l('Planning ahead', '事先規劃'), l('Speaking up', '主動開口'), l('Patience', '耐心')],
   },
   14: {
     steps: [
-      l('Each camper holds a short half-pipe, and the team lines up from the start toward the target.', '每位營員拿一段短短的半圓管，小隊從起點朝目標排成一列。'),
-      l('The ball rolls from pipe to pipe. Nobody may move their feet while it is on their section.', '球從一段管子滾到下一段；球在自己那一段時，雙腳不能移動。'),
-      l('Once the ball rolls on, that camper moves to the front of the line to keep the pipeline going.', '球一滾過去，這位營員就繞到隊伍最前面，把管道接下去。'),
-      l('The run is done when the ball reaches the target without falling off the pipes.', '球一路不落地、順利抵達目標，就算完成。'),
+      l('Each camper holds a short half-pipe, and the team lines up from the start toward the target.', '每位營員拿一段半圓形的短管，全隊從起點往終點排成一列。'),
+      l('The ball rolls from pipe to pipe along the line.', '球從一段管子滾到下一段管子。'),
+      l('Once the ball has rolled on, campers move forward to keep the pipeline going.', '球滾過去之後，營員往前補位，讓管道一路接下去。'),
+      l('The run is done when the ball reaches the target without falling off the pipes.', '球順利滾到終點、中途沒有掉落，就算完成。'),
     ],
     takes: [l('Steady hands', '手要穩'), l('Smooth handoffs', '銜接順暢'), l('Constant communication', '隨時溝通')],
     note: l('This is also one of the Bambi Amazing Race checkpoints.', '這項挑戰也是斑比探索大挑戰的檢查點之一。'),
@@ -172,10 +170,10 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   },
   17: {
     steps: [
-      l('The “toxic waste” is pretend: a light container, usually holding water or balls, inside a no-go zone.', '「危險物質」是假的：其實是個輕巧的容器，通常裝著水或球，擺在禁區裡。'),
-      l('Campers stand outside the zone, each holding a rope tied to one shared stretchy band.', '營員站在禁區外，每人拉住一條繩子，所有繩子都綁在同一個彈力圈上。'),
-      l('Pulling together, they stretch the band open, lower it over the container and ease off until it grips.', '大家一起拉，把彈力圈撐開、套到容器上，再慢慢放鬆，讓它牢牢套緊。'),
-      l('With even tension on every rope, the team lifts the container out and sets it down on the target.', '每條繩子力道平均，全隊把容器穩穩提起、移出禁區，放到定點。'),
+      l('The “toxic waste” is pretend: a light container inside a no-go zone.', '「危險物質」是假的：其實是個輕巧的容器，擺在禁區裡。'),
+      l('Campers stand outside the zone, each holding a rope that leads to the container.', '營員站在禁區外，每人拉住一條通往容器的繩子。'),
+      l('Pulling together with steady, even tension, the team picks the container up without anyone stepping into the zone.', '大家用穩定又平均的力道一起拉，在沒有人踏進禁區的情況下，把容器提起來。'),
+      l('The team moves the container out of the zone and sets it down at the target.', '全隊把容器移出禁區，穩穩放到定點。'),
     ],
     takes: [l('Steady hands', '手要穩'), l('Clear communication', '清楚溝通'), l('Patience', '耐心')],
     note: l('This is also one of the Bambi Amazing Race checkpoints.', '這項挑戰也是斑比探索大挑戰的檢查點之一。'),
@@ -192,8 +190,8 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   19: {
     steps: [
       l('Inside the marked zone the ground is off limits. The only places to stand are a few low crates.', '指定區域裡，地面不能踩，能站的只有幾個低矮的箱子。'),
-      l('The team plans first: who steps where, and who passes the crates along.', '小隊先商量好：誰踩哪個箱子、誰負責傳箱子。'),
-      l('Campers step from crate to crate, then pass the last crate forward and set it flat on the ground ahead.', '營員踩著箱子一個個前進，再把最後面的箱子往前傳，平放在前方，把路接下去。'),
+      l('The team plans first: who steps where, and how the crates are moved along.', '小隊先商量好：誰踩哪個箱子、箱子怎麼一路往前傳。'),
+      l('Campers step from crate to crate, moving the crates along to keep the path going.', '營員踩著箱子一個個前進，邊走邊把箱子往前挪，讓路一直接下去。'),
       l('The crossing counts once every camper is standing on the far side.', '全隊每個人都到了對面，才算過關。'),
     ],
     takes: [l('Planning ahead', '事先規劃'), l('Careful steps', '腳步踩穩'), l('Teamwork', '團隊合作')],
@@ -214,7 +212,7 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
       l('Each station in the main dining hall has a challenge that uses everyday objects: cups, balls, cards.', '主餐廳裡設好一個個關卡，每一關都用杯子、球、紙牌這類日常小物來挑戰。'),
       l('A team has one minute per challenge, such as stacking cups into a tower or bouncing a ball into a cup.', '每個挑戰只有一分鐘，像是把杯子疊成高塔，或把球彈進杯子裡。'),
       l('Teammates cheer and count down the last seconds until time is up.', '隊友在旁邊加油，一起倒數最後幾秒，直到時間到。'),
-      l('Teams rotate to the next station, and the results from every station add up to a final ranking.', '各小隊輪流換到下一關，最後把每一關的成績加起來排名。'),
+      l('Teams rotate to the next station, and the scores go on the Color War board.', '各小隊輪流換到下一關，成績記上 Color War（小隊對抗賽）計分板。'),
     ],
     takes: [l('Quick hands', '眼明手快'), l('Focus', '專注力'), l('Good humor', '幽默感')],
     note: l('One of the wet-weather activities, held indoors in the main dining hall.', '雨天活動之一，在室內的主餐廳進行。'),
@@ -232,9 +230,8 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   23: {
     steps: [
       l('Campers gather behind a line, facing the adult who runs the demonstration.', '營員在標線後方集合，面向負責示範的成人。'),
-      l('Teams guess how high and how fast the foam will rise, and call out their guesses.', '各小隊先猜泡沫會衝多高、冒多快，大聲喊出自己的猜測。'),
-      l('The adult adds the last ingredient, and thick foam surges up and spills over the top.', '成人加入最後一樣材料，濃密的泡沫立刻往上竄，從容器口滿出來。'),
-      l('Campers watch the foam grow, then compare what they saw with what they guessed.', '營員看著泡沫越冒越多，再比一比實際結果和自己猜的差多少。'),
+      l('The adult sets everything up and adds the last ingredient.', '成人把一切準備好，加入最後一樣材料。'),
+      l('Thick foam surges up and spills over the top while campers watch from behind the line.', '濃密的泡沫立刻往上竄、從容器口滿出來，營員在標線後方看得清清楚楚。'),
     ],
     takes: [l('Curiosity', '好奇心'), l('Watching closely', '專心觀看'), l('Standing back', '保持距離')],
     note: l('An adult does the whole demonstration; campers watch from behind a line and handle no ingredients.', '全程由成人操作示範；營員在標線後方觀看，不接觸任何材料。'),
@@ -261,7 +258,7 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
     steps: [
       l('Every team gets the same small kit, such as paper, straws, tape and craft sticks.', '每個小隊拿到一份相同的小材料包，像是紙、吸管、膠帶和冰棒棍。'),
       l('Teams agree on a plan, then build a bridge or a tower using only what is in the kit.', '小隊先討論好做法，再只用材料包裡的東西，搭出一座橋或一座高塔。'),
-      l('Test time: bridges have to hold a load, and towers compete on height.', '測試時間到：橋要撐得住重物，高塔則比誰搭得高。'),
+      l('Test time: teams see how well their structure holds up.', '測試時間到：看看自己的作品撐不撐得住。'),
       l('Teams find the weak spot, rebuild and test again.', '小隊找出弱點，動手改良，再測一次。'),
     ],
     takes: [l('Planning ahead', '事先規劃'), l('Steady hands', '手穩心細'), l('Sharing the work', '分工合作')],
@@ -317,7 +314,7 @@ export const GAME_DETAILS: Record<number, GameDetail> = {
   32: {
     steps: [
       l('Teams gather at the opening campfire on the first evening.', '第一天晚上，各小隊在開營營火旁集合。'),
-      l('One at a time, each team presents its banner and chant and strikes its mascot pose.', '各小隊輪流登場，亮出隊旗、喊出口號，再擺出吉祥物姿勢。'),
+      l('Each team presents its banner and chant and strikes its mascot pose.', '各小隊亮出隊旗、喊出口號，再擺出吉祥物姿勢。'),
       l('Teams earn the first spirit points, and Color War begins.', '各小隊拿下第一批精神積分，Color War 正式展開。'),
       l('After the ceremony, it’s time for s’mores.', '開幕式結束後，就是 s’mores（烤棉花糖夾心餅）時間。'),
     ],
