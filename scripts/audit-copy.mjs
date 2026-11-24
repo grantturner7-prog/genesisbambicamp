@@ -56,6 +56,22 @@ for (const { path, text } of all) if (/afternoon tea|午茶/i.test(text) && !/co
 
 // No alcohol products on any menu.
 const ALCOHOL = /beer|wine|cocktail|liquor|sake|cider|sangria|mojito|whisk|vodka|啤酒|紅酒|白酒|調酒|雞尾酒|清酒|燒酒|高粱|酒/i
+// Every activity card explains itself when it is turned over: three or four steps, two or three labels,
+// short enough for the panel, and no word that makes a game sound like schooling.
+const SCHOOLING = /\b(learn(s|ing|ed)?|lessons?|teach(es|ing)?|teachers?|students?|pupils?|class(es)?|courses?|curriculum|study|studies|training|instructors?)\b|學習|課程|上課|教學|授課|老師|學生|學員|原理|測驗/i
+for (const g of games.GAMES) {
+  const d = games.GAME_DETAILS[g.n]
+  if (!d) { errors.push(`Activity ${g.n} (${g.name.en}) has no explanation for its turned-over card`); continue }
+  if (d.steps.length < 3 || d.steps.length > 4) errors.push(`Activity ${g.n} (${g.name.en}) needs 3 or 4 steps, has ${d.steps.length}`)
+  if (d.takes.length < 2 || d.takes.length > 3) errors.push(`Activity ${g.n} (${g.name.en}) needs 2 or 3 labels, has ${d.takes.length}`)
+  for (const x of [...d.steps, ...d.takes, ...(d.note ? [d.note] : [])]) {
+    if (!x.en.trim() || !x.zh.trim()) errors.push(`Activity ${g.n} (${g.name.en}) has an empty line in one language`)
+    for (const lang of ['en', 'zh']) if (SCHOOLING.test(x[lang])) fail('A schooling word in an activity explanation', `games.GAME_DETAILS[${g.n}].${lang}`, x[lang])
+  }
+  for (const x of d.steps) if (x.en.length > 125 || x.zh.length > 52) fail('An activity step is too long for the panel', `games.GAME_DETAILS[${g.n}]`, x.en)
+  for (const x of d.takes) if (x.en.split(/\s+/).length > 4 || x.zh.length > 8) fail('An activity label is too long for its chip', `games.GAME_DETAILS[${g.n}]`, x.en)
+}
+for (const n of Object.keys(games.GAME_DETAILS)) if (!games.GAMES.some((g) => g.n === Number(n))) errors.push(`An explanation is filed under activity ${n}, which does not exist`)
 for (const a of AREAS) for (const sec of a.menu?.sections ?? []) for (const it of sec.items) for (const lang of ['en', 'zh']) if (ALCOHOL.test(it.name[lang])) errors.push(`Alcohol on a menu: ${a.id} → "${it.name[lang]}"`)
 
 // Movie nights only while the screenings are public-performance licensed.

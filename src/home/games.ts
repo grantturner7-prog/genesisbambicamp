@@ -1,5 +1,7 @@
 import type { L } from '../lib/types'
 
+export { GAME_DETAILS, type GameDetail } from './gameDetails'
+
 const l = (en: string, zh: string): L => ({ en, zh })
 
 /**
@@ -27,12 +29,14 @@ export interface Game {
   /** lucide-react icon name, resolved in `src/map/icons.tsx`. Objects only: no people. */
   icon: string
   group: GameGroupId
+  /** How the day-by-day plan names this activity, where it differs from the name on the card. */
+  alias?: string
 }
 
 export const GAMES: Game[] = [
   { n: 1, group: 'quest', icon: 'Route', name: l('Bambi Amazing Race', '斑比探索大挑戰'), body: l('A camp-wide team adventure of checkpoints, clues and quick problem-solving.', '跑遍全營區的團隊冒險：找檢查點、解線索、快速動腦過關。') },
   { n: 2, group: 'quest', icon: 'Compass', name: l('Orienteering Quest', '定向越野探索'), body: l('Teams read the map, follow the markers and find every control point along approved camp paths.', '看地圖、認標記，小隊合作沿著指定的營區步道找出每一個檢查點。') },
-  { n: 3, group: 'quest', icon: 'Flashlight', name: l('Glow Night Quest', '夜光任務'), body: l('A low-light quest with glowing clues and team challenges that finishes at the campfire.', '在昏暗的光線下，跟著夜光線索完成小隊挑戰，最後在營火旁會合。') },
+  { n: 3, group: 'quest', icon: 'Flashlight', name: l('Glow Night Quest', '夜光任務'), body: l('A low-light quest with glowing clues and team challenges across the camp.', '在昏暗的光線下，跟著夜光線索，完成一關關小隊挑戰。') },
   { n: 4, group: 'outdoor', icon: 'Tent', name: l('Shelter Build Challenge', '野外庇護所挑戰'), body: l('Teams design and build a simple shelter that stands up to the weather.', '小隊動手設計並搭建一座能遮風擋雨的簡易庇護所。') },
   { n: 5, group: 'outdoor', icon: 'Backpack', name: l('Campcraft Survival Circuit', '戶外生存技能巡迴'), body: l('A rotating circuit of practical campcraft: knots, safety and teamwork.', '分站輪流體驗實用的野外技能：繩結、安全觀念與團隊合作。') },
   { n: 6, group: 'quest', icon: 'Camera', name: l('Nature Photo Safari', '自然攝影探索'), body: l('Teams explore the grounds to photograph plants, textures, scenery and small details of nature.', '小隊走遍營區，用鏡頭捕捉植物、紋理、風景與大自然的小細節。') },
@@ -59,7 +63,7 @@ export const GAMES: Game[] = [
   { n: 27, group: 'lab', icon: 'Egg', name: l('Egg Drop Build Challenge', '雞蛋防摔建造挑戰'), body: l('Teams build a device to protect an egg, test it in an adult-controlled drop, then redesign.', '小隊設計雞蛋保護裝置，在成人操作的落下測試後再改良。') },
   { n: 28, group: 'lab', icon: 'Beaker', name: l('Oobleck Olympics', '神奇澱粉泥奧運'), body: l('A hands-on materials lab: teams test how oobleck behaves under slow and sudden force.', '動手玩材料：測試澱粉泥在慢慢施力與突然施力時的不同反應。') },
   { n: 29, group: 'lab', icon: 'Tornado', name: l('Vortex Cannon Target Challenge', '渦流空氣砲目標挑戰'), body: l('Teams use safe air-vortex cannons to knock over lightweight targets and see how moving air travels.', '用安全的渦流空氣砲擊倒輕巧的目標，觀察空氣是怎麼流動的。') },
-  { n: 30, group: 'spirit', icon: 'MicVocal', name: l('Campfire Skit & Talent Showdown', '營火短劇與才藝秀'), body: l('Teams prepare short skits, music, comedy or other acts for a supportive camp showcase.', '小隊準備短劇、音樂、搞笑或創意表演，在大家的掌聲中登台。') },
+  { n: 30, group: 'spirit', icon: 'MicVocal', alias: 'Skit & Talent Showdown', name: l('Campfire Skit & Talent Showdown', '營火短劇與才藝秀'), body: l('Teams prepare short skits, music, comedy or other acts for a supportive camp showcase.', '小隊準備短劇、音樂、搞笑或創意表演，在大家的掌聲中登台。') },
   { n: 31, group: 'spirit', icon: 'Paintbrush', name: l('Team Banner & Mascot Workshop', '隊旗與吉祥物工作坊'), body: l('Teams create their banner, crest, chant, mascot pose and a short team introduction.', '小隊設計隊旗、隊徽、口號與吉祥物姿勢，再準備一段小隊介紹。') },
   { n: 32, group: 'spirit', icon: 'PartyPopper', name: l('Color War Opening Ceremony', 'Color War 開幕式'), body: l('A high-energy launch with banners, chants, mascot poses and the first spirit points.', '活力滿點的開幕式：隊旗、口號、吉祥物姿勢，還有第一批精神積分。') },
 ]
@@ -74,4 +78,14 @@ export const GAMES_COPY = {
   filterLabel: l('Show activities by type', '依類型瀏覽活動'),
   all: l('All', '全部'),
   showAll: (n: number) => l(`Show all ${n} activities`, `顯示全部 ${n} 項活動`),
+  /** The turned-over card. */
+  hint: l('Tap a card to see what happens in it.', '點一下卡片，看看活動怎麼進行。'),
+  open: l('See what happens', '看看怎麼進行'),
+  happens: l('What happens', '活動流程'),
+  note: l('Good to know', '貼心提醒'),
+  winter: l('Winter camp', '冬季營隊'),
+  plan: l('Which activities run at each camp is shown in the day-by-day plan.', '每梯次實際進行的活動，請見每日行程。'),
+  close: l('Close', '關閉'),
+  prev: l('Previous activity', '上一項活動'),
+  next: l('Next activity', '下一項活動'),
 }

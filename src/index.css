@@ -139,7 +139,110 @@ html[lang='zh-TW'] .tracking-tighter {
 
 .thin-scroll { scrollbar-width: thin; scrollbar-color: rgb(27 67 50 / 0.3) transparent; }
 
+/* ── Activity cards: a card turned over into a pane of glass ───────────────────────────── */
+[data-flipped] { visibility: hidden; }
+.game-backdrop {
+  background: radial-gradient(120% 90% at 50% 40%, rgb(15 39 29 / 0.38), rgb(8 24 17 / 0.62));
+  -webkit-backdrop-filter: blur(8px) saturate(1.15);
+  backdrop-filter: blur(8px) saturate(1.15);
+}
+.game-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  background: linear-gradient(152deg, rgb(255 255 255 / 0.94) 0%, rgb(255 255 255 / 0.8) 42%, rgb(252 248 242 / 0.88) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  backdrop-filter: blur(28px) saturate(1.8);
+  border: 1px solid rgb(255 255 255 / 0.75);
+  box-shadow:
+    0 44px 100px -24px rgb(6 20 14 / 0.6),
+    0 14px 34px -14px rgb(6 20 14 / 0.4),
+    inset 0 1px 0 rgb(255 255 255 / 0.95),
+    inset 0 -1px 0 rgb(255 255 255 / 0.4),
+    inset 0 0 0 1px rgb(255 255 255 / 0.2);
+}
+/* the light that catches the top edge of the glass */
+.game-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 0.7) 0%, rgb(255 255 255 / 0) 26%),
+    radial-gradient(120% 55% at 50% 0%, rgb(255 255 255 / 0.55), transparent 62%);
+}
+/* soft colour moving inside the glass, in the activity group's own accent */
+.game-blob {
+  position: absolute;
+  z-index: -2;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(44px);
+  opacity: 0.75;
+  background: color-mix(in srgb, var(--accent) 50%, white);
+  animation: game-drift 13s ease-in-out infinite alternate;
+}
+.game-blob-2 {
+  opacity: 0.6;
+  background: color-mix(in srgb, var(--color-cedar) 62%, white);
+  animation-duration: 17s;
+  animation-direction: alternate-reverse;
+}
+.game-sheen {
+  position: absolute;
+  inset: -30% -70%;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 44%, rgb(255 255 255 / 0.6) 50%, transparent 56%);
+  animation: game-sheen 1.15s 0.08s ease-out both;
+}
+.game-orb {
+  background: var(--tint);
+  background: radial-gradient(120% 120% at 28% 20%, #fff 0%, var(--tint) 58%, color-mix(in srgb, var(--accent) 26%, var(--tint)) 100%);
+  border: 1px solid rgb(255 255 255 / 0.9);
+  box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--accent) 70%, transparent), inset 0 1px 0 #fff, inset 0 -8px 16px -10px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.game-nav {
+  display: grid;
+  height: 2.5rem;
+  width: 2.5rem;
+  place-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.8);
+  background: rgb(255 255 255 / 0.6);
+  color: var(--color-pine-900);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 4px 10px -6px rgb(6 20 14 / 0.4);
+  transition: background-color 0.2s, transform 0.2s;
+}
+.game-nav:hover { background: #fff; transform: scale(1.06); }
+.game-nav:focus-visible { outline-color: var(--color-pine) !important; }
+.game-float { animation: game-float 7s ease-in-out infinite; }
+/* a long explanation fades at the foot of the panel, so it is clear that it scrolls */
+[data-game-scroll] { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent); }
+.game-step { animation: rise-in 0.5s var(--ease-premium) both; }
+.game-swap { animation: game-swap 0.32s var(--ease-premium) both; }
+@keyframes game-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(26px, -18px, 0) scale(1.14); }
+}
+@keyframes game-sheen {
+  from { transform: translateX(-55%); opacity: 1; }
+  to { transform: translateX(55%); opacity: 0; }
+}
+@keyframes game-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes game-swap {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .pin-pulse, .rise-in, .panel-in { animation: none !important; }
+  .pin-pulse, .rise-in, .panel-in, .game-blob, .game-float, .game-step, .game-swap { animation: none !important; }
+  .game-sheen { display: none; }
 }

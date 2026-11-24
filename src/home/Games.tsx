@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChevronDown, CloudRain } from 'lucide-react'
+import { ChevronDown, CloudRain, RotateCw } from 'lucide-react'
 import { useCamp } from '../i18n/CampState'
 import type { L } from '../lib/types'
 import { Icon } from '../map/icons'
 import { RAIN_PLAN, SCHEDULE } from './content'
 import { GAMES, GAMES_COPY, GAME_GROUPS, type GameGroupId } from './games'
+import { GameFlip } from './GameFlip'
 import { Heading, Section } from './Sections'
 
 /** Below the three-column layout the full list is long: show this many until the visitor asks for the rest. */
@@ -13,11 +14,14 @@ const PREVIEW = 8
 /**
  * Camp games and challenges. Each activity is a quiet card with a line icon (objects only,
  * never people), its name in both languages and one sentence on what the teams do.
+ * Tapping a card turns it over into a glass panel that explains what happens (GameFlip).
  */
 export function Games() {
   const { t, lang } = useCamp()
   const [group, setGroup] = useState<GameGroupId | 'all'>('all')
   const [open, setOpen] = useState(false)
+  /** The activity whose card is turned over, by its number. */
+  const [active, setActive] = useState<number | null>(null)
   // "Show all" removes its own button, so hand keyboard and screen-reader focus to the first new card.
   const firstRevealed = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
@@ -46,16 +50,20 @@ export function Games() {
         {chip('all', t(GAMES_COPY.all), GAMES.length)}
         {GAME_GROUPS.map((g) => chip(g.id, t(g.name), GAMES.filter((x) => x.group === g.id).length))}
       </div>
-      <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-games>
+      <p className="mt-4 flex items-center gap-2 text-[13px] font-semibold text-ink/65" data-games-hint>
+        <RotateCw size={14} aria-hidden className="text-cedar-600" />
+        {t(GAMES_COPY.hint)}
+      </p>
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-games>
         {list.map((g, i) => {
           const grp = GAME_GROUPS.find((x) => x.id === g.group)!
           return (
             <li
               key={g.n}
               data-game={g.n}
-              className={`${collapsed && i >= PREVIEW ? 'hidden lg:flex' : 'flex'} relative gap-4 rounded-3xl border border-pine/10 bg-white p-4 shadow-sm transition duration-300 hover:shadow-md motion-safe:hover:-translate-y-0.5 sm:flex-col sm:gap-0 sm:p-5`}
+              className={`${collapsed && i >= PREVIEW ? 'hidden lg:flex' : 'flex'} group relative gap-4 rounded-3xl border border-pine/10 bg-white p-4 shadow-sm transition duration-300 hover:border-pine/25 hover:shadow-lg motion-safe:hover:-translate-y-1 sm:flex-col sm:gap-0 sm:p-5`}
             >
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl" style={{ background: grp.bg, color: grp.fg }}>
+              <span data-game-icon className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl" style={{ background: grp.bg, color: grp.fg }}>
                 <Icon name={g.icon} size={24} strokeWidth={1.6} />
               </span>
               <span className="font-display absolute right-4 top-4 text-xl font-semibold leading-none tabular-nums text-cedar/70 sm:right-5 sm:top-5 sm:text-[1.6rem]" aria-hidden>
@@ -70,10 +78,22 @@ export function Games() {
                   {other(g.name)}
                 </p>
                 <p className="mt-2 text-[14px] leading-relaxed text-ink/70 sm:mt-2.5">{t(g.body)}</p>
-                <p className="mt-auto pt-3 text-[11px] font-bold uppercase tracking-[0.12em] sm:pt-4" style={{ color: grp.fg }}>
+                <p className="mt-auto pr-9 pt-3 text-[11px] font-bold uppercase tracking-[0.12em] sm:pt-4" style={{ color: grp.fg }}>
                   {t(grp.name)}
                 </p>
               </div>
+              <span aria-hidden className="absolute bottom-3.5 right-3.5 grid h-8 w-8 place-items-center rounded-full border border-pine/15 bg-parchment text-pine transition duration-300 group-hover:border-pine group-hover:bg-pine group-hover:text-white motion-safe:group-hover:rotate-180 sm:bottom-4 sm:right-4">
+                <RotateCw size={15} strokeWidth={2} />
+              </span>
+              {/* the whole card is the button; its text stays outside it so the headings keep their meaning */}
+              <button
+                type="button"
+                data-game-open
+                aria-haspopup="dialog"
+                aria-label={`${t(g.name)}: ${t(GAMES_COPY.open)}`}
+                onClick={() => setActive(g.n)}
+                className="absolute inset-0 z-10 cursor-pointer rounded-3xl focus-visible:!outline-pine"
+              />
             </li>
           )
         })}
@@ -89,6 +109,7 @@ export function Games() {
           <ChevronDown size={16} aria-hidden />
         </button>
       )}
+      {active != null && <GameFlip n={active} order={list.map((g) => g.n)} onGo={setActive} onClose={() => setActive(null)} />}
       <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_1.5fr]">
         <aside className="rounded-3xl border border-pine/15 bg-white p-6 shadow-sm" data-schedule-teaser>
           <Icon name="Clock" size={26} className="text-cedar-600" />

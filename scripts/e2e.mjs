@@ -102,7 +102,7 @@ if (section("Home: language + registration + refund calculator")) {
   // the icon reviewed for each card (objects only): a misspelt or swapped icon name fails here
   const GAME_ICONS = ['route', 'compass', 'flashlight', 'tent', 'backpack', 'camera', 'kayak', 'flag', 'fingerprint-pattern', 'move-horizontal', 'medal', 'lasso', 'waypoints', 'cylinder', 'land-plot', 'eye-off',
     'biohazard', 'footprints', 'boxes', 'key-round', 'timer', 'droplets', 'flask-conical', 'bubbles', 'rocket', 'blocks', 'egg', 'beaker', 'tornado', 'mic-vocal', 'paintbrush', 'party-popper']
-  const icons = await page.$$eval('[data-games] > li', (els) => els.map((e) => [...e.querySelectorAll('svg')].map((s) => (s.getAttribute('class').match(/lucide-([a-z0-9-]+)/) || [])[1]).join('+')))
+  const icons = await page.$$eval('[data-games] > li', (els) => els.map((e) => [...e.querySelectorAll('[data-game-icon] svg')].map((s) => (s.getAttribute('class').match(/lucide-([a-z0-9-]+)/) || [])[1]).join('+')))
   ok('games: one reviewed object icon per card, no photos, no pictures of people', (await page.locator('#games :is(img, picture, video, canvas, image)').count()) === 0 && icons.length === 32 && icons.every((x, i) => x === GAME_ICONS[i]), icons.filter((x, i) => x !== GAME_ICONS[i]).join(' | '))
   ok('games: introduced as some of the fun activities campers take part in', (await page.textContent('#games h2')) === 'Some of the fun activities campers take part in')
   await page.locator('[data-game-filter="team"]').click()
@@ -110,6 +110,40 @@ if (section("Home: language + registration + refund calculator")) {
   await page.locator('[data-game-filter="all"]').click()
   ok('games: back to all 32', (await page.locator('[data-games] > li:visible').count()) === 32)
   ok('games: the seasonal highlights no longer repeat them', !/Orienteering & Scavenger|Capture the Flag & Lawn|Wilderness Shelter/.test(await page.textContent('#seasons')) && (await page.textContent('#seasons')).includes('Star Cinema Night'))
+  // a card turned over: the glass panel that says what happens in the activity
+  // (the panel floats, so it never comes to rest the way Playwright waits for: clicks inside it are forced)
+  const flip = '[data-game-dialog] [role=dialog]'
+  ok('games: every card can be opened, and the section says so', (await page.locator('[data-games] [data-game-open]').count()) === 32 && (await page.textContent('[data-games-hint]')).includes('Tap a card'))
+  await page.locator('[data-game="2"] [data-game-open]').click()
+  await page.waitForSelector(flip + '[data-settled]')
+  ok('games/panel: a card turns over into a dialog named after the activity', (await page.textContent('#game-dialog-title')) === 'Orienteering Quest' && (await page.getAttribute(flip, 'aria-modal')) === 'true' && (await page.getAttribute(flip, 'aria-labelledby')) === 'game-dialog-title')
+  ok('games/panel: it says what happens, in three or four steps', (await page.textContent(flip)).includes('What happens') && [3, 4].includes(await page.locator('[data-game-steps] > li').count()) && (await page.textContent('[data-game-steps]')).includes('compass'))
+  ok('games/panel: it shows when the activity runs, read from the day-by-day plan', (await page.textContent('[data-game-slot]')) === 'Winter camp · Friday 09:00' && (await page.textContent('#schedule')).includes('Orienteering Quest'))
+  ok('games/panel: the card has left the grid while it is turned over, and the page does not scroll', (await page.$eval('[data-game="2"]', (e) => getComputedStyle(e).visibility)) === 'hidden' && (await page.evaluate(() => document.body.style.overflow)) === 'hidden')
+  ok('games/panel: focus moves into the panel', await page.evaluate(() => !!document.activeElement?.closest('[role=dialog]')))
+  for (let i = 0; i < 6; i++) await page.keyboard.press('Tab')
+  ok('games/panel: Tab stays inside the panel', await page.evaluate(() => !!document.activeElement?.closest('[role=dialog]')))
+  await page.locator('[data-game-next]').click({ force: true })
+  ok('games/panel: next shows the next activity', (await page.textContent('#game-dialog-title')) === 'Glow Night Quest' && (await page.$eval('[data-game="3"]', (e) => getComputedStyle(e).visibility)) === 'hidden' && (await page.$eval('[data-game="2"]', (e) => getComputedStyle(e).visibility)) === 'visible')
+  await page.keyboard.press('ArrowLeft'); await page.keyboard.press('ArrowLeft')
+  ok('games/panel: the arrow keys go back', (await page.textContent('#game-dialog-title')) === 'Bambi Amazing Race')
+  // all 32, in order, each with its steps and labels
+  const seen = []
+  for (let i = 0; i < 32; i++) {
+    seen.push({ title: await page.textContent('#game-dialog-title'), steps: await page.locator('[data-game-steps] > li').count(), chips: await page.locator('[data-game-chips] > li:not([data-game-slot])').count() })
+    if (i < 31) await page.locator('[data-game-next]').click({ force: true })
+  }
+  ok('games/panel: all 32 activities explain themselves (3 or 4 steps, 2 or 3 labels)', seen.every((x, i) => x.title === GAME_NAMES[i] && [3, 4].includes(x.steps) && [2, 3].includes(x.chips)), seen.filter((x, i) => x.title !== GAME_NAMES[i] || ![3, 4].includes(x.steps) || ![2, 3].includes(x.chips)).map((x) => `${x.title}: ${x.steps} steps, ${x.chips} labels`).join(' | '))
+  ok('games/panel: an activity that is not in the winter plan shows no time', (await page.textContent('#game-dialog-title')) === 'Color War Opening Ceremony' && (await page.textContent('[data-game-slot]')) === 'Winter camp · Thursday 19:00' && (await page.locator('[data-game-prev]').click({ force: true }), await page.locator('[data-game-prev]').click({ force: true }), await page.locator('[data-game-prev]').click({ force: true }), (await page.textContent('#game-dialog-title')) === 'Vortex Cannon Target Challenge') && (await page.locator('[data-game-slot]').count()) === 0)
+  await page.keyboard.press('Escape')
+  await page.waitForSelector('[data-game-dialog]', { state: 'detached' })
+  ok('games/panel: Escape closes it, the card is back and holds the focus', (await page.locator('[data-flipped]').count()) === 0 && (await page.evaluate(() => document.body.style.overflow)) === '' && (await page.evaluate(() => document.activeElement?.closest('[data-game]')?.getAttribute('data-game'))) === '29')
+  await page.locator('[data-game="7"] [data-game-open]').click()
+  await page.waitForSelector(flip + '[data-settled]')
+  ok('games/panel: a safety note where one applies', (await page.textContent('[data-game-note]')).startsWith('Good to know') && /life jacket/i.test(await page.textContent(flip)))
+  await page.mouse.click(8, 400)
+  await page.waitForSelector('[data-game-dialog]', { state: 'detached' })
+  ok('games/panel: a click outside closes it', (await page.locator('[data-flipped]').count()) === 0)
   ok('games: the schedule note and rain plan close the section', (await page.locator('#games [data-games] ~ div [data-schedule-teaser]').count()) === 1 && (await page.locator('#games [data-games] ~ div [data-rain-plan]').count()) === 1)
 
   // refund calculator
@@ -387,6 +421,32 @@ if (section("Games in 繁體中文 on a phone")) {
   ok('games/zh: the Chinese name leads with the English name beneath', first[0] === '斑比探索大挑戰' && first[1] === 'Bambi Amazing Race', first.join(' / '))
   ok('games/zh: Color War keeps its English name', (await page.$eval('[data-game="32"] h3', (e) => e.textContent)) === 'Color War 開幕式')
   ok('games/phone: no sideways scrolling', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
+  await page.locator('[data-game="4"] [data-game-open]').click()
+  await page.waitForSelector('[data-game-dialog] [role=dialog][data-settled]')
+  const box = await page.locator('[data-game-dialog] [role=dialog]').boundingBox()
+  ok('games/phone: the panel fits the screen', box.x >= 0 && box.y >= 0 && box.x + box.width <= 390 && box.y + box.height <= 844, JSON.stringify(box))
+  ok('games/zh: the panel is in Chinese, with the English name beneath', (await page.textContent('#game-dialog-title')) === '野外庇護所挑戰' && (await page.textContent('#game-dialog-title + p')) === 'Shelter Build Challenge' && (await page.textContent('[data-game-dialog]')).includes('活動流程') && /[一-鿿]{6,}/.test(await page.textContent('[data-game-steps]')))
+  ok('games/panel: with no dated camp on show (summer), no time is given', (await page.locator('[data-game-slot]').count()) === 0)
+  ok('games/phone: no sideways scrolling with the panel open', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
+  await page.locator('[data-game-close]').click({ force: true })
+  await page.waitForSelector('[data-game-dialog]', { state: 'detached' })
+  ok('games/phone: the close button puts the card back', (await page.locator('[data-flipped]').count()) === 0)
+  await ctx.close()
+}
+// ── Games panel with reduced motion: no turn, the panel simply appears
+if (section("Games panel with reduced motion")) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 }, reducedMotion: 'reduce' })
+  await ctx.addInitScript(() => { localStorage.setItem('gya.lang', 'en'); localStorage.setItem('gya.season', 'winter') })
+  const page = await ctx.newPage()
+  page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
+  await page.goto(BASE + '/')
+  await page.waitForSelector('[data-games]')
+  await page.locator('[data-game="10"] [data-game-open]').click()
+  await page.waitForSelector('[data-game-dialog] [role=dialog][data-settled]')
+  ok('games/reduced motion: the panel opens without the turn or the floating', (await page.textContent('#game-dialog-title')) === 'Tug-of-War Tournament' && (await page.evaluate(() => getComputedStyle(document.querySelector('[role=dialog]')).animationName)) === 'none' && (await page.evaluate(() => document.querySelector('[data-game-dialog] [aria-hidden].fixed').childElementCount)) === 0)
+  await page.keyboard.press('Escape')
+  await page.waitForSelector('[data-game-dialog]', { state: 'detached' })
+  ok('games/reduced motion: it closes and the card returns', (await page.locator('[data-flipped]').count()) === 0)
   await ctx.close()
 }
 // ── Night: visitors who arrive after dark get the evening site
