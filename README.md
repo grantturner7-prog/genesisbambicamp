@@ -67,14 +67,24 @@ including under a sub-path.
   only dates on the site. The summer camp has none yet (`sessions.summer` is `null`): it
   is a placeholder that says "Coming soon", prints no date or fee, and cannot be chosen
   in the registration form. Fill in `sessions.summer` to open it.
+- The 32 activity cards (`src/home/games.ts`) turn over into a glass panel when tapped
+  (`src/home/GameFlip.tsx`). What the panel says is in `src/home/gameDetails.ts`: three or
+  four steps, two or three labels and an optional note per activity, in both languages.
+  `npm run audit` fails if an activity has none, if it is too long for the panel, or if a
+  schooling word creeps in. The panel's "when it runs" line is read from `SCHEDULE`, so it
+  cannot disagree with the day-by-day plan; an activity's name in the plan can differ from
+  its card name through `alias` in `games.ts`.
 - The winter camp's day-by-day plan is `SCHEDULE` in `src/home/content.ts`: four days, with
   the anchor times and the named activities, and no dish names. A season with no dates
   shows a short note in its place.
 - English is described only as the language of daily camp life (全美語生活環境). The wording
   rules that keep the camp an outdoor recreation camp, and out of cram-school territory,
   are in `scripts/copy-rules.mjs`; the website audit and the adverts both use them.
-- Bambi Glamping's own overnight guests are on site on the weekend nights, and the site
-  says so (Safety, FAQ and the gate panel).
+- The winter camp has the whole of Bambi Glamping to itself for all four days: no other
+  guests stay on site, and the site says so (Safety, FAQ and the gate panel). The booking
+  with Bambi should say the same in writing. The daily rhythm is wake 07:00, breakfast
+  08:00, activities from 09:00, dinner at 18:00 and lights out at 22:00; a wet day moves
+  every activity into the main dining hall.
 
 ## The 3D map
 
