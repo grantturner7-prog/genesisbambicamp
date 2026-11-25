@@ -3,3 +3,5 @@ dist
 .DS_Store
 *.log
 .vite
+scripts/counselor-pack/out/
+__pycache__/
