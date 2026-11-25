@@ -19,7 +19,7 @@ SHEETS = [
         ],
         run=[
             ('07:00', '07:30', 'Wake by a counselor’s knock. Dress in the camp T-shirt. Last things into the bags. Bags out on the deck.'),
-            ('07:30', '07:55', 'Final van check. The two floaters go van to van with the campers of that van: every cupboard, the bathroom, under the beds, the sockets. Lost things go in the lost-property bag. The key is handed over and ticked on the key list. Each checked van’s campers walk to the Bus Point with a squad counselor and put their bags in the team row.'),
+            ('07:30', '07:55', 'Final van check, in two pairs: Floater 1 and a counselor take the six vans of row B, Floater 2 and a counselor the five of row A. They check each van with its campers: every cupboard, the bathroom, under the beds, the sockets. Lost things go in the lost-property bag. The key is handed over and ticked on the key list. Each checked van’s campers walk to the Bus Point with a squad counselor and put their bags in the team row.'),
             ('07:55', '08:00', 'Walk on from the Bus Point to the Hall, 120 m.'),
             ('08:00', '08:30', 'Breakfast. At 08:30 the Director takes the keys and the key list to Reception.'),
         ],
@@ -30,7 +30,7 @@ SHEETS = [
                 'Wet towels and bedding stay in the van, as Bambi’s housekeeping asks.',
             ]),
         ],
-        roles=[('Floater 1, Floater 2', 'Check every van together and collect the keys.'), ('Squad counselors', 'Walk campers and bags to the Bus Point in van groups, then on to the Hall.'), ('Director', 'Returns the keys at 08:30.'), ('Nurse', 'Packs the medicine box: every camper’s medicine goes back to the family at the hotel.')],
+        roles=[('Floater 1, Floater 2', 'Each leads one pair on the van check and collects the keys of that row.'), ('Squad counselors', 'Walk campers and bags to the Bus Point in van groups, then on to the Hall.'), ('Director', 'Returns the keys at 08:30.'), ('Nurse', 'Packs the medicine box: every camper’s medicine goes back to the family at the hotel.')],
         scoring=[],
         kit=[('Key list', '1', 'print', '1'), ('Lost-property bag', '1', 'E9b', '1'), ('Flat markers', '6', 'A1', '7'), ('Tarps, if rain is likely', '2', 'B4', '6')],
         rain='Bags stay on the van decks, under cover, until 09:30, and the two floaters carry them to the bus with the driver.',
@@ -87,7 +87,7 @@ SHEETS = [
         idea='Every camper is called up by name. Then the board is uncovered and the Color War champions lift the trophy. The whole camp takes one photo together and walks to the bus.',
         setup=[
             ('Saturday 22:15', 'All counselors', 'Each squad counselor writes one sentence about each of their five campers on the back of the certificate: something that camper did this week.'),
-            ('08:25', 'Floater 2', 'Trophy table at HQ Palms: the trophy, 30 medals, 30 named certificates in squad order, the covered scoreboard brought from the Hall, the speaker.'),
+            ('08:30', 'Floater 2', 'Once the finale is laid out: the trophy table at HQ Palms, with the trophy, 30 medals, 30 named certificates in squad order, the covered scoreboard brought from the Hall, and the speaker.'),
             ('09:30', 'Floater 1, Floater 2', 'Meet the bus at the Bus Point and load the bags with the driver.'),
         ],
         say=[

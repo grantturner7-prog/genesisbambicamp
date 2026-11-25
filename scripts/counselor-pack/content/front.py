@@ -97,7 +97,7 @@ ROUTINE = dict(
         dict(type='table', title='The frame of every day', head=['Time', 'What happens', 'Who'], rows=[
             ['06:45', 'Counselors up.', 'All counselors'],
             ['07:00', 'Wake by a counselor’s knock on every van door.', 'Squad counselors'],
-            ['07:30', 'Van check. Campers stand at their own van door and are counted by name. The two floaters score every van.', 'Floater 1, Floater 2'],
+            ['07:30', 'Van check. Campers stand at their own van door and are counted by name. Two pairs score the vans: Floater 1 and a counselor in row B, Floater 2 and a counselor in row A.', 'Floater 1, Floater 2'],
             ['07:50', 'Walk to the Hall by squad.', 'Squad counselors'],
             ['08:00', 'Breakfast. Squads sit together and their counselor eats with them.', 'Everyone'],
             ['08:50', 'Morning circle at HQ Palms, ten minutes: yesterday’s scores and the van scores, the spirit award, the weather call and what to wear, and the day in three sentences.', 'Director'],
@@ -114,7 +114,7 @@ ROUTINE = dict(
             ['Bathroom', 'Towels hung up, nothing in the basin.'], ['Wet things', 'On the drying line or the deck rail, not inside.'],
         ]),
         dict(type='list', title='At night', items=[
-            'A counselor in each of the three counselor vans, B05, B12 and A08, keeps a radio on. A lantern burns on each of those three decks, so that a camper who needs an adult knows which door to knock on.',
+            'The counselors of Y1, O1 and G1 sleep one in each of the three counselor vans, B05, B12 and A08, and keep their radios on. A lantern burns on each of those three decks, so that a camper who needs an adult knows which door to knock on.',
             'The Director keeps the duty phone for Bambi’s night desk and the gate.',
             'Campers’ phones were handed in at the bus on Thursday and are kept in the lock box. They come back at boarding on Sunday.',
         ]),

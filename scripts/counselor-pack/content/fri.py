@@ -125,7 +125,7 @@ SHEETS = [
         setup=[
             ('Friday 13:45', 'Floater 1, Floater 2', 'Mark the three courts with the 30 m of twine as a straight edge. Court A: 30 × 15 m with an end zone 4 m deep at each end. Court B: 24 × 14 m with a mini goal on each end line. Court C: 14 × 8 m with a centre line.'),
             ('Friday 14:05', 'Floater 1', 'Two discs to court A, two footballs to court B, six foam balls on the centre line of court C. Fixture card to each referee.'),
-            ('Saturday 08:40', 'Floater 1, Floater 2', 'Walk the courts and replace any missing markers. Same kit as Friday.'),
+            ('Saturday 08:40', 'Floater 1, Floater 2', 'Mark court A again: its markers were lifted for the shelters. Courts B and C stayed out overnight. Same kit as Friday.'),
         ],
         say=[
             'Three sports: ultimate frisbee, mini-football and dodgeball. You play three games today and three tomorrow.',
@@ -176,7 +176,7 @@ SHEETS = [
             ('Before camp', 'Director', 'Cut the nylon cord into 36 lengths of 4.5 m. Tie each squad’s six cords in a bundle.'),
             ('13:30', 'Floater 1, Floater 2', 'Kit line on the north edge of the lawn: six sets, each with 1 tarp, 4 poles, 6 cords, 10 pegs and 1 mallet.'),
             ('15:00', 'Floater 1, Floater 2', 'Lift the court A markers. Put one flat marker in the middle of each plot. Build nothing yet: the demo is built in front of the campers.'),
-            ('16:05', 'Floater 1', 'Fill both watering cans and two buckets at the van tap.'),
+            ('16:05', 'Floater 1', 'Fill both watering cans and two buckets at the van tap: 30 litres, enough for the six shelters.'),
         ],
         say=[
             'Your shelter has to do two things: fit all five of you sitting down, and keep you dry when the storm comes at 16:15.',
@@ -189,7 +189,7 @@ SHEETS = [
             ('15:25', '15:40', 'Build. Squads collect their set and go to their plot. First call at 15:40: poles standing and ridge cord tight.'),
             ('15:40', '16:00', 'Build. Second call at 16:00: tarp on and corners pegged.'),
             ('16:00', '16:15', 'Build. Five-minute call at 16:10. Tools down at 16:15: mallets back on the kit line.'),
-            ('16:15', '16:30', 'Storm test and judging, plot by plot: Y1, O1, G1, Y2, O2, G2, two and a half minutes each. The squad sits inside. Floater 1 pours one watering can along the ridge and one on the windy side. The judges score.'),
+            ('16:15', '16:30', 'Storm test and judging, plot by plot: Y1, O1, G1, Y2, O2, G2, two and a half minutes each. The squad sits inside. Floater 1 pours one full watering can, half along the ridge and half on the windy side. The judges score.'),
             ('16:30', '16:40', 'Results. Then the take-down: cords untied and coiled, ten pegs counted back into each pack, tarp shaken and folded in four, poles to the bundle. Showers at 16:45.'),
         ],
         blocks=[
@@ -207,7 +207,7 @@ SHEETS = [
                 ['0–2', 'Teamwork: every camper had a job, and nobody stood watching.'],
             ]),
         ],
-        roles=[('Floater 1, Floater 2', 'Run the demo, walk the plots during the build, pour the storm.'), ('Director, Nurse, Floater 2', 'The three judges. Each gives a mark out of 10 and the marks are added.'),
+        roles=[('Floater 1', 'Runs the demo with Floater 2, walks the plots during the build, and pours the storm.'), ('Director, Nurse, Floater 2', 'The three judges. Each gives a mark out of 10 and the marks are added.'),
                ('Squad counselors', 'Stay at their plot. They ask questions (“What happens when it rains on that side?”) and they do not tie, hammer or decide.')],
         scoring=['Three judges, 10 points each, 30 at most.', 'The six squads are ranked. Squad placings: 6, 5, 4, 3, 2, 1. A tie goes to the drier shelter.'],
         kit=[('Tarpaulins, 3 × 3.6 m', '6', 'B4', '6'), ('PVC poles, 2 m', '24', 'B5', 'loose'), ('Nylon cord, cut to 4.5 m', '36 lengths', 'B6b', '6'), ('Steel pegs', '60', 'B3', '6'), ('Rubber mallets', '6', 'B3b', '6'),
@@ -248,14 +248,14 @@ SHEETS = [
             ]),
             dict(type='list', title='The skit rules, read out at 17:15', items=[
                 'Theme: how our mascot saved Camp WOW.', 'Six minutes at most. All ten campers are on stage and each has a line or an action.',
-                'Your three props must all be used. The prop bag holds a hula hoop, a watering can, a sack, a foam ball, a skipping rope, a bucket, a frisbee, a picnic blanket and a glow bracelet.',
+                'Your three props must all be used. The prop bag holds a hula hoop, a watering can, a sack, a foam ball, a skipping rope, a bucket, a frisbee, a fleece throw and a glow bracelet. The props stay in the bag with Floater 2 until the run-through.',
                 'You plan at dinner tonight and at meals tomorrow. The run-through is tomorrow at 17:00.',
             ]),
         ],
         roles=[('Director', 'Hosts, announces the theme, blows the whistle.'), ('Squad counselors', 'One at each table as the game host. They explain, deal and keep it friendly.'), ('Floater 1', 'Sets up the café from 17:00.'),
                ('Floater 2', 'Collects the ten orienteering markers during showers, then collects the table slips.'), ('Nurse', 'At the vans until the last camper leaves, then in the Hall.')],
         scoring=['Each table, each round: 2 points to the winner’s team and 1 to the runner-up’s team. That is 36 points shared out over the evening.'],
-        kit=[('Board and card games', '10', 'F1a, F1b', '9'), ('Café tickets and table numbers', '30 + 6', 'print', '9'), ('Table slips and pens', '12 + 6', 'D4a, D5b', '9'), ('Prop bag for the skits', '9 props', 'A9, D12d, E07, A4, A8, D12a, A3, B8, D7a', 'bag')],
+        kit=[('Board and card games', '10', 'F1a, F1b', '9'), ('Café tickets and table numbers', '30 + 6', 'print', '9'), ('Table slips and pens', '12 + 6', 'D4a, D5b', '9'), ('Prop bag for the skits', '9 props', 'A9, D12d, E07, A4, A8, D12a, A3, E9d, D7a', 'bag')],
         rain='No change. The walk to the Hall is in ponchos.',
         watch=['A camper who loses every hand: the table counselor quietly changes the seating for round 2.'],
     ),

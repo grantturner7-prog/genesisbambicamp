@@ -313,7 +313,7 @@ def cinema():
 
 
 # ------------------------------------------------------------------ Saturday
-OLY = ['Sack race', 'Cornhole toss', 'Ring toss', 'Skipping relay', 'Sponge relay', 'Frisbee target']
+OLY = ['Sack race', 'Cornhole toss', 'Ring toss', 'Skipping relay', 'Water relay', 'Frisbee target']
 
 
 def olympics():
@@ -324,7 +324,7 @@ def olympics():
         mp.zone(rect(cx, 478, 5, 16), 'orange' if i % 2 == 0 else 'blue', fill=0.4, lw=1.4)
         mp.pin((cx, 478 - m(8)), i + 1, color='navy', r=8.5)
     mp.text((708, 425), '1 Sack race · 2 Cornhole toss · 3 Ring toss', side='t', size=9.5)
-    mp.text((708, 536), '4 Skipping relay · 5 Sponge relay · 6 Frisbee target', side='b', size=9.5)
+    mp.text((708, 536), '4 Skipping relay · 5 Water relay · 6 Frisbee target', side='b', size=9.5)
     mp.line(POOL_LINE, 'red', lw=2.4)
     return mp.svg()
 
