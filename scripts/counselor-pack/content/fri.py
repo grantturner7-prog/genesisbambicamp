@@ -96,7 +96,7 @@ SHEETS = [
                 ('3', 'Blindfold Trail', 'South Lawn, east side · Floater 2',
                  'A lane 12 m long and 4 m wide, scattered with 12 flat markers and 2 hoops. One camper at a time crosses blindfolded, guided only by the voice of the next camper, who stays outside the lane. Touch a marker or a hoop and you freeze for a count of five. Gold: all five across within 7 minutes.'),
                 ('4', 'Toxic Waste', 'South Lawn, south end · Floater 1',
-                 'A small bucket of 12 table-tennis balls stands in the middle of a circle 6 m across. Nobody may step into the circle or touch the bucket. Using the bungee ring with five cords, the squad grips the bucket, lifts it out, carries it 6 m and tips the balls into the safe bucket. Gold: 10 or more balls in within 7 minutes. Done: 6 or more.'),
+                 'A small bucket of 12 table-tennis balls stands in the middle of a circle 4 m across. Nobody may step into the circle or touch the bucket. Each camper holds the end of one 3 m cord tied to the bungee ring. Pulling together they stretch the ring over the bucket, let it grip, lift the bucket out, carry it 6 m and tip the balls into the safe bucket. Gold: 10 or more balls in within 7 minutes. Done: 6 or more.'),
                 ('5', 'Team Photo', 'Airstream deck',
                  'Three photos, taken by the counselor. One: spell WOW with your bodies. Two: all five in the air at once. Three: your squad as a band on an album cover. Every photo must show all five campers and the Airstream. Gold: three good shots within 6 minutes.'),
                 ('6', 'Puzzle', 'Campfire Circle, on the logs',
@@ -243,8 +243,8 @@ SHEETS = [
             dict(type='table', title='Café tickets: the table numbers to print for each team', head=['Team', 'Ten tickets'], rows=[
                 ['Yellow', '1, 1, 2, 2, 3, 3, 4, 4, 5, 6'], ['Orange', '1, 2, 3, 3, 4, 4, 5, 5, 6, 6'], ['Green', '1, 1, 2, 2, 3, 4, 5, 5, 6, 6']]),
             dict(type='table', title='The six tables', head=['Table', 'Round 1 game', 'How it is won in 14 minutes'], rows=[
-                ['1', 'Dobble 嗒寶', 'Most cards won when the whistle goes.'], ['2', 'Halli Galli 德國心臟病', 'Most cards held when the whistle goes.'], ['3', 'Sushi Go 迴轉壽司', 'Highest score after one full game of three rounds.'],
-                ['4', '6 nimmt! 誰是牛頭王', 'Fewest bull heads when the whistle goes.'], ['5', 'UNO', 'Most hands won.'], ['6', 'Tumbling tower 疊疊樂', 'Fewest collapses. Rebuild and carry on.'],
+                ['1', 'Dobble 嗒寶', 'Most cards won when the whistle goes.'], ['2', 'Halli Galli 德國心臟病', 'Most cards held when the whistle goes.'], ['3', 'Sushi Go 迴轉壽司', 'Highest score when the whistle goes, after as many rounds as fit.'],
+                ['4', '6 nimmt! 誰是牛頭王', 'Fewest bull heads when the whistle goes.'], ['5', 'UNO', 'Fewest cards in hand when the whistle goes. Hands won break a tie.'], ['6', 'Tumbling tower 疊疊樂', 'One point for each block you move and place. A collapse costs you three. Rebuild and carry on.'],
             ]),
             dict(type='list', title='The skit rules, read out at 17:15', items=[
                 'Theme: how our mascot saved Camp WOW.', 'Six minutes at most. All ten campers are on stage and each has a line or an action.',
@@ -285,7 +285,7 @@ SHEETS = [
         blocks=[
             dict(type='cards', title='The six stations', cards=[
                 ('1', 'Ring toss · word: LOOK', 'North Lawn, west',
-                 'Three water bottles, each with a glow bracelet inside, stand 3 m from the line. The rings are glow bracelets joined into circles. Campers throw in turn. Pass: 5 rings on within five minutes.'),
+                 'Three water bottles, each with a glow bracelet inside, stand 2 m from the line. Each ring is three glow bracelets joined end to end, about 19 cm across. Five rings. Campers throw in turn. Pass: 5 rings on within five minutes.'),
                 ('2', 'Silent line-up · word: UNDER', 'North Lawn, by the deck of van B06',
                  'Torches off, no talking. The squad lines up in order of birthday, January to December. The counselor checks. One second try is allowed. Pass: correct within three minutes.'),
                 ('3', 'Firefly code · word: THE', 'East edge, by the big tree',

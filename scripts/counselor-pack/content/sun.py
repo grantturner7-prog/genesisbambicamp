@@ -170,7 +170,7 @@ RAIN = [
             ('10:45', '10:50', 'Briefing in the Hall.'),
             ('10:50', '11:30', 'Light rain: the Umbrella Treasure Hunt, forty minutes. Heavy rain: rounds 1 to 3 of the Hall race, starting at 10:50, 11:02 and 11:14.'),
             ('11:30', '11:40', 'Light rain: back in the Hall, ponchos off, a warm drink. Heavy rain: round 4, starting at 11:26.'),
-            ('11:40', '12:15', 'Light rain: four rounds of eight minutes, with a minute to move, at six indoor checkpoints: every one but the Blindfold Trail. Each squad does four of the six. Heavy rain: rounds 5 to 7, starting at 11:38, 11:50 and 12:02.'),
+            ('11:40', '12:15', 'Light rain: four rounds of eight minutes, with a minute to move, at six indoor checkpoints: every one but the Blindfold Trail. Squads start one at each checkpoint and move on one each round, so each squad does four of the six. Heavy rain: rounds 5 to 7, starting at 11:38, 11:50 and 12:02.'),
             ('12:15', '12:25', 'Passports in. The tables are set for lunch at 12:30.'),
         ],
         blocks=[

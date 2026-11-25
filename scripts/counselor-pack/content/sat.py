@@ -88,7 +88,7 @@ SHEETS = [
         map='kayakrelay', mapcap='The start line is at the Dock. Each paddler goes out round the turn buoy and back. The coach places the buoy inside the paddling area.',
         idea='The campers already know the boats, so this turn is a race. Inside each team the two squads race each other, and the team’s combined time is ranked against the other two teams.',
         setup=[
-            ('11:03', 'Floater 1', 'With the coach: the start line at the Dock and one turn buoy about 40 m out, inside the paddling area. Two stopwatches ready.'),
+            ('11:03', 'Floater 1', 'With the coach: the start line at the Dock and one turn buoy about 20 m out, inside the paddling area. Two stopwatches ready.'),
         ],
         say=[
             'Same rules as Thursday: the coach is in charge, life jackets stay clipped, and the whistle means paddle to the coach.',
@@ -106,6 +106,7 @@ SHEETS = [
             dict(type='list', title='Good to know', items=[
                 'A camper who does not want to race can be the squad’s starter and timekeeper on the Dock. Another camper then paddles two legs.',
                 'If Bambi’s boats are doubles, a leg is one boat with two paddlers and the squad makes three legs.',
+                'A leg is about 40 m, out and back, and takes about a minute. If race 1 is not finished by minute 17 it is the only race, and its time counts.',
                 'The coach can shorten the route or stop the race at any time.',
             ]),
         ],
@@ -176,7 +177,9 @@ SHEETS = [
             ('24', '28', 'Bubble storm. All ten make bubbles at once, for the camp photo.'),
             ('28', '30', 'Hands in the rinse bucket. Wands into the bag: campers collect them on Sunday.'),
         ],
-        blocks=[],
+        blocks=[
+            dict(type='note', title='Orange at 11:10 and Yellow at 11:40 kayak next', text='They do the bubble storm at minute 19 in place of challenge 3, rinse their hands at minute 23 and leave for the Dock Gate at minute 25.'),
+        ],
         roles=[('Floater 2', 'Hosts all three turns and tops up the basins between them.'), ('Team counselors', 'Measure and count at the basins. One takes the photo.')],
         scoring=[],
         kit=[('Bubble mix, 10 litres, in a covered bucket', '1', 'E14, D12a', '11'), ('Glycerin, small bottle', '1', 'E14', '11'), ('Wash basins', '4', 'D12b', 'loose'), ('Drinking straws', '66', 'D9c', '11'),
@@ -268,7 +271,7 @@ SHEETS = [
         map='arcade', mapcap='Six stations in a loop. Squads move clockwise, 1 to 2 to 3 and on, and from 6 back to 1.',
         idea='The lawn games from Thursday come back, and now they count. Six stations, five minutes of play at each, and a score that goes on the Color War board.',
         setup=[
-            ('16:00', 'Floater 1, Floater 2', 'Set the six stations in the break. The second folding table goes at station 4 with the roll-out net. The dart target stands on two stacked bins at station 5.'),
+            ('16:00', 'Floater 1, Floater 2', 'Set the six stations in the break. The second folding table goes at station 4 with the roll-out net. An upturned storage bin is the stacking table at station 3. The dart target stands on two stacked bins at station 5.'),
         ],
         say=[
             'Six games, five minutes of play at each. Your counselor counts your squad’s score.',
@@ -284,20 +287,20 @@ SHEETS = [
             dict(type='cards', title='The six stations', cards=[
                 ('1', 'Cornhole', 'Count: points', 'One board, 5 m from the line. Each camper throws four bags and collects them. On the board 1, through the hole 3.'),
                 ('2', 'Soft pétanque', 'Count: points', 'A hula hoop lies 5 m from the line with a table-tennis ball in its middle. Each camper throws three boules. A boule that stops inside the hoop scores 1, and one within a hand of the ball scores 3.'),
-                ('3', 'Mölkky', 'Count: points', 'Twelve pins in a tight group, 3.5 m from the line. One pin down scores its number; several down score the count. The counselor stands the pins back in the group after every throw.'),
+                ('3', 'Minute-to-Win-It', 'Count: pyramids', 'Fifteen cups on an upturned storage bin. One camper at a time builds a pyramid, 5-4-3-2-1, and slides it back into one stack. The next camper goes. Count the pyramids built and cleared.'),
                 ('4', 'Table tennis', 'Count: longest rally', 'Two campers rally across the net and the squad counts the hits aloud. On a miss the next two step in. The squad’s longest rally is its score.'),
                 ('5', 'Safe darts', 'Count: points', 'The velcro target is 3 m from the line. Each camper throws three balls. The counselor adds the numbers they stick to.'),
-                ('6', 'Minute-to-Win-It', 'Count: pyramids', 'Fifteen cups. One camper at a time builds a pyramid, 5-4-3-2-1, and slides it back into one stack. The next camper goes. Count the pyramids built and cleared.'),
+                ('6', 'Mölkky', 'Count: points', 'Twelve pins in a tight group, 3.5 m from the line. One pin down scores its number; several down score the count. The counselor stands the pins back in the group after every throw.'),
             ]),
             dict(type='table', title='Which station each squad is at', head=['Squad'] + ARC_TIMES, rows=carousel(6, ARC_TIMES)),
         ],
         roles=[('Director', 'The one clock and the whistle.'), ('Floater 1', 'At station 4, fetching balls.'), ('Floater 2', 'Collects squad cards and does the ranking before dinner.'), ('Squad counselors', 'Move with their squad, count the score and write it on the squad card.'), ('Nurse', 'At HQ Palms.')],
         scoring=['At each station the six squads are ranked on their score: 6 station points for the best, down to 1.', 'Each squad’s six station scores are added: 36 at most.', 'The totals are ranked. Squad placings: 6, 5, 4, 3, 2, 1.'],
         kit=[('Cornhole board and eight bags', '1 set', 'A18', 'loose'), ('Soft pétanque boules', '3', 'A14', '8'), ('Hula hoop', '1', 'A9', 'loose'), ('Mölkky set', '1', 'A15', '8'), ('Folding table', '1', 'Bambi', '—'),
-             ('Table-tennis net, bats and balls', '1 + 4 + 6', 'A17a, A17b, A17c', '8'), ('Velcro dart target and balls', '1', 'A16', '8'), ('Storage bins, stacked as the target stand', '2', 'C11', '—'),
+             ('Table-tennis net, bats and balls', '1 + 4 + 6', 'A17a, A17b, A17c', '8'), ('Velcro dart target and balls', '1', 'A16', '8'), ('Storage bins: two stacked as the target stand, one upturned as the cup table', '3', 'C11', '—'),
              ('Plastic cups', '15', 'C8', '8'), ('Flat markers, for the throwing lines', '6', 'A1', '7'), ('Squad cards', '6', 'print', '8')],
         rain='The same six stations in the Hall, with the Mölkky played on a picnic blanket to deaden the noise (rain sheet R3).',
-        watch=['Wind moves table-tennis balls and cups: stations 4 and 6 sit on the sheltered side, nearest the vans.'],
+        watch=['Wind moves table-tennis balls and cups: stations 3 and 4 sit on the sheltered side, nearest the vans.'],
     ),
     dict(
         id='finalfire', day='Saturday', start='19:30', end='20:25', title='Final Campfire: the Skit & Talent Showdown',

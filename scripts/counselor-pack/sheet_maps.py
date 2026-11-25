@@ -359,7 +359,7 @@ def eggdrop():
     return mp.svg()
 
 
-ARC = [((668, 318), 'Cornhole', 'l'), ((705, 314), 'Soft pétanque', 't'), ((742, 318), 'Mölkky', 'r'), ((742, 356), 'Table tennis', 'r'), ((705, 362), 'Safe darts', 'b'), ((668, 356), 'Minute-to-Win-It', 'l')]
+ARC = [((668, 318), 'Cornhole', 'l'), ((705, 314), 'Soft pétanque', 't'), ((742, 318), 'Minute-to-Win-It', 'r'), ((742, 356), 'Table tennis', 'r'), ((705, 362), 'Safe darts', 'b'), ((668, 356), 'Mölkky', 'l')]
 
 
 def arcade():
