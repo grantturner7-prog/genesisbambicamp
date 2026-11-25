@@ -110,6 +110,14 @@ if (section("Home: language + registration + refund calculator")) {
   await page.locator('[data-game-filter="all"]').click()
   ok('games: back to all 32', (await page.locator('[data-games] > li:visible').count()) === 32)
   ok('games: the seasonal highlights no longer repeat them', !/Orienteering & Scavenger|Capture the Flag & Lawn|Wilderness Shelter/.test(await page.textContent('#seasons')) && (await page.textContent('#seasons')).includes('Star Cinema Night'))
+  // how the page looks when its link is shared, and that photos come in the right size
+  const meta = await page.evaluate(() => ({ og: Object.fromEntries([...document.querySelectorAll('meta[property^="og:"]')].map((m) => [m.getAttribute('property'), m.content])), canon: document.querySelector('link[rel=canonical]')?.href, card: document.querySelector('meta[name="twitter:card"]')?.content }))
+  ok('share: the page has a title, description, address and picture for link previews', !!meta.og['og:title'] && meta.og['og:title'].includes('Camp WOW') && meta.og['og:description'].length > 60 && meta.og['og:image'] === 'https://campwow.tw/og-camp-wow.jpg' && meta.og['og:image:width'] === '1200' && meta.card === 'summary_large_image' && meta.canon === 'https://campwow.tw/', JSON.stringify(meta.og).slice(0, 160))
+  const og = await page.request.get(BASE + '/og-camp-wow.jpg'); const ogLen = (await og.body()).length
+  ok('share: the preview picture exists and is a sensible size', og.ok() && ogLen > 30000 && ogLen < 600000, String(ogLen))
+  ok('search: robots.txt and the sitemap are published', (await (await page.request.get(BASE + '/robots.txt')).text()).includes('Sitemap: https://campwow.tw/sitemap.xml') && (await (await page.request.get(BASE + '/sitemap.xml')).text()).includes('<loc>https://campwow.tw/facilities/</loc>'))
+  const nosets = await page.$$eval('img[src*="media/bambi/"]', (els) => els.filter((e) => !e.srcset || !/480w|800w/.test(e.srcset) && e.naturalWidth > 900).map((e) => e.src.split('/').pop()))
+  ok('photos: every venue photo on the page offers smaller copies for phones', nosets.length === 0, nosets.join(', '))
   // a card turned over: the glass panel that says what happens in the activity
   // (the panel floats, so it never comes to rest the way Playwright waits for: clicks inside it are forced)
   const flip = '[data-game-dialog] [role=dialog]'

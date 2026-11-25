@@ -1,0 +1,9 @@
+# Search engines are kept out of the site until it is ready to be found.
+# On the day the site goes live, replace the two lines below with:
+#   User-agent: *
+#   Allow: /
+# and the line after them (Sitemap) stays. `npm run launch-check` reminds you while this is still blocked.
+User-agent: *
+Disallow: /
+
+Sitemap: https://campwow.tw/sitemap.xml

@@ -5,7 +5,7 @@ import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
 import { FACILITIES_URL, ROOT } from '../lib/root'
 import { Icon } from '../map/icons'
-import { PHOTO_CREDIT, photoSrc } from '../media/media'
+import { PHOTO_CREDIT, photoSrc, photoSrcSet } from '../media/media'
 import { ACTIVITIES, DOCS, FAQ, HERO, PACKING, PRICING, SAFETY, SCHEDULE, SEASON_INTRO, STAY } from './content'
 
 /** Which option a Register button opens the form on. */
@@ -40,7 +40,7 @@ export function Hero({ onRegister }: { onRegister: () => void }) {
   const photo = (time === 'dusk' ? HERO.photoNight : HERO.photo)[season]
   return (
     <section className="relative isolate overflow-hidden bg-pine-900 text-white">
-      <img key={photo} src={photoSrc(photo)} alt="" data-hero-photo className="rise-in absolute inset-0 -z-10 h-full w-full object-cover" fetchPriority="high" />
+      <img key={photo} src={photoSrc(photo)} srcSet={photoSrcSet(photo)} sizes="100vw" alt="" data-hero-photo className="rise-in absolute inset-0 -z-10 h-full w-full object-cover" fetchPriority="high" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-pine-900/85 via-pine-900/40 to-transparent" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-pine-900/85 via-transparent to-pine-900/30" />
       <div className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-[1240px] flex-col justify-end px-5 pb-8 pt-20 lg:px-8">
@@ -113,7 +113,7 @@ export function SeasonExplorer() {
           <li key={a.name.en} className={`group flex flex-col overflow-hidden rounded-3xl border bg-white shadow-sm ${a.photo ? '' : 'self-start'} ${a.highlight ? 'border-cedar ring-2 ring-cedar/30' : 'border-pine/10'}`}>
             {a.photo && (
               <div className="relative aspect-[16/9] overflow-hidden">
-                <img src={photoSrc(a.photo)} alt="" loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                <img src={photoSrc(a.photo)} srcSet={photoSrcSet(a.photo)} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                 {a.highlight && (
                   <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
                     <Star size={11} fill="currentColor" aria-hidden />
@@ -175,7 +175,7 @@ export function Stay() {
       <div className="mt-10 grid gap-5 md:grid-cols-3">
         {STAY.cards.map((c) => (
           <article key={c.title.en} className="overflow-hidden rounded-3xl border border-pine/10 bg-white shadow-sm">
-            <img src={photoSrc(c.photo)} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+            <img src={photoSrc(c.photo)} srcSet={photoSrcSet(c.photo)} sizes="(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
             <div className="p-5">
               <h3 className="text-lg font-bold text-pine-900">{t(c.title)}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-ink/70">{t(c.body)}</p>
@@ -204,7 +204,7 @@ export function Stay() {
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">{t(STAY.diet)}</p>
         </div>
         <article className="relative isolate flex min-h-[27rem] flex-col justify-end overflow-hidden rounded-3xl bg-pine-900 text-white shadow-lg ring-2 ring-cedar/50 lg:min-h-80" data-signature-dinner>
-          <img src={photoSrc(STAY.signature.photo)} alt="" loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover" />
+          <img src={photoSrc(STAY.signature.photo)} srcSet={photoSrcSet(STAY.signature.photo)} sizes="(min-width: 1024px) 40vw, 100vw" alt="" loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-pine-900 via-pine-900/70 to-pine-900/10" />
           <div className="p-6">
             <span className="inline-flex items-center gap-1 rounded-full bg-cedar px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-900">
@@ -241,7 +241,7 @@ export function Stay() {
         {/* on wide screens the photos take the height of the coupon card instead of stretching it */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:h-0 lg:min-h-full lg:grid-cols-2 lg:grid-rows-2">
           {(['buffet-eggs', 'hall-windows', 'pizza-hands', 'pizza-fresh'] as const).map((id) => (
-            <img key={id} src={photoSrc(id)} alt="" loading="lazy" className="h-full min-h-32 w-full rounded-2xl object-cover lg:min-h-0" />
+            <img key={id} src={photoSrc(id)} srcSet={photoSrcSet(id)} sizes="(min-width: 1024px) 22vw, 50vw" alt="" loading="lazy" className="h-full min-h-32 w-full rounded-2xl object-cover lg:min-h-0" />
           ))}
         </div>
       </div>

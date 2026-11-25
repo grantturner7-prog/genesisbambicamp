@@ -1,5 +1,5 @@
 // Lists what partners still owe before the site can go public (Doc 3, Section 1).
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { createServer } from 'vite'
 const vite = await createServer({ configFile: false, root: process.cwd(), server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent', optimizeDeps: { noDiscovery: true, include: [] } })
 const { campConfig: c } = await vite.ssrLoadModule('/src/config/campConfig.ts')
@@ -27,6 +27,7 @@ need(c.documents.final, 'Camp Operations Lead', 'forms: final versions of the Ca
 if (c.documents.final) need(['camp-notice-and-agreement', 'camper-health-form', 'check-in-day-form'].every((f) => existsSync(`public/documents/${f}.pdf`)), 'Camp Operations Lead', 'forms: run `npm run forms-pdf` so the final PDFs are in public/documents/')
 need(c.registration.endpoint, 'Camp Operations Lead', 'registration endpoint (the form sends nothing until this is set)')
 need(c.registration.contractPdfUrl, 'Camp Operations Lead', 'final bilingual contract PDF with all blanks filled')
+need(!/^Disallow:\s*\/\s*$/m.test(readFileSync('public/robots.txt', 'utf8')), 'Camp Operations Lead', 'search engines: public/robots.txt still blocks them, so Google cannot find the site. On the day it goes live, replace “Disallow: /” with “Allow: /” (the instructions are at the top of that file)')
 if (notes.length) console.log('\nBy design, not blocking:\n' + notes.map((t) => '  · ' + t).join('\n'))
 if (todo.length) {
   console.log(`\nNot ready to launch — ${todo.length} item(s) outstanding:\n` + todo.map((t) => '  ☐ ' + t).join('\n') + '\n\nFill these in src/config/campConfig.ts.\n')

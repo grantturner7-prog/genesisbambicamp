@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Play, Snowflake, Sun, X } from 'lucide-react'
 import { campConfig } from '../config/campConfig'
 import { useCamp } from '../i18n/CampState'
-import { AREA_PHOTOS, MENU_PHOTOS, PHOTO_CREDIT, ZONE_PHOTOS, ZONES, photoSize, photoSrc, type Photo } from '../media/media'
+import { AREA_PHOTOS, MENU_PHOTOS, PHOTO_CREDIT, ZONE_PHOTOS, ZONES, photoSize, photoSrc, photoSrcSet, type Photo } from '../media/media'
 import { AREA_BY_ID } from './areas'
 import type { Hotspot } from './hotspots'
 import { Icon } from './icons'
@@ -25,7 +25,7 @@ function Figure({ photo, tall }: { photo: Photo; tall?: boolean }) {
   const ratio = Math.min(tall ? 1.5 : 1.6, Math.max(tall ? 1 : 1.25, w / h))
   return (
     <figure className="relative overflow-hidden rounded-2xl bg-pine-900" style={{ aspectRatio: String(ratio) }}>
-      <img src={photoSrc(photo.id)} alt={t(photo.caption)} loading="lazy" className="h-full w-full object-cover" />
+      <img src={photoSrc(photo.id)} srcSet={photoSrcSet(photo.id)} sizes="(min-width: 768px) 460px, 100vw" alt={t(photo.caption)} loading="lazy" className="h-full w-full object-cover" />
       {photo.pins?.map((p, i) => (
         <span key={i} className="absolute flex -translate-y-1/2 items-center gap-1.5 rounded-full bg-white/95 py-0.5 pl-0.5 pr-2.5 text-[11px] font-bold text-pine-900 shadow-md" style={{ left: `${p.x}%`, top: `${p.y}%`, transform: 'translate(-11px,-50%)' }}>
           <span className="grid h-5 w-5 place-items-center rounded-full bg-pine text-[10px] text-white">{i + 1}</span>
@@ -53,7 +53,7 @@ function Gallery({ photos }: { photos: Photo[] }) {
         <div className="thin-scroll mt-2 flex gap-2 overflow-x-auto pb-1">
           {photos.map((p, k) => (
             <button key={p.id + k} type="button" onClick={() => setI(k)} aria-label={t(p.caption)} aria-pressed={k === i} className={`h-14 w-20 shrink-0 overflow-hidden rounded-xl border-2 ${k === i ? 'border-cedar-600' : 'border-transparent opacity-80 hover:opacity-100'}`}>
-              <img src={photoSrc(p.id)} alt="" loading="lazy" className="h-full w-full object-cover" />
+              <img src={photoSrc(p.id)} srcSet={photoSrcSet(p.id)} sizes="96px" alt="" loading="lazy" className="h-full w-full object-cover" />
             </button>
           ))}
         </div>
@@ -76,7 +76,7 @@ function VenueFilm() {
           <iframe className="h-full w-full" src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`} title={s.panel.venueFilm} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen />
         ) : (
           <button type="button" onClick={() => setOn(true)} className="group absolute inset-0 grid place-items-center" aria-label={s.panel.play}>
-            <img src={photoSrc('pool-sunset')} alt="" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+            <img src={photoSrc('pool-sunset')} srcSet={photoSrcSet('pool-sunset')} sizes="(min-width: 768px) 460px, 100vw" alt="" className="absolute inset-0 h-full w-full object-cover opacity-80" />
             <span className="relative grid h-16 w-16 place-items-center rounded-full bg-white/95 text-pine shadow-xl transition group-hover:scale-105">
               <Play size={26} fill="currentColor" aria-hidden />
             </span>
@@ -122,7 +122,7 @@ function Highlights({ area, hotspot }: { area: Area; hotspot: Hotspot }) {
           <ul className="grid grid-cols-3 gap-2">
             {food.slice(0, 6).map((p) => (
               <li key={p.id} className="overflow-hidden rounded-xl bg-white shadow-sm">
-                <img src={photoSrc(p.id)} alt={t(p.caption)} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                <img src={photoSrc(p.id)} srcSet={photoSrcSet(p.id)} sizes="(min-width: 768px) 220px, 50vw" alt={t(p.caption)} loading="lazy" className="aspect-[4/3] w-full object-cover" />
                 <p className="px-2 py-1.5 text-[11px] font-semibold leading-snug text-pine-900">{t(p.caption)}</p>
               </li>
             ))}

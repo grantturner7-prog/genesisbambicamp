@@ -23,6 +23,16 @@ export interface Photo {
 export const PHOTO_CREDIT: L = { en: 'Photo: Bambi Glamping', zh: '照片：斑比跳跳' }
 export const photoSrc = (id: string) => `${ROOT}media/bambi/${id}.webp`
 export const photoSize = (id: Photo['id']) => sources[id]
+/**
+ * The same photo at the widths the site actually needs: a phone gets the 480 or 800 pixel copy
+ * (made by scripts/photo-sizes.py), a wide screen the original. Use with a `sizes` attribute that
+ * says how wide the picture is drawn, or the browser has to assume the full window.
+ */
+export const photoSrcSet = (id: string) => {
+  const w = (sources as Record<string, { w: number }>)[id]?.w ?? 0
+  const small = [480, 800].filter((s) => w > s * 1.15).map((s) => `${ROOT}media/bambi/${id}-${s}.webp ${s}w`)
+  return [...small, `${photoSrc(id)} ${w || 1200}w`].join(', ')
+}
 
 const P = (id: Photo['id'], en: string, zh: string, pins?: Pin[]): Photo => ({ id, caption: { en, zh }, pins })
 const pin = (x: number, y: number, en: string, zh: string): Pin => ({ x, y, label: { en, zh } })
