@@ -398,7 +398,7 @@ def packout():
     mp = base('east', 'Sunday pack-out and the bus', hq=False)
     mp.line([(800, 300), (770, 400), (745, 520), (712, 560)], 'navy', lw=2.6, dash='2 5', arrow=True)
     mp.zone(rect(742, 560, 14, 4), 'white', fill=0.75, lw=1.6)
-    mp.pin((742, 560), 'L', 'Luggage by team,\nwith Floater 1', color='navy', side='r', size=10.5)
+    mp.pin((742, 560), 'L', 'Luggage by team', color='navy', side='r', size=10.5)
     mp.pin((700, 572), 'B', 'Bus Point: board 09:50', color='red', side='l', size=10.5)
     mp.pin((812, 292), 'V', 'Vans checked 07:30 to 07:55', color='teal', side='t', size=10.5)
     mp.zone(circle(708, 474, 8), 'yellow', fill=0.35)

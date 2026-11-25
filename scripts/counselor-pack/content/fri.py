@@ -125,7 +125,7 @@ SHEETS = [
         setup=[
             ('Friday 13:45', 'Floater 1, Floater 2', 'Mark the three courts with the 30 m of twine as a straight edge. Court A: 30 × 15 m with an end zone 4 m deep at each end. Court B: 24 × 14 m with a mini goal on each end line. Court C: 14 × 8 m with a centre line.'),
             ('Friday 14:05', 'Floater 1', 'Two discs to court A, two footballs to court B, six foam balls on the centre line of court C. Fixture card to each referee.'),
-            ('Saturday 08:40', 'Floater 1, Floater 2', 'Mark court A again: its markers were lifted for the shelters. Courts B and C stayed out overnight. Same kit as Friday.'),
+            ('Saturday 08:30', 'Floater 1, Floater 2', 'Leave breakfast. Mark court A again: its markers were lifted for the shelters. Check courts B and C, which stayed out overnight. Same kit as Friday.'),
         ],
         say=[
             'Three sports: ultimate frisbee, mini-football and dodgeball. You play three games today and three tomorrow.',

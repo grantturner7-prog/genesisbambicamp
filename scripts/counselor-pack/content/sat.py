@@ -22,7 +22,7 @@ SHEETS = [
         run=[
             ('10:15', '10:17', 'Briefing at the lanes. Squad cards out. Squads stand at their first lane: Y1 at 1, O1 at 2, G1 at 3, Y2 at 4, O2 at 5, G2 at 6.'),
             ('10:17', '10:58', 'Six rounds of seven minutes: one to read the card and practise, five that count, one to move. Rounds start at 10:17, 10:24, 10:31, 10:38, 10:45 and 10:52. The last round ends at 10:58.'),
-            ('10:58', '11:00', 'Squad cards to the Director. Green goes to its vans to dress for the lake.'),
+            ('10:58', '11:00', 'Squad cards to the Director. Each squad carries the kit and the markers of the lane it is at to HQ Palms. Then every team goes to its vans to dress for the lake.'),
         ],
         blocks=[
             dict(type='cards', title='The six lanes', cards=[
@@ -58,7 +58,7 @@ SHEETS = [
         setup=[
             ('Friday 22:20', 'Floater 1, Floater 2', 'Stage bin 2, the Bubble Lab kit and the bracelet kit on the deck of van B05.'),
             ('11:00', 'Floater 1, Nurse', 'Carry bin 2 to the Dock Gate. The nurse sets up there and Floater 1 goes on to the Dock.'),
-            ('11:00', 'Green’s counselors', 'Green dresses for the lake and is at the Dock Gate at 11:10.'),
+            ('11:00', 'Squad counselors', 'Every team dresses for the lake at the vans. Green is at the Dock Gate at 11:10. Yellow and Orange go to their first station in their lake clothes.'),
         ],
         say=[
             'Three stations again, thirty minutes each: the kayak relay, a survival bracelet, and the bubble lab.',
@@ -76,11 +76,11 @@ SHEETS = [
             dict(type='note', title='A team coming off the lake', text='It changes at the vans first and reaches the bracelet blankets about eight minutes into the turn. A bracelet that is not finished goes into a named zip bag and is finished in the van rest at 13:40.'),
             dict(type='note', title='If Bambi’s coach is not there, or the lake is closed', text='Two stations instead of three, 45 minutes each. Squads Y1, O1 and G1 start at the bracelets and Y2, O2 and G2 at the Bubble Lab, and they swap at 11:55.'),
         ],
-        roles=[('Director', 'Whistle at 11:40, 12:10 and 12:40. Adds up the Olympics cards.'), ('Nurse', 'At the Dock Gate with the cold kit.'), ('Floater 1', 'On the Dock: shore watch and relay timekeeper.'), ('Floater 2', 'Hosts the Bubble Lab.'), ('Squad counselors', 'With their own team. They lead the bracelet station themselves.')],
+        roles=[('Director', 'Whistle at 11:40, 12:10 and 12:40. Adds up the Olympics cards. At lunch, checks the allergy plates of Orange and Green against the kitchen’s list; the nurse checks Yellow’s when she comes in with them.'), ('Nurse', 'At the Dock Gate with the cold kit.'), ('Floater 1', 'On the Dock: shore watch and relay timekeeper.'), ('Floater 2', 'Hosts the Bubble Lab.'), ('Squad counselors', 'With their own team. They lead the bracelet station themselves.')],
         scoring=['Only the kayak relay scores: team placings 10, 7 and 4.'],
         kit=[('See the three station sheets that follow', '', '', '')],
         rain='No kayaking in rain. The bracelets and the Bubble Lab move into the Hall and run as two stations of 45 minutes, as above.',
-        watch=['Lunch is at 12:45 and Yellow comes off the water at 12:40: tell the kitchen that ten campers and two counselors will sit down ten minutes late.'],
+        watch=['Lunch is at 12:45 and Yellow comes off the water at 12:40: tell the kitchen that ten campers and four adults (Yellow’s two counselors, the nurse and Floater 1) will sit down ten minutes late.'],
     ),
     dict(
         id='kayakrelay', day='Saturday', turn=30, turns='11:10 Green · 11:40 Orange · 12:10 Yellow', title='Kayak Skills Relay',

@@ -9,7 +9,7 @@ SHEETS = [
         idea='By breakfast every van is empty, checked and locked, and every bag is at the Bus Point. That leaves the rest of the morning free for the finale.',
         setup=[
             ('Saturday 21:20', 'Squad counselors', 'Bags are packed before lights out. Only wash things and tomorrow’s clothes stay out.'),
-            ('07:10', 'Floater 1, Floater 2', 'Walk the three treasure zones and pick up any pieces missed last night.'),
+            ('07:10', 'Floater 1, Floater 2', 'Carry bins 12, 7 and 10 from the kit store to HQ Palms. Then walk the three treasure zones and pick up any pieces missed last night.'),
             ('07:25', 'Floater 1', 'Three rows of flat markers on the grass at the Bus Point, one a team, for the bags.'),
         ],
         say=[
@@ -30,10 +30,10 @@ SHEETS = [
                 'Wet towels and bedding stay in the van, as Bambi’s housekeeping asks.',
             ]),
         ],
-        roles=[('Floater 1, Floater 2', 'Each leads one pair on the van check and collects the keys of that row.'), ('Squad counselors', 'Walk campers and bags to the Bus Point in van groups, then on to the Hall.'), ('Director', 'Returns the keys at 08:30.'), ('Nurse', 'Packs the medicine box: every camper’s medicine goes back to the family at the hotel.')],
+        roles=[('Floater 1, Floater 2', 'Each leads one pair on the van check and collects the keys of that row.'), ('Squad counselors', 'Two of them pair up with the floaters for the van check. The other four walk campers and bags to the Bus Point in van groups. The first one down stays there with the campers until 07:55, and then everyone walks on to the Hall.'), ('Director', 'Returns the keys at 08:30.'), ('Nurse', 'Packs the medicine box: every camper’s medicine goes back to the family at the hotel.')],
         scoring=[],
         kit=[('Key list', '1', 'print', '1'), ('Lost-property bag', '1', 'E9b', '1'), ('Flat markers', '6', 'A1', '7'), ('Tarps, if rain is likely', '2', 'B4', '6')],
-        rain='Bags stay on the van decks, under cover, until 09:30, and the two floaters carry them to the bus with the driver.',
+        rain='Each camper carries their own bag to the Hall on the 07:55 walk, in a poncho, and stacks it by team inside the door. The floaters and the driver load the bus from the Hall door at 09:30.',
         watch=['Chargers left in sockets and shoes left under beds are what families phone about.'],
     ),
     dict(
@@ -42,7 +42,7 @@ SHEETS = [
         map='finale', mapcap='The tug-of-war rope lies east to west on the South Lawn. The rope jump is in the middle and the three relay lanes are to the south.',
         idea='Three events, all thirty campers, and double points for each: enough to change the order of the board. The tug-of-war, the giant rope jump, and one relay that every camper runs.',
         setup=[
-            ('08:20', 'Floater 1, Floater 2', 'Leave breakfast. Lay the tug rope east to west. One flat marker under the centre tape and one 2 m either side. Twenty pairs of gloves in two piles. Three relay lanes: start markers and far markers 20 m apart. Both jump ropes by the middle.'),
+            ('08:20', 'Floater 1', 'Leave breakfast. Lay the tug rope east to west. One flat marker under the centre tape and one 2 m either side. Twenty pairs of gloves in two piles. Three relay lanes: start markers and far markers 20 m apart. Both jump ropes by the middle.'),
         ],
         say=[
             'Three events, and every one is worth double. Nothing is decided yet.',
@@ -73,7 +73,7 @@ SHEETS = [
                  'Each camper runs to the far marker and back, 40 m, carrying the team’s rolled bib, and hands it to the next. The tenth runner picks up the team banner at the start line and carries it out and back over the line.'),
             ]),
         ],
-        roles=[('Director', 'Referee and host for all three events.'), ('Floater 1, Floater 2', 'Line judges for the tug-of-war. They turn the rope for the official jumps. They leave at 09:30 to load the bus.'), ('Squad counselors', 'With their teams. They set the pulling order, big at the back, and the running order.'), ('Nurse', 'At HQ Palms with water.')],
+        roles=[('Director', 'Referee and host for all three events.'), ('Floater 1, Floater 2', 'Line judges for the tug-of-war. They turn the rope for the official jumps.'), ('Squad counselors', 'With their teams. They set the pulling order, big at the back, and the running order.'), ('Nurse', 'At HQ Palms with water.')],
         scoring=['Each of the three events gives double team points: 20 for first, 14 for second, 8 for third.', 'Teams level in an event share the points of the places they hold.', 'Floater 2 adds the three results to the covered board before 09:30.'],
         kit=[('Tug-of-war rope, 20 m', '1', 'E3', '12'), ('Cotton gloves', '20 pairs', 'E7b', '12'), ('Group jump ropes, 7 m', '2', 'A12', '12'), ('Flat markers', '9', 'A1', '7'), ('Team bibs, as batons', '3', 'A2', 'bag'),
              ('The three team banners', '3', 'E9a', 'loose'), ('Stopwatch and whistle', '1 + 1', 'A10, A10b', '1'), ('Cloth tape, for the centre mark', '1 roll', 'D2b', '12')],
@@ -87,8 +87,8 @@ SHEETS = [
         idea='Every camper is called up by name. Then the board is uncovered and the Color War champions lift the trophy. The whole camp takes one photo together and walks to the bus.',
         setup=[
             ('Saturday 22:15', 'All counselors', 'Each squad counselor writes one sentence about each of their five campers on the back of the certificate: something that camper did this week.'),
-            ('08:30', 'Floater 2', 'Once the finale is laid out: the trophy table at HQ Palms, with the trophy, 30 medals, 30 named certificates in squad order, the covered scoreboard brought from the Hall, and the speaker.'),
-            ('09:30', 'Floater 1, Floater 2', 'Meet the bus at the Bus Point and load the bags with the driver.'),
+            ('08:20', 'Floater 2', 'Leave breakfast with the covered scoreboard. Trophy table at HQ Palms: the trophy, 30 medals, 30 named certificates in squad order, the board and the speaker. Then help Floater 1 with the relay lanes.'),
+            ('09:30', 'Floater 1', 'Meet the bus at the Bus Point and start loading the bags with the driver. Floater 2 joins at 09:32, once the board is uncovered.'),
         ],
         say=[
             'Before the scores, something more important. Every one of you did something this week that your counselor wants the camp to hear.',
@@ -108,7 +108,7 @@ SHEETS = [
                 'At The Lin Hotel at about 11:30: families collect until 12:00. The nurse hands each camper’s medicine to the family.',
             ]),
         ],
-        roles=[('Director', 'Hosts. Reads the roster at the bus door.'), ('Squad counselors', 'Present their own five. Count five at the bus door.'), ('Floater 2', 'Keeps the board covered until 09:31. Then to the bus.'), ('Floater 1', 'Loads the bus from 09:30.'), ('Nurse', 'At the horseshoe, then at the bus door with the medicine box.')],
+        roles=[('Director', 'Hosts. Reads the roster at the bus door.'), ('Squad counselors', 'Present their own five. Count five at the bus door.'), ('Floater 2', 'Keeps the board covered until 09:31, then joins Floater 1 at the bus.'), ('Floater 1', 'Leaves at 09:30 to load the bus with the driver.'), ('Nurse', 'At the horseshoe, then at the bus door with the medicine box.')],
         scoring=['The final totals are every Color War point of the four days, with the finale’s double points added last.', 'If two teams finish level, they share the trophy and both chant.'],
         kit=[('Trophy', '1', 'F3b', '12'), ('Medals', '30 + 6 spare', 'F3a', '12'), ('Certificates, named', '30 + 5 spare', 'F4a', '12'), ('Welcome banner and group-photo banner', '2', 'F6', '12'), ('Speaker', '1', 'C13', '10'),
              ('The Color War board and its cover', '1', 'D4c', '—'), ('Campers’ phones, in the lock box', '', 'E12', '1'), ('Printed roster', '1', 'print', '1')],
@@ -147,7 +147,7 @@ RAIN = [
             ]),
             dict(type='note', title='Hints', text='A squad that is stuck for five minutes may ask its counselor for one hint a clue. A hint costs nothing: the point is that everyone gets the pouch open.'),
         ],
-        roles=[('Director', 'Shows the ciphers, starts the race, records the finishing order.'), ('Squad counselors', 'At their squad’s table. They give hints and keep all five involved.'), ('Floater 1, Floater 2', 'Set the Hall for the next activity from 10:15.'), ('Nurse', 'In the Hall.')],
+        roles=[('Director', 'Shows the ciphers, starts the race, records the finishing order.'), ('Squad counselors', 'At their squad’s table. They give hints and keep all five involved.'), ('Floater 1, Floater 2', 'Set the Hall for the race from 10:15, once the Director has made the weather call at 10:10.'), ('Nurse', 'In the Hall.')],
         scoring=['Squads are ranked by the order in which they open the pouch. Cipher Camp points break a tie.', 'Squad placings: 6, 5, 4, 3, 2, 1.'],
         kit=[('Cipher sheets, alphabet strips, clue sets', '6 sets', 'print', '5'), ('Combination padlocks, set to 573', '6', 'E13a', '5'), ('Zipped pouches', '6', 'E13b', '5'), ('Invisible-ink pens', '6', 'D7b', '10'),
              ('Glow bracelets', '30', 'D7a', '10'), ('Pencils and A4 paper', '12 + 30 sheets', 'D5c, D4a', '5'), ('A4 whiteboards and markers', '6', 'D11a, D11b', '7')],
@@ -159,8 +159,8 @@ RAIN = [
         hall='loop',
         idea='Two versions. In light rain with no thunder, squads go out for forty minutes under their own umbrellas and then finish indoors. In heavy rain all seven checkpoints run in the Hall on the normal clock.',
         setup=[
-            ('10:30', 'Director', 'The weather call, with the nurse: light rain, or heavy.'),
-            ('10:30', 'Floater 1, Floater 2', 'Heavy rain: seven checkpoints round the walls of the Hall, in number order. Light rain: checkpoints 1, 2, 5 and 6 only, at four tables.'),
+            ('10:10', 'Director', 'The weather call, with the nurse: light rain, or heavy.'),
+            ('10:15', 'Floater 1, Floater 2', 'Heavy rain: seven checkpoints round the walls of the Hall, in number order. Light rain: six checkpoints, all but the Blindfold Trail.'),
         ],
         say=[
             'Light rain: umbrellas up and ponchos on. We walk, and your squad shares its umbrellas.',
@@ -170,7 +170,7 @@ RAIN = [
             ('10:45', '10:50', 'Briefing in the Hall.'),
             ('10:50', '11:30', 'Light rain: the Umbrella Treasure Hunt, forty minutes. Heavy rain: rounds 1 to 3 of the Hall race, starting at 10:50, 11:02 and 11:14.'),
             ('11:30', '11:40', 'Light rain: back in the Hall, ponchos off, a warm drink. Heavy rain: round 4, starting at 11:26.'),
-            ('11:40', '12:15', 'Light rain: four indoor checkpoints of eight minutes each, with a minute to move, for knots, memory, the team photo and the puzzle. Heavy rain: rounds 5 to 7, starting at 11:38, 11:50 and 12:02.'),
+            ('11:40', '12:15', 'Light rain: four rounds of eight minutes, with a minute to move, at six indoor checkpoints: every one but the Blindfold Trail. Each squad does four of the six. Heavy rain: rounds 5 to 7, starting at 11:38, 11:50 and 12:02.'),
             ('12:15', '12:25', 'Passports in. The tables are set for lunch at 12:30.'),
         ],
         blocks=[

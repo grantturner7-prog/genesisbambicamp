@@ -204,7 +204,7 @@ ASK_BAMBI = [
     'One folding table on Saturday at 16:00, and the use of an outside tap by our vans.',
     'A yes to soft balls and frisbees on the lawn, and to 60 tent pegs on Friday afternoon.',
     'A yes to moving the Hall tables on a wet day.',
-    'Ten campers and two counselors arrive ten minutes late for Saturday lunch.',
+    'Ten campers and four adults arrive ten minutes late for Saturday lunch.',
     'Where the bus should wait on Sunday at 09:30.',
 ]
 
