@@ -116,7 +116,7 @@ ROUTINE = dict(
         dict(type='list', title='At night', items=[
             'The counselors of Y1, O1 and G1 sleep one in each of the three counselor vans, B05, B12 and A08, and keep their radios on. A lantern burns on each of those three decks, so that a camper who needs an adult knows which door to knock on.',
             'The Director keeps the duty phone for Bambi’s night desk and the gate.',
-            'Campers’ phones were handed in at the bus on Thursday and are kept in the lock box. They come back at boarding on Sunday.',
+            'Campers’ phones were handed in at the hotel on Thursday and are kept by the Director in their own lock box. They come back at boarding on Sunday.',
         ]),
     ],
     roles=[], scoring=['Each van is scored 0 to 5 on Friday and Saturday morning. Every camper takes their van’s score to their own team.'],
@@ -201,7 +201,7 @@ ASK_BAMBI = [
     'Firewood for Thursday and Saturday evening.',
     'The Star Cinema projector and sound on Friday at 20:00.',
     'A hot-water urn at the Dock Gate on Thursday and Saturday, and hot drinks at HQ Palms on Thursday at 15:45.',
-    'One folding table on Saturday at 16:00, and the use of an outside tap by our vans.',
+    'Two folding tables from Thursday 09:00 to Sunday 10:00, and the use of an outside tap by our vans. One table stays at HQ Palms. The other serves the s’mores, the cinema and the Arcade.',
     'A yes to soft balls and frisbees on the lawn, and to 60 tent pegs on Friday afternoon.',
     'A yes to moving the Hall tables on a wet day.',
     'Ten campers and four adults arrive ten minutes late for Saturday lunch.',

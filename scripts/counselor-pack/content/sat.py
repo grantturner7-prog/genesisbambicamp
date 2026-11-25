@@ -122,8 +122,8 @@ SHEETS = [
         map='lake2', mapcap='P marks the bracelet blankets on the North Lawn, 30 m from the vans.',
         idea='Every camper weaves a bracelet from 3 m of cord and takes it home. Unpicked, it is 3 m of strong cord again, which is why it is called a survival bracelet.',
         setup=[
-            ('Before camp', 'Director', 'Cut each camper’s 3 m of cord into one piece of 60 cm and one of 2.4 m, and seal every cut end. Put each pair in a zip bag: 33 bags.'),
-            ('Before camp', 'All counselors', 'Each counselor makes one bracelet at the staff briefing, so that every one of them can show the weave.'),
+            ('Before camp', 'Director', 'Cut 3 m of cord for each camper and each squad counselor into one piece of 60 cm and one of 2.4 m, and seal every cut end. Put each pair in a zip bag: 39 bags, three of them spare.'),
+            ('Before camp', 'Squad counselors', 'Each of the six makes one bracelet at the staff briefing, so that every one of them can show the weave.'),
             ('10:45', 'Floater 2', 'Leave the Olympics lanes. On the North Lawn: two picnic blankets, ten clipboards, the bag of cord sets, masking tape, the strong scissors, the tape measure.'),
         ],
         say=[
@@ -147,7 +147,7 @@ SHEETS = [
         ],
         roles=[('Team counselors', 'One sits on each blanket with five campers and weaves along with them.'), ('Floater 2', 'Sets the station, then goes to the Bubble Lab.')],
         scoring=[],
-        kit=[('Cord sets in zip bags: 60 cm + 2.4 m', '33', 'B6, C6b', '4'), ('Clipboards', '10', 'D5a', '1'), ('Masking tape', '2 rolls', 'D2a', '4'), ('Strong scissors, for counselors', '2', 'D3c', '4'),
+        kit=[('Cord sets in zip bags: 60 cm + 2.4 m', '39', 'B6, C6b', '4'), ('Clipboards', '10', 'D5a', '1'), ('Masking tape', '2 rolls', 'D2a', '4'), ('Strong scissors, for counselors', '2', 'D3c', '4'),
              ('Tape measure', '1', 'E09c', '2'), ('Picnic blankets', '2', 'B8', 'bag'), ('Permanent marker, for names', '2', 'D1a', '4')],
         rain='At two Hall tables. In the 45-minute rain turn almost every camper finishes.',
         watch=['Only counselors use the strong scissors.'],
@@ -190,14 +190,15 @@ SHEETS = [
         map='science', mapcap='One basin a squad, on a tarp, 10 m apart. The geyser launch pad is at the south end, and everyone watches from behind the line, 8 m back.',
         idea='Oobleck is cornstarch and water. Squeeze it and it is solid; let go and it runs through your fingers. Squads mix their own and compete in three messy events. Then the Director sets off four cola geysers, each with more mints than the last.',
         setup=[
+            ('13:40', 'Floater 2', 'Pour the leftover bubble mix down an outside drain. Rinse the four bubble basins and both buckets at the van tap: the science needs all six basins and all six buckets.'),
             ('13:45', 'Floater 1, Floater 2', 'Six tarps on the South Lawn in two rows of three. On each: a basin, 1 kg of cornstarch, two cups, a soup spoon, five marbles, a bucket half full of water.'),
-            ('13:55', 'Floater 1', 'Geyser pad at the south end: four bottles of cola standing 2 m apart, caps on. Stretch the flag line 8 m to the north as the viewing line. Roll four paper tubes that fit the bottle neck and load them with 1, 3, 5 and 7 mints.'),
+            ('13:55', 'Floater 1', 'Geyser pad at the south end: four bottles of cola standing 2 m apart, caps on. Stretch barrier tape between two poles 8 m to the north as the viewing line. Roll four paper tubes that fit the bottle neck and load them with 1, 3, 5 and 7 mints.'),
         ],
         say=[
             'You are going to make a liquid that turns solid when you hit it.',
             'Add the water one cup at a time and mix with your hands. It is ready when it runs like honey but cracks when you tap it.',
             'Oobleck never goes down a drain. At the end it goes in the bin bag.',
-            'For the geyser, everyone stands behind the line. Before each one, your squad writes down how high you think it will go.',
+            'For the geyser, everyone stands behind the tape. Before each one, your squad writes down how high you think it will go.',
         ],
         run=[
             ('14:15', '14:18', 'The Director shows a basin of oobleck: a slow finger sinks in, a fast tap bounces off.'),
@@ -219,9 +220,9 @@ SHEETS = [
         kit=[('Cornstarch 玉米粉', '6 kg', 'C5', '11'), ('Food colouring', '1 set', 'C5', '11'), ('Wash basins', '6', 'D12b', 'loose'), ('Tarps', '6', 'B4', '6'), ('Plastic cups', '18', 'C8', '11'),
              ('Soup spoons', '6', 'D12e', '11'), ('Marbles', '30', 'E6b', '11'), ('Buckets, half full of water', '6', 'D12a', 'loose'), ('Tape measure', '1', 'E09c', '2'), ('Kitchen roll and bin bags', '', 'C9', '11'),
              ('Cola, 2 litres, sugar-free', '4', 'C4b', 'loose'), ('Mints', '16', 'C4a', '11'), ('A4 paper and masking tape, for the tubes', '4 sheets', 'D4a, D2a', '11'), ('Safety glasses', '2', 'E7a', '11'),
-             ('Flag line', '1', 'E4b', '1'), ('A4 whiteboards and markers', '6', 'D11a, D11b', '7')],
+             ('Barrier tape and two poles, for the viewing line', '1 roll + 2', 'E4a, B5', '1'), ('A4 whiteboards and markers', '6', 'D11a, D11b', '7')],
         rain='Oobleck runs in the Hall, on the tarps. The geyser runs from the Hall porch if the rain is light and is dropped if it is heavy.',
-        watch=['Oobleck dries to powder on clothes and brushes off, but it blocks drains: bin bags only.', 'Nobody but the Director is in front of the viewing line during the geyser.'],
+        watch=['Oobleck dries to powder on clothes and brushes off, but it blocks drains: bin bags only.', 'Nobody but the Director is in front of the tape during the geyser.'],
     ),
     dict(
         id='eggdrop', day='Saturday', start='15:00', end='16:00', title='Egg Drop Build Challenge',
@@ -231,7 +232,7 @@ SHEETS = [
         setup=[
             ('13:50', 'Floater 2', 'Six kit bags, each with 30 straws, 4 balloons, 2 sheets of A4, 1 roll of masking tape, 2 pairs of scissors and 1 egg in a small zip bag.'),
             ('14:50', 'Floater 2', 'Six picnic blankets on the North Lawn. A kit bag on each.'),
-            ('15:25', 'Floater 1', 'Drop Zone: one tarp taped flat on the main path. A 2 m pole to mark the height. The watching line is 3 m back on the grass.'),
+            ('15:25', 'Floater 1', 'Drop Zone: one tarp taped flat on the main path. A 2 m pole to mark the height. The watching line is barrier tape laid on the grass, 3 m back.'),
         ],
         say=[
             'One egg. Thirty minutes. Your egg has to survive a fall from the top of this pole onto the path.',
@@ -257,7 +258,7 @@ SHEETS = [
         scoring=['The six squads are ranked as in the table. Squad placings: 6, 5, 4, 3, 2, 1.'],
         kit=[('Eggs', '6 + 4 spare', 'C6a', 'loose'), ('Small zip bags', '10', 'C6b', '11'), ('Drinking straws', '180', 'D9c', '11'), ('Balloons and two pumps', '24 + 2', 'D9a, D9b', '11'), ('A4 paper', '12 sheets', 'D4a', '11'),
              ('Masking tape', '6 rolls', 'D2a', '11'), ('Round-tip scissors', '12', 'D3a', '11'), ('Picnic blankets', '6', 'B8', 'bag'), ('Tarp and cloth tape, for the Drop Zone', '1 + 1', 'B4, D2b', '6'),
-             ('PVC pole, 2 m', '1', 'B5', 'loose'), ('One bucket, as the size gauge', '1', 'D12a', 'loose'), ('Kitchen roll, wet wipes, bin bag', '', 'C9', '11')],
+             ('PVC pole, 2 m', '1', 'B5', 'loose'), ('Barrier tape, for the watching line', '1 roll', 'E4a', '1'), ('One bucket, as the size gauge', '1', 'D12a', 'loose'), ('Kitchen roll, wet wipes, bin bag', '', 'C9', '11')],
         rain='Build and drop in the Hall, onto a tarp on the floor.',
         watch=['A latex allergy on the health forms: that squad’s kit has no balloons, and nor does any other squad’s. Check with the nurse on Friday.'],
     ),
@@ -267,8 +268,7 @@ SHEETS = [
         map='arcade', mapcap='Six stations in a loop. Squads move clockwise, 1 to 2 to 3 and on, and from 6 back to 1.',
         idea='The lawn games from Thursday come back, and now they count. Six stations, five minutes of play at each, and a score that goes on the Color War board.',
         setup=[
-            ('13:35', 'Floater 1', 'Carry the folding table, borrowed from Bambi, from the Hall to the deck of van B05 after lunch.'),
-            ('16:00', 'Floater 1, Floater 2', 'Set the six stations in the break. The folding table goes at station 4 with the roll-out net. The dart target stands on two stacked bins at station 5.'),
+            ('16:00', 'Floater 1, Floater 2', 'Set the six stations in the break. The second folding table goes at station 4 with the roll-out net. The dart target stands on two stacked bins at station 5.'),
         ],
         say=[
             'Six games, five minutes of play at each. Your counselor counts your squad’s score.',
@@ -309,7 +309,7 @@ SHEETS = [
             ('17:15', 'Squad counselors', 'Hand every camper the camp T-shirt before showers. It is worn to the dinner and again on Sunday.'),
             ('18:40', 'Floater 1, Floater 2', 'Leave dinner. Hide the treasure for the 20:30 hunt (see the next sheet).'),
             ('19:05', 'Floater 1', 'Lay and light the fire. Two full buckets and the fire blanket on the north side.'),
-            ('19:10', 'Floater 2', 'S’mores table: 30 marshmallows from the bag marked SAT, canes, wet wipes. Judges’ slips and pens. Speaker by the stage.'),
+            ('19:10', 'Floater 2', 'S’mores table, the second folding table: 30 marshmallows from the bag marked SAT, 35 clean canes, wet wipes. Judges’ slips and pens. Speaker by the stage.'),
             ('19:20', 'Squad counselors', 'Walk from the Hall, banners at the front, props carried by the teams.'),
         ],
         say=[
@@ -338,7 +338,7 @@ SHEETS = [
         ],
         roles=[('Director', 'Hosts. Judge.'), ('Nurse', 'Judge.'), ('Floater 2', 'Judge. Runs the s’mores table.'), ('Floater 1', 'Tends the fire. Stops feeding it at 20:17, puts it out with both buckets at 20:25, and is at the flag line by 20:38.'), ('Squad counselors', 'Sit with their teams. Stage managers for their own skit.')],
         scoring=['Three judges, 10 points each: 30 at most. Highest total is first.', 'Team placings: 10, 7 and 4 points.'],
-        kit=[('Marshmallows, the bag marked SAT', '35', 'C1', '3'), ('Bamboo canes', '40', 'C3', 'loose'), ('Lighters, cotton gloves, fire blanket', '2 + 2 pairs + 1', 'E10, E7b, E02', '3'), ('Buckets of water', '2', 'D12a', 'loose'),
+        kit=[('Marshmallows, the bag marked SAT', '35', 'C1', '3'), ('Bamboo canes, the clean ones', '35', 'C3', 'loose'), ('Folding table', '1', 'Bambi', '—'), ('Lighters, cotton gloves, fire blanket', '2 + 2 pairs + 1', 'E10, E7b, E02', '3'), ('Buckets of water', '2', 'D12a', 'loose'),
              ('Speaker', '1', 'C13', '10'), ('Lanterns', '4', 'E8b', '3'), ('Judges’ slips and pens', '9 + 3', 'D4a, D5b', '3'), ('The nine skit props', '9', 'A9, D12d, E07, A4, A8, D12a, A3, E9d, D7a', 'bag'),
              ('Firewood and kindling', '', 'Bambi', '—'), ('Fleece throws', '33', 'E9d', 'bag'), ('Wet wipes, bin bag', '', 'C9', '3'), ('Camp T-shirts, handed out at 17:15', '42', 'F5', 'bag')],
         rain='The skits are performed in the Hall, with the dinner tables pushed back to make a stage. No fire and no marshmallows.',

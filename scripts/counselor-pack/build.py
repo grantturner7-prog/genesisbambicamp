@@ -456,7 +456,7 @@ __JUMP__
     body += ''.join(sheet(s) for s in sun.RAIN)
     body += f'''<section class="front" id="kit"><h2>All the equipment, by bin</h2><p>Every item below is on the shopping list in the working plan, with the same code. The last column shows which activities use it.</p>
 <div class="tw"><table class="kitall"><thead><tr><th>Where</th><th>Code</th><th>Item</th><th>Buy</th><th>Used in</th></tr></thead><tbody>{kit_rows}</tbody></table></div>
-<h3>Lent by Bambi</h3><p>Kayaks, paddles, life jackets, a throw line and a turn buoy; the eco-tram; firewood; the Star Cinema screen, projector and sound; a hot-water urn; one folding table; an outside tap.</p>
+<h3>Lent by Bambi</h3><p>Kayaks, paddles, life jackets, a throw line and a turn buoy; the eco-tram; firewood; the Star Cinema screen, projector and sound; a hot-water urn; two folding tables; an outside tap.</p>
 </section>
 <section class="front" id="before-camp"><h2>Before camp</h2>
 <h3>Jobs to do before camp</h3><div class="tw"><table class="t jobs"><thead><tr><th>Who</th><th>Job</th><th>For</th></tr></thead><tbody>{before_html}</tbody></table></div>
