@@ -27,7 +27,7 @@ SHEETS = [
             dict(type='list', title='Good to know', items=[
                 'The van check is not scored today. The last van scores were Saturday’s.',
                 'The site is ours, so the bags can wait at the Bus Point by themselves. If rain is likely, two tarps go over them.',
-                'Wet towels and bedding stay in the van, as Bambi’s housekeeping asks.',
+                'Bedding stays on the beds. Towels are the campers’ own: a wet one goes home in a plastic bag inside the camper’s bag.',
             ]),
         ],
         roles=[('Floater 1, Floater 2', 'Each leads one pair on the van check and collects the keys of that row.'), ('Squad counselors', 'Two of them pair up with the floaters for the van check. The other four walk campers and bags to the Bus Point in van groups. The first one down stays there with the campers until 07:55, and then everyone walks on to the Hall.'), ('Director', 'Returns the keys at 08:30.'), ('Nurse', 'Packs the medicine box: every camper’s medicine goes back to the family at the hotel.')],
@@ -42,7 +42,7 @@ SHEETS = [
         map='finale', mapcap='The tug-of-war rope lies east to west on the South Lawn. The rope jump is in the middle and the three relay lanes are to the south.',
         idea='Three events, all thirty campers, and double points for each: enough to change the order of the board. The tug-of-war, the giant rope jump, and one relay that every camper runs.',
         setup=[
-            ('08:20', 'Floater 1', 'Leave breakfast. Lay the tug rope east to west. One flat marker under the centre tape and one 2 m either side. Twenty pairs of gloves in two piles. Three relay lanes: start markers and far markers 20 m apart. Both jump ropes by the middle.'),
+            ('08:20', 'Floater 1', 'Leave breakfast. Lay the tug rope east to west, then lean back on it where it lies: if your feet slide on the grass, tell the Director, and the tug-of-war is dropped. One flat marker under the center tape and one 2 m either side. Twenty pairs of gloves in two piles. Three relay lanes: start markers and far markers 20 m apart. Both jump ropes by the middle.'),
         ],
         say=[
             'Three events, and every one is worth double. Nothing is decided yet.',
@@ -66,7 +66,7 @@ SHEETS = [
         blocks=[
             dict(type='cards', title='The three events', cards=[
                 ('1', 'Tug-of-War Tournament', 'Ten a side · every team pulls twice',
-                 'The centre tape starts over the middle marker. A pull is won when the centre tape passes the marker on your side, or by whoever is ahead after 30 seconds. A match is the best of three pulls. Most matches won is first. If the teams are level on matches, the team that won more pulls is ahead.'),
+                 'The center tape starts over the middle marker. A pull is won when the center tape passes the marker on your side, or by whoever is ahead after 30 seconds. A match is the best of three pulls. Most matches won is first. If the teams are level on matches, the team that won more pulls is ahead.'),
                 ('2', 'Giant Rope Jump Challenge', 'A 7 m rope, turned by two counselors',
                  'Six campers jump inside the rope while the other four count. For the second try the four swap in, so that every camper jumps. A try lasts 45 seconds at most. The team’s score is its longest run of jumps without a miss.'),
                 ('3', 'The final relay', 'Three lanes of 20 m · all 30 run',
@@ -76,9 +76,9 @@ SHEETS = [
         roles=[('Director', 'Referee and host for all three events.'), ('Floater 1, Floater 2', 'Line judges for the tug-of-war. They turn the rope for the official jumps.'), ('Squad counselors', 'With their teams. They set the pulling order, big at the back, and the running order.'), ('Nurse', 'At HQ Palms with water.')],
         scoring=['Each of the three events gives double team points: 20 for first, 14 for second, 8 for third.', 'Teams level in an event both take the points of the higher place, as on the board all camp.', 'Floater 2 adds the three results to the covered board before 09:30.'],
         kit=[('Tug-of-war rope, 20 m', '1', 'E3', '12'), ('Cotton gloves', '20 pairs', 'E7b', '12'), ('Group jump ropes, 7 m', '2', 'A12', '12'), ('Flat markers', '9', 'A1', '7'), ('Team bibs, as batons', '3', 'A2', 'bag'),
-             ('The three team banners', '3', 'E9a', 'loose'), ('Stopwatch and whistle', '1 + 1', 'A10, A10b', '1'), ('Cloth tape, for the centre mark', '1 roll', 'D2b', '12')],
+             ('The three team banners', '3', 'E9a', 'loose'), ('Stopwatch and whistle', '1 + 1', 'A10, A10b', '1'), ('Cloth tape, for the center mark', '1 roll', 'D2b', '12')],
         rain='The Minute-to-Win-It Finals in the Hall: three team events at double points (rain sheet R3).',
-        watch=['Wet grass and tug-of-war do not mix: if the lawn is slippery, the tug moves to the driest strip or is dropped, and the other two events still run.', 'The rope goes down on the whistle, together.'],
+        watch=['Wet grass and tug-of-war do not mix. If Floater 1’s feet slid at 08:20, the tug is dropped and only the rope jump and the relay score.', 'The rope goes down on the whistle, together.'],
     ),
     dict(
         id='prizes', day='Sunday', start='09:20', end='10:00', title='Prize-giving, and the bus home',
@@ -133,7 +133,7 @@ RAIN = [
             'At 09:45 every squad gets a locked pouch and four clues. The first squad to open its pouch wins.',
         ],
         run=[
-            ('09:00', '09:05', 'The Director shows the three ciphers on the whiteboard: the shift cipher with the alphabet strip, the pigpen grid, and mirror writing.'),
+            ('09:00', '09:05', 'The Director holds up the three ciphers, each drawn large on a sheet of poster paper: the shift cipher with the alphabet strip, the pigpen grid, and mirror writing.'),
             ('09:05', '09:20', 'Crack. Each squad has one sheet with three messages, one in each cipher. 1 point for each one read.'),
             ('09:20', '09:35', 'Invent. The squad writes a six-word message about camp in a cipher of its own choice.'),
             ('09:35', '09:45', 'Swap with the next table and crack theirs. 1 point for cracking it, and 1 for writing a message that could be cracked.'),
@@ -141,7 +141,7 @@ RAIN = [
             ('10:25', '10:30', 'Results. The glow bracelets are for tonight.'),
         ],
         blocks=[
-            dict(type='table', title='The race clues (answer key)', head=['Clue', 'Cipher', 'It says', 'Answer'], rows=[
+            dict(type='table', title='The race clues (answers)', head=['Clue', 'Cipher', 'It says', 'Answer'], rows=[
                 ['A', 'Pigpen', 'HOW MANY CAMPERS IN A SQUAD', '5'], ['B', 'Mirror writing', 'HOW MANY TEAMS AT CAMP WOW', '3'],
                 ['C', 'Shift of three', 'HOW MANY LETTERS IN WOW PLUS FOUR', '7'], ['D', 'Invisible ink', 'A THEN C THEN B', '573'],
             ]),
@@ -150,7 +150,7 @@ RAIN = [
         roles=[('Director', 'Shows the ciphers, starts the race, records the finishing order.'), ('Squad counselors', 'At their squad’s table. They give hints and keep all five involved.'), ('Floater 1, Floater 2', 'Set the Hall for the race from 10:15, once the Director has made the weather call at 10:10.'), ('Nurse', 'In the Hall.')],
         scoring=['Squads are ranked by the order in which they open the pouch. Cipher Camp points break a tie.', 'Squad placings: 6, 5, 4, 3, 2, 1.'],
         kit=[('Cipher sheets, alphabet strips, clue sets', '6 sets', 'print', '5'), ('Combination padlocks, set to 573', '6', 'E13a', '5'), ('Zipped pouches', '6', 'E13b', '5'), ('Invisible-ink pens', '6', 'D7b', '10'),
-             ('Glow bracelets', '30', 'D7a', '10'), ('Pencils and A4 paper', '12 + 30 sheets', 'D5c, D4a', '5'), ('A4 whiteboards and markers', '6', 'D11a, D11b', '7')],
+             ('Glow bracelets', '30', 'D7a', '10'), ('Pencils and A4 paper', '12 + 30 sheets', 'D5c, D4a', '5'), ('Poster paper, for the three ciphers', '3 sheets', 'D4c', '5')],
         rain='', watch=['Six tables close together means squads overhear answers: use the whole Hall.'],
     ),
     dict(
@@ -182,6 +182,7 @@ RAIN = [
             dict(type='list', title='The Hall race', items=[
                 'The checkpoints stand in number order round the walls. The rotation table and the scoring are the same as on the race sheet.',
                 'Pipeline runs along the longest wall. The Blindfold Trail is a lane between two rows of chairs. Toxic Waste needs a clear circle 4 m across.',
+                'In the eight-minute light-rain rounds, “done” means inside the eight minutes. Indoors, every team photo shows the Color War board instead of the Airstream.',
             ]),
         ],
         roles=[('Director', 'Weather call, clock and whistle.'), ('Squad counselors', 'With their squad, outdoors and in.'), ('Floater 1, Floater 2', 'Set the Hall. In light rain they walk the paths with the squads.'), ('Nurse', 'In the Hall with the warm drinks.')],
@@ -193,7 +194,7 @@ RAIN = [
         id='rain3', day='Rain plan', start='14:15', end='15:00', title='R3 · Indoor Games Arcade and the Minute-to-Win-It Tournament',
         where='The Hall, six stations in a loop', who='Six squads of five', lead='Director', score='Squad placings: 6 to 1', replaces='The lake station on Thursday, multi-sports on Friday and Saturday, the Camp Olympics, and the Sunday finale',
         hall='loop',
-        idea='Two indoor programmes that use the same six tables. The Arcade is the Saturday Games Arcade moved inside. Minute-to-Win-It is six one-minute challenges in which every camper has a go at every table.',
+        idea='Two indoor programs that use the same six tables. The Arcade is the Saturday Games Arcade moved inside. Minute-to-Win-It is six one-minute challenges in which every camper has a go at every table.',
         setup=[
             ('30 minutes before', 'Floater 1, Floater 2', 'Six stations in a loop round the Hall, numbered 1 to 6. The Mölkky goes on a picnic blanket. The table-tennis net goes on a dining table.'),
         ],
@@ -207,7 +208,7 @@ RAIN = [
             ('14:59', '15:00', 'Squad cards to Floater 2.'),
         ],
         blocks=[
-            dict(type='table', title='When each programme is used', head=['Rained-off activity', 'Runs instead', 'Clock'], rows=[
+            dict(type='table', title='When each program is used', head=['Rained-off activity', 'Runs instead', 'Clock'], rows=[
                 ['Thursday 13:30, the kayak station', 'Indoor Arcade', 'Each team plays three stations in its 45-minute turn.'],
                 ['Friday 14:15, multi-sports round 1', 'Indoor Arcade', 'As above, 14:15 to 15:00.'],
                 ['Saturday 09:00, multi-sports round 2', 'Minute-to-Win-It Tournament', '09:05 to 09:50, the same seven-minute rounds.'],
@@ -243,7 +244,7 @@ RAIN = [
         setup=[
             ('18:45', 'All counselors', 'After dinner, tables to the walls and chairs in three team blocks facing the stage end. It takes ten minutes with everyone helping.'),
         ],
-        say=['Tonight is indoors. Same programme, drier feet.'],
+        say=['Tonight is indoors. Same program, drier feet.'],
         run=[
             ('19:00', '20:30', 'Thursday: the Color War Opening Ceremony. Banners, chants and the judging run exactly as at the fire. The s’mores wait for Saturday.'),
             ('20:30', '21:30', 'Thursday: torch walk to the vans in ponchos, showers, van check at 21:45.'),

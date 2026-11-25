@@ -2,14 +2,14 @@
 
 INTRO = [
     'This is the plan for the four days, written for the people who run them. Every activity has its own sheet: where it happens on the camp, what to set up and when, what to say to the campers, what happens minute by minute, who does what, how it scores, and every piece of kit it needs.',
-    'The times are fixed and they add up: each sheet fills its slot in the schedule exactly. The places are fixed too. Every map is drawn on our 3D model of Bambi’s own camp map, so a court that is 30 m long on the page is 30 m long on the lawn.',
+    'The times are fixed and they add up: each sheet fills its slot in the schedule exactly. Every map is drawn to scale on our 3D model, which is traced from Bambi’s own camp map. It has not been measured on the ground, so pace out each court and station on Thursday morning and move any that do not fit.',
 ]
 
 PLACES = [
     ('HQ', 'HQ Palms', 'The two palms in the middle of the Big Lawn. The Director’s base, the nurse’s table, water, the day’s kit. Three short whistles mean: come here.'),
     ('6, 7', 'The Big Lawn', 'Our playing field, between the vans and the main path. The North Lawn is about 44 × 30 m and the South Lawn about 42 × 44 m.'),
     ('8', 'Van Village', 'Our 15 vans at the north-east corner: 11 camper vans (teal dots) and 4 staff vans (purple dots). The counselors sleep in B05, B12 and A08, and the nurse and the Director in A06. The deck of B05 is the kit store.'),
-    ('9, 10', 'Dock Gate and the Dock', 'Dock Gate is where our path meets the lake lane. Teams line up there. Campers go on the Dock only with the coach.'),
+    ('9, 10', 'Dock Gate and the Dock', 'Dock Gate is where our path meets the lake lane. Teams line up there. Campers go on the Dock only with a counselor or the coach.'),
     ('11, 12', 'Campfire Circle and Cinema Lawn', 'Side by side, 60 m west of HQ Palms.'),
     ('13', 'Airstream', 'The silver snack trailer beside the pool. The pool itself is closed to the camp, and a flag line on the lawn marks the edge.'),
     ('1, 2', 'The Hall and the Restrooms', 'The Hall is where we eat and where every wet-weather activity goes. It is 200 m from the vans, a four-minute walk along the main path.'),
@@ -18,7 +18,7 @@ PLACES = [
 ]
 
 TEAMS = [
-    'Thirty campers make three teams of ten: Yellow, Orange and Green, the colours of the Decathlon bibs. Each team chooses its own name and mascot on Thursday afternoon.',
+    'Thirty campers make three teams of ten: Yellow, Orange and Green, the colors of the Decathlon bibs. Each team chooses its own name and mascot on Thursday afternoon.',
     'Each team is two squads of five: Y1 and Y2, O1 and O2, G1 and G2. Team games are played ten against ten. Squad games give six squads, which means three matches at once or six stations with nobody waiting.',
     'The Director sets the squads before camp, balanced for age, and every camper has a buddy inside their squad.',
 ]
@@ -81,9 +81,9 @@ BASICS = [
     ('After dark', 'Campers carry a torch. Counselors wear a headlamp and a bright vest. Groups walk together with a counselor at the back.'),
     ('Adults and campers', 'No counselor is alone with one camper out of sight of others. Van checks are done by two counselors.'),
     ('Hurt or unwell', 'Small things are treated on the spot from the squad kit. For anything else the counselor radios the nurse. The nurse and the Director decide together whether to phone the family.'),
-    ('A camper is not at a count', 'It is nearly always the toilet, the van or another squad. The squad counselor says the name on the radio. Every counselor checks their own group, one floater checks the vans and toilets, and the other walks the lake side and the pool side. The programme carries on. If the camper has not turned up once the camp has been checked, the Director takes over and decides what happens next with Bambi’s front desk.'),
+    ('A camper is not at a count', 'It is nearly always the toilet, the van or another squad. The squad counselor says the name on the radio. Every counselor checks their own group, one floater checks the vans and toilets, and the other walks the lake side and the pool side. The program carries on. If the camper has not turned up once the camp has been checked, the Director takes over and decides what happens next with Bambi’s front desk.'),
     ('Thunder', 'Everyone walks to the Hall or the vans and waits there until the Director gives the all-clear.'),
-    ('A real emergency', 'Phone 119, then tell the Director. Bambi’s front desk opens the gate. The camp’s address and the phone numbers are on the back of every lanyard.'),
+    ('A real emergency', 'Phone 119, then tell the Director, who phones Bambi’s duty number to have the gate opened. The camp’s address and the phone numbers are on the back of every lanyard.'),
 ]
 
 ROUTINE = dict(
@@ -104,7 +104,7 @@ ROUTINE = dict(
             ['Meals', 'The walk from the lawn or the vans starts ten minutes before the meal. Floater 2 updates the Color War board. The nurse checks the plates of campers with allergies against the kitchen’s list.', ''],
             ['After lunch', 'Rest in the vans, 30 to 40 minutes. Quiet, on the beds, no visiting other vans. Counselors sit on the decks.', 'Squad counselors'],
             ['Showers', 'In the camper’s own van, three in turn. Counselors stay outside on the deck.', ''],
-            ['21:30', 'Torch walk to the vans. Teeth, pyjamas, quiet time.', 'Squad counselors'],
+            ['21:30', 'Torch walk to the vans. Teeth, pajamas, quiet time.', 'Squad counselors'],
             ['21:45', 'Evening van check by name: two counselors knock, see every face and say goodnight.', 'Two counselors a row'],
             ['22:00', 'Lights out.', ''],
             ['22:10', 'Counselor huddle on the deck of van B05, ten minutes: score slips to Floater 2, the spirit vote, tomorrow’s bins, the weather.', 'Director'],
@@ -115,7 +115,7 @@ ROUTINE = dict(
         ]),
         dict(type='list', title='At night', items=[
             'The counselors of Y1, O1 and G1 sleep one in each of the three counselor vans, B05, B12 and A08, and keep their radios on. A lantern burns on each of those three decks and on the nurse’s, A06, so that a camper who needs an adult knows which door to knock on.',
-            'The Director keeps the duty phone for Bambi’s night desk and the gate.',
+            'The Director keeps Bambi’s night duty number.',
             'Campers’ phones were handed in at the hotel on Thursday and are kept by the Director in their own lock box. They come back at boarding on Sunday.',
         ]),
     ],
@@ -179,12 +179,12 @@ DAYS = [
 ]
 
 DECIDED = [
-    ('Team colours', 'Yellow, Orange and Green. They follow whichever three bib colours Decathlon has on the shelf.'),
+    ('Team colors', 'Yellow, Orange and Green. Buy the bibs in those three colors.'),
     ('Staff', 'Ten adults: the Director, the nurse, six squad counselors and two floaters with fixed jobs (kit, and scores).'),
     ('Vans', 'Fifteen: eleven for campers, B05, B12 and A08 for the eight counselors, and A06 for the nurse and the Director.'),
     ('The scoring scale', 'Squad games 6 to 1, team games 10, 7, 4, the finale at double points, a spirit award of 5. The van check and the sports league score as in the working plan.'),
     ('The advance car', 'The two floaters drive the kit up early on Thursday and are on site by 08:30. The deck of van B05 is the kit store.'),
-    ('Every position on the maps', 'Drawn on our 3D model of Bambi’s map. Walk the stations on Thursday morning and move any that do not suit the ground.'),
+    ('Every position on the maps', 'Drawn on our 3D model, traced from Bambi’s map and not measured on the ground. Pace the stations out on Thursday morning and move any that do not fit.'),
     ('Turn orders', 'Thursday kayak order Yellow, Green, Orange; tram order Yellow, Orange, Green; Saturday kayak order Green, Orange, Yellow.'),
     ('The Orienteering word', 'ADVENTURES, with the ten control places listed on the sheet. The bonus bearing is measured on the morning.'),
     ('The Amazing Race tasks', 'The seven tasks, their places, and the gold times.'),
@@ -193,7 +193,7 @@ DECIDED = [
     ('The Glow Night Quest', 'Six stations, a six-word sentence, and the cinema tickets in the treasure box.'),
     ('The Egg Drop', 'A 2 m drop onto the main path, and the kit in each bag.'),
     ('Phones and medicine', 'Phones come back at boarding on Sunday. Medicine goes back to families at the hotel.'),
-    ('The health form', 'It needs one more line, “can swim 25 m: yes or no”, so that the coach knows who paddles beside him.'),
+    ('The health form', 'It needs one more line, “can swim 25 m: yes or no”, so that the coach knows who paddles beside the coach’s own boat.'),
 ]
 
 ASK_BAMBI = [
@@ -208,6 +208,7 @@ ASK_BAMBI = [
     'A yes to moving the Hall tables on a wet day.',
     'Ten campers and four adults arrive ten minutes late for Saturday lunch.',
     'Where the bus should wait on Sunday at 09:30.',
+    'The number that is answered at night, and who opens the Main Gate for an ambulance after 23:00.',
 ]
 
 PRINT = [

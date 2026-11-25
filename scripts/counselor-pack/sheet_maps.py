@@ -203,7 +203,7 @@ def campfire(skits=False):
 CONTROLS = [
     ((712, 562), 'T', 'Reception sign', 'b'), ((800, 553), 'E', 'Tram Stop', 'b'), ((922, 291), 'A', 'Dock Gate post', 't'),
     ((812, 222), 'S', 'North bend of the lane', 't'), ((603, 350), 'D', 'Back of the cinema screen', 'l'),
-    ((621, 430), 'U', 'Airstream deck rail', 'r'), ((582, 574), 'N', 'Restrooms wall', 'b'), ((412, 566), 'V', 'Hall porch', 'b'),
+    ((621, 430), 'U', 'Airstream deck rail', 'r'), ((582, 574), 'N', 'Restrooms wall', 'b'), ((412, 566), 'V', 'Hall front door', 'b'),
     ((510, 400), 'R', 'Bird Lake Lookout', 'l'), ((300, 470), 'E', 'West loop, zone E sign', 'b'),
 ]
 

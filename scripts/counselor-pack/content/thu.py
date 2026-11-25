@@ -28,14 +28,14 @@ SHEETS = [
             ('10:12', '10:17', 'Every camper takes their own bag and walks 110 m to the Luggage Line. Bags go down in the team’s row. Walk on to the welcome circle on the South Lawn.'),
             ('10:17', '10:21', 'Welcome circle. The Director welcomes the camp (2 min). The nurse says who she is and where to find her (1 min). Each counselor gives their name (1 min).'),
             ('10:21', '10:25', 'Squads sit with their counselor. Each camper says their name and one thing they hope to do. Counselors name the buddies in each squad: one pair and one three.'),
-            ('10:25', '10:28', 'The camp cheer, three times. The two whistle signals, practised once each. The Director explains the walk.'),
+            ('10:25', '10:28', 'The camp cheer, three times. The two whistle signals, practiced once each. The Director explains the walk.'),
             ('10:28', '10:52', 'Orientation walk. Each team starts at its own stop and visits all six in order, four minutes a stop including the walk. Stops change at 10:32, 10:36, 10:40, 10:44 and 10:48.'),
             ('10:52', '10:55', 'Teams walk back to HQ Palms from their last stop. First squad count: the Director calls “Squads?” and hears “Five!” six times.'),
         ],
         blocks=[
             dict(type='table', title='The six stops, and what the counselor says at each', head=['Stop', 'Where', 'Say this'], rows=[
                 ['1', 'Van Village', 'These vans are ours. You get your van and key at check-in. Shoes off inside, no food in the van, and you never go into another van.'],
-                ['2', 'Dock Gate', 'This is the Kayak Lake. We paddle here this afternoon. The water rule: no camper at a lake edge, on the dock or at the pool without a counselor.'],
+                ['2', 'Dock Gate', 'This is the Kayak Lake. We paddle here this afternoon. The water rule: you never go to the lake edge, the dock or the pool without a counselor.'],
                 ['3', 'Campfire Circle and Cinema Lawn', 'Tonight’s opening campfire is here, and tomorrow night’s film. At the fire you sit on the logs. Only counselors tend the fire.'],
                 ['4', 'Airstream and the pool line', 'The pool is closed for our camp. The flag line on the lawn is the edge. Balls that roll past it are fetched by a counselor.'],
                 ['5', 'Restrooms and the way to the Hall', 'Day toilets are here or in your own van. Tell your counselor and take your buddy. The Hall, where we eat, is 70 m further along this path.'],
@@ -71,7 +71,7 @@ SHEETS = [
         ],
         say=[
             'Three stations: your van, the nurse, and name games with a snack. Thirteen minutes at each.',
-            'At the vans, find your name on the door. The first camper in the van signs for the key.',
+            'At the vans, find your name on the door. The first camper into each van is handed the key.',
             'At the nurse’s table you get your wristband. If you still have any medicine with you, hand it over there.',
             'When you hear one long whistle, stop and walk with your counselors to the next station.',
         ],
@@ -87,7 +87,7 @@ SHEETS = [
                 ('V', 'Vans and keys', 'Van Village · Floater 1',
                  'The team picks up its bags from the Luggage Line and walks 30 m to the vans. Campers find their name on a door. Floater 1 gives the key to the first camper in each van and writes the name on the key list. Inside: choose beds, bags against the wall, shoes off. The team’s counselors show each van the light, the heater and the bathroom. Everyone is out and the door is closed by minute 12.'),
                 ('N', 'Nurse’s table', 'HQ Palms · Nurse',
-                 'Campers line up. Each one has about a minute: wristband on (first name and the Director’s phone number), any medicine handed over in a labelled zip bag, and the nurse asks “Is there anything I should know today?”. While they wait, campers write their name on a strip of masking tape for their water bottle.'),
+                 'Campers line up. Each one has about a minute: wristband on (first name and the Director’s phone number), any medicine handed over in a labeled zip bag, and the nurse asks “Is there anything I should know today?”. While they wait, campers write their name on a strip of masking tape for their water bottle.'),
                 ('G', 'Name games and snack', 'South Lawn circle · Floater 2',
                  'Name and move (4 min): each camper says their name with an action and the circle copies it. Name toss (4 min): say a name, throw the foam ball to that camper; add a second ball when it is easy. Then the snack and water, sitting down (5 min).'),
             ]),
@@ -101,7 +101,7 @@ SHEETS = [
             ('Squad counselors', 'Move with their team. At the vans, one counselor takes the vans in row B and the other the vans in row A.'),
         ],
         scoring=[],
-        kit=[('Paper wristbands', '30 + spares', 'E05', '1'), ('Lockable medicine box, with the nurse on the bus', '1', 'E12', '—'), ('Folding table, at HQ Palms all camp', '1', 'Bambi', '—'), ('Zip bags, for labelled medicine', '1 box', 'C6b', '1'),
+        kit=[('Paper wristbands', '30 + spares', 'E05', '1'), ('Lockable medicine box, with the nurse on the bus', '1', 'E12', '—'), ('Folding table, at HQ Palms all camp', '1', 'Bambi', '—'), ('Zip bags, for labeled medicine', '1 box', 'C6b', '1'),
              ('Permanent markers', '4', 'D1a', '1'), ('Masking tape', '2 rolls', 'D2a', '1'), ('Foam balls', '2', 'A4', 'bag'), ('Wrapped snacks', '30', 'E11', 'food'),
              ('Water container with tap', '1', 'B9a', 'loose'), ('Van list and key list', '1 set', 'print', '1')],
         rain='Stations N and G move into the Hall, one at each end. Station V stays at the vans, in ponchos.',
@@ -149,25 +149,25 @@ SHEETS = [
     dict(
         id='kayak', day='Thursday', turn=45, turns='13:30 Yellow · 14:20 Green · 15:10 Orange', title='Kayaking on the Kayak Lake',
         where='The Dock and the paddling area', who='One team of ten a turn', lead='Bambi’s coach', score='Not scored',
-        map='kayak', mapcap='Line up at the Dock Gate. The coach sets the paddling area in the north bay beside the Dock. The far end of the lake is not used.',
+        map='kayak', mapcap='Line up at the Dock Gate. The coach sets the paddling area: we expect the north bay beside the Dock. The far end of the lake is not used.',
         idea='About 30 minutes on the water for every camper on the first afternoon. The coach leads on the water. Our job is to get ten campers into life jackets quickly, count them out and back, and get them warm and dry afterwards.',
         setup=[
-            ('13:05', 'Floater 1', 'Count with the coach: boats, paddles, and one life jacket a camper in the right sizes. Ask the coach to show where the paddling area ends.'),
+            ('13:05', 'Floater 1', 'Count with the coach: boats, paddles, and one life jacket a camper in the right sizes. Show the coach this outline, and ask where the paddling area ends and what the call-in signal is. The coach’s own plan and signal replace ours.'),
             ('13:15', 'Nurse', 'Set up at the Dock Gate: foil blankets, three spare throws, hot chocolate and cups, the lake first-aid kit in the dry bag.'),
             ('Before camp', 'Director', 'Give the coach and Floater 1 the list of campers who cannot swim 25 m, taken from the health forms.'),
         ],
         say=[
             'The coach is in charge on the water. When the coach talks, paddles are still.',
             'Your life jacket stays clipped from the Dock Gate until you are back at the Dock Gate.',
-            'Stay inside the area the coach shows you. One long whistle on the water means paddle to the coach and hold on to the next boat.',
+            'Stay inside the area the coach shows you. When the coach calls you in, paddle straight to the coach.',
             'If you fall in, hold your boat and your paddle. The coach comes to you.',
-            'If you would rather not paddle today, that is fine. You are dock crew with Floater 1.',
+            'If you would rather not paddle today, that is fine. You are dock crew: you stay on the Dock and help count the boats in.',
         ],
         run=[
             ('0', '3', 'The team arrives at the Dock Gate in its lake clothes. Count ten. Glasses get a strap or stay with the nurse.'),
             ('3', '10', 'Life jackets on. A counselor checks every one: all clips closed, then lift at the shoulders, and the jacket must not rise past the ears. The coach shows how to hold the paddle, go forward, stop and turn.'),
             ('10', '20', 'On the water. Campers who cannot swim 25 m paddle next to the coach, or share a double with a strong paddler. First ten minutes: forward, stop and turn inside the paddling area.'),
-            ('20', '32', 'Follow the leader round the coach’s two markers, then a raft-up: on the whistle every boat comes to the coach and holds on to the next one.'),
+            ('20', '32', 'Follow the leader round the coach’s markers, then a raft-up: on the coach’s signal every boat comes to the coach and holds on to the next one.'),
             ('32', '40', 'Free paddling inside the area. At minute 38 the coach calls the boats in.'),
             ('40', '45', 'Land one boat at a time. Floater 1 counts ten campers on the Dock. Life jackets off and on the rail. A hot drink at the Dock Gate, then the team walks to the vans with its two counselors and changes.'),
         ],
@@ -193,7 +193,7 @@ SHEETS = [
         idea='In 45 minutes a team of ten strangers chooses a name, a mascot and a chant, and paints the banner it will carry all camp. The banner and chant are presented at tonight’s campfire for the first Color War points.',
         setup=[
             ('Before camp', 'Director', 'Cut the white cotton into three panels of about 1 × 1.3 m.'),
-            ('13:05', 'Floater 2', 'Lay two tarps on the North Lawn. On the banner tarp: one cotton panel, pencils, one set of paint markers. On the chant tarp: scrap paper, pens, coloured card, markers.'),
+            ('13:05', 'Floater 2', 'Lay two tarps on the North Lawn. On the banner tarp: one cotton panel, pencils, one set of paint markers. On the chant tarp: scrap paper, pens, colored card, markers.'),
             ('Between turns', 'Floater 2', 'Carry the finished banner to the deck of van B05 and weigh down its corners. Lay out the next panel.'),
         ],
         say=[
@@ -206,7 +206,7 @@ SHEETS = [
             ('0', '4', 'Floater 2 gives the brief on the banner tarp.'),
             ('4', '12', 'Decide. Two silent minutes: each camper writes a name and a mascot on a slip. Read them all out. Vote with hands, twice if needed. The name and mascot are fixed by minute 12.'),
             ('12', '36', 'Make. Squad 1 draws the banner in pencil for four minutes, then goes over it in paint marker: the team name in letters a hand high, the mascot in the middle. Squad 2 writes a chant of four short lines, call and answer, no longer than 15 seconds, and draws the mascot on card as a hand sign.'),
-            ('36', '43', 'Together. Squad 2 shows the chant and the whole team practises it three times with the banner held up. Every camper signs a corner of the banner. Choose two banner bearers and one chant starter for tonight.'),
+            ('36', '43', 'Together. Squad 2 shows the chant and the whole team practices it three times with the banner held up. Every camper signs a corner of the banner. Choose two banner bearers and one chant starter for tonight.'),
             ('43', '45', 'Lids on, markers counted back (12), banner to the drying deck.'),
         ],
         blocks=[
@@ -214,7 +214,7 @@ SHEETS = [
         ],
         roles=[('Floater 2', 'Hosts all three turns and keeps the time. At 17:20 ties each dry banner to a 2 m pole with four cable ties, and brings all three to the South Lawn by 17:40 for the teams to carry to dinner.'), ('Team counselors', 'One sits with each squad. They ask questions and keep everyone involved; the ideas are the campers’ own.')],
         scoring=['Judged at the Opening Campfire by the Director, the nurse and Floater 2. Team placings: 10, 7 and 4 points.'],
-        kit=[('White cotton panel, 1 × 1.3 m', '3', 'E9a', '4'), ('Acrylic paint markers, set of 12', '3 sets', 'D1b', '4'), ('Pencils', '12', 'D5c', '4'), ('Coloured card', '15 sheets', 'D4b', '4'),
+        kit=[('White cotton panel, 1 × 1.3 m', '3', 'E9a', '4'), ('Acrylic paint markers, set of 12', '3 sets', 'D1b', '4'), ('Pencils', '12', 'D5c', '4'), ('Colored card', '15 sheets', 'D4b', '4'),
              ('Permanent markers', '6', 'D1a', '4'), ('A4 paper, cut into slips', '20 sheets', 'D4a', '4'), ('Tarps, as ground sheets', '2', 'B4', '6'), ('PVC poles, 2 m', '3', 'B5', 'loose'), ('Cable ties', '12', 'D14a', '4')],
         rain='At the Hall tables, with a tarp under each banner.',
         watch=['Paint marker on clothes does not wash out: sleeves up, bibs off.', 'One strong voice choosing everything: the vote is by slips so that every camper’s idea is read out.'],
@@ -235,7 +235,7 @@ SHEETS = [
             'Today is practice. On Saturday these games score for Color War.',
         ],
         run=[
-            ('0', '5', 'A counselor shows each game once: one cornhole throw, one Mölkky throw, one pétanque throw. The counselors make five pairs from the team and name them A to E.'),
+            ('0', '5', 'A counselor shows each game once: one cornhole throw, one Mölkky throw, one pétanque throw. The counselors make five pairs, A to E: each squad’s buddy pair stays together, and the six campers from the two threes are paired up.'),
             ('5', '17', 'Round 1. Lane 1: A against B. Lane 2: C against D. Mölkky: pair E, one against the other.'),
             ('17', '19', 'Swap.'),
             ('19', '31', 'Round 2. Lane 1: E against A. Lane 2: B against C. Pétanque: pair D.'),
@@ -266,11 +266,11 @@ SHEETS = [
         setup=[
             ('15:45', 'Bambi’s kitchen', 'Brings the hot-drink urn and the snack to the nurse’s table at HQ Palms, and collects the urn again at 16:30.'),
             ('15:55', 'Floater 2', 'Cups, hot chocolate and tea out on the table, straight from the banner workshop.'),
-            ('16:25', 'Director', 'Check with Bambi’s driver at the Tram Stop: first run at 16:40, three runs of 20 minutes.'),
+            ('16:25', 'Director', 'Check with Bambi’s driver at the Tram Stop: first run at 16:40, three runs of 20 minutes. Ask what the route passes, and swap any of the spotter’s five that it does not.'),
         ],
         say=[
             'Hot drink first. Then put on your warm layer for the evening.',
-            'On the tram you sit down, face inwards and keep hands and feet inside.',
+            'On the tram you stay sitting down, hold the rail, and keep hands and feet inside.',
             'Near the bird lake we use quiet voices. See how many of the spotter’s five your squad can find.',
         ],
         run=[
@@ -304,7 +304,7 @@ SHEETS = [
             'Tonight Color War begins. Three teams, one camp.',
             'You win points in games, for a tidy van, and for the way you treat each other. The board is on the Hall wall and it changes at every meal.',
             'At the fire we sit on the logs. Only counselors put anything on the fire.',
-            'For s’mores, your team comes up when I call your colour. Hold the cane by its end and keep one big step back from the ring.',
+            'For s’mores, your team comes up when I call your color. Hold the cane by its end and keep one big step back from the ring.',
         ],
         run=[
             ('19:00', '19:05', 'Teams arrive behind their banners and sit in their own third of the ring.'),

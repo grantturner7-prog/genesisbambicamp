@@ -242,6 +242,12 @@ def day_tables():
     return out
 
 
+def amer(t):
+    for a, b in (('colouring', 'coloring'), ('colours', 'colors'), ('colour', 'color'), ('Coloured', 'Colored'), ('coloured', 'colored'), ('labelled', 'labeled'), ('litre', 'liter')):
+        t = t.replace(a, b)
+    return t
+
+
 def master_kit():
     use = {}
     order = []
@@ -262,7 +268,7 @@ def master_kit():
     for c in sorted(order, key=key):
         it = ITEMS[c]
         b = use[c]['bin']
-        rows += f'<tr><td class="b">{"bin " + b if b.isdigit() else e(b)}</td><td class="code">{e(c)}</td><td>{it["item"]}</td><td>{e(str(it["qty"]))}</td><td class="acts">{e("; ".join(use[c]["acts"]))}</td></tr>'
+        rows += f'<tr><td class="b">{"bin " + b if b.isdigit() else e(b)}</td><td class="code">{e(c)}</td><td>{amer(it["item"])}</td><td>{e(str(it["qty"]))}</td><td class="acts">{e("; ".join(use[c]["acts"]))}</td></tr>'
     unused = [c for c in ITEMS if c not in use]
     return rows, unused
 
