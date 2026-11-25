@@ -12,7 +12,7 @@ SHEETS = [
             ('08:45', 'Floater 2', 'Hang the welcome banner between the two palms at HQ. Run the flag line along the pool side of the South Lawn. It stays there for four days.'),
             ('09:00', 'Floater 1', 'Tape a van list to the door of each of the eleven camper vans.'),
             ('09:15', 'Floater 1', 'Mark the Luggage Line on the North Lawn with six flat markers: three rows, one a team, yellow, orange, green from west to east.'),
-            ('09:30', 'Floater 2', 'Set up one of Bambi’s two folding tables at HQ Palms as the nurse’s table and put the water container beside it. It stays there all camp.'),
+            ('09:30', 'Floater 2', 'Set up one of Bambi’s two folding tables at HQ Palms as the nurse’s table and put one of the two water containers beside it. The table and the water stay there all camp.'),
             ('09:50', 'Floater 1', 'Walk to the Bus Point and meet the bus, with eight whistles and lanyards, five radios and the six squad first-aid kits from bin 1 for the adults coming off it.'),
         ],
         say=[
@@ -67,7 +67,7 @@ SHEETS = [
         setup=[
             ('Before camp', 'Director', 'Print the van list (who sleeps where, three to a van, same gender), one copy for each camper van door and one spare, and the key list.'),
             ('09:30', 'Floater 2', 'Nurse’s table at HQ Palms: wristbands, markers, zip bags, masking tape. The nurse brings the medicine box with her on the bus.'),
-            ('10:35', 'Floater 2', 'South Lawn circle: one foam ball, 30 wrapped snacks, the water container, a bin bag.'),
+            ('10:35', 'Floater 2', 'South Lawn circle: two foam balls, 30 wrapped snacks, the second water container, a bin bag.'),
             ('10:50', 'Floater 1', 'Collect the van keys from Reception and stand at the Van Village with the key list.'),
         ],
         say=[
@@ -92,7 +92,7 @@ SHEETS = [
                 ('G', 'Name games and snack', 'South Lawn circle · Floater 2',
                  'Name and move (4 min): each camper says their name with an action and the circle copies it. Name toss (4 min): say a name, throw the foam ball to that camper; add a second ball when it is easy. Then the snack and water, sitting down (5 min).'),
             ]),
-            dict(type='note', title='If the vans are not ready at 10:55', text='Bags stay at the Luggage Line under a tarp. Station V becomes “team name ideas” on the North Lawn with the team’s counselors, and the vans open at 13:00, at the start of the rest.'),
+            dict(type='note', title='If the vans are not ready at 10:55', text='Bags stay at the Luggage Line under a tarp. Station V becomes “team name ideas” on the North Lawn with the team’s counselors. The vans open at 13:00, at the start of the rest, and the Director hands out the keys from the key list, which Floater 1 passes over at lunch.'),
         ],
         roles=[
             ('Director', 'Keeps the clock and blows the whistle at 11:08, 11:24 and 11:40. Visits each van once it is open.'),
@@ -104,7 +104,7 @@ SHEETS = [
         scoring=[],
         kit=[('Paper wristbands', '30 + spares', 'E05', '1'), ('Lockable medicine box, with the nurse on the bus', '1', 'E12', '—'), ('Folding table, at HQ Palms all camp', '1', 'Bambi', '—'), ('Zip bags, for labeled medicine', '1 box', 'C6b', '1'),
              ('Permanent markers', '4', 'D1a', '1'), ('Masking tape', '2 rolls', 'D2a', '1'), ('Foam balls', '2', 'A4', 'bag'), ('Wrapped snacks', '30', 'E11', 'food'),
-             ('Water container with tap', '1', 'B9a', 'loose'), ('Van lists, one a door, and the key list', '12 + 1', 'print', '1')],
+             ('Water container with tap, the second one', '1', 'B9a', 'loose'), ('Van lists, one a door, and the key list', '12 + 1', 'print', '1')],
         rain='Stations N and G move into the Hall, one at each end. Station V stays at the vans, in ponchos.',
         watch=['A camper with no van-mate from their own team: tell them who is next door.', 'Medicine that was not handed over in Taichung: it all goes to the nurse now.'],
     ),
@@ -296,9 +296,9 @@ SHEETS = [
         map='campfire', mapcap='Each team has its own third of the log ring. Teams present on the north side, between the fire and the screen.',
         idea='The camp’s first night. Each team marches in behind its banner, performs its chant and earns the first Color War points. Then s’mores, one team at a time at the fire.',
         setup=[
-            ('18:30', 'Floater 1', 'Leave dinner early. Lay and light the fire with Bambi’s firewood. Two full buckets of water and the fire blanket on the north side of the ring.'),
-            ('18:35', 'Floater 2', 'Leave dinner. S’mores table, the second folding table, about 12 m north-east of the fire, clear of the logs: 30 sheets of kitchen roll, each with two biscuits and a square of chocolate. Canes and marshmallows stay in the bin until s’mores time.'),
-            ('18:40', 'Floater 2', 'Speaker by the stage. Two lanterns on the path from the Airstream.'),
+            ('18:30', 'Floater 1', 'Leave dinner. Lay and light the fire with Bambi’s firewood. Two full buckets of water and the fire blanket on the north side of the ring.'),
+            ('18:30', 'Floater 2', 'Leave dinner with Floater 1. Two lanterns on the path from the Airstream and the speaker by the stage, before the teams walk over.'),
+            ('18:45', 'Floater 2', 'S’mores table, the second folding table, about 12 m north-east of the fire, clear of the logs: 30 sheets of kitchen roll, each with two biscuits and a square of chocolate. Canes and marshmallows stay in the bin until s’mores time.'),
             ('18:45', 'Squad counselors', 'Walk from the Hall with torches, banners at the front of each team. It is 150 m and takes five minutes.'),
         ],
         say=[

@@ -354,7 +354,7 @@ SHEETS = [
         idea='The last game of camp. About a hundred gold coins and gems are hidden across three zones, and the squads hunt for them by torchlight. A coin is worth 1 and a gem is worth 3.',
         setup=[
             ('18:40', 'Floater 1, Floater 2', 'Leave dinner and hide the pieces: a third in each zone. On the grass, at the foot of trees, on the deck steps and rails of our own vans, along the edges of paths. Nothing inside or under a van, nothing higher than a camper’s shoulder, nothing past the flag line or the row of vans. Write down how many went into each zone. Done by 19:05.'),
-            ('20:25', 'Floater 2', 'At HQ Palms: the treasure box, six zip bags, a lantern circle.'),
+            ('20:25', 'Floater 2', 'At HQ Palms: the treasure box, six zip bags and the nurse’s lantern.'),
             ('20:30', 'Floater 2', 'To the east side, by the row of vans, with a lantern.'),
             ('20:38', 'Floater 1', 'To the flag line by the pool with a lantern, straight from putting the fire out.'),
         ],
@@ -365,7 +365,7 @@ SHEETS = [
             'Everything you find goes in your squad’s bag. At the end it all goes into the treasure box.',
         ],
         run=[
-            ('20:30', '20:38', 'Briefing in the lantern circle at HQ Palms. One zip bag to each squad. Squads walk to their first zone.'),
+            ('20:30', '20:38', 'Briefing in a circle round the lantern at HQ Palms. One zip bag to each squad. Squads walk to their first zone.'),
             ('20:38', '20:48', 'Search 1.'),
             ('20:48', '20:49', 'One long whistle. Move to the next zone.'),
             ('20:49', '20:59', 'Search 2.'),

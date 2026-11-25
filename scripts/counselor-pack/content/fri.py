@@ -277,7 +277,7 @@ SHEETS = [
             'We walk tonight. Your squad stays within reach of your counselor’s light. The flag line and the row of vans are the edges of the game, and there is a counselor with a lantern at each.',
         ],
         run=[
-            ('19:00', '19:08', 'Briefing in a circle of lanterns at HQ Palms. One invisible-ink pen and one squad card to each squad. Squads walk to their first station: Y1 to 1, O1 to 2, G1 to 3, Y2 to 4, O2 to 5, G2 to 6.'),
+            ('19:00', '19:08', 'Briefing in a circle round the nurse’s lantern at HQ Palms. One invisible-ink pen and one squad card to each squad. Squads walk to their first station: Y1 to 1, O1 to 2, G1 to 3, Y2 to 4, O2 to 5, G2 to 6.'),
             ('19:08', '19:50', 'Six rounds of seven minutes: six at the station, then one long whistle and one minute to move. Rounds start at 19:08, 19:15, 19:22, 19:29, 19:36 and 19:43.'),
             ('19:50', '19:58', 'All squads back at HQ Palms. They lay out their six words and put them in order. The first three squads to whisper the right place to the Director win the bonus.'),
             ('19:58', '20:00', 'The whole camp walks to the Cinema Lawn. The winning squad lifts the box out, opens it and hands every camper a ticket.'),

@@ -100,7 +100,7 @@ SHEETS = [
             ('09:31', '09:36', 'The board is uncovered. Third place, second place, and the Color War champions. The champions lift the trophy and lead their chant.'),
             ('09:36', '09:40', 'The whole-camp photo: three team banners, the welcome banner, everyone in the camp T-shirt.'),
             ('09:40', '09:50', 'Toilets at the Restrooms on the way. Walk to the Bus Point.'),
-            ('09:50', '10:00', 'Boarding. The Director reads the roster at the door. Phones come back to each camper as they board. The bus leaves at 10:00.'),
+            ('09:50', '10:00', 'Boarding. The Director reads the roster at the door, and the nurse hands each camper their phone as the name is read. The bus leaves at 10:00.'),
         ],
         blocks=[
             dict(type='list', title='Who goes where at 10:00', items=[
@@ -108,7 +108,7 @@ SHEETS = [
                 'At The Lin Hotel at about 11:30: families collect until 12:00. The nurse hands each camper’s medicine to the family.',
             ]),
         ],
-        roles=[('Director', 'Hosts. Reads the roster at the bus door.'), ('Squad counselors', 'Present their own five. Count five at the bus door.'), ('Floater 2', 'Keeps the board covered until 09:31, then joins Floater 1 at the bus.'), ('Floater 1', 'Leaves at 09:30 to load the bus with the driver.'), ('Nurse', 'At the horseshoe, then at the bus door with the medicine box.')],
+        roles=[('Director', 'Hosts. Reads the roster at the bus door.'), ('Squad counselors', 'Present their own five. Count five at the bus door.'), ('Floater 2', 'Keeps the board covered until 09:31, then joins Floater 1 at the bus.'), ('Floater 1', 'Leaves at 09:30 to load the bus with the driver.'), ('Nurse', 'At the horseshoe, then at the bus door with the medicine box and the phone lock box: she hands each camper their phone as the Director reads the name.')],
         scoring=['The final totals are every Color War point of the four days, with the finale’s double points added last.', 'If two teams finish level, they share the trophy and both chant.'],
         kit=[('Trophy', '1', 'F3b', '12'), ('Folding table, the one at HQ Palms', '1', 'Bambi', '—'), ('Medals', '30 + 6 spare', 'F3a', '12'), ('Certificates, named', '30 + 5 spare', 'F4a', '12'), ('Welcome banner and group-photo banner', '2', 'F6', '12'), ('Speaker', '1', 'C13', '10'),
              ('The Color War board and its cover', '1', 'D4c', '—'), ('Campers’ phones, in the second lock box', '', 'E12', '—'), ('Printed roster', '1', 'print', '1')],
@@ -196,7 +196,7 @@ RAIN = [
         hall='loop',
         idea='Two indoor programs that use the same six tables. The Arcade is the Saturday Games Arcade moved inside. Minute-to-Win-It is six one-minute challenges in which every camper has a go at every table.',
         setup=[
-            ('30 minutes before', 'Floater 1, Floater 2', 'Six stations in a loop round the Hall, numbered 1 to 6. The Mölkky goes on a picnic blanket. The table-tennis net goes on a dining table.'),
+            ('Before each use', 'Floater 1, Floater 2', 'Six stations in a loop round the Hall, numbered 1 to 6. The Mölkky goes on a picnic blanket. The table-tennis net goes on a dining table. Thursday and Friday: straight after lunch. Saturday: at 08:40 as breakfast is cleared, and again in the 16:00 break. Sunday: leave breakfast at 08:20, as on the finale sheet, and lay out the three finals at the stage end.'),
         ],
         say=[
             'Six stations. At each one, everyone in your squad has a go.',

@@ -100,7 +100,7 @@ ROUTINE = dict(
             ['07:30', 'Van check. Campers stand at their own van door and are counted by name. Two pairs score the vans: Floater 1 and a counselor in row B, Floater 2 and a counselor in row A.', 'Floater 1, Floater 2'],
             ['07:50', 'Walk to the Hall by squad.', 'Squad counselors'],
             ['08:00', 'Breakfast. Squads sit together and their counselor eats with them.', 'Everyone'],
-            ['08:50', 'Morning circle at HQ Palms, ten minutes: yesterday’s scores and the van scores, the spirit award, the weather call and what to wear, and the day in three sentences.', 'Director'],
+            ['08:50', 'Morning circle at HQ Palms, ten minutes, on Friday and Saturday: yesterday’s scores and the van scores, the spirit award, the weather call and what to wear, and the day in three sentences. On Sunday there is no circle: the Director makes the weather call at 07:30, at the van check.', 'Director'],
             ['Meals', 'The walk from the lawn or the vans starts ten minutes before the meal. Floater 2 updates the Color War board. The nurse checks the plates of campers with allergies against the kitchen’s list.', ''],
             ['After lunch', 'Rest in the vans, 30 to 40 minutes. Quiet, on the beds, no visiting other vans. Counselors sit on the decks.', 'Squad counselors'],
             ['Showers', 'In the camper’s own van, three in turn. Counselors stay outside on the deck.', ''],
