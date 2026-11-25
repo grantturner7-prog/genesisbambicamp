@@ -85,7 +85,7 @@ def check():
 
 # ---------------------------------------------------------------- pieces
 def chip(txt):
-    """Squad and team names get their colour."""
+    """Squad and team names get their color."""
     t = txt.strip()
     mm = re.fullmatch(r'([YOG])([12])', t)
     if mm:
@@ -268,7 +268,7 @@ def master_kit():
     for c in sorted(order, key=key):
         it = ITEMS[c]
         b = use[c]['bin']
-        rows += f'<tr><td class="b">{"bin " + b if b.isdigit() else e(b)}</td><td class="code">{e(c)}</td><td>{amer(it["item"])}</td><td>{e(str(it["qty"]))}</td><td class="acts">{e("; ".join(use[c]["acts"]))}</td></tr>'
+        rows += f'<tr><td class="b">{"bin " + b if b.isdigit() else e(b)}</td><td class="code">{e(c)}</td><td>{amer(it["item"])}</td><td>{e(amer(str(it["qty"])))}</td><td class="acts">{e("; ".join(use[c]["acts"]))}</td></tr>'
     unused = [c for c in ITEMS if c not in use]
     return rows, unused
 
@@ -433,7 +433,7 @@ def build(kind):
 __JUMP__
 <section class="front" id="camp-map"><h2>The camp on one map</h2>
 {''.join(f'<p>{e(p)}</p>' for p in front.INTRO)}
-<figure class="mapfig"><div class="ms">{sheet_maps.site()}</div><figcaption>Looking north across Bambi Glamping. The camp has the whole site to itself. The two yellow areas are the Big Lawn, where most of the programme happens.</figcaption></figure>
+<figure class="mapfig"><div class="ms">{sheet_maps.site()}</div><figcaption>Looking north across Bambi Glamping. The camp has the whole site to itself. The two yellow areas are the Big Lawn, where most of the program happens.</figcaption></figure>
 <ul class="key">{key}</ul>
 <h3>The places, by the names used in this pack</h3>
 <dl class="dl2">{''.join(f'<dt>{e(n)}</dt><dd>{e(t)}</dd>' for _, n, t in front.PLACES)}</dl>
