@@ -47,7 +47,7 @@ SHEETS = [
         kit=[('Woven sacks', '2 + 4 spare', 'E07', '7'), ('Cornhole board and eight bags', '1 set', 'A18', 'loose'), ('Ring toss set', '1', 'A20', '7'), ('Skipping ropes, 3 m', '2 + 4 spare', 'A8', '7'),
              ('Buckets and large sponges', '2 + 4', 'D12a, D12c', 'loose'), ('Tape measure', '1', 'E09c', '2'), ('Ultimate discs and one mini goal', '3 + 1', 'A3, A6', '7'), ('Flat markers', '12', 'A1', '7'),
              ('Squad cards and lane cards', '6 + 6', 'print', '7'), ('Water container, to fill the bucket', '1', 'B9a', 'loose')],
-        rain='The Minute-to-Win-It Tournament in the Hall (rain sheet R3).',
+        rain='The Indoor Games Arcade in the Hall (rain sheet R3).',
         watch=['Lane 1 is the lane next to the flag line: the sack race runs north to south, along the line and not towards it.', 'The sponge lane gets slippery by round 4: Floater 1 moves it one lane-width south if it does.'],
     ),
     dict(
@@ -316,7 +316,7 @@ SHEETS = [
             ('19:20', 'Squad counselors', 'Walk from the Hall, banners at the front, props carried by the teams.'),
         ],
         say=[
-            'Tonight is the Skit and Talent Showdown, and the last Color War points before the finale.',
+            'Tonight is the Skit and Talent Showdown, with Color War points for all three teams.',
             'When another team is on stage, you are the best audience they have ever had.',
             'The judges look for four things: everyone has a part, the story is clear, the three props are used, and we can hear you at the back.',
         ],

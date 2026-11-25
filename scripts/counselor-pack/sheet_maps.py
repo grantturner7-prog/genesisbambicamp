@@ -201,10 +201,10 @@ def campfire(skits=False):
 
 # ------------------------------------------------------------------ Friday
 CONTROLS = [
-    ((712, 562), 'A', 'Reception sign', 'b'), ((800, 553), 'D', 'Tram Stop', 'b'), ((922, 291), 'V', 'Dock Gate post', 't'),
-    ((812, 222), 'E', 'North bend of the lane', 't'), ((603, 350), 'N', 'Back of the cinema screen', 'l'),
-    ((621, 430), 'T', 'Airstream deck rail', 'r'), ((582, 574), 'U', 'Restrooms wall', 'b'), ((412, 566), 'R', 'Hall porch', 'b'),
-    ((510, 400), 'E', 'Bird Lake Lookout', 'l'), ((300, 470), 'S', 'West loop, zone E sign', 'b'),
+    ((712, 562), 'T', 'Reception sign', 'b'), ((800, 553), 'E', 'Tram Stop', 'b'), ((922, 291), 'A', 'Dock Gate post', 't'),
+    ((812, 222), 'S', 'North bend of the lane', 't'), ((603, 350), 'D', 'Back of the cinema screen', 'l'),
+    ((621, 430), 'U', 'Airstream deck rail', 'r'), ((582, 574), 'N', 'Restrooms wall', 'b'), ((412, 566), 'V', 'Hall porch', 'b'),
+    ((510, 400), 'R', 'Bird Lake Lookout', 'l'), ((300, 470), 'E', 'West loop, zone E sign', 'b'),
 ]
 
 
@@ -215,7 +215,9 @@ def orienteering(view='site'):
     for i, (at, letter, name, side) in enumerate(CONTROLS):
         mp.pin(at, i + 1, color='orange', r=9.5)
     mp.pin(HQ, 'HQ', 'Start and finish', color='red', side='r', size=10)
-    mp.pin((650, 396), '★', color='yellow', r=7.5)
+    if view != 'camper':
+        # the bonus control is found by compass, so it is not on the campers' map
+        mp.pin((700, 350), '★', color='yellow', r=7.5)
     mp.scale((300, 640), 50).north()
     return mp.svg('map site')
 
@@ -274,7 +276,7 @@ def cafe():
     mp.vans(r=3.6)
     mp.line([(790, 300), (762, 400), (748, 500), (730, 540), (690, 548), (640, 548), (590, 554), (530, 556), (470, 556), (430, 562), (412, 570)], 'navy', lw=2.6, dash='2 5', arrow=True)
     mp.pin((412, 574), 'H', 'The Hall: Board-Game Café, 17:15', color='purple', side='b', size=10.5)
-    mp.pin((812, 292), 'V', 'Showers 16:45 to 17:05', color='teal', side='t', size=10.5)
+    mp.pin((812, 292), 'V', 'Showers 16:45 to 17:10', color='teal', side='t', size=10.5)
     mp.text((640, 566), '200 m, 4 minutes', side='b', size=10)
     mp.north()
     return mp.svg()
@@ -423,8 +425,8 @@ def finale():
 
 
 def prizes():
-    mp = base('lawn', 'Prize-giving')
-    cx, cy = 708, 470
+    mp = base('lawn', 'Prize-giving', hq=False)
+    cx, cy = 690, 434
     cols = ['yellow', 'orange', 'green']
     for i, (a0, a1) in enumerate([(20, 70), (70, 120), (120, 170)]):
         poly = []
@@ -433,8 +435,8 @@ def prizes():
         for a in range(a1, a0 - 1, -10):
             poly.append((cx + m(12.5) * math.cos(math.radians(a)), cy + m(12.5) * math.sin(math.radians(a))))
         mp.zone(poly, cols[i], fill=0.55, lw=1.4)
-    mp.pin((708, 452), 'T', 'Trophy table, banner, speaker', color='navy', side='t', size=10.5)
-    mp.text((708, 512), 'Teams sit in a horseshoe', side='b', size=10)
+    mp.pin(HQ, 'HQ', 'Trophy table, banner, speaker', color='red', side='t', size=10.5)
+    mp.text((690, 476), 'Teams sit in a horseshoe, facing HQ Palms', side='b', size=10)
     mp.line(POOL_LINE, 'red', lw=2.4)
     return mp.svg()
 
@@ -447,7 +449,7 @@ def routine():
     mp.pin((412, 574), 'H', 'The Hall: meals', color='purple', side='b', size=10.5)
     mp.pin((812, 292), 'V', 'Van Village', color='teal', side='t', size=10.5)
     mp.pin(HQ, 'HQ', 'Morning circle 08:50', color='red', side='l', size=10.5)
-    mp.text((842, 352), 'Counselor vans (purple):\nlantern on the deck at night', side='r', size=9.5)
+    mp.text((842, 352), 'Staff vans (purple):\nlantern on the deck at night', side='r', size=9.5)
     mp.text((640, 566), 'Hall walk: 200 m, 4 minutes', side='b', size=10)
     mp.north()
     return mp.svg()

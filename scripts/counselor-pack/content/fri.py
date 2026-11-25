@@ -18,7 +18,7 @@ SHEETS = [
     dict(
         id='orienteering', day='Friday', start='09:00', end='10:30', title='Orienteering Quest',
         where='Start and finish at HQ Palms; ten controls across the whole camp', who='Six squads of five, each with its counselor', lead='Director', score='Squad placings: 6 to 1',
-        map='orienteering', mapcap='The ten controls. Squads carry this map without the names. HQ Palms is the start and the finish. The star is the bonus control, found by compass.',
+        map='orienteering', mapcap='The ten controls. Squads carry this map without the names and without the star. HQ Palms is the start and the finish. The star is the bonus control on the North Lawn, found by compass from the fire ring.',
         idea='Each squad gets a map, two compasses and a control card, and has an hour to find ten markers hidden round the camp. Each marker carries a letter. The ten letters make one word. The campers lead; the counselor walks at the back.',
         setup=[
             ('Before camp', 'Director', 'Print six A3 maps with the control circles and numbers but no names, and laminate them. Print six control cards and six bonus cards. Make ten markers: half a sheet of coloured card with a big number and its letter, each in a zip bag.'),

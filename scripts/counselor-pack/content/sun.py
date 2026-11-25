@@ -74,7 +74,7 @@ SHEETS = [
             ]),
         ],
         roles=[('Director', 'Referee and host for all three events.'), ('Floater 1, Floater 2', 'Line judges for the tug-of-war. They turn the rope for the official jumps.'), ('Squad counselors', 'With their teams. They set the pulling order, big at the back, and the running order.'), ('Nurse', 'At HQ Palms with water.')],
-        scoring=['Each of the three events gives double team points: 20 for first, 14 for second, 8 for third.', 'Teams level in an event share the points of the places they hold.', 'Floater 2 adds the three results to the covered board before 09:30.'],
+        scoring=['Each of the three events gives double team points: 20 for first, 14 for second, 8 for third.', 'Teams level in an event both take the points of the higher place, as on the board all camp.', 'Floater 2 adds the three results to the covered board before 09:30.'],
         kit=[('Tug-of-war rope, 20 m', '1', 'E3', '12'), ('Cotton gloves', '20 pairs', 'E7b', '12'), ('Group jump ropes, 7 m', '2', 'A12', '12'), ('Flat markers', '9', 'A1', '7'), ('Team bibs, as batons', '3', 'A2', 'bag'),
              ('The three team banners', '3', 'E9a', 'loose'), ('Stopwatch and whistle', '1 + 1', 'A10, A10b', '1'), ('Cloth tape, for the centre mark', '1 roll', 'D2b', '12')],
         rain='The Minute-to-Win-It Finals in the Hall: three team events at double points (rain sheet R3).',
@@ -83,7 +83,7 @@ SHEETS = [
     dict(
         id='prizes', day='Sunday', start='09:20', end='10:00', title='Prize-giving, and the bus home',
         where='South Lawn, then the Bus Point', who='All 30', lead='Director', score='The final Color War result',
-        map='prizes', mapcap='Teams sit in a horseshoe on the South Lawn, facing the trophy table and the banner at HQ Palms.',
+        map='prizes', mapcap='Teams sit in a horseshoe at the top of the South Lawn, facing the trophy table and the banner at HQ Palms.',
         idea='Every camper is called up by name. Then the board is uncovered and the Color War champions lift the trophy. The whole camp takes one photo together and walks to the bus.',
         setup=[
             ('Saturday 22:15', 'All counselors', 'Each squad counselor writes one sentence about each of their five campers on the back of the certificate: something that camper did this week.'),
@@ -130,7 +130,7 @@ RAIN = [
         say=[
             'A cipher is a rule for hiding a message. If you know the rule, you can read it.',
             'First you crack three messages. Then you write one of your own for another squad.',
-            'At 09:45 every squad gets a locked pouch and five clues. The first squad to open its pouch wins.',
+            'At 09:45 every squad gets a locked pouch and four clues. The first squad to open its pouch wins.',
         ],
         run=[
             ('09:00', '09:05', 'The Director shows the three ciphers on the whiteboard: the shift cipher with the alphabet strip, the pigpen grid, and mirror writing.'),

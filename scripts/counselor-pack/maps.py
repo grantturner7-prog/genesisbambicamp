@@ -72,7 +72,7 @@ PLACES = {
     'kayak_lake': (925, 410), 'bird_lake': (370, 370),
 }
 OUR_CAMPER_VANS = ['B06', 'B07', 'B08', 'B09', 'B10', 'B11', 'A10', 'A11', 'A12', 'A13', 'A14']
-OUR_STAFF_VANS = ['B05', 'B12', 'A08']
+OUR_STAFF_VANS = ['B05', 'B12', 'A08', 'A06']
 VAN = {v['id']: (v['x'], v['y']) for v in L['vans']}
 
 # ---------------------------------------------------------------- colours

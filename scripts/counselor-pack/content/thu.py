@@ -7,6 +7,7 @@ SHEETS = [
         map='arrival', mapcap='The bus stops at B. Bags go to the Luggage Line, everyone meets at the welcome circle, then each team walks the six stops.',
         idea='The first hour sets the tone. Campers get off the bus, drop their bags, meet their team and their counselor, and walk the camp once so that everyone knows where things are and where the edges are.',
         setup=[
+            ('08:00', 'Director, Nurse', 'At The Lin Hotel: the rosters, the bibs and both lock boxes (medicine with the nurse, phones with the Director) travel on the bus, not in the advance car.'),
             ('08:30', 'Floater 1, Floater 2', 'The advance car arrives with the kit. Bins go to the deck of van B05, which is the kit store for the whole camp.'),
             ('08:45', 'Floater 2', 'Hang the welcome banner between the two palms at HQ. Run the flag line along the pool side of the South Lawn. It stays there for four days.'),
             ('09:15', 'Floater 1', 'Mark the Luggage Line on the North Lawn with six flat markers: three rows, one a team, yellow, orange, green from west to east.'),
@@ -37,7 +38,7 @@ SHEETS = [
                 ['2', 'Dock Gate', 'This is the Kayak Lake. We paddle here this afternoon. The water rule: no camper at a lake edge, on the dock or at the pool without a counselor.'],
                 ['3', 'Campfire Circle and Cinema Lawn', 'Tonight’s opening campfire is here, and tomorrow night’s film. At the fire you sit on the logs. Only counselors tend the fire.'],
                 ['4', 'Airstream and the pool line', 'The pool is closed for our camp. The flag line on the lawn is the edge. Balls that roll past it are fetched by a counselor.'],
-                ['5', 'Restrooms and the way to the Hall', 'Day toilets are here or in your own van. Tell your counselor and take your buddy. The Hall, where we eat, is 150 m further along this path.'],
+                ['5', 'Restrooms and the way to the Hall', 'Day toilets are here or in your own van. Tell your counselor and take your buddy. The Hall, where we eat, is 70 m further along this path.'],
                 ['6', 'Reception, Tram Stop and Main Gate', 'The Main Gate is the edge of camp. Nobody goes through it. The tram leaves from here at dusk today, and the bus on Sunday.'],
             ]),
             dict(type='table', title='Who starts where', head=['Team', '10:28', '10:32', '10:36', '10:40', '10:44', '10:48'], rows=[

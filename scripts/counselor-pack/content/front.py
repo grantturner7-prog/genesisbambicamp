@@ -8,7 +8,7 @@ INTRO = [
 PLACES = [
     ('HQ', 'HQ Palms', 'The two palms in the middle of the Big Lawn. The Director’s base, the nurse’s table, water, the day’s kit. Three short whistles mean: come here.'),
     ('6, 7', 'The Big Lawn', 'Our playing field, between the vans and the main path. The North Lawn is about 44 × 30 m and the South Lawn about 42 × 44 m.'),
-    ('8', 'Van Village', 'Our 14 vans at the north-east corner: 11 camper vans (teal dots) and 3 counselor vans (purple dots: B05, B12, A08). The deck of B05 is the kit store.'),
+    ('8', 'Van Village', 'Our 15 vans at the north-east corner: 11 camper vans (teal dots) and 4 staff vans (purple dots). The counselors sleep in B05, B12 and A08, and the nurse and the Director in A06. The deck of B05 is the kit store.'),
     ('9, 10', 'Dock Gate and the Dock', 'Dock Gate is where our path meets the lake lane. Teams line up there. Campers go on the Dock only with the coach.'),
     ('11, 12', 'Campfire Circle and Cinema Lawn', 'Side by side, 60 m west of HQ Palms.'),
     ('13', 'Airstream', 'The silver snack trailer beside the pool. The pool itself is closed to the camp, and a flag line on the lawn marks the edge.'),
@@ -114,13 +114,13 @@ ROUTINE = dict(
             ['Bathroom', 'Towels hung up, nothing in the basin.'], ['Wet things', 'On the drying line or the deck rail, not inside.'],
         ]),
         dict(type='list', title='At night', items=[
-            'The counselors of Y1, O1 and G1 sleep one in each of the three counselor vans, B05, B12 and A08, and keep their radios on. A lantern burns on each of those three decks, so that a camper who needs an adult knows which door to knock on.',
+            'The counselors of Y1, O1 and G1 sleep one in each of the three counselor vans, B05, B12 and A08, and keep their radios on. A lantern burns on each of those three decks and on the nurse’s, A06, so that a camper who needs an adult knows which door to knock on.',
             'The Director keeps the duty phone for Bambi’s night desk and the gate.',
             'Campers’ phones were handed in at the hotel on Thursday and are kept by the Director in their own lock box. They come back at boarding on Sunday.',
         ]),
     ],
     roles=[], scoring=['Each van is scored 0 to 5 on Friday and Saturday morning. Every camper takes their van’s score to their own team.'],
-    kit=[('Van score sheets on a clipboard', '2', 'print', '1'), ('Printed roster', '10', 'print', '1'), ('Lanterns, for the counselor decks', '3', 'E8b', '3'), ('Twine and pegs: one drying line a row', '2', 'D14c, D14b', '2'), ('Spare batteries for headlamps, radios and lanterns', '1 pack of each', 'C10', '1')],
+    kit=[('Van score sheets on a clipboard', '2', 'print', '1'), ('Printed roster', '10', 'print', '1'), ('Lanterns, for the four staff decks', '4', 'E8b', '3'), ('Twine and pegs: one drying line a row', '2', 'D14c, D14b', '2'), ('Spare batteries for headlamps, radios and lanterns', '1 pack of each', 'C10', '1')],
     rain='The morning circle moves into the Hall, straight after breakfast.', watch=[],
 )
 
@@ -181,6 +181,7 @@ DAYS = [
 DECIDED = [
     ('Team colours', 'Yellow, Orange and Green. They follow whichever three bib colours Decathlon has on the shelf.'),
     ('Staff', 'Ten adults: the Director, the nurse, six squad counselors and two floaters with fixed jobs (kit, and scores).'),
+    ('Vans', 'Fifteen: eleven for campers, B05, B12 and A08 for the eight counselors, and A06 for the nurse and the Director.'),
     ('The scoring scale', 'Squad games 6 to 1, team games 10, 7, 4, the finale at double points, a spirit award of 5. The van check and the sports league score as in the working plan.'),
     ('The advance car', 'The two floaters drive the kit up early on Thursday and are on site by 08:30. The deck of van B05 is the kit store.'),
     ('Every position on the maps', 'Drawn on our 3D model of Bambi’s map. Walk the stations on Thursday morning and move any that do not suit the ground.'),
@@ -196,11 +197,12 @@ DECIDED = [
 ]
 
 ASK_BAMBI = [
-    'The kayak coach on Thursday 13:30 to 15:55 and Saturday 11:10 to 12:40, with ten life jackets in junior sizes. Are the boats singles or doubles?',
+    'The fifteen vans in one group for all three nights: B05 to B12, A06, A08 and A10 to A14.',
+    'The kayak coach on Thursday 13:00 to 15:55 and Saturday 11:00 to 12:40, with ten life jackets in junior sizes. Are the boats singles or doubles?',
     'The eco-tram on Thursday: three runs of 20 minutes at 16:40, 17:00 and 17:20.',
     'Firewood for Thursday and Saturday evening.',
     'The Star Cinema projector and sound on Friday at 20:00.',
-    'A hot-water urn at the Dock Gate on Thursday and Saturday, and hot drinks at HQ Palms on Thursday at 15:45.',
+    'A hot-water urn at the Dock Gate on Thursday and Saturday, and hot drinks and a snack for 30 brought to HQ Palms on Thursday at 15:45.',
     'Two folding tables from Thursday 09:00 to Sunday 10:00, and the use of an outside tap by our vans. One table stays at HQ Palms. The other serves the s’mores, the cinema and the Arcade.',
     'A yes to soft balls and frisbees on the lawn, and to 60 tent pegs on Friday afternoon.',
     'A yes to moving the Hall tables on a wet day.',

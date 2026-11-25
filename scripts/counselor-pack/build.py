@@ -404,7 +404,7 @@ a{text-decoration:none}
 def build(kind):
     src = '__MAPSRC__'
     key = ''.join(f'<li><span class="n{" v" if n == 8 else ""}">{n}</span>{e(name)}</li>' for n, name, _ in sheet_maps.SITE_KEY)
-    key = '<li><span class="n hq">HQ</span>HQ Palms</li>' + key + '<li><span class="dot" style="background:#0e8f8a"></span>Camper vans</li><li><span class="dot" style="background:#7a4fb5"></span>Counselor vans</li>'
+    key = '<li><span class="n hq">HQ</span>HQ Palms</li>' + key + '<li><span class="dot" style="background:#0e8f8a"></span>Camper vans</li><li><span class="dot" style="background:#7a4fb5"></span>Staff vans</li>'
     toc = ''
     for day, group in [('Thursday', thu.SHEETS), ('Friday', fri.SHEETS), ('Saturday', sat.SHEETS), ('Sunday', sun.SHEETS), ('Rain plan', sun.RAIN)]:
         toc += f'<li><span class="d">{day}</span></li>'
