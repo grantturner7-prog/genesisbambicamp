@@ -267,6 +267,26 @@ def master_kit():
     return rows, unused
 
 
+
+def setup_jobs():
+    """Every set-up line of every sheet: timed jobs by day, and the jobs to do before camp."""
+    days = {'Thursday': [], 'Friday': [], 'Saturday': [], 'Sunday': []}
+    before = []
+    for s in SHEETS:
+        for when, who, what in s.get('setup', []):
+            short = s['title'].split(':')[0]
+            mt = re.fullmatch(r'(?:(Thursday|Friday|Saturday|Sunday) )?(\d\d:\d\d)', when)
+            if when == 'Before camp':
+                before.append((who, what, short))
+            elif mt:
+                day = mt.group(1) or s['day']
+                if day in days:
+                    days[day].append((mt.group(2), who, what, short, s['id']))
+    for d in days:
+        days[d].sort(key=lambda r: r[0])
+    return days, before
+
+
 CSS_COMMON = r'''
 /* layout: an A4 field manual. One sheet per activity, map first, then two columns of working detail. */
 :root{--bg:#eef2f1;--paper:#ffffff;--ink:#14212b;--muted:#566570;--line:#d3dcdf;--soft:#eef4f2;--accent:#0f6e63;--warn:#fff3d6;--warnl:#d9a93a;--rain:#e7eff9;--rainl:#7fa3cf;
@@ -339,6 +359,7 @@ table.t td:first-child{font-weight:600}
 .divider{font-family:var(--head);border-radius:10px;padding:16px 20px;margin:0 0 18px;color:#fff;background:var(--dc)}
 .divider.thu{--dc:var(--thu)}.divider.fri{--dc:var(--fri)}.divider.sat{--dc:var(--sat)}.divider.sun{--dc:var(--sun)}.divider.rain{--dc:var(--rainc)}
 .divider h2{font-size:1.5em}.divider p{margin:2px 0 0;opacity:.92;font-family:var(--body)}
+table.jobs td.who{font-weight:700;white-space:nowrap}table.jobs td.for{color:var(--muted);font-size:.92em;width:20%}table.jobs td:first-child{font-weight:700}
 table.kitall td{border-bottom:1px solid var(--line);font-size:.9em;padding:3px 8px 3px 0}table.kitall td.b{white-space:nowrap;font-weight:700}table.kitall td.code{border:0;color:var(--muted)}table.kitall td.acts{color:var(--muted)}
 .dl2{display:grid;grid-template-columns:minmax(120px,22%) 1fr;gap:0 14px;margin:0}.dl2 dt{font-weight:700;border-top:1px solid var(--line);padding:4px 0}.dl2 dd{margin:0;border-top:1px solid var(--line);padding:4px 0}
 '''
@@ -391,6 +412,12 @@ def build(kind):
             pg = f'<span class="pg">{PAGES[s["id"]]}</span>' if s["id"] in PAGES else ''
             toc += f'<li><span class="w">{e(when_of(s))}</span><a href="#{s["id"]}">{e(s["title"])}</a>{pg}</li>'
     kit_rows, unused = master_kit()
+    jobs, before = setup_jobs()
+    setup_html = ''
+    for (day, rows), dc in zip(jobs.items(), ['thu', 'fri', 'sat', 'sun']):
+        trs = ''.join(f'<tr><td class="t">{e(t)}</td><td class="who">{e(who)}</td><td>{chip(what)}</td><td class="for"><a href="#{sid}">{e(short)}</a></td></tr>' for t, who, what, short, sid in rows)
+        setup_html += f'<div class="daytable {dc}"><h3><span>{day}</span></h3><div class="tw"><table class="t jobs"><thead><tr><th>Time</th><th>Who</th><th>Job</th><th>For</th></tr></thead><tbody>{trs}</tbody></table></div></div>'
+    before_html = ''.join(f'<tr><td class="who">{e(who)}</td><td>{chip(what)}</td><td class="for">{e(short)}</td></tr>' for who, what, short in before)
     body = f'''<div class="wrap">
 <header class="cover"><div class="eyebrow">Camp WOW · World of Outdoor Wonders · Winter camp 2027</div>
 <h1>The Activity Plan and Counselor Pack</h1>
@@ -418,6 +445,7 @@ __JUMP__
 <h3>The board</h3><ul>{''.join(f'<li>{e(x)}</li>' for x in front.BOARD)}</ul>
 </section>
 <section class="front" id="days"><h2>The four days at a glance</h2><p>Shaded rows have their own sheet. The bins column shows which numbered kit bins the activity uses.</p>{day_tables()}</section>
+<section class="front" id="setup"><h2>The set-up timeline</h2><p>Every set-up job in the pack, in the order it has to happen. Most of it belongs to the two floaters. Each job is described in full on its activity’s sheet.</p>{setup_html}</section>
 {sheet(front.ROUTINE)}
 '''
     for day, sub, group, dc in [('Thursday 28 January', 'Arrival, the lake and the opening fire', thu.SHEETS, 'thu'), ('Friday 29 January', 'Explorers’ day', fri.SHEETS, 'fri'),
@@ -431,7 +459,8 @@ __JUMP__
 <h3>Lent by Bambi</h3><p>Kayaks, paddles, life jackets, a throw line and a turn buoy; the eco-tram; firewood; the Star Cinema screen, projector and sound; a hot-water urn; one folding table; an outside tap.</p>
 </section>
 <section class="front" id="before-camp"><h2>Before camp</h2>
-<h3>To print and prepare</h3><dl class="dl2">{''.join(f'<dt>{e(n)}</dt><dd>{e(t)}</dd>' for n, t in front.PRINT)}</dl>
+<h3>Jobs to do before camp</h3><div class="tw"><table class="t jobs"><thead><tr><th>Who</th><th>Job</th><th>For</th></tr></thead><tbody>{before_html}</tbody></table></div>
+<h3>Everything to print</h3><dl class="dl2">{''.join(f'<dt>{e(n)}</dt><dd>{e(t)}</dd>' for n, t in front.PRINT)}</dl>
 <h3>To settle with Bambi</h3><ul>{''.join(f'<li>{e(x)}</li>' for x in front.ASK_BAMBI)}</ul>
 <h3>What this plan fixes, so that you can change it</h3><p>The working plan left these open. They are now decided, and each one can be changed without touching the rest.</p>
 <dl class="dl2">{''.join(f'<dt>{e(n)}</dt><dd>{e(t)}</dd>' for n, t in front.DECIDED)}</dl>
@@ -442,7 +471,7 @@ __JUMP__
     defs = maps.DEFS
     fonts = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">'
     if kind == 'web':
-        jump = '<nav class="jump" aria-label="Jump to"><a href="#camp-map">Map</a><a href="#days">Timetable</a><a href="#thu">Thursday</a><a href="#fri">Friday</a><a href="#sat">Saturday</a><a href="#sun">Sunday</a><a href="#rain">Rain plan</a><a href="#kit">Equipment</a></nav>'
+        jump = '<nav class="jump" aria-label="Jump to"><a href="#camp-map">Map</a><a href="#days">Timetable</a><a href="#setup">Set-up</a><a href="#thu">Thursday</a><a href="#fri">Friday</a><a href="#sat">Saturday</a><a href="#sun">Sunday</a><a href="#rain">Rain plan</a><a href="#kit">Equipment</a></nav>'
         return ('<title>Camp WOW Counselor Pack</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n' + fonts + '\n<style>' + CSS_COMMON + CSS_WEB + '</style>\n'
                 + defs.replace(src, 'camp-map.jpg') + body.replace('__JUMP__', jump))
     return ('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Camp WOW: the Activity Plan and Counselor Pack</title>' + fonts + '<style>' + CSS_COMMON + CSS_PRINT + '</style></head><body>'

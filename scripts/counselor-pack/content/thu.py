@@ -112,8 +112,8 @@ SHEETS = [
         map='lake1', mapcap='K is kayaking at the Dock, B is the banner workshop on the North Lawn, C is cornhole and lawn games on the South Lawn.',
         idea='Three stations, three turns of 45 minutes. Every team kayaks, makes its banner and plays the lawn games. The order is set so that each team goes from the lake to a sitting-down station, not to another cold one.',
         setup=[
-            ('13:00', 'Floater 1', 'Bin 2 (lake and cold) to the Dock Gate. Meet Bambi’s coach at the Dock and count the boats, paddles and life jackets.'),
-            ('13:00', 'Floater 2', 'Bin 4 and two tarps to the North Lawn for the banners. Two cornhole sets, Mölkky and pétanque to the South Lawn.'),
+            ('13:00', 'Floater 1', 'Bin 2 (lake and cold) from the kit store to the Dock Gate.'),
+            ('13:00', 'Floater 2', 'Bin 4, two tarps, the cornhole sets, the Mölkky and the pétanque from the kit store to the lawn.'),
             ('13:20', 'Squad counselors', 'Knock on the vans. Yellow dresses for the lake first: quick-dry trousers, a windproof top, shoes that can get wet.'),
         ],
         say=[
@@ -151,7 +151,7 @@ SHEETS = [
         map='kayak', mapcap='Line up at the Dock Gate. The coach sets the paddling area in the north bay beside the Dock. The far end of the lake is not used.',
         idea='About 30 minutes on the water for every camper on the first afternoon. The coach leads on the water. Our job is to get ten campers into life jackets quickly, count them out and back, and get them warm and dry afterwards.',
         setup=[
-            ('13:00', 'Floater 1', 'Count with the coach: boats, paddles, and one life jacket a camper in the right sizes. Ask the coach to show where the paddling area ends.'),
+            ('13:05', 'Floater 1', 'Count with the coach: boats, paddles, and one life jacket a camper in the right sizes. Ask the coach to show where the paddling area ends.'),
             ('13:15', 'Nurse', 'Set up at the Dock Gate: foil blankets, three spare throws, hot chocolate and cups, the lake first-aid kit in the dry bag.'),
             ('Before camp', 'Director', 'Give the coach and Floater 1 the list of campers who cannot swim 25 m, taken from the health forms.'),
         ],
@@ -192,7 +192,7 @@ SHEETS = [
         idea='In 45 minutes a team of ten strangers chooses a name, a mascot and a chant, and paints the banner it will carry all camp. The banner and chant are presented at tonight’s campfire for the first Color War points.',
         setup=[
             ('Before camp', 'Director', 'Cut the white cotton into three panels of about 1 × 1.3 m.'),
-            ('13:00', 'Floater 2', 'Lay two tarps on the North Lawn. On the banner tarp: one cotton panel, pencils, one set of paint markers. On the chant tarp: scrap paper, pens, coloured card, markers.'),
+            ('13:05', 'Floater 2', 'Lay two tarps on the North Lawn. On the banner tarp: one cotton panel, pencils, one set of paint markers. On the chant tarp: scrap paper, pens, coloured card, markers.'),
             ('Between turns', 'Floater 2', 'Carry the finished banner to the deck of van B05 and weigh down its corners. Lay out the next panel.'),
         ],
         say=[
@@ -224,8 +224,8 @@ SHEETS = [
         map='cornhole', mapcap='Two cornhole lanes side by side, the Mölkky pitch to the east and the pétanque strip to the south. The flag line keeps play away from the pool.',
         idea='Three easy throwing games that everyone can play at once, in buddy pairs. Nothing is scored today. The same games come back on Saturday in the Camp Olympics and the Games Arcade, where they do count.',
         setup=[
-            ('13:00', 'Floater 2', 'Two cornhole lanes: boards 6 m apart, front edge to front edge, which is eight big steps. Lanes 4 m apart. A flat marker beside each board is the throwing line.'),
-            ('13:05', 'Floater 2', 'Mölkky: stand the 12 pins in a tight group and put a marker 3.5 m away. Pétanque: two markers 8 m apart mark the strip. A table-tennis ball is the target ball.'),
+            ('13:15', 'Floater 2', 'Two cornhole lanes: boards 6 m apart, front edge to front edge, which is eight big steps. Lanes 4 m apart. A flat marker beside each board is the throwing line.'),
+            ('13:22', 'Floater 2', 'Mölkky: stand the 12 pins in a tight group and put a marker 3.5 m away. Pétanque: two markers 8 m apart mark the strip. A table-tennis ball is the target ball.'),
         ],
         say=[
             'Three games, three rounds of twelve minutes. You play with your buddy.',

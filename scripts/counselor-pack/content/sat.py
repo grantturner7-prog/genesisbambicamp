@@ -11,8 +11,8 @@ SHEETS = [
         map='olympics', mapcap='Six lanes side by side, each 5 m wide and 16 m long, numbered from the pool side. Squads move one lane east each round, and from lane 6 back to lane 1.',
         idea='Six quick events, six minutes at each. Every squad does every event and every camper is moving the whole time. Each lane gives a number, and the numbers decide the medals.',
         setup=[
-            ('08:40', 'Floater 1', 'Stage the Olympics kit at HQ Palms, one pile a lane.'),
-            ('10:00', 'Floater 1, Floater 2', 'Lift the markers of courts B and C. Mark six lanes: a start marker and a far marker 12 m apart in each. Put each lane’s kit on its start marker. Fill the sponge-relay bucket. Done by 10:15.'),
+            ('Friday 22:20', 'Floater 1, Floater 2', 'After the huddle, stage the Olympics kit on the deck of van B05, one pile a lane.'),
+            ('10:00', 'Floater 1, Floater 2', 'Lift the markers of courts B and C. Mark six lanes: a start marker and a far marker 12 m apart in each. Carry the six piles from the kit store and put each lane’s kit on its start marker. Fill the water-relay bucket. Done by 10:15.'),
         ],
         say=[
             'Six events. At each one your counselor reads the card, you get one practice go, and then five minutes that count.',
@@ -56,10 +56,8 @@ SHEETS = [
         map='lake2', mapcap='K is the Kayak Skills Relay at the Dock, P is paracord bracelets on the North Lawn, L is the Giant Bubble Lab on the South Lawn.',
         idea='The second visit to the lake is a relay, and the two land stations are for making things. Turns are 30 minutes, back to back, so the team that kayaks next walks to the Dock Gate five minutes before the change.',
         setup=[
-            ('08:40', 'Floater 1', 'Bin 2 to the Dock Gate. The Bubble Lab kit and the bracelet kit to HQ Palms, ready to carry out.'),
-            ('10:45', 'Floater 2', 'Leave the Olympics lanes. Bracelet kit to the North Lawn on two picnic blankets.'),
-            ('11:00', 'Floater 1, Nurse', 'To the Dock. Floater 1 agrees the start line and the turn buoy with Bambi’s coach. The nurse sets up at the Dock Gate.'),
-            ('11:00', 'Floater 2', 'Bubble Lab on the South Lawn, as soon as the Olympics lanes are clear: the bucket of mix, four basins, the wand kit, a rinse bucket.'),
+            ('Friday 22:20', 'Floater 1, Floater 2', 'Stage bin 2, the Bubble Lab kit and the bracelet kit on the deck of van B05.'),
+            ('11:00', 'Floater 1, Nurse', 'Carry bin 2 to the Dock Gate. The nurse sets up there and Floater 1 goes on to the Dock.'),
             ('11:00', 'Green’s counselors', 'Green dresses for the lake and is at the Dock Gate at 11:10.'),
         ],
         say=[
@@ -90,7 +88,7 @@ SHEETS = [
         map='kayakrelay', mapcap='The start line is at the Dock. Each paddler goes out round the turn buoy and back. The coach places the buoy inside the paddling area.',
         idea='The campers already know the boats, so this turn is a race. Inside each team the two squads race each other, and the team’s combined time is ranked against the other two teams.',
         setup=[
-            ('11:00', 'Floater 1', 'With the coach: one turn buoy about 40 m out from the Dock, inside the paddling area. Two stopwatches ready.'),
+            ('11:03', 'Floater 1', 'With the coach: the start line at the Dock and one turn buoy about 40 m out, inside the paddling area. Two stopwatches ready.'),
         ],
         say=[
             'Same rules as Thursday: the coach is in charge, life jackets stay clipped, and the whistle means paddle to the coach.',
@@ -126,7 +124,7 @@ SHEETS = [
         setup=[
             ('Before camp', 'Director', 'Cut each camper’s 3 m of cord into one piece of 60 cm and one of 2.4 m, and seal every cut end. Put each pair in a zip bag: 33 bags.'),
             ('Before camp', 'All counselors', 'Each counselor makes one bracelet at the staff briefing, so that every one of them can show the weave.'),
-            ('10:45', 'Floater 2', 'Two picnic blankets, ten clipboards, the bag of cord sets, masking tape, the strong scissors, the tape measure.'),
+            ('10:45', 'Floater 2', 'Leave the Olympics lanes. On the North Lawn: two picnic blankets, ten clipboards, the bag of cord sets, masking tape, the strong scissors, the tape measure.'),
         ],
         say=[
             'This is 3 m of the cord that holds a tent up. Woven like this it fits on your wrist.',
@@ -162,7 +160,7 @@ SHEETS = [
         setup=[
             ('Friday 22:15', 'Floater 2', 'Make the mix in a bucket: 9 litres of water, 1 litre of washing-up liquid, 4 tablespoons of glycerin. Stir slowly so that it does not foam, and cover the bucket with a bin bag. It works better after a night’s rest.'),
             ('Before camp', 'Director', 'Cut 33 lengths of twine, 1 m each.'),
-            ('11:00', 'Floater 2', 'Four basins in a square, 4 m apart, each a third full of mix. A rinse bucket of clean water and kitchen roll at the side.'),
+            ('11:00', 'Floater 2', 'As soon as the Olympics lanes are clear: four basins in a square on the South Lawn, 4 m apart, each a third full of mix. A rinse bucket of clean water and kitchen roll at the side.'),
         ],
         say=[
             'A bubble is a skin of soapy water. The slower you move, the bigger it gets.',
