@@ -57,7 +57,7 @@ SHEETS = [
                 'Calls the squad back at 10:15 if the whistles cannot be heard in the west.',
             ]),
         ],
-        roles=[('Director', 'Leads the warm-up, starts the squads, marks cards with the nurse.'), ('Nurse', 'At HQ Palms. Marks cards from 10:20.'), ('Floater 1', 'Starter with the stopwatch. Leaves at 10:10 to set up the Amazing Race.'),
+        roles=[('Director', 'Leads the warm-up, starts the squads, marks cards with the nurse.'), ('Nurse', 'At HQ Palms. Takes the stopwatch from Floater 1 at 10:10 and writes on each card the time the squad was back. Marks cards from 10:20.'), ('Floater 1', 'Starter with the stopwatch. Leaves at 10:10 to set up the Amazing Race.'),
                ('Floater 2', 'Walks the centre of the camp during the quest. Leaves at 10:10 to set up the Amazing Race. Collects the ten markers during showers at 16:45.'), ('Squad counselors', 'Walk at the back of their squad with the squad first-aid kit and a phone.')],
         scoring=['1 point for each correct letter (10), 2 for the bonus star, 3 for the word: 15 at most.', 'Minus 1 for each minute, or part of a minute, after 10:20.', 'The six squads are ranked. Squad placings: 6, 5, 4, 3, 2, 1. A tie goes to the squad that was back first.'],
         kit=[('Laminated A3 maps', '6', 'F4b', '5'), ('Orienteering compasses', '12', 'B1', '5'), ('Control cards and bonus cards', '6 of each', 'print', '5'), ('Clipboards and pencils', '6 of each', 'D5a, D5c', '5'),
@@ -78,12 +78,12 @@ SHEETS = [
             'Seven checkpoints, ten minutes at each. Your counselor reads the task card and starts the clock.',
             'Finish inside the gold time and you get 3. Finish inside the ten minutes and you get 2. Run out of time and you still get 1 for trying.',
             'One long whistle means stop and move to the next number. You have two minutes to get there.',
-            'Leave every checkpoint the way you found it. The next squad is two minutes behind you.',
+            'Leave every checkpoint the way you found it. The next squad is two minutes behind you. At the final whistle, pack your checkpoint into its bag and bring it here.',
         ],
         run=[
             ('10:45', '10:50', 'Briefing at HQ Palms. Passports out. Each squad walks to its first checkpoint: Y1 to 1, O1 to 2, G1 to 3, Y2 to 4, O2 to 5, G2 to 6.'),
             ('10:50', '12:12', 'Seven rounds of twelve minutes: ten on the task, then one long whistle and two to move. Rounds start at 10:50, 11:02, 11:14, 11:26, 11:38, 11:50 and 12:02.'),
-            ('12:12', '12:15', 'Final whistle. Squads walk to HQ Palms. Squad count.'),
+            ('12:12', '12:15', 'Final whistle. Each squad packs the checkpoint it is at into its bag and carries the bag to HQ Palms. Squad count.'),
             ('12:15', '12:20', 'Passports to Floater 2. The Director names the squads with the most gold scores. Full results at lunch.'),
             ('12:20', '12:25', 'Walk to the Hall for lunch at 12:30.'),
         ],
@@ -107,8 +107,8 @@ SHEETS = [
             dict(type='table', title='Which checkpoint each squad is at', head=['Squad'] + RACE_TIMES, rows=carousel(7, RACE_TIMES)),
             dict(type='list', title='The 20 memory objects, all from our own bins', items=['Whistle, compass, tent peg, marker pen, glow bracelet, LED tea light, table-tennis ball, bean bag, clothes peg, soup spoon,', 'plastic cup, rubber stamp, pencil, scissors, roll of tape, cable tie, marble, drinking straw, balloon, padlock.']),
         ],
-        roles=[('Director', 'Keeps the one clock at HQ Palms and blows every whistle.'), ('Nurse', 'At HQ Palms.'), ('Floater 1', 'Runs checkpoint 4 and resets it after each squad.'), ('Floater 2', 'Runs checkpoint 3 and resets it. Adds up the passports over lunch.'),
-               ('Squad counselors', 'Travel with their squad. At each checkpoint they read the card aloud, time the task on their phone, and stamp the passport with 3, 2 or 1.')],
+        roles=[('Director', 'Keeps the one clock at HQ Palms and blows every whistle.'), ('Nurse', 'At HQ Palms.'), ('Floater 1', 'Runs checkpoint 4, resets it after each squad and packs it away at 12:12.'), ('Floater 2', 'Runs checkpoint 3, resets it and packs it away at 12:12. Adds up the passports over lunch.'),
+               ('Squad counselors', 'Travel with their squad. At each checkpoint they read the card aloud, time the task on their phone, and stamp the passport with 3, 2 or 1. Y1’s counselor packs checkpoint 6 when Y1 leaves it at 12:00: no squad comes after.')],
         scoring=['At each checkpoint: 3 for gold, 2 for done inside ten minutes, 1 for not finished. 21 at most.', 'The six squads are ranked. Squad placings: 6, 5, 4, 3, 2, 1. A tie goes to the squad with more golds.'],
         kit=[('Race passports', '6', 'print', '5'), ('Self-inking stamps', '7', 'D15b', '5'), ('Task cards, laminated', '7', 'print', '5'), ('Scout ropes and one 2 m pole', '5 + 1', 'D6, B5', '5'),
              ('Picnic blanket, cloth and the 20 objects', '1 set', 'B8', '5'), ('Blindfolds', '6', 'D10', '5'), ('Flat markers and hoops', '26 + 2', 'A1, A9', '7'),
@@ -185,7 +185,7 @@ SHEETS = [
             'You have fifty minutes. I will call the time at 15:40, 16:00 and 16:10.',
         ],
         run=[
-            ('15:10', '15:25', 'Demo. The two floaters build an A-frame with four campers helping. Ridge cord tied at chest height between two poles with clove hitches. Two guy lines from each pole top to pegs set in a V. Tarp over the ridge, four corners pegged.'),
+            ('15:10', '15:25', 'Demo. The two floaters build an A-frame with four campers helping. Ridge cord tied at chest height between two poles with clove hitches. Two guy lines from each pole top to pegs set in a V. Tarp over the ridge, four corners pegged. In the last three minutes they show how it comes down, and the set goes back on the kit line: it is one of the six.'),
             ('15:25', '15:40', 'Build. Squads collect their set and go to their plot. First call at 15:40: poles standing and ridge cord tight.'),
             ('15:40', '16:00', 'Build. Second call at 16:00: tarp on and corners pegged.'),
             ('16:00', '16:15', 'Build. Five-minute call at 16:10. Tools down at 16:15: mallets back on the kit line.'),
@@ -222,7 +222,7 @@ SHEETS = [
         idea='A calm hour before dinner. Campers shower and put on warm clothes, then sit at mixed tables in the Hall, one or two from each team, and play two short games. The skit theme for Saturday night is announced here.',
         setup=[
             ('Before camp', 'Director', 'Print 30 café tickets on card in the three team colours, each with a table number (see the table below). Print six table numbers.'),
-            ('17:00', 'Floater 1', 'Walk to the Hall with the first campers who are ready. Put a table number and one game on each of six tables. The prop bag for the skits goes on the Director’s table.'),
+            ('17:00', 'Floater 1', 'Walk to the Hall with the first campers who are ready, carrying bin 9, the prop bag and tonight’s 30 glow bracelets. Put a table number and one game on each of six tables. The prop bag and the bracelets go on the Director’s table.'),
         ],
         say=[
             'Welcome to the café. Your ticket is your table. You will sit with campers from the other teams.',
@@ -266,9 +266,9 @@ SHEETS = [
         idea='A treasure hunt in the dark. At each of six glowing stations the squad tries a short challenge and collects a word written in invisible ink. The six words, in the right order, say where the treasure box is hidden. Inside the box are the tickets for tonight’s film.',
         setup=[
             ('Before camp', 'Director', 'Write the six words with the invisible-ink pens, six slips of each word, and seal each word’s slips in an envelope. Write the riddle card for station 6 the same way. Cut 30 cinema tickets from card.'),
-            ('18:20', 'Floater 1, Floater 2', 'Leave dinner. Set out the six station bags: station card, envelope of word slips, challenge kit, three tea lights and a glow bracelet on the number.'),
-            ('18:40', 'Floater 2', 'Put the treasure box, with the 30 tickets and a strip of glow tape on its lid, under the cinema screen.'),
-            ('18:50', 'Squad counselors', 'At the Hall door every camper cracks one glow bracelet and puts it on. Walk to HQ Palms.'),
+            ('18:20', 'Floater 1, Floater 2', 'Leave dinner, taking the film snack from the kitchen. Set out the six station bags: station card, envelope of word slips, challenge kit, three tea lights and a glow bracelet on the number.'),
+            ('18:40', 'Floater 2', 'Put the treasure box, with the 30 tickets and a strip of glow tape on its lid, under the cinema screen. Put the snack, the blanket bag, the throws and the hand warmers on the cinema table.'),
+            ('18:50', 'Squad counselors', 'At the Hall door the Director hands out the glow bracelets. Every camper cracks one and puts it on. Walk to HQ Palms.'),
         ],
         say=[
             'Six stations, six minutes at each. At every station there is a challenge and an envelope.',
@@ -316,7 +316,7 @@ SHEETS = [
         idea='The reward for the quest: a film under the sky, on blankets, wrapped in fleece throws, with the evening snack. The film runs 80 minutes at most so that everyone is in bed by 22:00.',
         setup=[
             ('Before camp', 'Director', 'Choose one film: licensed for public showing (公播版), 80 minutes or shorter, right for ages 10 to 14. Give the title to Bambi, who runs the projector and the sound.'),
-            ('19:50', 'Floater 1, Floater 2', 'Six picnic blankets in two rows of three, 4 m back from the screen. The bag of throws, the hand warmers and the snack on the table.'),
+            ('19:50', 'Floater 1, Floater 2', 'Six picnic blankets in two rows of three, 4 m back from the screen. The throws, the hand warmers and the snack are already on the table from 18:40.'),
             ('20:00', 'Bambi’s staff', 'Projector and sound tested, film ready at the start.'),
         ],
         say=[

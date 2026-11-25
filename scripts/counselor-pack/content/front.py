@@ -130,7 +130,7 @@ DAYS = [
         ('10:00–10:55', 'Arrival, welcome circle and the orientation walk', 'Bus Point, South Lawn, six stops', 'arrival'),
         ('10:55–11:40', 'Check-in rotation', 'Vans, HQ Palms, South Lawn', 'checkin'),
         ('12:00–12:50', 'Lunch. The walk starts at 11:45.', 'The Hall', None),
-        ('13:00–13:30', 'Rest in the vans. Yellow dresses for the lake.', 'Van Village', None),
+        ('13:00–13:30', 'Rest in the vans. All three teams dress for the lake.', 'Van Village', None),
         ('13:30–15:55', 'Lake rotation: kayaking, banner workshop, lawn games', 'The Dock, North Lawn, South Lawn', 'lake1'),
         ('16:00–17:40', 'Warm drink, then the eco-tram at dusk', 'HQ Palms, Tram Stop', 'tram'),
         ('18:00–18:45', 'Dinner. The walk starts at 17:45.', 'The Hall', None),

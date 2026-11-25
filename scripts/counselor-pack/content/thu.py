@@ -23,13 +23,13 @@ SHEETS = [
         ],
         run=[
             ('10:00', '10:03', 'The bus stops at the Bus Point. The Director steps on and welcomes everyone. Campers get off by team: Yellow, Orange, Green. Each squad counselor counts five.'),
-            ('10:03', '10:12', 'Toilets at the Restrooms, 60 m west along the main path, one team at a time. Floater 1 and the driver unload the bags onto the grass.'),
+            ('10:03', '10:12', 'Toilets at the Restrooms, 60 m west along the main path. All three teams walk over together. Floater 1 and the driver unload the bags onto the grass.'),
             ('10:12', '10:17', 'Every camper takes their own bag and walks 110 m to the Luggage Line. Bags go down in the team’s row. Walk on to the welcome circle on the South Lawn.'),
-            ('10:17', '10:22', 'Welcome circle. The Director welcomes the camp (2 min). The nurse says who she is and where to find her (1 min). Each counselor gives their name (2 min).'),
-            ('10:22', '10:26', 'Squads sit with their counselor. Each camper says their name and one thing they hope to do. Counselors name the buddy pairs: two pairs and one three.'),
-            ('10:26', '10:30', 'The camp cheer, three times. The two whistle signals, practised once each. The Director explains the walk.'),
-            ('10:30', '10:54', 'Orientation walk. Each team starts at its own stop and visits all six in order, four minutes a stop including the walk. Stops change at 10:34, 10:38, 10:42, 10:46 and 10:50.'),
-            ('10:54', '10:55', 'Back at HQ Palms. First squad count: the Director calls “Squads?” and hears “Five!” six times.'),
+            ('10:17', '10:21', 'Welcome circle. The Director welcomes the camp (2 min). The nurse says who she is and where to find her (1 min). Each counselor gives their name (1 min).'),
+            ('10:21', '10:25', 'Squads sit with their counselor. Each camper says their name and one thing they hope to do. Counselors name the buddy pairs: two pairs and one three.'),
+            ('10:25', '10:28', 'The camp cheer, three times. The two whistle signals, practised once each. The Director explains the walk.'),
+            ('10:28', '10:52', 'Orientation walk. Each team starts at its own stop and visits all six in order, four minutes a stop including the walk. Stops change at 10:32, 10:36, 10:40, 10:44 and 10:48.'),
+            ('10:52', '10:55', 'Teams walk back to HQ Palms from their last stop. First squad count: the Director calls “Squads?” and hears “Five!” six times.'),
         ],
         blocks=[
             dict(type='table', title='The six stops, and what the counselor says at each', head=['Stop', 'Where', 'Say this'], rows=[
@@ -40,7 +40,7 @@ SHEETS = [
                 ['5', 'Restrooms and the way to the Hall', 'Day toilets are here or in your own van. Tell your counselor and take your buddy. The Hall, where we eat, is 150 m further along this path.'],
                 ['6', 'Reception, Tram Stop and Main Gate', 'The Main Gate is the edge of camp. Nobody goes through it. The tram leaves from here at dusk today, and the bus on Sunday.'],
             ]),
-            dict(type='table', title='Who starts where', head=['Team', '10:30', '10:34', '10:38', '10:42', '10:46', '10:50'], rows=[
+            dict(type='table', title='Who starts where', head=['Team', '10:28', '10:32', '10:36', '10:40', '10:44', '10:48'], rows=[
                 ['Yellow', '1', '2', '3', '4', '5', '6'], ['Orange', '3', '4', '5', '6', '1', '2'], ['Green', '5', '6', '1', '2', '3', '4'],
             ]),
         ],
@@ -114,18 +114,18 @@ SHEETS = [
         setup=[
             ('13:00', 'Floater 1', 'Bin 2 (lake and cold) from the kit store to the Dock Gate.'),
             ('13:00', 'Floater 2', 'Bin 4, two tarps, the cornhole sets, the Mölkky and the pétanque from the kit store to the lawn.'),
-            ('13:20', 'Squad counselors', 'Knock on the vans. Yellow dresses for the lake first: quick-dry trousers, a windproof top, shoes that can get wet.'),
+            ('13:20', 'Squad counselors', 'Knock on the vans. All three teams dress for the lake now: quick-dry trousers, a windproof top, shoes that can get wet. A dry set stays ready on the bed.'),
         ],
         say=[
             'This afternoon every team does three things: kayaking, your team banner, and lawn games.',
-            'When your kayak turn ends you go straight to your van and change into dry clothes. Then you walk to your next station.',
+            'You are all in your lake clothes already. When your kayak turn ends you go straight to your van and change into dry clothes. Then you walk to your next station.',
             'One long whistle ends each turn.',
         ],
         run=[
             ('13:30', '14:15', 'Turn 1. Yellow kayaks, Orange makes its banner, Green plays lawn games.'),
-            ('14:15', '14:20', 'Move. Yellow goes to the vans to change, then to the banner tarps. Green dresses for the lake on the way past its vans.'),
+            ('14:15', '14:20', 'Move. Yellow goes to the vans to change, then to the banner tarps. Green walks straight to the Dock Gate.'),
             ('14:20', '15:05', 'Turn 2. Green kayaks, Yellow makes its banner, Orange plays lawn games.'),
-            ('15:05', '15:10', 'Move. Green changes at the vans. Orange dresses for the lake.'),
+            ('15:05', '15:10', 'Move. Green changes at the vans, then goes to the banner tarps. Orange walks straight to the Dock Gate.'),
             ('15:10', '15:55', 'Turn 3. Orange kayaks, Green makes its banner, Yellow plays lawn games. At 15:55 Orange changes at the vans and everyone meets at HQ Palms for the warm drink at 16:00.'),
         ],
         blocks=[
@@ -143,7 +143,7 @@ SHEETS = [
         scoring=[],
         kit=[('See the three station sheets that follow', '', '', '')],
         rain='Any rain, drizzle, thunder or strong wind stops the kayaking: that is Bambi’s rule and the coach makes the call. All three stations then move into the Hall. The lake station becomes the Indoor Games Arcade, the banner workshop uses the Hall tables, and the lawn games become cup stacking and table tennis. Saturday 11:10 becomes the kayak session.',
-        watch=['The 13:30 start needs Yellow dressed for the lake by 13:25.'],
+        watch=['The 13:30 start needs Yellow at the Dock Gate, in lake clothes, on time: the other two turns depend on it.'],
     ),
     dict(
         id='kayak', day='Thursday', turn=45, turns='13:30 Yellow · 14:20 Green · 15:10 Orange', title='Kayaking on the Kayak Lake',
@@ -163,7 +163,7 @@ SHEETS = [
             'If you would rather not paddle today, that is fine. You are dock crew with Floater 1.',
         ],
         run=[
-            ('0', '3', 'The team arrives at the Dock Gate dressed for the lake. Count ten. Glasses get a strap or stay with the nurse.'),
+            ('0', '3', 'The team arrives at the Dock Gate in its lake clothes. Count ten. Glasses get a strap or stay with the nurse.'),
             ('3', '10', 'Life jackets on. A counselor checks every one: all clips closed, then lift at the shoulders, and the jacket must not rise past the ears. The coach shows how to hold the paddle, go forward, stop and turn.'),
             ('10', '20', 'On the water. Campers who cannot swim 25 m paddle next to the coach, or share a double with a strong paddler. First ten minutes: forward, stop and turn inside the paddling area.'),
             ('20', '32', 'Follow the leader round the coach’s two markers, then a raft-up: on the whistle every boat comes to the coach and holds on to the next one.'),
@@ -211,7 +211,7 @@ SHEETS = [
         blocks=[
             dict(type='list', title='What the judges look for tonight', items=['The banner: the name can be read from across the fire, and the whole cloth is used.', 'The chant: loud, together, and everyone joins in.', 'Team spirit: all ten take part in the presentation.']),
         ],
-        roles=[('Floater 2', 'Hosts all three turns, keeps the time, and ties each dry banner to a 2 m pole with four cable ties at 17:20. Teams carry their banners to dinner at 17:45.'), ('Team counselors', 'One sits with each squad. They ask questions and keep everyone involved; the ideas are the campers’ own.')],
+        roles=[('Floater 2', 'Hosts all three turns and keeps the time. At 17:20 ties each dry banner to a 2 m pole with four cable ties, and brings all three to the South Lawn by 17:40 for the teams to carry to dinner.'), ('Team counselors', 'One sits with each squad. They ask questions and keep everyone involved; the ideas are the campers’ own.')],
         scoring=['Judged at the Opening Campfire by the Director, the nurse and Floater 2. Team placings: 10, 7 and 4 points.'],
         kit=[('White cotton panel, 1 × 1.3 m', '3', 'E9a', '4'), ('Acrylic paint markers, set of 12', '3 sets', 'D1b', '4'), ('Pencils', '12', 'D5c', '4'), ('Coloured card', '15 sheets', 'D4b', '4'),
              ('Permanent markers', '6', 'D1a', '4'), ('A4 paper, cut into slips', '20 sheets', 'D4a', '4'), ('Tarps, as ground sheets', '2', 'B4', '6'), ('PVC poles, 2 m', '3', 'B5', 'loose'), ('Cable ties', '12', 'D14a', '4')],
@@ -263,7 +263,8 @@ SHEETS = [
         map='tram', mapcap='The warm drink is at HQ Palms. Teams wait and play on the South Lawn and walk 60 m to the Tram Stop for their run.',
         idea='After the lake everyone warms up with a hot drink. Then each team rides Bambi’s eco-tram once round the camp as the light goes, when the egrets fly back to the trees by the Wild Waterbird Lake.',
         setup=[
-            ('15:45', 'Floater 2', 'Collect the hot-drink urn and the snack from the kitchen and set them on the nurse’s table at HQ Palms.'),
+            ('15:45', 'Bambi’s kitchen', 'Brings the hot-drink urn and the snack to the nurse’s table at HQ Palms, and collects the urn again at 16:30.'),
+            ('15:55', 'Floater 2', 'Cups, hot chocolate and tea out on the table, straight from the banner workshop.'),
             ('16:25', 'Director', 'Check with Bambi’s driver at the Tram Stop: first run at 16:40, three runs of 20 minutes.'),
         ],
         say=[
@@ -281,7 +282,7 @@ SHEETS = [
         blocks=[
             dict(type='list', title='The spotter’s five', items=['An egret landing in a tree.', 'A bird standing in the water.', 'The Hall.', 'Your own van.', 'The Dock where you kayaked.']),
         ],
-        roles=[('Director', 'At the Tram Stop for each change-over. Counts ten on and ten off.'), ('Team counselors', 'Both ride with their team, one at the front and one at the back.'), ('Floater 1', 'Packs the lake kit away, then joins the lawn games.'), ('Floater 2', 'Serves the drinks, returns the urn to the kitchen, and at 17:20 ties the dry banners to their poles on the deck of van B05.'), ('Nurse', 'On the South Lawn with the waiting teams.')],
+        roles=[('Director', 'At the Tram Stop for each change-over. Counts ten on and ten off.'), ('Team counselors', 'Both ride with their team, one at the front and one at the back.'), ('Floater 1', 'Packs the lake kit away, then joins the lawn games.'), ('Floater 2', 'Serves the drinks. At 17:20 ties the dry banners to their poles on the deck of van B05 and brings them to the South Lawn by 17:40.'), ('Nurse', 'On the South Lawn with the waiting teams.')],
         scoring=[],
         kit=[('Hot chocolate and barley tea', 'for 40', 'C7a, E09', '2'), ('Paper cups', '40', 'C7b', '2'), ('Snack from the kitchen', '30', 'Bambi', '—'), ('Cornhole sets and Mölkky, left out from the afternoon', '', 'A18, A15', 'loose')],
         rain='The tram runs if Bambi’s driver is happy to drive it. If not, the three teams go to the Hall at 16:30 for the Board-Game Café tables until dinner.',
