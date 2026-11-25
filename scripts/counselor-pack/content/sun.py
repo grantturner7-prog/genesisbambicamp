@@ -86,7 +86,7 @@ SHEETS = [
         map='prizes', mapcap='Teams sit in a horseshoe at the top of the South Lawn, facing the trophy table and the banner at HQ Palms.',
         idea='Every camper is called up by name. Then the board is uncovered and the Color War champions lift the trophy. The whole camp takes one photo together and walks to the bus.',
         setup=[
-            ('Saturday 22:15', 'All counselors', 'Each squad counselor writes one sentence about each of their five campers on the back of the certificate: something that camper did this week.'),
+            ('Saturday 22:20', 'Squad counselors', 'After the huddle, each squad counselor writes one sentence about each of their five campers on the back of the certificate: something that camper did this week.'),
             ('08:20', 'Floater 2', 'Leave breakfast with the covered scoreboard. Trophy table at HQ Palms: the trophy, 30 medals, 30 named certificates in squad order, the board and the speaker. Then help Floater 1 with the relay lanes.'),
             ('09:30', 'Floater 1', 'Meet the bus at the Bus Point and start loading the bags with the driver. Floater 2 joins at 09:32, once the board is uncovered.'),
         ],
@@ -192,7 +192,7 @@ RAIN = [
     ),
     dict(
         id='rain3', day='Rain plan', start='14:15', end='15:00', title='R3 · Indoor Games Arcade and the Minute-to-Win-It Tournament',
-        where='The Hall, six stations in a loop', who='Six squads of five', lead='Director', score='Squad placings: 6 to 1', replaces='The lake station on Thursday, multi-sports on Friday and Saturday, the Camp Olympics, and the Sunday finale',
+        where='The Hall, six stations in a loop', who='Six squads of five', lead='Director', score='Squad placings: 6 to 1', replaces='The lake station on Thursday, multi-sports on Friday and Saturday, the Camp Olympics, the Games Arcade, and the Sunday finale',
         hall='loop',
         idea='Two indoor programs that use the same six tables. The Arcade is the Saturday Games Arcade moved inside. Minute-to-Win-It is six one-minute challenges in which every camper has a go at every table.',
         setup=[
@@ -213,6 +213,7 @@ RAIN = [
                 ['Friday 14:15, multi-sports round 1', 'Indoor Arcade', 'As above, 14:15 to 15:00.'],
                 ['Saturday 09:00, multi-sports round 2', 'Minute-to-Win-It Tournament', '09:05 to 09:50, the same seven-minute rounds.'],
                 ['Saturday 10:15, Camp Olympics', 'Indoor Arcade', '10:17 to 10:59.'],
+                ['Saturday 16:15, Games Arcade', 'Indoor Arcade', '16:17 to 16:52, on the Arcade sheet’s six-minute rounds.'],
                 ['Sunday 08:40, the finale', 'Minute-to-Win-It Finals', 'Three team events, double points, 08:40 to 09:20.'],
             ]),
             dict(type='cards', title='Minute-to-Win-It: the six challenges', cards=[
@@ -242,7 +243,7 @@ RAIN = [
         hall='stage',
         idea='Every evening has an indoor version, and none of them needs new kit. The tables are pushed to the walls after dinner while the campers stand and stretch.',
         setup=[
-            ('18:45', 'All counselors', 'After dinner, tables to the walls and chairs in three team blocks facing the stage end. It takes ten minutes with everyone helping.'),
+            ('18:45', 'All counselors', 'As soon as dinner ends (19:15 on Saturday): tables to the walls and chairs in three team blocks facing the stage end. It takes ten minutes with everyone helping.'),
         ],
         say=['Tonight is indoors. Same program, drier feet.'],
         run=[
@@ -252,7 +253,7 @@ RAIN = [
         blocks=[
             dict(type='table', title='The other evenings', head=['Evening', 'In the Hall'], rows=[
                 ['Friday 19:00, Glow Night Quest', 'Lights down. Six stations at six tables, with the ring toss and the bowling along a wall. The second set of word slips is used: LOOK INSIDE THE BIG BLUE BIN.'],
-                ['Friday 20:10, Star Cinema', 'Chairs or blankets facing the screen end. Bambi sets up the projector. Throws and the snack as planned.'],
+                ['Friday 20:00, Star Cinema', 'Chairs or blankets facing the screen end. Bambi sets up the projector. Throws and the snack as planned.'],
                 ['Saturday 19:30, the Skit & Talent Showdown', 'The stage end of the Hall. The same judging. No fire and no marshmallows.'],
                 ['Saturday 20:30, the treasure hunt', 'Lights down. The floaters scatter the pieces at one end during the closing circle. One search of 20 minutes.'],
             ]),

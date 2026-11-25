@@ -41,7 +41,7 @@ SHEETS = [
             ('09:15', '09:18', 'Start. Squads leave 30 seconds apart: Y1 to control 1, O1 to 3, G1 to 5, Y2 to 7, O2 to 9, G2 to 4.'),
             ('09:18', '10:15', 'The quest. Squads choose their own route. Counselors walk at the back.'),
             ('10:15', '10:20', 'Three short whistles and a radio call. All squads walk back to HQ Palms. The clock stops for each squad when all five are standing at the palms.'),
-            ('10:20', '10:30', 'Cards in. Squads work on the word while the Director and the nurse score the cards. The top three squads are read out. One question for everyone: what helped you most?'),
+            ('10:20', '10:30', 'Cards in, with the word written on them: nothing is added after 10:20. While the Director and the nurse score the cards, squads that missed the word try it for fun. The top three squads are read out. One question for everyone: what helped you most?'),
         ],
         blocks=[
             dict(type='table', title='The ten controls (answers: do not show campers)', head=['No.', 'Where the marker hangs', 'Letter'], rows=[
@@ -84,7 +84,7 @@ SHEETS = [
             ('10:45', '10:50', 'Briefing at HQ Palms. Passports out. Each squad walks to its first checkpoint: Y1 to 1, O1 to 2, G1 to 3, Y2 to 4, O2 to 5, G2 to 6.'),
             ('10:50', '12:12', 'Seven rounds of twelve minutes: ten on the task, then one long whistle and two to move. Rounds start at 10:50, 11:02, 11:14, 11:26, 11:38, 11:50 and 12:02.'),
             ('12:12', '12:15', 'Final whistle. Each squad packs the checkpoint it is at into its bag and carries the bag to HQ Palms. Squad count.'),
-            ('12:15', '12:20', 'Passports to Floater 2. The Director names the squads with the most gold scores. Full results at lunch.'),
+            ('12:15', '12:20', 'Passports to Floater 2. The Director names the squads with the most gold scores. Full results at lunch. The picnic blanket from bag 2 goes back in the blanket bag for tonight’s film.'),
             ('12:20', '12:25', 'Walk to the Hall for lunch at 12:30.'),
         ],
         blocks=[
@@ -105,13 +105,13 @@ SHEETS = [
                  'Each camper holds one half-pipe. A marble rolls from pipe to pipe over 15 m, from the start marker to the cup. When the marble leaves your pipe you run to the front of the line. The marble may not stop, roll back or be touched. If it falls, start again. Gold: three marbles in the cup within 6 minutes. Done: one marble.'),
             ]),
             dict(type='table', title='Which checkpoint each squad is at', head=['Squad'] + RACE_TIMES, rows=carousel(7, RACE_TIMES)),
-            dict(type='list', title='The 20 memory objects, all from our own bins', items=['Whistle, compass, glue stick, marker pen, glow bracelet, LED tea light, table-tennis ball, bean bag, clothes peg, soup spoon,', 'plastic cup, rubber stamp, pencil, scissors, roll of tape, cable tie, marble, drinking straw, balloon, padlock.']),
+            dict(type='list', title='The 20 memory objects, all from our own bins', items=['Lanyard, sponge, glue stick, marker pen, glow bracelet, LED tea light, table-tennis ball, bean bag, clothes peg, soup spoon,', 'plastic cup, flat marker, pencil, scissors, roll of tape, cable tie, marble, drinking straw, balloon, hand warmer.']),
         ],
         roles=[('Director', 'Keeps the one clock at HQ Palms and blows every whistle.'), ('Nurse', 'At HQ Palms.'), ('Floater 1', 'Runs checkpoint 4, resets it after each squad and packs it away at 12:12.'), ('Floater 2', 'Runs checkpoint 3, resets it and packs it away at 12:12. Adds up the passports over lunch.'),
                ('Squad counselors', 'Travel with their squad. At each checkpoint they read the card aloud, time the task on their phone, and stamp the passport with 3, 2 or 1. Y1’s counselor packs checkpoint 6 when Y1 leaves it at 12:00: no squad comes after.')],
         scoring=['At each checkpoint: 3 for gold, 2 for done inside ten minutes, 1 for not finished. 21 at most.', 'The six squads are ranked. Squad placings: 6, 5, 4, 3, 2, 1. A tie goes to the squad with more golds.'],
         kit=[('Race passports', '6', 'print', '5'), ('Self-inking stamps', '7', 'D15b', '5'), ('Task cards, laminated', '7', 'print', '5'), ('Scout ropes and one 2 m pole', '5 + 1', 'D6, B5', '5'),
-             ('Picnic blanket, cloth and the 20 objects', '1 set', 'B8, D3b', '5'), ('Blindfolds', '6', 'D10', '5'), ('Flat markers and hoops', '26 + 2', 'A1, A9', '7'),
+             ('Picnic blanket, cloth, the 20 objects, six sheets of paper and a pencil', '1 set', 'B8, D3b, D4a', '5'), ('Blindfolds', '6', 'D10', '5'), ('Flat markers and hoops', '26 + 2', 'A1, A9', '7'),
              ('Buckets, bungee cord, five 3 m cords, 12 table-tennis balls', '2 + 1 + 5 + 12', 'D12a, E15b, B6b, A17c', '5'), ('Jigsaws, 48 pieces', '2', 'E15a', '5'),
              ('Foam half-pipes, marbles, one cup', '6 + 6 + 1', 'E6, E6b, C8', '5'), ('Whistle and stopwatch', '1 + 1', 'A10b, A10', '1')],
         rain='Light rain: the Umbrella Treasure Hunt first, then the indoor checkpoints. Heavy rain: all seven checkpoints in the Hall, with the same rotation and the same clock (rain sheet R2).',
@@ -124,7 +124,7 @@ SHEETS = [
         idea='A two-day league in three sports. Every squad plays three games each day and nobody sits out. Over the two days each squad plays every sport twice and meets every squad from the other two teams.',
         setup=[
             ('Friday 13:45', 'Floater 1, Floater 2', 'Mark the three courts with the 30 m of twine as a straight edge. Court A: 30 × 15 m with an end zone 4 m deep at each end. Court B: 24 × 14 m with a mini goal on each end line. Court C: 14 × 8 m with a center line.'),
-            ('Friday 14:05', 'Floater 1', 'Two discs to court A, two footballs to court B, six foam balls on the center line of court C. Fixture card to each referee.'),
+            ('Friday 14:05', 'Floater 1', 'Two discs to court A, two footballs to court B, six foam balls on the center line of court C. A fixture card to each referee and each squad counselor.'),
             ('Saturday 08:30', 'Floater 1, Floater 2', 'Leave breakfast. Mark court A again: its markers were lifted for the shelters. Check courts B and C, which stayed out overnight. Same kit as Friday.'),
         ],
         say=[
@@ -163,9 +163,9 @@ SHEETS = [
                ('Squad counselors', 'On the side line with their squad. If a squad is one short, its counselor plays.'), ('Nurse', 'At HQ Palms with water and the first-aid bag.')],
         scoring=['Each game: 3 points for a win, 1 for a draw, 0 for a loss, to the squad’s team.', 'Each game: 1 fair-play point to each squad. A squad gets it unless one of its players argued with the referee or an opponent, pushed, or left without the handshake.', 'A squad can bring its team up to 12 points a day.'],
         kit=[('Flat markers', '52', 'A1', '7'), ('Ultimate discs, 175 g', '2', 'A3', '7'), ('Footballs, size 4, and the pump', '2 + 1', 'A5, A7', 'bag'), ('Mini goals', '2', 'A6', 'loose'), ('Foam balls', '6', 'A4', 'bag'),
-             ('Team bibs', '30', 'A2', 'bag'), ('Result slips and fixture cards', '3 sets', 'print', '7'), ('Water container and cups', '1', 'B9a, C8', 'loose')],
+             ('Team bibs', '30', 'A2', 'bag'), ('Fixture cards and result slips', '9 + 18', 'print', '7'), ('Water container and cups', '1', 'B9a, C8', 'loose')],
         rain='Friday: the Indoor Games Arcade in the Hall. Saturday: the Minute-to-Win-It Tournament in the Hall (rain sheet R3). League points are replaced by squad placings for that day.',
-        watch=['Court C is 10 m from the flag line: a counselor fetches any ball that goes past it. A disc that lands by the vans is fetched at a walk by the nearest player.', 'Ultimate and football are no-contact. The referee stops play for any push or slide.'],
+        watch=['Courts B and C are on the pool side of the lawn: a counselor fetches any ball that goes past the flag line. A disc that lands by the vans is fetched at a walk by the nearest player.', 'Ultimate and football are no-contact. The referee stops play for any push or slide.'],
     ),
     dict(
         id='shelter', day='Friday', start='15:10', end='16:40', title='Shelter Build Challenge',
@@ -307,7 +307,7 @@ SHEETS = [
              ('LED tea lights', '24', 'D8a', '10'), ('Treasure box and glow tape', '1 + 1 roll', 'D15a, D8b', '10'), ('Cinema tickets', '30', 'D4b', '10'), ('Plastic cups and one foam ball', '6 + 1', 'C8, A4', '10'),
              ('Flat markers', '14', 'A1', '7'), ('Three empty water bottles', '3', 'own', '10'), ('Lanterns', '4', 'E8b', '3'), ('Headlamps and bright vests', '10 of each', 'B2, B12', '1')],
         rain='In the Hall with the lights down. The six stations go at six tables, the bowling and the ring toss along a wall. The second set of word slips is used: LOOK INSIDE THE BIG BLUE BIN, and the box is inside a kit bin by the Hall door.',
-        watch=['Walking only, and each squad stays within reach of its counselor’s light.', 'The pool is 10 m beyond the flag line. Floater 1 stands on the line all through the game.'],
+        watch=['Walking only, and each squad stays within reach of its counselor’s light.', 'The pool is just beyond the flag line. Floater 1 stands on the line all through the game.'],
     ),
     dict(
         id='cinema', day='Friday', start='20:00', end='21:30', title='Star Cinema on the lawn',

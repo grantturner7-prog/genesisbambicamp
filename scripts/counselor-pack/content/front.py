@@ -10,7 +10,7 @@ PLACES = [
     ('6, 7', 'The Big Lawn', 'Our playing field, between the vans and the main path. The North Lawn is about 44 × 30 m and the South Lawn about 42 × 44 m.'),
     ('8', 'Van Village', 'Our 15 vans at the north-east corner: 11 camper vans (teal dots) and 4 staff vans (purple dots). The counselors sleep in B05, B12 and A08, and the nurse and the Director in A06. The deck of B05 is the kit store.'),
     ('9, 10', 'Dock Gate and the Dock', 'Dock Gate is where our path meets the lake lane. Teams line up there. Campers go on the Dock only with a counselor or the coach.'),
-    ('11, 12', 'Campfire Circle and Cinema Lawn', 'Side by side, 60 m west of HQ Palms.'),
+    ('11, 12', 'Campfire Circle and Cinema Lawn', 'Side by side, about 25 m west of HQ Palms.'),
     ('13', 'Airstream', 'The silver snack trailer beside the pool. The pool itself is closed to the camp, and a flag line on the lawn marks the edge.'),
     ('1, 2', 'The Hall and the Restrooms', 'The Hall is where we eat and where every wet-weather activity goes. It is 200 m from the vans, a four-minute walk along the main path.'),
     ('3, 4, 5', 'Reception, Tram Stop, Main Gate', 'The bus stops at Reception. The Main Gate is the edge of camp.'),
@@ -32,7 +32,7 @@ STAFF = [
     ('Bambi’s team', 'The kayak coach, the tram driver, the kitchen, the Star Cinema projector, and the front desk.'),
 ]
 
-RADIOS = 'Eight radios: the Director, the nurse, Floater 1, Floater 2, and the counselors of Y1, O1 and G1, with one spare that goes to the Dock on lake days. Every adult also carries a phone, a whistle, the squad first-aid kit and a lanyard with the day’s timetable.'
+RADIOS = 'Eight radios: the Director, the nurse, Floater 1, Floater 2, and the counselors of Y1, O1 and G1, with one spare that goes to the Dock on lake days. Every adult also carries a phone, a whistle and a lanyard with the day’s timetable, and each squad counselor carries the squad first-aid kit.'
 
 SCORING_RULES = [
     ('Squad games', '6, 5, 4, 3, 2, 1', 'The six squads are ranked and each squad’s points go to its team.'),
@@ -198,10 +198,10 @@ DECIDED = [
 
 ASK_BAMBI = [
     'The fifteen vans in one group for all three nights: B05 to B12, A06, A08 and A10 to A14.',
-    'The kayak coach on Thursday 13:00 to 15:55 and Saturday 11:00 to 12:40, with ten life jackets in junior sizes. Are the boats singles or doubles?',
+    'The kayak coach on Thursday 13:00 to 15:55 and Saturday 11:00 to 12:40, with ten life jackets in junior sizes and one turn buoy on Saturday. Are the boats singles or doubles?',
     'The eco-tram on Thursday: three runs of 20 minutes at 16:40, 17:00 and 17:20.',
     'Firewood for Thursday and Saturday evening.',
-    'The Star Cinema projector and sound on Friday at 20:00.',
+    'The Star Cinema projector and sound on Friday at 20:00, and an evening snack for 30, ready to collect from the kitchen at 18:20.',
     'A hot-water urn at the Dock Gate on Thursday and Saturday, and hot drinks and a snack for 30 brought to HQ Palms on Thursday at 15:45.',
     'Two folding tables from Thursday 09:00 to Sunday 10:00, and the use of an outside tap by our vans. One table stays at HQ Palms. The other serves the s’mores, the cinema and the Arcade.',
     'A yes to soft balls and frisbees on the lawn, and to 60 tent pegs on Friday afternoon.',
@@ -212,10 +212,10 @@ ASK_BAMBI = [
 ]
 
 PRINT = [
-    ('Every day', 'Rosters by squad (10 copies), the van list and key list, van score sheets, score slips (60), the Color War board on poster paper.'),
-    ('Thursday', 'Wristbands written with first names and the Director’s number.'),
-    ('Friday', 'Six laminated A3 camper maps (the last page of this pack), six control cards, six bonus cards, ten control markers and the star; seven Amazing Race task cards and six passports; fixture cards and result slips; 30 café tickets and six table numbers; glow station cards, 36 word slips in invisible ink (and the 36 rain-version slips), the riddle card, six squad cards, 30 cinema tickets.'),
+    ('Every day', 'Rosters by squad (10 copies), the van list (12 copies) and the key list, van score sheets, score slips (60), the Color War board on poster paper.'),
+    ('Thursday', 'Wristbands written with first names and the Director’s number. Two copies of the list of campers who cannot swim 25 m, for the coach and Floater 1.'),
+    ('Friday', 'Six laminated A3 camper maps (the last page of this pack), six control cards, six bonus cards, ten control markers and the star; seven Amazing Race task cards and six passports; nine fixture cards (three referees, six squad counselors) and 18 result slips; 30 café tickets and six table numbers; glow station cards, 36 word slips in invisible ink (and the 36 rain-version slips), the riddle card, six squad cards, 30 cinema tickets.'),
     ('Saturday', 'Olympics lane cards and squad cards, Arcade squad cards, judges’ slips for the skits.'),
     ('Sunday', '30 named certificates.'),
-    ('Rain bag', 'Six sets of cipher sheets, alphabet strips and race clues.'),
+    ('Rain bag', 'Six sets of cipher sheets, alphabet strips and race clues; six ESCAPED cards; the three ciphers drawn large on poster paper; six Minute-to-Win-It squad cards.'),
 ]

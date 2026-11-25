@@ -278,13 +278,14 @@ def setup_jobs():
     """Every set-up line of every sheet: timed jobs by day, and the jobs to do before camp."""
     days = {'Thursday': [], 'Friday': [], 'Saturday': [], 'Sunday': []}
     before = []
-    for s in SHEETS:
+    for s in SHEETS + RAIN:
+        timed = s in SHEETS
         for when, who, what in s.get('setup', []):
             short = s['title'].split(':')[0]
             mt = re.fullmatch(r'(?:(Thursday|Friday|Saturday|Sunday) )?(\d\d:\d\d)', when)
             if when == 'Before camp':
                 before.append((who, what, short))
-            elif mt:
+            elif mt and timed:
                 day = mt.group(1) or s['day']
                 if day in days:
                     days[day].append((mt.group(2), who, what, short, s['id']))
